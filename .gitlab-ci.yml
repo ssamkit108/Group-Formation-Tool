@@ -16,14 +16,14 @@ build:
   script:
     - mvn install
   tags:
-    - ugrad
+    - ugrad,dalfcs_gitlab_docker_ci,grad
 
 test:
   stage: test
   script:
     - mvn test
   tags:
-    - ugrad
+    - ugrad,dalfcs_gitlab_docker_ci,grad
     
 deploy:
     stage: deploy
@@ -33,4 +33,4 @@ deploy:
     only:
       - development
     tags:
-    - ugrad
+    - ugrad,dalfcs_gitlab_docker_ci,grad
