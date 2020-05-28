@@ -28,8 +28,8 @@ test:
 deploy:
     stage: deploy
     script:
-      - git remote add heroku https://heroku:$HEROKU_API@git.heroku.com/rashmika.ibrahimpatnam@dal.ca/asdc-group12-test.git || true
-      - git push heroku HEAD:master
+      - git remote add heroku https://git.heroku.com/asdc-group12-test.git || true
+      - git push heroku development:master
     only:
       - development
     tags:
