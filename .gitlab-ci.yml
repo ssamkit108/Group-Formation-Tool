@@ -6,7 +6,7 @@ stages:
  - deploy
 
 const:
- stage: prebuild
+ stage: const
  script:
     - uname
  tags:
