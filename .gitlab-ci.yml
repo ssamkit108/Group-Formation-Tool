@@ -16,14 +16,14 @@ build:
   script:
     - mvn install
   tags:
-    - grad
+    - ugrad
 
 test:
   stage: test
   script:
     - mvn test
   tags:
-    - grad
+    - ugrad
     
 deploy:
     stage: deploy
@@ -33,4 +33,4 @@ deploy:
     only:
       - development
     tags:
-    - grad
+    - ugrad
