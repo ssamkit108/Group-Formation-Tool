@@ -31,7 +31,8 @@ deploy:
       - git remote -v
       - git remote rm heroku
       - git remote add heroku https://heroku:$HEROKU_API@git.heroku.com/asdc-group12-test.git || true
-      - git push -fq heroku development:master
+      - git remote -v 
+      - git push -fq heroku HEAD:master
     only:
       - development
     tags:
