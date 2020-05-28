@@ -10,10 +10,6 @@ before_script:
     - M2_HOME='./apache-maven-3.6.3'
     - PATH="$M2_HOME/bin:$PATH"
     - export PATH
-    - touch cred
-    - echo "rashmika.ibrahimpatnam@dal.ca" > cred
-    - echo "$HEROKU_API" > cred
-    - cat cred | heroku login
     
 build:
   stage: build
@@ -33,7 +29,7 @@ deploy:
     stage: deploy
     script:
       - git remote add heroku https://git.heroku.com/asdc-group12-test.git || true
-      - git push heroku development:master
+      - git push -fq heroku development:master
     only:
       - development
     tags:
