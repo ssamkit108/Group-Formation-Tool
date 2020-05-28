@@ -1,0 +1,29 @@
+image: java:8-jdk
+stages:
+ - build
+ - test
+ - deploy
+
+build:
+  stage: build
+  script:
+    - mvn install
+  tags:
+    - grad
+
+test:
+  stage: test
+  script:
+    - mvn test
+  tags:
+    - grad
+    
+deploy:
+    stage: deploy
+    script:
+      - git remote add heroku https://git.heroku.com/asdc-group12-test.git || true
+      - git push -fq heroku HEAD:master
+    only:
+      - development
+    tags:
+    - grad
