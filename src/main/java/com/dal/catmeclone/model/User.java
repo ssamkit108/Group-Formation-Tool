@@ -2,7 +2,13 @@ package com.dal.catmeclone.model;
 
 import java.util.Set;
 
+import org.springframework.lang.NonNull;
+
+
+
 public class User {
+	
+	@NonNull	
 	
 	private String bannerId;
 	
@@ -10,6 +16,7 @@ public class User {
 	
 	private String lastName;
 	
+	@NonNull	
 	private String password;
 	
 	private String email;
@@ -49,6 +56,7 @@ public class User {
 	/**
 	 * @return the bannerId
 	 */
+	
 	public String getBannerId() {
 		return bannerId;
 	}
