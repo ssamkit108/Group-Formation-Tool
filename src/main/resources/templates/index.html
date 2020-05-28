@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Index</title>
 </head>
 <body>
 Index Page
+	<p>
+	<a th:href="@{/login}">LOGIN</a>
+
+	<a th:href="@{/signup}">SignUp</a>
+	</p>
 </body>
 </html>
