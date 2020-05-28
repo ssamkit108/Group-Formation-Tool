@@ -3,13 +3,14 @@
  */
 package com.dal.catmeclone.DBUtility;
 
-import java.sql.Connection;
+import java.sql.Connection;	
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
@@ -17,10 +18,12 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
  * @author Mayank
  *
  */
+
+@Configuration
 public class DatabaseConnection {
 
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
-
+/*
 	@Value("${spring.datasource.username}")
 	private String user;
 
@@ -40,8 +43,21 @@ public class DatabaseConnection {
 	private String drivername;
 
 	private static Connection databaseConnection;
-
+*/
 	
+	private String user="CSCI5308_12_DEVINT_USER";
+
+	private String password="CSCI5308_12_DEVINT_12313";
+
+	private String database="CSCI5308_12_DEVINT";
+
+	private String databaseurl="jdbc:mysql://db-5308.cs.dal.ca:3306/";
+
+	private String connectionProperty="useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false";
+
+	private String drivername="com.mysql.jdbc.Driver";
+
+	private static Connection databaseConnection;
 	/**
 	 * Method to Establish JDBC Connection to Database
 	 */
