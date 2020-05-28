@@ -1,9 +1,16 @@
 image: java:8-jdk
 stages:
+ - const
  - build
  - test
  - deploy
 
+const:
+ stage: prebuild
+ script:
+    - uname
+ tags:
+    - grad
 build:
   stage: build
   script:
