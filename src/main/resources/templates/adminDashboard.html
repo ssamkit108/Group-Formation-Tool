@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<title>Getting started: Serving Web Content</title>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Admin Dashboard</h1>
+    <table>
+    	<thead>
+        	<tr>
+            	<th> Course ID: </th>
+            	<th> Course Name: </th>
+            	<th> Click to Delete: </th>
+        	</tr>
+    	</thead>
+      <tbody>
+    	<tr th:if="${courses.empty}">
+            <td colspan="2"> No Courses Available </td>
+        </tr>
+        <tr th:each="c : ${courses}">
+            
+            <td><span th:text="${c.courseID}"> ID </span></td>
+            <td><span th:text="${c.courseName}"> Name </span></td>
+            <td>
+            <form action="#" th:action="@{/adminDashboard}" th:object="${adminDashboard}" method=post>
+            <input type="hidden" th:value="${c.courseID}" name="courseID"/><button type="submit" class="removebutton" name="action" value="remove">Remove</button>
+            </form>
+            </td>
+        </tr>
+      </tbody>
+	</table>
+        <a href="/courseCreationForm">Add Course</a>
+</body>
+</html>

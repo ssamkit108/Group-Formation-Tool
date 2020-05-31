@@ -1,0 +1,31 @@
+package com.dal.catmeclone;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.dal.catmeclone.dao.CourseDao;
+import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.model.Course;
+
+public class CourseMock implements CourseDao {
+
+	@Override
+	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException {
+		List<Course> l = new ArrayList<Course>();
+		l.add(new Course(123,"sdc"));
+		return l;
+	}
+
+	@Override
+	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
+		return true;
+	}
+
+	@Override
+	public boolean insertCourse(Course course) throws UserDefinedSQLException, SQLException {
+		return true;
+	}
+
+}
+
