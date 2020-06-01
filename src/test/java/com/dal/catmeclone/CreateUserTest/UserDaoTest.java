@@ -7,14 +7,14 @@ import com.dal.catmeclone.model.*;
 
 
 @SpringBootTest
-public class SignUpTest {
+public class UserDaoTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test
 	public void CreateUserTest()
 	{
 		User u = new User();
-		CreateMock mock=new CreateMock();
+		UserDaoMock mock=new UserDaoMock();
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
 		u.setFirstName("Bob");

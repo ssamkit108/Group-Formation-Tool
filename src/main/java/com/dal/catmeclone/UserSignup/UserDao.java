@@ -1,10 +1,11 @@
-package com.dal.catmeclone.CreateUser;
+package com.dal.catmeclone.UserSignup;
 import java.sql.SQLException;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.*;
 
-public interface Interface_CreateUser {
+public interface UserDao {
 	
 	public boolean createUser(User user) throws SQLException, UserDefinedSQLException;
+
 }
