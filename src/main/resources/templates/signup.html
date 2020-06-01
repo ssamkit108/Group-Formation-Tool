@@ -6,8 +6,8 @@
 <body>
 	<h1>SignUp Form</h1>
 	<br/>
-	<div th:if="${error}">
-	    <h3 th:text="${error}"></h3>
+	<div th:if="${message}">
+	    <h3 th:text="${message}"></h3>
 	    <br/>
 	</div>
 	<form th:action="@{/signup}" method="post">

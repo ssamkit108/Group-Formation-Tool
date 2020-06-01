@@ -1,20 +1,29 @@
-package com.dal.catmeclone.CreateUser;
+package com.dal.catmeclone.UserSignup;
 
-import java.sql.*;	
+import java.sql.*;		
 import com.dal.catmeclone.model.*;
 import com.dal.catmeclone.DBUtility.*;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-public class CreateUser implements Interface_CreateUser {
+@Component
+public class UserDaoImpl implements UserDao {
 	
-	DatabaseConnection db_con=new DatabaseConnection();
+	@Autowired
+	private DatabaseConnection DBUtil;
+	
 	private CallableStatement statement;
-	private Connection con;
+	private Connection connection;
 	
+	@Value("${procedure.createUser}")
+	private String createUserProcedure;
+
 	public boolean createUser(User user) throws SQLException, UserDefinedSQLException
 	{	
-		con=db_con.connect();
-		statement=con.prepareCall("{call CreateUser(?, ?, ?, ?, ?)}");
+		connection=DBUtil.connect();
+		statement=connection.prepareCall("{call "+createUserProcedure+"}");
 		try
 		{
 			statement.setString(1, user.getBannerId());
@@ -34,14 +43,16 @@ public class CreateUser implements Interface_CreateUser {
 			{
 				statement.close();
 			}
-			if (con != null)
+			if (connection != null)
 			{
-				if (!con.isClosed())
+				if (!connection.isClosed())
 				{
-					con.close();
+					connection.close();
 				}
 			}
 		}
 		return true;
 	}
+	
+	
 }
