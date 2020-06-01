@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
@@ -17,6 +18,7 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
  * @author Mayank
  *
  */
+@Configuration
 public class DatabaseConnection {
 
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
@@ -46,7 +48,7 @@ public class DatabaseConnection {
 	 * Method to Establish JDBC Connection to Database
 	 */
 	public Connection connect() throws UserDefinedSQLException {
-
+		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -62,10 +64,12 @@ public class DatabaseConnection {
 			
 		} catch (SQLException e) {
 			//Throwing user defined exception for incorrect driver
+			System.out.println("here throwing erro");
 			throw new UserDefinedSQLException(
 					"SQL Connection Error: Please verify the Credentials : \n" + e.getMessage());
 		}
-
+		logger.info("database connection made successfully");
+		logger.info(databaseurl+user+password);
 		return databaseConnection;
 	}
 

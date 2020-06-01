@@ -1,10 +1,10 @@
-package com.dal.catmeclone.model;
+package com.dal.catmeclone.courses;
+
 
 public class Course {
 
 	private int courseID;
 	private String courseName;
-	private User courseInstructor;
 	
 	
 	/**
@@ -24,6 +24,17 @@ public class Course {
 		super();
 		this.courseID = courseID;
 		this.courseName = courseName;
+	}
+	
+	
+
+
+	/**
+	 * @param courseID
+	 */
+	public Course(int courseID) {
+		super();
+		this.courseID = courseID;
 	}
 
 

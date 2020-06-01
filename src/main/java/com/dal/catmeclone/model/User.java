@@ -25,6 +25,12 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	
+
+
+
+
 
 	/**
 	 * @param bannerId
@@ -43,6 +49,35 @@ public class User {
 		this.password = password;
 		this.email = email;
 		this.userRoles = userRoles;
+	}
+	
+	
+	
+
+	/**
+	 * @param bannerId
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 */
+	public User(String bannerId, String firstName, String lastName, String email) {
+		super();
+		this.bannerId = bannerId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
+	
+	
+	
+
+
+	/**
+	 * @param bannerId
+	 */
+	public User(String bannerId) {
+		super();
+		this.bannerId = bannerId;
 	}
 
 
@@ -130,6 +165,14 @@ public class User {
 	 */
 	public void setUserRoles(Set<Role> userRoles) {
 		this.userRoles = userRoles;
+	}
+	
+	public boolean exists()
+	{
+		boolean response = false;
+		if(null!=this) {response= true;}
+		return response;
+
 	}
 
 

@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css"
+		 href="/css/general.css">
+
 <title>Home</title>
 </head>
 <body>
-Home Page
+
+<div th:replace="header :: header">...</div>
+<div th:if="${nocoursemessage == null}" th:text="nocoursemessage">
+   I wonder, if variable exists...
+</div>
+<div th:if="${nocoursemessage ne null}" >
+<!-- <table>
+		<tbody>
+			<tr th:each="course : ${courses}">
+				<td>
+					<a th:href="@{'/course/' + ${course.courseID}}" title="Read more about Manchester United">
+						<div class="block"> 
+					 		<h3 th:text="${course.courseID}">Book a season ticket with Manchester United</h3>
+					 		<span th:text="${course.courseName}"></span>
+					 		
+						</div>
+ 					</a>
+				</td>	
+			</tr>		
+		</tbody>
+</table> -->
+<ul class="cards">
+	<li class="cards__item" th:each="course : ${courses}">
+		<a th:href="@{'/mycourse/' + ${course.courseID}}" title= '${course.courseName}'>
+			<div class="card"> 
+			 		<p class="card_title" th:text="${course.courseID}">Book a season ticket with Manchester United</h3>
+			 		<p class="card_text" th:text="${course.courseName}"></span>
+			 		
+			</div>
+		</a>
+	</li>
+</ul>
+</div>
 </body>
 </html>
