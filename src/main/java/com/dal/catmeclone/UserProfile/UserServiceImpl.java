@@ -1,9 +1,12 @@
-package com.dal.catmeclone.UserSignup;
+package com.dal.catmeclone.UserProfile;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dal.catmeclone.DBUtility.DatabaseConnection;
 import com.dal.catmeclone.model.User;
 
 @Service
@@ -14,6 +17,8 @@ public class UserServiceImpl implements UserService {
 
 	Boolean flag=false;
 	
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+
 	@Override
 	public boolean Create(User u) {
 		try {
@@ -28,6 +33,7 @@ public class UserServiceImpl implements UserService {
 			return flag;
 		} catch (Exception e) {
 			flag=false;
+			logger.error(e.getMessage());
 			return flag;
 		}
 		}

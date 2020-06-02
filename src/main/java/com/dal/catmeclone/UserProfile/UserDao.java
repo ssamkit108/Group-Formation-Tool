@@ -1,4 +1,4 @@
-package com.dal.catmeclone.UserSignup;
+package com.dal.catmeclone.UserProfile;
 import java.sql.SQLException;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;

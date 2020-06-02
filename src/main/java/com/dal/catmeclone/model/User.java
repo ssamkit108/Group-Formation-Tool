@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class User {
 	
 	private String bannerId;
-	
+
 	private String firstName;
 	
 	private String lastName;

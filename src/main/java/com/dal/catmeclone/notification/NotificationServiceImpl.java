@@ -3,7 +3,7 @@
  */
 package com.dal.catmeclone.notification;
 
-import java.util.Properties;
+import java.util.Properties;	
 
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;

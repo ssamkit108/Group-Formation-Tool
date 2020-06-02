@@ -1,4 +1,4 @@
-package com.dal.catmeclone.forgotpasswordTest;
+package com.dal.catmeclone.UserProfileTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.CreateUserTest.UserDaoMock;
 import com.dal.catmeclone.model.User;
 
 @SpringBootTest
