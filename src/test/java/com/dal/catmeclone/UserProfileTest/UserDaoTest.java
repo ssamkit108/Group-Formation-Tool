@@ -1,4 +1,4 @@
-package com.dal.catmeclone.CreateUserTest;
+package com.dal.catmeclone.UserProfileTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;

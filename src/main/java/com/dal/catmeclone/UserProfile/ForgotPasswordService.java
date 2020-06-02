@@ -1,4 +1,4 @@
-package com.dal.catmeclone.forgotpassword;
+package com.dal.catmeclone.UserProfile;
 
 
 public interface ForgotPasswordService {

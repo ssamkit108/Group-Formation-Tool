@@ -1,7 +1,9 @@
-package com.dal.catmeclone.forgotpassword;
+package com.dal.catmeclone.UserProfile;
 
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dal.catmeclone.DBUtility.DatabaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.notification.*;
@@ -23,7 +26,8 @@ public class ForgotPasswordController {
 	private final String USERNAME = "username";
 	@Autowired
 	ForgotPasswordService forgotpasswordservice;
-	
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+
 	@GetMapping("/forgotpassword")
 	public String displayforgotpassword(Model model)
 	{
@@ -34,6 +38,7 @@ public class ForgotPasswordController {
 	public ModelAndView processForgotpassword(
 	@RequestParam(name = USERNAME) String bannerID) throws SQLException, UserDefinedSQLException
 	{
+	try {
 	if(forgotpasswordservice.forgotpassword(bannerID)) {
 		ModelAndView m;
 		m = new ModelAndView("forgotpassword");
@@ -44,6 +49,12 @@ public class ForgotPasswordController {
 		ModelAndView m;
 		m = new ModelAndView("forgotpassword");
 		m.addObject("message", "Please enter the valid BannerID");
+		return m;
+	}
+	}
+	catch(Exception e) {
+		logger.error(e.getMessage());
+		ModelAndView m = new ModelAndView("error");
 		return m;
 	}
 	

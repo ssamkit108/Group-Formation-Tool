@@ -1,4 +1,4 @@
-package com.dal.catmeclone.CreateUserTest;
+package com.dal.catmeclone.UserProfileTest;
 
 import com.dal.catmeclone.model.*;
 

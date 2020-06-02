@@ -1,11 +1,15 @@
-package com.dal.catmeclone.UserSignup;
+package com.dal.catmeclone.UserProfile;
 
 import java.sql.*;		
 import com.dal.catmeclone.model.*;
 import com.dal.catmeclone.DBUtility.*;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +20,8 @@ public class UserDaoImpl implements UserDao {
 	
 	private CallableStatement statement;
 	private Connection connection;
-	
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+
 	@Value("${procedure.createUser}")
 	private String createUserProcedure;
 
@@ -32,10 +37,18 @@ public class UserDaoImpl implements UserDao {
 			statement.setString(4,user.getEmail());
 			statement.setString(5,user.getPassword());
 			statement.execute();
+			logger.info("User:"+user.getBannerId()+" Inserted in the database successfully.");
+		}catch ( DataIntegrityViolationException e) {
+			logger.error("User"+user.getBannerId()+" already exist in the system");
+			return false;
 		}
 		catch (SQLException e)
 		{
+			logger.error("Some SQL error generated in the UserDao.");
 			return false;
+		}
+		catch(Exception e) {
+			logger.error(e.getMessage());
 		}
 		finally
 		{

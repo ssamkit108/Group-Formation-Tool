@@ -1,4 +1,4 @@
-package com.dal.catmeclone.forgotpasswordTest;
+package com.dal.catmeclone.UserProfileTest;
 
 import static org.junit.jupiter.api.Assertions.*;	
 
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.CreateUserTest.UserValidateMock;
 import com.dal.catmeclone.model.User;
 
 @SpringBootTest

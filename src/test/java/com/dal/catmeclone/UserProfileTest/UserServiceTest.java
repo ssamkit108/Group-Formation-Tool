@@ -1,4 +1,4 @@
-package com.dal.catmeclone.CreateUserTest;
+package com.dal.catmeclone.UserProfileTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 

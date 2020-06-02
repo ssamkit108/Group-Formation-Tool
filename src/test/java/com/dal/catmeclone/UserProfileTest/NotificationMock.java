@@ -1,4 +1,4 @@
-package com.dal.catmeclone.forgotpasswordTest;
+package com.dal.catmeclone.UserProfileTest;
 
 public class NotificationMock {
 	public boolean sendemail(String username,String password) {

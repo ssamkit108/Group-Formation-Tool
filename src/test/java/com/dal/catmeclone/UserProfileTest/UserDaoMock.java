@@ -1,5 +1,5 @@
-package com.dal.catmeclone.CreateUserTest;
-import com.dal.catmeclone.UserSignup.UserDao;
+package com.dal.catmeclone.UserProfileTest;
+import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.model.*;
 
 public class UserDaoMock{

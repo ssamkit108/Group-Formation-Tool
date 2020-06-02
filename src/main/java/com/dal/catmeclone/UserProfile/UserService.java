@@ -1,4 +1,4 @@
-package com.dal.catmeclone.UserSignup;
+package com.dal.catmeclone.UserProfile;
 
 import com.dal.catmeclone.model.User;
 
