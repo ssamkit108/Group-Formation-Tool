@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Login Page</title>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" />
+
+
+
+</head>
+<body>
+	<div class="middle-box text-center loginscreen animated fadeInDown">
+
+		<br />
+
+
+		<div class="container">
+			<h1>Login</h1>
+			<br />
+			<form autocomplete="off" action="#" th:action="@{/login}"
+				method="post" class="m-t col-md-4 col-md-offset-4" role="form"
+				data-toggle="validator">
+
+				<div class="form-group row">
+					<div class="form-group input-group has-feedback">
+						<span class="input-group-addon"> <span
+							class="glyphicon glyphicon-user"></span>
+						</span> <input type="text" name="username" placeholder="Banner ID"
+							class="form-control" required /> <span
+							class="glyphicon form-control-feedback" aria-hidden="true"></span>
+					</div>
+				</div>
+
+				<div class="form-group row">
+
+					<div class="form-group input-group has-feedback">
+						<span class="input-group-addon"> <span
+							class="glyphicon glyphicon-lock"></span>
+						</span> <input type="password" name="password" placeholder="Password"
+							class="form-control" required /> <span
+							class="glyphicon form-control-feedback" aria-hidden="true"></span>
+					</div>
+				</div>
+				<br />
+				<div th:if="${param.error}"
+					class="validation-message alert alert-danger" role="alert">Banner
+					ID/Password is not valid.</div>
+
+				<div th:if="${param.logout}"
+					class="validation-message alert alert-danger" role="alert">You
+					logged out from this tool</div>
+				<div>
+					<button type="submit" class="btn btn-primary">Login</button>
+
+					<button type="reset" class="btn btn-secondary ">Cancel</button>
+				</div>
+				<br />
+				<div>
+					<a th:href="@{/signup}" style="margin-right: 90px">New user?
+						Sign Up</a> <a th:href="@{/forgotpassword}"> Forgot Password?</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+
