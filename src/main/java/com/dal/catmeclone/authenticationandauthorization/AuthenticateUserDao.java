@@ -1,8 +1,11 @@
 package com.dal.catmeclone.authenticationandauthorization;
 
-import java.sql.*;
+import java.sql.*;		
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.dal.catmeclone.DBUtility.*;
 import com.dal.catmeclone.exceptionhandler.*;
@@ -10,6 +13,7 @@ import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.model.UserDetails;
 
+@Component
 public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 
 	private CallableStatement stored_pro;
@@ -20,11 +24,13 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 	@Override
 	public User getbyBannerId(User user)throws SQLException, UserDefinedSQLException {
 		User u = null;
+		
+		
 
 		try {
-			DatabaseConnection db_connect = new DatabaseConnection();
+			DatabaseConnection db_connect=new DatabaseConnection();
 
-
+			
 			connection = db_connect.connect();
 			stored_pro = connection.prepareCall("{call getbybannerId(?)}");
 
@@ -68,7 +74,8 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		ArrayList<Course> crclst = new ArrayList<Course>();
 
 		try {
-			DatabaseConnection db_connect = new DatabaseConnection();
+			DatabaseConnection db_connect=new DatabaseConnection();
+
 
 			connection = db_connect.connect();
 			stored_pro = connection.prepareCall("{call GetCoursesForUser(?)}");
@@ -119,7 +126,8 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		ArrayList<Course> allcrclst = new ArrayList<Course>();
 
 		try {
-			DatabaseConnection db_connect = new DatabaseConnection();
+			
+			DatabaseConnection db_connect=new DatabaseConnection();
 
 			connection = db_connect.connect();
 			stored_pro = connection.prepareCall("{call GetAllCourses()}");
@@ -162,7 +170,8 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		ArrayList<UserDetails> role_data = new ArrayList<UserDetails>();
 
 		try {
-			DatabaseConnection db_connect = new DatabaseConnection();
+			DatabaseConnection db_connect=new DatabaseConnection();
+
 			connection = db_connect.connect();
 			stored_pro = connection.prepareCall("{call getrolebyuser(?)}");
 			stored_pro.setString(1,user.getBannerId());

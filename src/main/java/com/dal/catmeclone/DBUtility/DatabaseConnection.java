@@ -3,7 +3,7 @@
  */
 package com.dal.catmeclone.DBUtility;
 
-import java.sql.Connection;		
+import java.sql.Connection;			
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -24,7 +24,7 @@ public class DatabaseConnection {
 
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 
-/*	@Value("${spring.datasource.username}")
+	/*@Value("${spring.datasource.username}")
 	private String user;
 
 	@Value("${spring.datasource.password}")
@@ -40,21 +40,23 @@ public class DatabaseConnection {
 	private String connectionProperty;
 
 	@Value("${spring.datasource.driver-class-name}")
-	private String drivername;
-
-	private static Connection databaseConnection;*/
+	private String drivername;*/
+	
 	
 	private String user="CSCI5308_12_DEVINT_USER";
 
+	
 	private String password="CSCI5308_12_DEVINT_12313";
 
+	
 	private String database="CSCI5308_12_DEVINT";
 
-	private String databaseurl="jdbc:mysql://db-5308.cs.dal.ca:3306/";
+	
+	private String databaseurl ="jdbc:mysql://db-5308.cs.dal.ca:3306/";
 
-	private String connectionProperty="useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false";
 
-	private String drivername="com.mysql.jdbc.Driver";
+	private String connectionProperty="useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	//private String drivername;
 
 	private static Connection databaseConnection;
 
@@ -75,8 +77,7 @@ public class DatabaseConnection {
 			// Setting up the connection
 			String databaseConnectionURL = databaseurl + database + "?" + connectionProperty;
 			databaseConnection = DriverManager.getConnection(databaseConnectionURL, user, password);
-			System.out.println("heyaaaaaaaaaaaaaaaaaaa connected");
-		
+			logger.debug("Connected to database");
 			
 		} catch (SQLException e) {
 			//Throwing user defined exception for incorrect driver
