@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="favicon.ico" />
+<title>Course List</title>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" />
+<body>
+	<div class="container">
+		<h1>Courses</h1>
+		<div th:if="${Student_courses !=null and !Student_courses.empty}">
+			<div class="table-responsive">Courses as Student</div>
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>Banner ID</th>
+						<th>Course ID</th>
+						<th>Course Name</th>
+						<th>Role Tagged</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="student_course: ${Student_courses}">
+						<td th:text="${student_course.bannerId}"></td>
+						<td th:text="${student_course.courseId}"></td>
+						<td th:text="${student_course.courseName}"></td>
+						<td th:text="${student_course.role_tagged}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<div th:if="${TA_courses !=null and !TA_courses.empty}">
+			<div class="table-responsive">Courses as TA</div>
+			<table class="table table-bordered table-hover">
+				<thead>
+
+					<tr>
+						<th>Banner ID</th>
+						<th>Course ID</th>
+						<th>Course Name</th>
+						<th>Role Tagged</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr th:each="TA_course: ${TA_courses}">
+						<td th:text="${TA_course.bannerId}"></td>
+						<td th:text="${TA_course.courseId}"></td>
+						<td th:text="${TA_course.courseName}"></td>
+						<td th:text="${TA_course.role_tagged}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<br>
+		<div
+			th:if="${Instructor_courses !=null and !Instructor_courses.empty}">
+			<div class="table-responsive">Courses as Instructor</div>
+			<table class="table table-bordered table-hover">
+				<thead>
+
+					<tr>
+						<th>Banner ID</th>
+						<th>Course ID</th>
+						<th>Course Name</th>
+						<th>Role Tagged</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr th:each="Instructor_course: ${Instructor_courses}">
+						<td th:text="${Instructor_course.bannerId}"></td>
+						<td th:text="${Instructor_course.courseId}"></td>
+						<td th:text="${Instructor_course.courseName}"></td>
+						<td th:text="${Instructor_course.role_tagged}"></td>
+					</tr>
+				</tbody>
+
+			</table>
+
+		</div>
+	</div>
+</body>
+</html>
