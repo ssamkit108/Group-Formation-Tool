@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.dal.catmeclone.DBUtility.*;
 import com.dal.catmeclone.exceptionhandler.*;
 import com.dal.catmeclone.model.Course;
@@ -200,7 +203,6 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		return role_data;
 	}
 }
-
 
 
 

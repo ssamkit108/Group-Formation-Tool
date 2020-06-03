@@ -1,6 +1,8 @@
 package com.dal.catmeclone.authenticationandauthorization;
 
+
 import org.springframework.security.authentication.AuthenticationManager;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,6 +14,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
+			.antMatchers("/signup","/forgotpassword").permitAll()
+			.and()
+			.authorizeRequests()
 			.antMatchers("/admin").hasRole("admin")
 			.antMatchers("/user").hasRole("user")
 			.anyRequest().authenticated()

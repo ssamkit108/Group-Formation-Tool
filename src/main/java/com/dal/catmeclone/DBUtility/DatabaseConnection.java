@@ -3,7 +3,7 @@
  */
 package com.dal.catmeclone.DBUtility;
 
-import java.sql.Connection;		
+import java.sql.Connection;			
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -51,8 +51,7 @@ public class DatabaseConnection {
 	private String database="CSCI5308_12_DEVINT";
 
 	private String databaseurl="jdbc:mysql://db-5308.cs.dal.ca:3306/";
-
-	private String connectionProperty="useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false";
+	private String connectionProperty="useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false";;
 
 	private String drivername="com.mysql.jdbc.Driver";
 
