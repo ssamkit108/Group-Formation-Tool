@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<title>Getting started: Serving Web Content</title>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Course added successfully</title>
+<style>
+body {text-align: center;}
+</style>
+</head>
+<body>
+	<h1>Instructor and course details:</h1>
+	<p th:text="'Course id: ' + ${course.courseID}"/>
+	<p th:text="'Instructor id:' + ${user.bannerId}"/>
+	<a href="/adminDashboard">Return to dashboard</a>
+</body>
+</html>

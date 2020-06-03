@@ -31,6 +31,10 @@ public class Role {
 		this.roleName = roleName;
 	}
 
+	public Role(String roleName) {
+		super();
+		this.roleName = roleName;
+	}
 	/**
 	 * @return the roleId
 	 */

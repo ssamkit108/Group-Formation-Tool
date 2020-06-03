@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<title>Getting started: Serving Web Content</title>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+<style>
+body {text-align: center;}
+</style>
+</head>
+<body>
+	<h1>Course Creation Form</h1>
+	<form action="#" th:action="@{/courseCreationForm}" th:object="${courseCreationForm}" method=post>
+ 	    <p>Course Id: <input type="number" th:field="*{courseID}" min="1" required/></p>
+        <p>Course Name: <input type="text" th:field="*{courseName}" required/></p>
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /> 
+        </p>
+ 	</form>
+</body>
+</html>

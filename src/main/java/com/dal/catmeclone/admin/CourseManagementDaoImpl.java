@@ -1,4 +1,4 @@
-package com.dal.catmeclone.dao;
+package com.dal.catmeclone.admin;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -11,7 +11,7 @@ import com.dal.catmeclone.DBUtility.DatabaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 
-public class CourseDaoImpl implements CourseDao{
+public class CourseManagementDaoImpl implements CourseManagementDao{
 
 	DatabaseConnection db = new DatabaseConnection();
 	private CallableStatement statement;
@@ -117,4 +117,46 @@ public class CourseDaoImpl implements CourseDao{
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
+		// TODO Auto-generated method stub
+		boolean flag = true;
+		//Course id
+		System.out.println(course.getCourseID());
+		// Connect to database
+				con = db.connect();
+				statement = con.prepareCall("{CALL checkInstructorAssignedForCourse(?)}");
+				
+				try {
+					statement.setInt(1, course.getCourseID());
+					rs = statement.executeQuery();
+					//Check if resultset is Empty
+					if(rs.next() == false) {
+						flag = false;
+					}
+				}
+				catch(Exception e) {
+					
+					// TODO Auto-generated catch block
+					System.out.println("provide logger here");
+
+				}
+				finally
+				{
+					if (statement != null)
+					{
+						statement.close();
+					}
+					if (con != null)
+					{
+						if (!con.isClosed())
+						{
+							con.close();
+						}
+					}
+				}
+		return flag;
+	}
+
 }

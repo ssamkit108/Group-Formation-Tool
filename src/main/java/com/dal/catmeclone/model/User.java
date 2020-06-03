@@ -44,6 +44,16 @@ public class User {
 		this.email = email;
 		this.userRoles = userRoles;
 	}
+	
+	public User(String bannerId, String firstName, String lastName, String password, String email
+			) {
+		super();
+		this.bannerId = bannerId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.email = email;
+	}
 
 
 	/**
