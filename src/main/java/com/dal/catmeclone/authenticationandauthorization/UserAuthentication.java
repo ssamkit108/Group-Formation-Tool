@@ -1,6 +1,8 @@
 package com.dal.catmeclone.authenticationandauthorization;
 
+
 import java.sql.SQLException;
+import java.sql.SQLException;	
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +13,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
+import org.springframework.stereotype.Component;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
 
+@Component
 public class UserAuthentication implements AuthenticationManager{
 
 
