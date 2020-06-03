@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Course Student</title>
+</head>
+<style>
+div.content {
+   height: 200px;
+    width: 400px;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px; }
+div.content p {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    font-size: 40px;
+    transform: translate(-50%, -50%) }
+</style>
+<body>
+
+	<div class="content">
+	
+	<p> Welcome to the, </p>
+	<!--
+	 <p th:text="${param.courseID}" > </p>
+	 <p th:text="${param.courseName"> </p>
+	 -->
+	 
+	 <p th:utext="${course.courseID}" > </p>
+	 <p th:utext="${course.courseName"> </p>
+	</div>
+	
+</body>
+</html>

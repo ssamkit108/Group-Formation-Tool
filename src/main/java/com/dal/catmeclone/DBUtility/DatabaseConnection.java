@@ -3,13 +3,14 @@
  */
 package com.dal.catmeclone.DBUtility;
 
-import java.sql.Connection;
+import java.sql.Connection;		
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
@@ -17,6 +18,8 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
  * @author Mayank
  *
  */
+
+@Configuration
 public class DatabaseConnection {
 
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
@@ -55,8 +58,6 @@ public class DatabaseConnection {
 
 	private static Connection databaseConnection;
 
-
-	
 	/**
 	 * Method to Establish JDBC Connection to Database
 	 */
@@ -99,7 +100,7 @@ public class DatabaseConnection {
 				databaseConnection.close();
 			}
 		} catch (SQLException e) {
-			//Logging the erro
+			//Logging the error
 			logger.error(e.getMessage());
 		}
 		return true;
