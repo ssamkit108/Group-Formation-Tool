@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>All Courses</title>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" />
+</head>
+<body>
+	<div class="container">
+		<h1>All Courses</h1>
+		<br />
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>Course ID</th>
+					<th>Course Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="all_course: ${all_courses}">
+					<td th:text="${all_course.courseID}"></td>
+					<td th:text="${all_course.courseName}"></td>
+				</tr>
+			</tbody>
+
+		</table>
+
+	</div>
+
+</body>
+</html>
