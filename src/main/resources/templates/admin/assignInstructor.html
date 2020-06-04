@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ 	<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" />
+ 	<link rel="stylesheet" type="text/css" href="/css/general.css">
+</head>
+<body>
+	<h1>Assign Instructor</h1>
+    <table>
+    	<thead>
+        	<tr>
+            	<th> Banner ID: </th>
+            	<th> Assign as Instructor: </th>
+        	</tr>
+    	</thead>
+      <tbody>
+    	<tr th:if="${users.empty}">
+            <td colspan="2"> No Instructor Available </td>
+        </tr>
+        <tr th:each="u : ${users}">
+            
+            <td><span th:text="${u.bannerId}"> ID </span></td>
+            <td>
+            <form action="#" th:action="@{/assignInstructor}" th:object="${assignInstructor}" method=post>
+            <input type="hidden" th:value="${course.courseID}" name="courseID"/><input type="hidden" th:value="${u.bannerId}" name="bannerId"/><button type="submit" name="action">Assign</button>
+            </form>
+            </td>
+        </tr>
+      </tbody>
+	</table>
+        <a href="/courseCreationForm">Add Course</a>
+</body>
+</html>
