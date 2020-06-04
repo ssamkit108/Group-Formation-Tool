@@ -116,7 +116,7 @@ public class CourseController {
 
 			}
 					
-			modelview = new ModelAndView("/guest_courses");
+			modelview = new ModelAndView("guest_courses");
 			if(!allcourses.isEmpty())
 			{
 				modelview.addObject("all_courses",allcourses);
@@ -151,7 +151,7 @@ public class CourseController {
 
 			if(!listofCourses.isEmpty())
 			{
-				modelview = new ModelAndView("/course_list");
+				modelview = new ModelAndView("course_list");
 				modelview.addObject("courses",listofCourses);
 
 				session.setAttribute("enrolled",true);
@@ -159,7 +159,7 @@ public class CourseController {
 			}
 			else
 			{
-				modelview = new ModelAndView("/guest_courses");
+				modelview = new ModelAndView("guest_courses");
 				session.setAttribute("enrolled",false);
 				ArrayList<Course> allcourses = null;
 				try {
