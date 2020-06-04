@@ -25,12 +25,3 @@ test:
   tags:
     - dalfcs_gitlab_docker_ci
     
-deploy:
-  stage: deploy
-  script:
-    - git remote add heroku https://heroku:$HEROKU_API@git.heroku.com/asdc-group12-test.git || true
-    - git push -fq heroku HEAD:master
-  only:
-    - development
-  tags:
-    - dalfcs_gitlab_docker_ci
