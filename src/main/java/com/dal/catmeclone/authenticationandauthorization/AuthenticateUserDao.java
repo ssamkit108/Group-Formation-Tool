@@ -31,9 +31,6 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		User u = null;
 
 		try {
-			//DatabaseConnection db_connect = new DatabaseConnection();
-
-
 			connection = db_connect.connect();
 			stored_pro = connection.prepareCall("{call " + authenticateUser + "}");
 
@@ -55,6 +52,7 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		}
 		finally
 		{
+			db_connect.terminateStatement(stored_pro);
 			db_connect.terminateConnection();
 		}
 		return u;
@@ -68,7 +66,7 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		ArrayList<Course> crclst = new ArrayList<Course>();
 
 		try {
-			//DatabaseConnection db_connect = new DatabaseConnection();
+
 
 			connection = db_connect.connect();
 			stored_pro = connection.prepareCall("{call GetCoursesForUser(?)}");
@@ -93,6 +91,7 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		}
 		finally
 		{
+			db_connect.terminateStatement(stored_pro);
 			db_connect.terminateConnection();
 		}
 		return crclst;
@@ -109,7 +108,7 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		ArrayList<Course> allcrclst = new ArrayList<Course>();
 
 		try {
-			//DatabaseConnection db_connect = new DatabaseConnection();
+
 
 			connection = db_connect.connect();
 			stored_pro = connection.prepareCall("{call GetAllCourses()}");
@@ -129,19 +128,9 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		}
 		finally
 		{
+			db_connect.terminateStatement(stored_pro);
 			db_connect.terminateConnection();
 		}
 		return allcrclst;
-
 	}
-
-
-
-	
 }
-
-
-
-
-
-
