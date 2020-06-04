@@ -1,7 +1,6 @@
 package authenticationtest;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 
-@SpringBootTest
+@SpringBootTest(classes= AuthenticationDaoTest.class)
 public class AuthenticationDaoTest {
 
 	AuthenticationDaoMock dbmock = new AuthenticationDaoMock();
