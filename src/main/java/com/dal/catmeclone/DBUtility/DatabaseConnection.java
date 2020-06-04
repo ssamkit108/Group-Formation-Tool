@@ -9,7 +9,6 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
@@ -74,7 +73,6 @@ public class DatabaseConnection {
 			// Setting up the connection
 			String databaseConnectionURL = databaseurl + database + "?" + connectionProperty;
 			databaseConnection = DriverManager.getConnection(databaseConnectionURL, user, password);
-			System.out.println("heyaaaaaaaaaaaaaaaaaaa connected");
 		
 			
 		} catch (SQLException e) {
