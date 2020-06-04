@@ -1,103 +1,43 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-<<<<<<< HEAD
-	xmlns:th="https://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-=======
-    xmlns:th="https://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-
->>>>>>> origin/development
-
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
-<title>Home</title>
-<link
-<<<<<<< HEAD
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/general.css">
 
-	<link rel="stylesheet" type="text/css" href="/css/general.css">
+<title>Home</title>
 </head>
 <body>
 <div th:replace="header :: header"></div>
-	<div class="mt 8">
-		<div >
-			<div sec:authorize="isAuthenticated()">
-			<div th:inline="text" class="float-left"><b>you have logged with the user:
-					[[${#httpServletRequest.remoteUser}]]</b></div>
-					<br>
-			</div>
-		</div>
-	<div class="middle-box text-center ">
-
-		<br>
-		<div class="d-inline-flex p-2">
-			<h1>Welcome</h1>
-			<p>to Group 12 Tool. A tool for managing all your courses as instructor,TA and Student.</p>
-		</div>
-		<!-- <div sec:authorize="isAuthenticated()">
-			<form th:action="@{/courses}">
-				<button type="submit" class="btn btn-primary">My Courses</button>
-
-			</form>
-		</div>
-		<br />
-		<div sec:authorize="isAuthenticated()">
-			<form th:action="@{/allcourses}">
-				<button type="submit" class="btn btn-primary">View All
-					Courses</button>
-
-			</form>
-		</div> -->
-		<div sec:authorize="!isAuthenticated()">
-			<p>Login to continue your work.</p>
-			<a th:href="@{/login}">Login</a>
-		</div>
-		<br>
-		<!-- <div sec:authorize="isAuthenticated()">
-			<form th:action="@{/logout}" method="post">
-				<button type="submit" class="btn btn-secondary">Log out</button>
-
-			</form>
-		</div> -->
-
-	</div>
-	</div>
-=======
-    href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    rel="stylesheet" />
-
-
-<link rel="stylesheet" type="text/css" href="/css/general.css">
-</head>
-<body>
-    <div th:replace="header :: header"></div>
-    <div class="mt 8">
-        <br /> <br /> <br />
-        <div>
+<div class="bodycontainer">
+        
+        <div style ="float:left">
             <div sec:authorize="isAuthenticated()">
-                <div th:inline="text" class="float-left">
-                    <b>you have logged with the user:
-                        [[${#httpServletRequest.remoteUser}]]</b>
-                </div>
+                <h5  class="usernameheader" style="float:left; color:black">Hello <span sec:authentication="name"></span></h5>
                 <br>
             </div>
         </div>
         <div class="middle-box text-center ">
 
+ 
 
             <br>
             <div class="d-inline-flex p-2">
-                <h1>Welcome</h1>
-                <p>to Group 12 Tool. A tool for managing all your courses as
+                <h1>Welcome to Adv SDC Group 12 Tool. </h1>
+                <p>A tool for managing all your courses as
                     instructor,TA and Student.</p>
             </div>
+
+ 
+
+ 
+
         </div>
     </div>
 
->>>>>>> origin/development
+ 
 
 </body>
 </html>

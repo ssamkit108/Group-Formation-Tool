@@ -1,7 +1,7 @@
 package com.dal.catmeclone.UserProfileTest;
+
 import java.util.*;
 
-import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.model.*;
 
 public class UserDaoMock{

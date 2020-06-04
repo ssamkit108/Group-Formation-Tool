@@ -55,6 +55,7 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		finally
 		{
 			db_connect.terminateStatement(stored_pro);
+			if(connection!=null)
 			db_connect.terminateConnection();
 		}
 		return u;

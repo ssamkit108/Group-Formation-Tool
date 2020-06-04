@@ -20,11 +20,13 @@ public class AuthenticationController {
 	}
 	
 
-	@RequestMapping("/") 
-	public String Home()
+	@RequestMapping("/home") 
+	public String index()
 	{
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication!=null)
+		{
 		String userole=authentication.getAuthorities().toArray()[0].toString();
 		if(userole.equalsIgnoreCase("Admin"))
 		{
@@ -32,7 +34,12 @@ public class AuthenticationController {
 		}
 		else 
 		{
-			return "index";
+			return "redirect:/courses";
+		}
+		}
+		else
+		{
+			return "home";
 		}
 				
 
@@ -42,6 +49,14 @@ public class AuthenticationController {
 	public String showAccessDenied() {
 		
 		return "access-denied";
+		
+	}
+	
+	@RequestMapping("/") 
+	public String Home()
+	{
+	
+			return "index";
 		
 	}
 	

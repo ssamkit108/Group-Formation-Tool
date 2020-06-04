@@ -43,6 +43,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 		}
 		catch(Exception e) {
 			logger.error("Unable to execute query to get all courses");
+			throw new UserDefinedSQLException("Some Error occured in executig query");
 		}
 		finally
 		{
@@ -110,7 +111,6 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 			logger.info("Course:"+course.getCourseID()+"Added successfully in the database");
 		}
 		catch(Exception e) {
-			
 			logger.error("Unable to execute query to insert course");
 			return false;
 		}
@@ -150,6 +150,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 				catch(Exception e) {
 					
 					logger.error("Unable to execute query to check instructor assigned for course");
+					throw new UserDefinedSQLException("Unable to execute query to check instructor assigned for course");
 
 				}
 				finally
@@ -188,7 +189,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 						catch(Exception e) {
 							
 							logger.error("Unable to execute query to check if course exists");
-
+							throw new UserDefinedSQLException("Unable to execute query to check if course exists");
 						}
 						finally
 						{

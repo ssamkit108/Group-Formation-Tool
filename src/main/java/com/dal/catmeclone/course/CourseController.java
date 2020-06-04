@@ -45,45 +45,46 @@ public class CourseController {
 		
 		
 		String responsepage = "";
-		System.out.println(courseid);
+		
 		try {
 			Course course = courseService.getCourse(courseid);
 			if (course != null) {
 				Role r = courseEnrollmentService.getUserRoleForCourse(new User(username), course);
-				System.out.println(r + "," + course);
+				
 				if (r == null) {
 					attributes.addAttribute("InvalidAccessMessage", "Course " + courseid
-							+ "doesn't exist in system or access to course " + courseid + " is not provided");
-					responsepage = "redirect:/";
+							+ "doesn't exist in system or access to course " + courseid + " is not provided for you");
+					responsepage = "redirect:/access-denied";
 				} else if (r.getRoleName().equals("Instructor")) {
-
-					//List<User> listOfTA = courseEnrollmentService.getTAForCourse(new Course(courseid));
-					//System.out.println(listOfTA.toString());
-					//System.out.println("setting session attribute" + course.getCourseID());
+					
+					session.setAttribute("role", "Instructor");
 					session.setAttribute("course", course);
-					//model.addAttribute("course", course);
-					//model.addAttribute("listOfTa", listOfTA);
-
 					responsepage = "CI-course";
+					
 				} else if (r.getRoleName().equals("Student")) {
+					
+					session.setAttribute("role", "Student");
 					session.setAttribute("course", course);
 					responsepage = "coursestudentpage";
+					
 				} else if (r.getRoleName().equals("TA")) {
-					responsepage = "redirect:/";
+					
+					session.setAttribute("role", "TA");
+					session.setAttribute("course", course);
+					responsepage = "CI-course";
 				}
 			}
 
 		} catch (UserDefinedSQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 			attributes.addAttribute("InvalidAccessMessage", "Course " + courseid
 					+ "doesn't exist in system or access to course " + courseid + " is not provided");
-			return "redirect:/";
+			return "redirect:/access-denied";
 		} catch (CourseException e1) {
 			// TODO Auto-generated catch block
-			attributes.addAttribute("Course " + courseid + "doesn't exist in system or access to course " + courseid
+			attributes.addAttribute("InvalidAccessMessage " + courseid + "doesn't exist in system or access to course " + courseid
 					+ " is not provided");
-			responsepage = "redirect:/";
+			responsepage = "redirect:/access-denied";
 		}
 
 		return responsepage;
@@ -107,10 +108,10 @@ public class CourseController {
 				allcourses = authenticateUserDB.getallcourses();
 			} catch (SQLException e) {
 
-				modelview = new ModelAndView("/error");
+				modelview = new ModelAndView("error");
 				model.addAttribute("errormessage","Some Error occured");
 			} catch (UserDefinedSQLException e) {
-				modelview = new ModelAndView("/error");
+				modelview = new ModelAndView("error");
 				model.addAttribute("errormessage","Some Error occured");
 
 			}
@@ -132,7 +133,7 @@ public class CourseController {
 
 
 	@GetMapping("/courses") 
-	public ModelAndView Courses(Model model) 
+	public ModelAndView Courses(Model model, HttpSession session) 
 	{
 
 		//Interface_AuthenticateUserDao validate = new AuthenticateUserDao();
@@ -141,34 +142,49 @@ public class CourseController {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
+		session.removeAttribute("course");
 		List<Course> listofCourses = new ArrayList<Course>();
 		try {
+			
 
-			listofCourses=authenticateUserDB.getallcoursesbyuser(new User(username));
+			listofCourses=courseEnrollmentService.getCourseEnrolledForUser(new User(username));
 
 			if(!listofCourses.isEmpty())
 			{
 				modelview = new ModelAndView("/course_list");
 				modelview.addObject("courses",listofCourses);
 
-				//modelview.addObject("module","courses");
+				session.setAttribute("enrolled",true);
 				modelview.addObject("nocoursemessage","");
-
-
-				//modelview.addObject("module","courses");
-				modelview.addObject("nocoursemessage","");
-
 			}
 			else
 			{
-				modelview = new ModelAndView("/course_list");
-				model.addAttribute("nocoursemessage","No Course Registered for you");
+				modelview = new ModelAndView("/guest_courses");
+				session.setAttribute("enrolled",false);
+				ArrayList<Course> allcourses = null;
+				try {
+					allcourses = authenticateUserDB.getallcourses();
+					if(!allcourses.isEmpty())
+					{
+						modelview.addObject("all_courses",allcourses);
+					}
+					else
+					{
+						modelview.addObject("nocoursemessage","No Courses available in the System");
+					}
+				} catch (SQLException e) {
+					modelview = new ModelAndView("error");
+					model.addAttribute("errormessage", "Some Error occured");
+				} catch (UserDefinedSQLException e) {
+					modelview = new ModelAndView("error");
+					model.addAttribute("errormessage", "Some Error occured");
+				}
 
 			}
 			
 		} catch (UserDefinedSQLException e) {
 			// TODO Auto-generated catch block
-			modelview = new ModelAndView("/error");
+			modelview = new ModelAndView("error");
 			model.addAttribute("errormessage","Some Error occured");
 			
 		}
