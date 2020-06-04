@@ -1,9 +1,12 @@
 package com.dal.catmeclone.authenticationandauthorization;
 
+
+import java.sql.SQLException;
 import java.sql.SQLException;	
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,26 +15,23 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
 
 @Component
 public class UserAuthentication implements AuthenticationManager{
 
-
-	private Interface_AuthenticateUserDao validate = new AuthenticateUserDao();
+	@Autowired
+	private Interface_AuthenticateUserDao validate;
 	private BCryptPasswordEncryption passwordencoder=new BCryptPasswordEncryption();
-	private static final String Admin_bannerId = "ADMIN0000";
+	//private static final String Admin_bannerId = "ADMIN0000";
 	//private static final String Admin_bannerId = "B00100167";
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		// TODO Auto-generated method stub
 		String bannerId = authentication.getPrincipal().toString();
-		System.out.println(bannerId);
 		String password = authentication.getCredentials().toString();
-		System.out.println(password);
 
 
 		User flag= null;
@@ -44,7 +44,7 @@ public class UserAuthentication implements AuthenticationManager{
 			user.setPassword(password);
 
 			try {
-				flag=validate.getbyBannerId(user);
+				flag=validate.authenticateUser(user);
 			} catch (SQLException | UserDefinedSQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -55,14 +55,14 @@ public class UserAuthentication implements AuthenticationManager{
 				//if (user.getPassword().equals(flag.getPassword())) {
 
 
-					if (flag.getBannerId().toUpperCase().equals(Admin_bannerId)){
+					if (flag.getUserRoles().getRoleName().equals("Admin")){
 
 						authorize.add(new SimpleGrantedAuthority("admin"));						
 
 					}
 
 
-					else if (flag.getBannerId().toUpperCase().equals(user.getBannerId())){
+					else if (flag.getUserRoles().getRoleName().equals("Guest")){
 						authorize.add(new SimpleGrantedAuthority("user"));						
 
 					}

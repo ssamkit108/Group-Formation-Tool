@@ -3,6 +3,8 @@
  */
 package com.dal.catmeclone.notification;
 
+import com.dal.catmeclone.model.Course;
+import com.dal.catmeclone.model.User;
 
 /**
  * @author Mayank
@@ -10,6 +12,6 @@ package com.dal.catmeclone.notification;
  */
 public interface NotificationService {
 	
-	public void send(String from,String password,String to,String sub,String msg);
+	public void sendNotificationForPassword(String BannerId,String password,String sendto);
 
 }

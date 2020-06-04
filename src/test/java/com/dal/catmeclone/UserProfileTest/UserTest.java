@@ -76,29 +76,6 @@ public class UserTest
 		Assert.isTrue(u.getEmail().equals("rhawkey@dal.ca"));
 	}
 	
-	@Test
-	public void isBannerIDValidTest()
-	{
-		Assert.isTrue(User.isBannerIDValid("B00854796"));
-		Assert.isTrue(!User.isBannerIDValid(null));
-		Assert.isTrue(!User.isBannerIDValid(""));
-	}
-		
-	@Test
-	public void isFirstNameValidTest()
-	{
-		Assert.isTrue(User.isFirstNameValid("Bob"));
-		Assert.isTrue(!User.isFirstNameValid(null));
-		Assert.isTrue(!User.isFirstNameValid(""));
-	}
-	
-	@Test
-	public void isLastNameValidTest()
-	{
-		Assert.isTrue(User.isLastNameValid("mcallister"));
-		Assert.isTrue(!User.isLastNameValid(null));
-		Assert.isTrue(!User.isLastNameValid(""));
-	}
 	
 	@Test
 	public void isEmailValidTest()
