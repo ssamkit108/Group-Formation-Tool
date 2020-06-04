@@ -32,5 +32,10 @@ public class CourseMock implements CourseManagementDao {
 		return true;
 	}
 
+	@Override
+	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
+		return true;
+	}
+
 }
 

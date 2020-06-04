@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 
-public class AdminDashboardTest {
+public class CourseManagementTest {
 
 	@SuppressWarnings("deprecation")
 	@Test
@@ -43,5 +43,25 @@ public class AdminDashboardTest {
 		c.add(u);
 		assertEquals(mock.getAllCourses(), c);
 	};	
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void checkInstructorForCourseTest() throws UserDefinedSQLException, SQLException{
+		Course u = new Course();
+		CourseMock mock = new CourseMock();
+		u.setCourseID(123);
+		u.setCourseName("sdc");
+		Assert.isTrue(mock.checkInstructorForCourse(new Course(u.getCourseID(), u.getCourseName())));
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void checkCourseExists() throws UserDefinedSQLException, SQLException{
+		Course u = new Course();
+		CourseMock mock = new CourseMock();
+		u.setCourseID(123);
+		u.setCourseName("sdc");
+		Assert.isTrue(mock.checkCourseExists(new Course(u.getCourseID(), u.getCourseName())));
+	}
 	
 }

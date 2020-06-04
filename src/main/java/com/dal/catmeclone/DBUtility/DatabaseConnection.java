@@ -14,40 +14,28 @@ import org.springframework.stereotype.Component;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
-
+@Component
 public class DatabaseConnection {
 
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 
-//	@Value("${spring.datasource.username}")
-//	private String user;
-//
-//	@Value("${spring.datasource.password}")
-//	private String password;
-//
-//	@Value("${spring.datasource.name}")
-//	private String database;
-//
-//	@Value("${spring.datasource.url}")
-//	private String databaseurl;
-//
-//	@Value("${datasource.connection.properties}")
-//	private String connectionProperty;
-//
-//	@Value("${spring.datasource.driver-class-name}")
-//	private String drivername;
-	
-	private String user="CSCI5308_12_DEVINT_USER";
-	
-	private String password="CSCI5308_12_DEVINT_12313";
-	
-	private String database="CSCI5308_12_DEVINT";
-	
-	private String databaseurl="jdbc:mysql://db-5308.cs.dal.ca:3306/";
-	
-	private String connectionProperty="useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-	
-	private String drivername="com.mysql.jdbc.Driver";
+	@Value("${spring.datasource.username}")
+	private String user;
+
+	@Value("${spring.datasource.password}")
+	private String password;
+
+	@Value("${spring.datasource.name}")
+	private String database;
+
+	@Value("${spring.datasource.url}")
+	private String databaseurl;
+
+	@Value("${datasource.connection.properties}")
+	private String connectionProperty;
+
+	@Value("${spring.datasource.driver-class-name}")
+	private String drivername;
 
 	private static Connection databaseConnection;
 

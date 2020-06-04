@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
- 	<title>Getting started: Serving Web Content</title>
  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+ 	<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" />
+ 	<link rel="stylesheet" type="text/css" href="/css/general.css">
+<title>Admin DashBoard</title>
 </head>
 <body>
-	<h1>Admin Dashboard</h1>
+	<div th:replace="admin/adminheader :: header"></div>
+	<div class="bodycontainer">
     <table>
     	<thead>
         	<tr>
@@ -32,5 +37,7 @@
       </tbody>
 	</table>
         <a href="/courseCreationForm">Add Course</a>
+        
+     </div>
 </body>
 </html>
