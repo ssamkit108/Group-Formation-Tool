@@ -1,5 +1,6 @@
 package com.dal.catmeclone.UserProfile;
 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import com.dal.catmeclone.model.*;
 import com.dal.catmeclone.DBUtility.*;
 import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
+
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 import org.slf4j.Logger;
@@ -25,13 +27,14 @@ public class UserDaoImpl implements UserDao {
 	private CallableStatement statement;
 	private Connection connection;
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
-	
 
 	@Value("${procedure.finduserBybannerId}")
 	private String FindUserByBannerId;
 
+
 	@Value("${procedure.createUser}")
 	private String createUserProcedure;
+
 
 	@Value("${procedure.findAllMatchingUser}")
 	private String findAllMatchingUser;
@@ -56,8 +59,10 @@ public class UserDaoImpl implements UserDao {
 			logger.info(
 					"Calling Store procedure to execute query and create user with banner id:" + student.getBannerId());
 			statement.execute();
+			logger.info("User:"+student.getBannerId()+" Inserted in the database successfully.");
 
 		} catch (SQLIntegrityConstraintViolationException e) {
+			
 			logger.error("Duplicate entry for email found. Error Encountered while creating user by bannerid: "
 					+ student.getBannerId());
 			logger.error(e.getLocalizedMessage());
@@ -80,6 +85,7 @@ public class UserDaoImpl implements UserDao {
 		return true;
 
 	}
+	
 	
 
 	@Override
@@ -153,4 +159,7 @@ public class UserDaoImpl implements UserDao {
 
 		return listOfUser;
 	}
+
+	
+
 }

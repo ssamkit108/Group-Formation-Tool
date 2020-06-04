@@ -4,7 +4,6 @@
 package com.dal.catmeclone.notification;
 
 import java.util.Properties;
-
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -20,10 +19,13 @@ import com.dal.catmeclone.DBUtility.PropertiesConfigUtil;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 
+
+
 /**
  * @author Mayank
  *
  */
+
 @Service
 public class NotificationServiceImpl implements NotificationService {
 	
@@ -38,24 +40,14 @@ public class NotificationServiceImpl implements NotificationService {
 	@Autowired
 	PropertiesConfigUtil propertiesUtil;
 
+
 	@Override
 	public void sendNotificationToNewuser(User user, Course course) {
 		// TODO Auto-generated method stub
-		
-		
-		//String subject = "Account Created - Your Acount Credential ";
-		//String loginurl ="http://localhost:8080/login";
+	
 		String subject = propertiesUtil.getProperty("account.subject");
 		String loginurl =propertiesUtil.getProperty("login.url");
-		/*
-		 * String body ="Hi "+user.getFirstName()+","+ "\n\n" +
-		 * "Your Acount has been created sucessfully. You have also been enrolled to subject: "
-		 * +course.getCourseID()+ "\nPlease find below your login credential: "+
-		 * "\n\n\n"+ "\nUsername: "+user.getBannerId()+
-		 * "\nPassword: "+user.getPassword()+
-		 * "\n\nYou are most welcomed to be a part of this organisation."+
-		 * "\n\nBest Regards,\nCSCI5708-Grp12";
-		 */
+		
 		
 		String body ="<h2 >Hi "+user.getFirstName()+",</h2>"+
 		"<p>Your Account has been created successfully and you have also been enrolled to subject: "+course.getCourseID()+"</p>"
@@ -73,6 +65,25 @@ public class NotificationServiceImpl implements NotificationService {
 		send(fromgmail,fromPassword,user.getEmail(),subject,body);  
 
 	}
+
+	public void sendNotificationForPassword(String BannerId,String password,String sendto) {
+		 String body ="Hi"+
+					"\n\n" +
+					"Here is a new password for your account "+
+					"\nPlease find below your login credential: "+
+					"\n\n\n"+
+					"\nUsername: "+BannerId+
+					"\nPassword: "+password+
+					"\n\nYou are most welcomed to be a part of this organisation."+
+					"\n\nBest Regards,\nCSCI5708-Grp12";
+	        body += "\nNote: for security reason, "
+	                + "you must change your password after logging in.";
+
+
+			String subject = "Forgot password";
+			send(fromgmail,fromPassword,sendto,subject,body);
+	}
+
 	
 	private void send(String from,String password,String to,String sub,String msg){  
 	        
@@ -100,9 +111,11 @@ public class NotificationServiceImpl implements NotificationService {
 	         try {
 				message.addRecipient(javax.mail.Message.RecipientType.TO,new InternetAddress(to));
 			  
+
 				message.setSubject(sub);   
 		
 				message.setText(msg,"UTF-8", "html");    
+
 				//send message  
 				Transport.send(message);  
 	         } catch (MessagingException e) {
@@ -110,6 +123,7 @@ public class NotificationServiceImpl implements NotificationService {
 					logger.error("Error in sending email");
 			 }  
 	}
+
 	        
 
 }
