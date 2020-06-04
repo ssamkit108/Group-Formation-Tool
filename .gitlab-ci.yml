@@ -24,4 +24,3 @@ test:
     - mvn test
   tags:
     - dalfcs_gitlab_docker_ci
-    
