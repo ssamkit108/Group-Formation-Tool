@@ -1,27 +1,67 @@
-<!DOCTYPE html>  
+<!-- Referred from : https://getbootstrap.com/docs/4.1/components/forms/
+ -->
+<!DOCTYPE html> 
 <html xmlns:th="http://www.thymeleaf.org">  
 <head>  
 	<title>Signup page</title>
+	<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" />
 </head>  
 <body>
-	<h1>SignUp Form</h1>
-	<br/>
-	<div th:if="${message}">
-	    <h3 th:text="${message}"></h3>
-	    <br/>
+<div class="middle-box text-center loginscreen animated fadeInDown">
+	<div class="container">
+		<h1>SignUp Form</h1>
+		<br/>
+		
+		
+		<div th:if="${message}" class="validation-message alert alert-danger" role="alert">
+		    <h3 th:text="${message}"></h3>
+		    <br/>
+		</div>
+		
+		
+		<form autocomplete="off" class="m-t col-md-4 col-md-offset-4" th:action="@{/signup}" method="post">
+			
+			<div class="form-group row">
+			<h4>Banner ID:</h4>
+			<input type="text" name="username" placeholder="Banner ID" maxlength="9" class="form-control" required />
+			</div>
+		
+
+			<div class="form-group row">
+			<h4>Password:</h4>
+			<input type="password" name="password" placeholder="Enter Password"  class="form-control"  minlength="8"  required/>
+			</div>
+			
+			<div class="form-group row">
+			<h4>Password (Confirmation):</h4>
+			 <input type="password" name="passwordConfirmation" placeholder="Re-enter your password" class="form-control"  minlength="8" required/>
+			</div>
+			
+			<div class="form-group row">
+			<h4>First Name:</h4>
+			 <input type="text" name="firstName" placeholder="Enter your FirstName" class="form-control"  required/>
+			</div>
+			
+			<div class="form-group row">
+			<h4>Last Name :</h4>
+			<input type="text" name="lastName" placeholder="Enter your LastName" class="form-control"  required/>
+			</div>
+			
+			<div class="form-group row">
+			<h4>Email:</h4>
+			<input type="email" name="email" placeholder="Enter your email address" class="form-control" required/>
+			</div>
+			
+			<div class="form-group row">
+			<p><input type="submit" class="btn btn-primary" value="Sign Up" required/>
+			<input type="reset" class="btn btn-secondary" value="Reset" /></p>
+			</div> 
+			<a th:href="@{/login}" >Click here to log in!</a>
+		</form>
+		<br/>
 	</div>
-	<form th:action="@{/signup}" method="post">
-	
-	    <p>BannerID : <input type="text" name="username"/> </p>
-	    <p>Password: <input type="password" name="password"/> </p>
-	    <p>Password (Confirmation): <input type="password" name="passwordConfirmation"/> </p>
-	    <p>First Name : <input type="text" name="firstName"/> </p>
-	    <p>Last Name : <input type="text" name="lastName"/> </p>
-	    <p>Email : <input type="text" name="email"/> </p>
-	    <p><input type="submit" value="Create Account"/></p>
-	    <input type="reset" value="Reset" />
-	</form>
-	<br/>
-	<a th:href="@{/login}">Click here to log in!</a>
+</div>
 </body>  
 </html>

@@ -16,16 +16,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dal.catmeclone.DBUtility.DatabaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
-import com.dal.catmeclone.model.User;
-import com.dal.catmeclone.notification.*;
+
 
 
 @Controller
 public class ForgotPasswordController {
 	
-	private final String USERNAME = "username";
 	@Autowired
 	ForgotPasswordService forgotpasswordservice;
+	
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 
 	@GetMapping("/forgotpassword")
@@ -36,7 +35,7 @@ public class ForgotPasswordController {
 
 	@RequestMapping(value = "/forgotpassword", method = RequestMethod.POST) 
 	public ModelAndView processForgotpassword(
-	@RequestParam(name = USERNAME) String bannerID) throws SQLException, UserDefinedSQLException
+	@RequestParam(name = "username") String bannerID) throws SQLException, UserDefinedSQLException
 	{
 	try {
 	if(forgotpasswordservice.forgotpassword(bannerID)) {
