@@ -31,3 +31,6 @@ deploy:
     - git remote add heroku https://heroku:$HEROKU_API@git.heroku.com/asdc-group12-dev.git || true
     - git push -fq heroku HEAD:master
   only:
+    - development
+  tags:
+    - dalfcs_gitlab_docker_ci
