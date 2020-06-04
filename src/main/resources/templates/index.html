@@ -9,48 +9,34 @@
 <link
 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	rel="stylesheet" />
+
+<link rel="stylesheet" type="text/css" href="/css/general.css">
 </head>
 <body>
-		<div >
+	<div th:replace="header :: header"></div>
+	<div class="mt 8">
+		<br /> <br /> <br />
+		<div>
 			<div sec:authorize="isAuthenticated()">
-			<div th:inline="text" class="float-left"><b>you have logged with the user:
-					[[${#httpServletRequest.remoteUser}]]</b></div>
-					<br>
+				<div th:inline="text" class="float-left">
+					<b>you have logged with the user:
+						[[${#httpServletRequest.remoteUser}]]</b>
+				</div>
+				<br>
 			</div>
 		</div>
-	<div class="middle-box text-center ">
+		<div class="middle-box text-center ">
 
-		<br>
-		<div class="d-inline-flex p-2">
-			<h1>Welcome</h1>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ornare ac dui sit amet semper. Integer id velit faucibus, aliquet turpis et, mollis ipsum. Suspendisse nec vulputate quam, quis pulvinar lacus. Integer sit amet posuere nibh, at placerat nulla. Fusce maximus eleifend efficitur. Cras iaculis porttitor urna vel finibus. Praesent eu orci purus. Aliquam tempus massa sit amet felis efficitur, nec mollis tortor scelerisque. Nulla facilisi. Nullam elementum viverra ipsum ut ullamcorper. Nulla facilisi. Suspendisse tincidunt semper ullamcorper. Suspendisse tempor sed nisl id vulputate.</p>
-		</div>
-		<div sec:authorize="isAuthenticated()">
-			<form th:action="@{/courses}">
-				<button type="submit" class="btn btn-primary">My Courses</button>
+			<br>
+			<div class="d-inline-flex p-2">
+				<h1>Welcome</h1>
+				<p>to Group 12 Tool. A tool for managing all your courses as
+					instructor,TA and Student.</p>
+			</div>
 
-			</form>
-		</div>
-		<br />
-		<div sec:authorize="isAuthenticated()">
-			<form th:action="@{/allcourses}">
-				<button type="submit" class="btn btn-primary">View All
-					Courses</button>
 
-			</form>
-		</div>
-		<div sec:authorize="!isAuthenticated()">
-			<p>Login to continue your work.</p>
-			<a th:href="@{/login}">Login</a>
-		</div>
-		<br>
-		<div sec:authorize="isAuthenticated()">
-			<form th:action="@{/logout}" method="post">
-				<button type="submit" class="btn btn-secondary">Log out</button>
 
-			</form>
 		</div>
-
 	</div>
 
 </body>

@@ -7,9 +7,11 @@
 <link
 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="/css/general.css">
 </head>
 <body>
-	<div class="container">
+<div th:replace="header :: header"></div>
+	<div class="bodycontainer">
 		<h1>All Courses</h1>
 		<br />
 		<table class="table table-bordered table-hover">
@@ -27,6 +29,10 @@
 			</tbody>
 
 		</table>
+		
+		<div th:if="nocoursemessage ne null">
+			<div class="table-responsive"><p th:text=${nocoursemessage}></p></div>
+		</div>
 
 	</div>
 
