@@ -3,18 +3,26 @@
  */
 package com.dal.catmeclone.DBUtility;
 
-import java.sql.Connection;
+import java.sql.CallableStatement;
+import java.sql.Connection;			
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+
+import org.springframework.context.annotation.Configuration;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
-@Component
+/**
+ * @author Mayank
+ *
+ */
+
+@Configuration
 public class DatabaseConnection {
 
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
@@ -39,7 +47,7 @@ public class DatabaseConnection {
 
 	private static Connection databaseConnection;
 
-	
+
 	/**
 	 * Method to Establish JDBC Connection to Database
 	 */
@@ -57,6 +65,7 @@ public class DatabaseConnection {
 			// Setting up the connection
 			String databaseConnectionURL = databaseurl + database + "?" + connectionProperty;
 			databaseConnection = DriverManager.getConnection(databaseConnectionURL, user, password);
+		
 			
 		} catch (SQLException e) {
 			//Throwing user defined exception for incorrect driver
@@ -86,5 +95,19 @@ public class DatabaseConnection {
 		return true;
 
 	}
+	
+	public void terminateStatement(CallableStatement statement) throws UserDefinedSQLException
+    {
+          if (statement != null)
+          {
+              try {
+                statement.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                logger.error("Error Occured in Closing Statement");
+                throw new UserDefinedSQLException("Some Error Occured");
+            }
+          }
+    }
 
 }

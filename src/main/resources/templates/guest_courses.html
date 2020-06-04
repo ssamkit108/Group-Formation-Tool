@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>All Courses</title>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="/css/general.css">
+</head>
+<body>
+<div th:replace="header :: header"></div>
+	<div class="bodycontainer">
+		<h1>All Courses</h1>
+		<br />
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>Course ID</th>
+					<th>Course Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="all_course: ${all_courses}">
+					<td th:text="${all_course.courseID}"></td>
+					<td th:text="${all_course.courseName}"></td>
+				</tr>
+			</tbody>
+
+		</table>
+		
+		<div th:if="nocoursemessage ne null">
+			<div class="table-responsive"><p th:text=${nocoursemessage}></p></div>
+		</div>
+
+	</div>
+
+</body>
+</html>
