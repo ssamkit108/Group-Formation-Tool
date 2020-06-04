@@ -1,26 +1,23 @@
 package com.dal.catmeclone.model;
 
-import java.util.Set;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class User {
-	
+
 	private String bannerId;
 
 	private String firstName;
-	
-	private String lastName;
-	
-	private String password;
-	
-	private String email;
-	
-	private Set<Role> userRoles;
-	
-	private static final String email_regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
+	private String lastName;
+
+	private String password;
+
+	private String email;
+
+	private Role userRoles;
+
+	private static final String email_regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
 	/**
 	 * 
@@ -29,7 +26,6 @@ public class User {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
 
 	/**
 	 * @param bannerId
@@ -39,8 +35,7 @@ public class User {
 	 * @param email
 	 * @param userRoles
 	 */
-	public User(String bannerId, String firstName, String lastName, String password, String email,
-			Set<Role> userRoles) {
+	public User(String bannerId, String firstName, String lastName, String password, String email, Role userRoles) {
 		super();
 		this.bannerId = bannerId;
 		this.firstName = firstName;
@@ -50,6 +45,27 @@ public class User {
 		this.userRoles = userRoles;
 	}
 
+	public User(String bannerId, String firstName, String lastName, String password, String email) {
+		super();
+		this.bannerId = bannerId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.email = email;
+	}
+
+	public User(String bannerId, String firstName, String lastName, String email) {
+		super();
+		this.bannerId = bannerId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
+
+	public User(String bannerId) {
+		super();
+		this.bannerId = bannerId;
+	}
 
 	/**
 	 * @return the bannerId
@@ -120,23 +136,20 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
+
 	/**
 	 * @return the userRoles
 	 */
-	public Set<Role> getUserRoles() {
+	public Role getUserRoles() {
 		return userRoles;
 	}
-
 
 	/**
 	 * @param userRoles the userRoles to set
 	 */
-	public void setUserRoles(Set<Role> userRoles) {
+	public void setUserRoles(Role userRoles) {
 		this.userRoles = userRoles;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -149,7 +162,6 @@ public class User {
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -173,39 +185,35 @@ public class User {
 		return true;
 	}
 
-
-	public static boolean isBannerIDValid(String bannerID)
-	{
-		if(null == bannerID) {
+	public static boolean isBannerIDValid(String bannerID) {
+		if (null == bannerID) {
 			return false;
 		}
 		return !bannerID.isEmpty();
 	}
-		
-	public static boolean isFirstNameValid(String name)
-	{
-		if(null == name) {
+
+	public static boolean isFirstNameValid(String name) {
+		if (null == name) {
 			return false;
 		}
 		return !name.isEmpty();
 	}
-	
-	public static boolean isLastNameValid(String name)
-	{
-		if(null == name) {
+
+	public static boolean isLastNameValid(String name) {
+		if (null == name) {
 			return false;
 		}
-		return !name.isEmpty();	}
-	
-	public static boolean isEmailValid(String email)
-	{
-		if(null == email || email.isEmpty()) {
+		return !name.isEmpty();
+	}
+
+	public static boolean isEmailValid(String email) {
+		if (null == email || email.isEmpty()) {
 			return false;
 		}
-		 
+
 		Pattern pattern = Pattern.compile(email_regex);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
-		
+
 	}
 }
