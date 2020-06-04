@@ -1,20 +1,19 @@
-package com.dal.catmeclone.courses;
+package com.dal.catmeclone.model;
 
-
+/**
+ * Course Model respresenting the Course Entity
+ **/
 public class Course {
 
 	private int courseID;
 	private String courseName;
-	
-	
+
 	/**
 	 * 
 	 */
 	public Course() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
 
 	/**
 	 * @param courseID
@@ -25,9 +24,6 @@ public class Course {
 		this.courseID = courseID;
 		this.courseName = courseName;
 	}
-	
-	
-
 
 	/**
 	 * @param courseID
@@ -37,14 +33,12 @@ public class Course {
 		this.courseID = courseID;
 	}
 
-
 	/**
 	 * @return the courseID
 	 */
 	public int getCourseID() {
 		return courseID;
 	}
-
 
 	/**
 	 * @param courseID the courseID to set
@@ -53,7 +47,6 @@ public class Course {
 		this.courseID = courseID;
 	}
 
-
 	/**
 	 * @return the courseName
 	 */
@@ -61,12 +54,28 @@ public class Course {
 		return courseName;
 	}
 
-
 	/**
 	 * @param courseName the courseName to set
 	 */
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+	
+	/*
+	 * To check if Courseid is valid
+	 */
+	public boolean isCourseIDValid()
+	{
+		return (this.courseID!=0);
+	}
+		
+	
+	public boolean  isCourseNameValid()
+	{
+		if(courseName!=null && !courseName.isEmpty())
+			return true;
+		else
+			return false;
 	}
 
 
@@ -78,7 +87,6 @@ public class Course {
 		result = prime * result + ((courseName == null) ? 0 : courseName.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -98,8 +106,5 @@ public class Course {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
+
 }

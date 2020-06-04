@@ -3,7 +3,7 @@
  */
 package com.dal.catmeclone.notification;
 
-import com.dal.catmeclone.courses.Course;
+import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 
 /**

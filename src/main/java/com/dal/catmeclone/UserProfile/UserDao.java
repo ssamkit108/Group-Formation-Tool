@@ -1,23 +1,16 @@
-/**
- * 
- */
-package com.dal.catmeclone.useraccess;
-
+package com.dal.catmeclone.UserProfile;
+import java.sql.SQLException;
 import java.util.List;
 
+import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
-import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.model.*;
 
-/**
- * @author Mayank
- *
- */
 public interface UserDao {
 	
+	
 	public User findUserByBannerID(String bannerId) throws UserDefinedSQLException;
-	public boolean createUser(User student) throws UserDefinedSQLException;
+	public boolean createUser(User student) throws UserDefinedSQLException, DuplicateUserRelatedException;
 	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException;
-	
-	
-	
+
 }

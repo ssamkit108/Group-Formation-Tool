@@ -13,9 +13,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.dal.catmeclone.courses.Course;
+import com.dal.catmeclone.DBUtility.PropertiesConfigUtil;
+import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 
 /**
@@ -32,21 +34,42 @@ public class NotificationServiceImpl implements NotificationService {
 	
 	@Value("${from.password}")
 	private String fromPassword;
+	
+	@Autowired
+	PropertiesConfigUtil propertiesUtil;
 
 	@Override
 	public void sendNotificationToNewuser(User user, Course course) {
 		// TODO Auto-generated method stub
-
-		String subject = "Account Created - Your Acount Credential ";
-		String body ="Hi "+user.getFirstName()+","+
-				"\n\n" +
-				"Your Acount has been created sucessfully. You have also been enrolled to subject: "+course.getCourseID()+
-				"\nPlease find below your login credential: "+
-				"\n\n\n"+
-				"\nUsername: "+user.getBannerId()+
-				"\nPassword: "+user.getPassword()+
-				"\n\nYou are most welcomed to be a part of this organisation."+
-				"\n\nBest Regards,\nCSCI5708-Grp12";
+		
+		
+		//String subject = "Account Created - Your Acount Credential ";
+		//String loginurl ="http://localhost:8080/login";
+		String subject = propertiesUtil.getProperty("account.subject");
+		String loginurl =propertiesUtil.getProperty("login.url");
+		/*
+		 * String body ="Hi "+user.getFirstName()+","+ "\n\n" +
+		 * "Your Acount has been created sucessfully. You have also been enrolled to subject: "
+		 * +course.getCourseID()+ "\nPlease find below your login credential: "+
+		 * "\n\n\n"+ "\nUsername: "+user.getBannerId()+
+		 * "\nPassword: "+user.getPassword()+
+		 * "\n\nYou are most welcomed to be a part of this organisation."+
+		 * "\n\nBest Regards,\nCSCI5708-Grp12";
+		 */
+		
+		String body ="<h2 >Hi "+user.getFirstName()+",</h2>"+
+		"<p>Your Account has been created successfully and you have also been enrolled to subject: "+course.getCourseID()+"</p>"
+		+ "<p>Please find below your login credential:&nbsp;</p>"
+		+ "<p ><strong>Username: "+user.getBannerId()+"</strong></p>"
+		+ "<p ><strong>Password: "+user.getPassword()+"</strong></p>"
+		+ "<p style='text-align: center;'><strong> Please click on the button to log in</strong></p>"
+		+ "<p style='text-align: center;'><a href="+loginurl+" target='_blank'><button style='background-color: #a0e9ed;'>Log In</button></a></p>"
+		+ "<p style='text-align: left;'>&nbsp;</p>"
+		+ "<p style='text-align: left;'>You are most welcomed to be a part of this organisation.</p>"
+		+ "<p >Best Regards,</p>"
+		+ "<p>CSCI5708-Grp12</p>"
+		+ "<p>&nbsp;</p>";
+		
 		send(fromgmail,fromPassword,user.getEmail(),subject,body);  
 
 	}
@@ -77,8 +100,9 @@ public class NotificationServiceImpl implements NotificationService {
 	         try {
 				message.addRecipient(javax.mail.Message.RecipientType.TO,new InternetAddress(to));
 			  
-				message.setSubject(sub);    
-				message.setText(msg);    
+				message.setSubject(sub);   
+		
+				message.setText(msg,"UTF-8", "html");    
 				//send message  
 				Transport.send(message);  
 	         } catch (MessagingException e) {

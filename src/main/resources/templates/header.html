@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
   <head>
 	<link rel="stylesheet"
 		 href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -7,7 +8,7 @@
 		 href="/css/header.css">
   </head>
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+    <div class="navbar navbar-fixed-top headercontainer" th:fragment="header">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
@@ -15,30 +16,40 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/home">My project</a>
+          <a class="navbar-brand" href="/home">Home</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li th:classappend="${module == 'courses' ? 'active' : ''}">
-              <a href="#" th:href="@{/home}">My Courses</a>
+            <li >
+              <a class="headerlink" href="#" th:href="@{/courses}">My Courses</a>
             </li>
-            <li th:classappend="${module == 'listallcourses' ? 'active' : ''}">
-              <a href="#" th:href="@{/listallcourses}">List of Course</a>
+            <!-- <li th:classappend="${module == 'listallcourses' ? 'active' : ''}"> -->
+            <li>
+              <a class="headerlink" href="#" th:href="@{/allcourses}">List of All Course</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li >
-              <a href="/login" th:href="@{/login}">
-                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign in
+          	
+            <li sec:authorize="!isAuthenticated()">
+            
+              <a class="headerlink" href="/login" th:href="@{/login}">
+                <span  aria-hidden="true"></span>&nbsp;Sign in
               </a>
+             
             </li>
-            <!-- th:if="${#authorization.expression('isAuthenticated()')}" -->
-            <li >
-              <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">
-                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
+            
+           
+            <li sec:authorize="isAuthenticated()">
+            	<form th:action="@{/logout}" method="post">
+				<button type="submit" class="btn btn-secondary">Log out</button>
+
+				</form>
+              <!-- <a href="/logout" th:href="@{/logout}" onclick="$('#form').submit();">
+                <span aria-hidden="true"></span>&nbsp;Logout
               </a>
-             <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+             <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form> -->
             </li>
+            </th:if>
           </ul>
         </div>
       </div>

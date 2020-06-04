@@ -1,7 +1,5 @@
 package com.dal.catmeclone;
 
-
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -14,10 +12,11 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages="com.dal.catmeclone")
 public class Group12CatMeCloneApplication {
 	
-	//private Logger logger = Logger.getLogger(getClass().getName());
+	//private static final Logger LOGGER = LoggerFactory.getLogger(Group12CatMeCloneApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(Group12CatMeCloneApplication.class, args);
+		
 	}
 	
 	

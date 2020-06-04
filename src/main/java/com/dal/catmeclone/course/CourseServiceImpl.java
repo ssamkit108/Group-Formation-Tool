@@ -1,41 +1,29 @@
-package com.dal.catmeclone.courses;
+package com.dal.catmeclone.course;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.dal.catmeclone.exceptionhandler.CourseException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
 
+/*
+ * 
+ */
 @Service
 public class CourseServiceImpl implements CourseService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CourseServiceImpl.class);
 	
 	@Autowired
 	CoursesDao courseDB;
 	
-
-	@Override
-	public List<Course> getCourseEnrolledForUser(User user) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
-		List<Course> listofCourses = new ArrayList<Course>();
-		listofCourses= courseDB.getAllEnrolledCourse(user);
-		
-		return listofCourses;
-		
-	}
-
-	@Override
-	public Role getUserRoleForCourse(User user, Course course) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
-		Role role=null;
-		role = courseDB.getUserRoleForCourse(user, course);
-		
-		return role;
-	}
 
 	@Override
 	public Course getCourse(int courseId) throws UserDefinedSQLException,CourseException {

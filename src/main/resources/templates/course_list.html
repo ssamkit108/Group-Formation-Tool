@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" 
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="favicon.ico" />
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="/css/general.css">
+<title>Course List</title>
+
+<body>
+	<div th:replace="header :: header"></div>
+	<div class="bodycontainer">
+		<h1>My Courses</h1> 
+		<hr>
+		<h5 style="float:right">Hello <span sec:authentication="name"></span></h5>
+		<div style="margin-top:10px" th:if="${courses ne null and !courses.empty}">
+			<div class="table-responsive">Courses as Student</div>
+			<table class="table table-bordered table-striped table-hover mt-8">
+				<thead class="thead-dark">
+					<tr>
+						<th>Course ID</th>
+						<th>Course Name</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="course: ${courses}">
+						<td th:text="${course.courseID}"></td>
+						<td th:text="${course.courseName}"></td>
+						<td><a th:href="@{'/mycourse/' + ${course.courseID}}" title= '${course.courseName}'>
+							<button type="submit" class="btn btn-primary">Go To Course</button></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:if="nocoursemessage ne null">
+			<div class="table-responsive"><p th:text=${nocoursemessage}></p></div>
+		</div>
+		
+	</div>
+</body>
+</html>
