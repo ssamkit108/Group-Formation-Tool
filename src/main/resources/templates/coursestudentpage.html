@@ -1,43 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
-<title>Course Student</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/general.css">
+<script type="text/javascript" src="/js/courseci-message.js"></script>
+<title>Course-Student</title>
 </head>
-<style>
-div.content {
-   height: 200px;
-    width: 400px;
-
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -200px; }
-div.content p {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    font-size: 40px;
-    transform: translate(-50%, -50%) }
-</style>
 <body>
+<div th:replace="header :: header"></div>
+<div class="bodycontainer">
 
-	<div class="content">
+	<h1 style="margin-top:-10px;" ><span th:utext="${session.course.courseID}"></span> - <span th:utext="${session.course.courseName}"></span></h1> 
+		<hr>
+		<h5  class="usernameheader" style="float:left; color:black">Hello <span sec:authentication="name"></span> (<span th:utext="${session.role}"></span>)</h5>
 	
-	<p> Welcome to the, </p>
-	<!--
-	 <p th:text="${param.courseID}" > </p>
-	 <p th:text="${param.courseName"> </p>
-	 -->
-	 
-
-	 <p th:utext="${session.course.courseID}" > </p>
-	 <p th:utext="${session.course.courseName}"> </p>
-
-	</div>
+		
+		<div class="coursedisplay" >
+		
+			<h2 th:utext="${session.course.courseID} "></h2>
+		
+			<h2 th:utext="${session.course.courseName}"></h2>
+		
+		</div>
 	
+</div>
 </body>
 </html>

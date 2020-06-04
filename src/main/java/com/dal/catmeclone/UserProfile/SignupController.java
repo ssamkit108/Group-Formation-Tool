@@ -82,9 +82,9 @@ public class SignupController
 		
 		}
 		catch(Exception e) {
-			logger.error(e.getMessage());
-			ModelAndView m=new ModelAndView("error");
-			return m;
+            logger.error(e.getLocalizedMessage());
+            ModelAndView m=new ModelAndView("error");
+            return m;
 		}
 	}
 }

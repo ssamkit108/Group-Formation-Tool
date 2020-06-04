@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -24,14 +25,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers("/signup","/forgotpassword","/").permitAll()
 			.and()
 			.authorizeRequests()
-			.antMatchers("/admin").hasRole("admin")
+			.antMatchers("/admin**","/admin/**","/courseCreationForm").hasRole("admin")
 			.antMatchers("/user").hasRole("user")
 			.anyRequest().authenticated()
 			.and()
 			.formLogin()
 			.loginPage("/login").permitAll()
+			.successForwardUrl("/home")//redirecting to controller to decide the landing page
 			.and()
-			.logout().permitAll()
+			.logout()
+			.logoutUrl("/logout").permitAll()
 			.and()
 			.exceptionHandling().accessDeniedPage("/access-denied");
 		
@@ -43,6 +46,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected AuthenticationManager authenticationManager() throws Exception {
 		return authenticationManager;
 	}
+	
+	@Override
+	   public void configure(WebSecurity web) throws Exception
+		{
+	   	web.ignoring().antMatchers("/resources/**");
+	   }
 	
 
 }
