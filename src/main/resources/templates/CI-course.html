@@ -1,26 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/general.css">
 <script type="text/javascript" src="/js/courseci-message.js"></script>
-<title>CI_Course</title>
+<title>Course</title>
 </head>
 <body>
-	<ul class="headerul">
-		<div>
-			<li class="headerli"><h2 th:utext="${session.course.courseID} "></h2></li>
-		</div>
-		<div>
-			<li class="headerli"><h2>-</h2></li>
-		</div>
-		<div>
-			<li class="headerli"><h2 th:utext="${session.course.courseName}"></h2></li>
-		</div>
-		<li style="float: right"><a href="/logout"><b>Logout</b></a></li>
-	</ul>
+<div th:replace="header :: header"></div>
+<div class="bodycontainer">
+
+	<h1 style="margin-top:-10px;" ><span th:utext="${session.course.courseID}"></span> - <span th:utext="${session.course.courseName}"></span></h1> 
+		<hr>
+		<h5  class="usernameheader" style="float:left; color:black">Hello <span sec:authentication="name"></span> (<span th:utext="${session.role}"></span>)</h5>
 	<div class="boxes">
 		<div class="cidiv column1">
 			<section>
@@ -29,13 +24,11 @@
 					<form method="post" th:action="@{/uploadstudent}"
 						enctype="multipart/form-data" th:object="${course}">
 						<div class="form-group">
-							<input type="file" name="file" class="form-control-file">
+							<input type="file" name="file" accept=".csv" class="form-control-file">
 						</div>
-						<!-- <div class="form-group">
-							<input type="hidden" th:field="*{courseID}"
-								value="{course.courseID}"></input> <input type="hidden"
-								th:field="*{courseName}" value="{session.course.courseName}"></input>
-						</div> -->
+						<div>
+							<span>Upload .csv file with header as BannerId, Lastname, FirstName, Email</span>
+						</div>
 						<button type="submit" class="btn btn-primary">Upload File</button>
 					</form>
 					<p th:text="${message}" th:if="${message ne null}"
@@ -111,5 +104,6 @@
 			</section>
 		</div>
 	</div>
+</div>
 </body>
 </html>

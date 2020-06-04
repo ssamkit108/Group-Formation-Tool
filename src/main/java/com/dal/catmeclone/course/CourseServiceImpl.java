@@ -1,8 +1,7 @@
 package com.dal.catmeclone.course;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Service;
 import com.dal.catmeclone.exceptionhandler.CourseException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
-import com.dal.catmeclone.model.Role;
-import com.dal.catmeclone.model.User;
 
 /*
  * 
@@ -27,10 +24,21 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public Course getCourse(int courseId) throws UserDefinedSQLException,CourseException {
-		// TODO Auto-generated method stub
+		// Calling DAO Method to get the course
 		Course course=null;
+		LOGGER.info("Calling Dao to get the course");
 		course = courseDB.getCourse(courseId);		
 		return course;
+	}
+
+
+	@Override
+	public ArrayList<Course> getallcourses() throws SQLException, UserDefinedSQLException {
+		// Calling DAO Method to fetch the list
+		ArrayList<Course> courseList = new ArrayList<Course>();
+		LOGGER.info("Calling Dao to get the list of course");
+		courseList = courseDB.getallcourses();
+		return courseList;
 	}
 
 	

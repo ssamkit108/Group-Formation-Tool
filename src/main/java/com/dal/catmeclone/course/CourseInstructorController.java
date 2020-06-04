@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dal.catmeclone.exceptionhandler.FileRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
@@ -30,13 +31,19 @@ public class CourseInstructorController {
 			 Model themodel, HttpSession session) {
 
 		Course course = (Course) session.getAttribute("course");
-		System.out.println(file.getContentType());
+		
 		if (file.isEmpty()) {
 			attributes.addFlashAttribute("message", "Please select a file to upload.");
 			return "redirect:/mycourse/" + course.getCourseID();
 		}
 
-		courseenrollmentservice.enrollStudentForCourse(file, course);
+		try {
+			courseenrollmentservice.enrollStudentForCourse(file, course);
+		} catch (FileRelatedException e) {
+			// TODO Auto-generated catch block
+			attributes.addFlashAttribute("message", e.getMessage());
+			return "redirect:/mycourse/" + course.getCourseID();
+		}
 		List<String> sucessmessages = courseenrollmentservice.getRecordsSuccessMessage();
 		List<String> erromessages = courseenrollmentservice.getRecordsFailureMessage();
 		
@@ -56,7 +63,7 @@ public class CourseInstructorController {
 					"Encountered error in the files. Please reverify the records and upload again");
 			attributes.addFlashAttribute("errormessages", erromessages);
 		}
-		System.out.println(course.getCourseID());
+		
 
 		return "redirect:/mycourse/" + course.getCourseID();
 	}
@@ -78,8 +85,6 @@ public class CourseInstructorController {
 		return "redirect:/mycourse/" + course.getCourseID();
 	}
 	
-	
-	
 	@GetMapping(value = "/findTA")
 	public String enrollStudents(@RequestParam(name = "searchTA") String bannerId, Model themodel, HttpSession session) {
 		Course cs = (Course) session.getAttribute("course");
@@ -95,9 +100,14 @@ public class CourseInstructorController {
 			}
 		} catch (UserDefinedSQLException e) {
 
-			e.printStackTrace();
+			themodel.addAttribute("errormessage","Some Error occured.Please try again later");
+			return "error";
 		}
 		return "CI-course";
 	}
+	
+	
+	
+	
 
 }

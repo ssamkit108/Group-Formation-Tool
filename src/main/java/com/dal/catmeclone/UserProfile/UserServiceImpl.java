@@ -27,22 +27,23 @@ public class UserServiceImpl implements UserService {
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 
 	@Override
-	public boolean Create(User u) {
+	public boolean Create(User u) throws Exception {
 		try {
-
+			//validating user details
 			if (User.isBannerIDValid(u.getBannerId()) &&
 					 User.isEmailValid(u.getEmail()) &&
 					 User.isFirstNameValid(u.getFirstName()) &&
 					 User.isLastNameValid(u.getLastName()) &&
 					 !u.getPassword().isEmpty())
 			{
+				LOGGER.info("Accessing DAO layer to create user to given banner id");
 				flag=userDb.createUser(u);
 			}
 			return flag;
 		} catch (Exception e) {
 			flag=false;
-			logger.error(e.getMessage());
-			return flag;
+			logger.error(e.getLocalizedMessage());
+			throw new Exception(e.getLocalizedMessage());
 		}
 
 	}

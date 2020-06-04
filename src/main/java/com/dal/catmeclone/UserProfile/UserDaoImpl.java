@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -76,6 +75,7 @@ public class UserDaoImpl implements UserDao {
 		} finally {
 
 			// Terminating the connection
+			DBUtil.terminateStatement(statement);
 			if (connection != null) {
 				DBUtil.terminateConnection();
 			}
@@ -117,6 +117,7 @@ public class UserDaoImpl implements UserDao {
 			throw new UserDefinedSQLException(e.getLocalizedMessage());
 		} finally {
 			// Terminating the connection
+			DBUtil.terminateStatement(statement);
 			if (connection != null) {
 				DBUtil.terminateConnection();
 			}
@@ -152,6 +153,7 @@ public class UserDaoImpl implements UserDao {
 
 		} finally {
 			// Terminating the connection
+			DBUtil.terminateStatement(statement);
 			if (connection != null) {
 				DBUtil.terminateConnection();
 			}

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.dal.catmeclone.DBUtility.PropertiesConfigUtil;
+
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 
@@ -37,23 +37,27 @@ public class NotificationServiceImpl implements NotificationService {
 	@Value("${from.password}")
 	private String fromPassword;
 	
-	@Autowired
-	PropertiesConfigUtil propertiesUtil;
+	
+	@Value("${account.subject}")
+	private String subject;
+	
+	@Value("${login.url}")
+	private String loginurl;
+	
 
 
 	@Override
-	public void sendNotificationToNewuser(User user, Course course) {
+	public void sendNotificationToNewuser(User user,String password, Course course) {
 		// TODO Auto-generated method stub
 	
-		String subject = propertiesUtil.getProperty("account.subject");
-		String loginurl =propertiesUtil.getProperty("login.url");
+		
 		
 		
 		String body ="<h2 >Hi "+user.getFirstName()+",</h2>"+
 		"<p>Your Account has been created successfully and you have also been enrolled to subject: "+course.getCourseID()+"</p>"
 		+ "<p>Please find below your login credential:&nbsp;</p>"
 		+ "<p ><strong>Username: "+user.getBannerId()+"</strong></p>"
-		+ "<p ><strong>Password: "+user.getPassword()+"</strong></p>"
+		+ "<p ><strong>Password: "+password+"</strong></p>"
 		+ "<p style='text-align: center;'><strong> Please click on the button to log in</strong></p>"
 		+ "<p style='text-align: center;'><a href="+loginurl+" target='_blank'><button style='background-color: #a0e9ed;'>Log In</button></a></p>"
 		+ "<p style='text-align: left;'>&nbsp;</p>"
@@ -67,18 +71,20 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	public void sendNotificationForPassword(String BannerId,String password,String sendto) {
-		 String body ="Hi"+
-					"\n\n" +
-					"Here is a new password for your account "+
-					"\nPlease find below your login credential: "+
-					"\n\n\n"+
-					"\nUsername: "+BannerId+
-					"\nPassword: "+password+
-					"\n\nYou are most welcomed to be a part of this organisation."+
-					"\n\nBest Regards,\nCSCI5708-Grp12";
-	        body += "\nNote: for security reason, "
-	                + "you must change your password after logging in.";
-
+		
+	        String body ="<h2 >Hi "+BannerId+",</h2>"+
+                    "<p>New Password for your account is geenrated successfully </p>"
+                    + "<p>Please find below your login credential:&nbsp;</p>"
+                    + "<p ><strong>Username: "+BannerId+"</strong></p>"
+                    + "<p ><strong>Password: "+password+"</strong></p>"
+                    + "<p style='text-align: center;'><strong> Please click on the button to log in</strong></p>"
+                    + "<p style='text-align: center;'><a href="+loginurl+" target='_blank'><button style='background-color: #a0e9ed;'>Log In</button></a></p>"
+                    + "<p style='text-align: left;'>&nbsp;</p>"
+                    + "<p Note: for security reason, </p>"
+                    + "<p> you must change your password after logging in.</p>"
+                    + "<p >Best Regards,</p>"
+                    + "<p>CSCI5708-Grp12</p>"
+                    + "<p>&nbsp;</p>";
 
 			String subject = "Forgot password";
 			send(fromgmail,fromPassword,sendto,subject,body);

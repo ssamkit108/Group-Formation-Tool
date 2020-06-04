@@ -5,8 +5,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,12 +16,11 @@ import com.dal.catmeclone.DBUtility.DatabaseConnection;
 import com.dal.catmeclone.exceptionhandler.CourseException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
-import com.dal.catmeclone.model.Role;
-import com.dal.catmeclone.model.User;
 
 @Component
 public class CourseDaoImpl implements CoursesDao {
 	
+	final Logger logger = LoggerFactory.getLogger(CourseDaoImpl.class);
 	
 	@Autowired
 	private DatabaseConnection DBUtil;
@@ -41,7 +41,7 @@ public class CourseDaoImpl implements CoursesDao {
 		CallableStatement statement = null;
 		try {
 			connection = DBUtil.connect();
-			
+			logger.info("querying database to get the course");
 			statement = connection.prepareCall("{call "+getCourse+"}");
 		
 			statement.setInt(1, courseId);
@@ -53,7 +53,8 @@ public class CourseDaoImpl implements CoursesDao {
 			
 						
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
+			logger.error("Exception occured:" +e.getLocalizedMessage());
 			throw new CourseException("Error Occured: Course doesn't exist with given Id");
 			
 		} finally {
@@ -63,6 +64,40 @@ public class CourseDaoImpl implements CoursesDao {
 			}
 		}
 		return course;
+	}
+	
+	@Override
+	public ArrayList<Course> getallcourses() throws SQLException, UserDefinedSQLException {
+		ArrayList<Course> allcrclst = new ArrayList<Course>();
+		CallableStatement stored_pro = null;
+		try {
+
+			connection = DBUtil.connect();
+			logger.info("querying database to get all the course");
+			stored_pro = connection.prepareCall("{call GetAllCourses()}");
+
+			ResultSet result = stored_pro.executeQuery();
+			Course c = null;
+			while(result.next()) {
+				c = new Course();
+				c.setCourseID(result.getInt("courseid"));
+				c.setCourseName(result.getString("coursename"));
+				allcrclst.add(c);
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.error("Exception occured:" +e.getLocalizedMessage());
+			return null;
+		}
+		finally
+		{
+			DBUtil.terminateStatement(stored_pro);
+			if(connection!=null) {
+			DBUtil.terminateConnection();
+			}
+		}
+		return allcrclst;
 	}
 
 }

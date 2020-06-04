@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/general.css">
+<script type="text/javascript" src="/js/courseci-message.js"></script>
+<title>Course</title>
 </head>
 <body>
-
+	<h1 style="margin-top:-10px;" >Error occured</h1>
+	<h4 th:utext="${errormessage}"></h4> 
+		<hr>
 </body>
 </html>

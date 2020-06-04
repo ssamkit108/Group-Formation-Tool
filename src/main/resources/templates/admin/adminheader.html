@@ -10,13 +10,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
   <body>
     <div class="navbar navbar-fixed-top headercontainer" th:fragment="header">
       
-        <div class="navbar-collapse collapse">
+        <div class=" navbar-collapse collapse" style="margin:0px 16px 4px 24px">
           <ul class="nav navbar-nav">
             <li >
-              <a class="headerlink" href="#" th:href="@{/adminDashboard}">DashBoard</a>
+              <h3><a class="headerlink" href="#" th:href="@{/adminDashboard}">DashBoard</a></h3>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-right " style ="margin: 6px 6px 6px 6px">
           	
             <li sec:authorize="!isAuthenticated()">
             
@@ -26,21 +26,17 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
              
             </li>
             
-           
             <li sec:authorize="isAuthenticated()">
             	<form th:action="@{/logout}" method="post">
-				<button type="submit" class="btn btn-secondary">Log out</button>
+				<button  type="submit" class="btn btn-secondary logoutbutton"><h5>Log out</h5></button>
 
 				</form>
-              <a href="/logout" th:href="@{/logout}" onclick="$('#form').submit();">
-                <span aria-hidden="true"></span>&nbsp;Logout
-              </a>
-             <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+              
             </li>
             </th:if>
           </ul>
         </div>
       </div>
-    </div>
+   
   </body>
 </html>

@@ -54,7 +54,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 		CallableStatement statement = null;
 		try {
 			connection = DBUtil.connect();
-
+			logger.info("Enrolling User for the course");
 			statement = connection.prepareCall("{call " + enrollmentincourse + "}");
 
 			statement.setString(1, student.getBannerId());
@@ -62,7 +62,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 			statement.setString(3, role.getRoleName());
 
 			statement.execute();
-
+			logger.info("user enrolled");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			return false;
@@ -84,7 +84,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 		CallableStatement statement = null;
 		try {
 			connection = DBUtil.connect();
-
+			logger.info("checking if user is enrolled in course in database");
 			statement = connection.prepareCall("{call " + searchUserInUserCourseForRole + "}");
 
 			statement.setString(1, bannerId);
@@ -119,7 +119,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 		CallableStatement statement = null;
 		try {
 			connection = DBUtil.connect();
-			
+			logger.info("Fetching all enrolled course out of database for the user");
 			statement = connection.prepareCall("{call "+getCoursesForUser+"}");
 		
 			statement.setString(1, user.getBannerId());
@@ -150,6 +150,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 		try {
 			connection = DBUtil.connect();
 			
+			logger.info("calling database to get the role for the user");
 			statement = connection.prepareCall("{call "+getUserRoleforCourse+"}");
 		
 			statement.setString(1, user.getBannerId());
@@ -163,7 +164,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 						
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.out.println("provide logger here");
+			e.printStackTrace();
 			return role;
 		}finally {
 			DBUtil.terminateStatement(statement);
