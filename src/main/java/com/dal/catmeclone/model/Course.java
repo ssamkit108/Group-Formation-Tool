@@ -107,4 +107,13 @@ public class Course {
 		return true;
 	}
 
+	
+	public static boolean isCourseNameValid(String courseName) {
+		if(courseName == null) {
+			return false;
+		}
+		return !courseName.isEmpty();
+	}
+
+
 }

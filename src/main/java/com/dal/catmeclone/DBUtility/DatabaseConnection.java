@@ -10,17 +10,22 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+
+
 import org.springframework.context.annotation.Configuration;
+
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 /**
  * @author Mayank
  *
  */
+
 @Configuration
 public class DatabaseConnection{
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnection.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 
 	@Value("${spring.datasource.username}")
 	private String user;
@@ -41,6 +46,7 @@ public class DatabaseConnection{
 	private String drivername;
 
 	private Connection databaseConnection;
+
 
 	/**
 	 * Method to Establish JDBC Connection to Database
@@ -65,7 +71,7 @@ public class DatabaseConnection{
 			throw new UserDefinedSQLException(e.getLocalizedMessage());
 		}
 
-		LOGGER.info("Database connected Successfully");
+		logger.info("Database connected Successfully");
 		return databaseConnection;
 	}
 
@@ -75,32 +81,37 @@ public class DatabaseConnection{
 	public boolean terminateConnection() {
 
 		try {
-			LOGGER.info("Closing Established Connection");
+			logger.info("Closing Established Connection");
 			// Check is database connection is already closed or not
 			if (databaseConnection.isClosed() == false) {
 				databaseConnection.close();
 			}
 		} catch (SQLException e) {
-			// Logging the erro
-			LOGGER.error(e.getMessage());
+
+			//Logging the error
+			logger.error(e.getMessage());
+
 		}
-		LOGGER.info("Connection Closed Successfully");
+		logger.info("Connection Closed Successfully");
 		return true;
 
 	}
 	
 	public void terminateStatement(CallableStatement statement) throws UserDefinedSQLException
-	{
-		  if (statement != null)
+
+
+    {
+          if (statement != null)
           {
               try {
-				statement.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				LOGGER.error("Error Occured in Closing Statement");
-				throw new UserDefinedSQLException("Some Error Occured");
-			}
+                statement.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                logger.error("Error Occured in Closing Statement");
+                throw new UserDefinedSQLException("Some Error Occured");
+            }
           }
-	}
+    }
+
 
 }

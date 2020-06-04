@@ -43,6 +43,7 @@ public class Role {
 		this.roleName = roleName;
 	}
 
+
 	/**
 	 * @return the roleId
 	 */

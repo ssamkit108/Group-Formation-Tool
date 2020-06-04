@@ -1,25 +1,26 @@
 package com.dal.catmeclone.UserProfile;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.dal.catmeclone.DBUtility.DatabaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+
 import com.dal.catmeclone.model.User;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
+
 	@Autowired
 	UserDao userDb;
+
 
 	Boolean flag=false;
 	
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean Create(User u) {
 		try {
+
 			if (User.isBannerIDValid(u.getBannerId()) &&
 					 User.isEmailValid(u.getEmail()) &&
 					 User.isFirstNameValid(u.getFirstName()) &&
@@ -42,6 +44,7 @@ public class UserServiceImpl implements UserService {
 			logger.error(e.getMessage());
 			return flag;
 		}
+
 	}
 	
 
@@ -55,3 +58,5 @@ public class UserServiceImpl implements UserService {
 		return listOfUser;
 	}
 }
+
+
