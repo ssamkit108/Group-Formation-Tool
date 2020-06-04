@@ -133,10 +133,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 	
 	@Override
 	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
-		// TODO Auto-generated method stub
 		boolean flag = true;
-		//Course id
-		System.out.println(course.getCourseID());
 		// Connect to database
 				con = db.connect();
 				statement = con.prepareCall("{CALL checkInstructorAssignedForCourse(?)}");
@@ -174,8 +171,6 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
-		
-		// TODO Auto-generated method stub
 				boolean flag = true;
 				// Connect to database
 						con = db.connect();
