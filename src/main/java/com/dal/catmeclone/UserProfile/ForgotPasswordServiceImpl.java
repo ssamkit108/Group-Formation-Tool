@@ -22,6 +22,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	@Autowired
 	ForgotPasswordDao forgotpasswordDb;
 	
+
 	public boolean forgotpassword(String username) {	
 		boolean success;
 		success= ValidateUser(username);
@@ -31,14 +32,21 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	@Override
 	public boolean ValidateUser(String username) {
 		try {
-		if(forgotpasswordDb.checkexist(username)) {
-			String password=GeneratePassword();
-			forgotpasswordDb.UpdatePassword(username, password);
-			logger.info("User:"+username+" is validated in forgot password service.");
-			return true;
+		if(username.length()<10)
+		{
+			if(forgotpasswordDb.checkexist(username)) {
+				String password=GeneratePassword();
+				forgotpasswordDb.UpdatePassword(username, password);
+				logger.info("User:"+username+" is validated in forgot password service.");
+				return true;
+			}
+			else {
+				logger.error("User:"+username+" is not validated in forgot password service.");
+				return false;
+			}
 		}
 		else {
-			logger.error("User:"+username+" is not validated in forgot password service.");
+			logger.error("User:"+username+" length should be less than 9.");
 			return false;
 		}
 		}

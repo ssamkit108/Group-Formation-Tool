@@ -51,8 +51,10 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 
 			throw new UserDefinedSQLException("Some error occured");
 		}
+		
 		finally
 		{
+			db_connect.terminateStatement(stored_pro);
 			db_connect.terminateConnection();
 		}
 		return u;
@@ -90,6 +92,8 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		}
 		finally
 		{
+
+			db_connect.terminateStatement(stored_pro);
 			db_connect.terminateConnection();
 		}
 		return crclst;
@@ -125,19 +129,13 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		}
 		finally
 		{
+			db_connect.terminateStatement(stored_pro);
+
 			db_connect.terminateConnection();
 		}
 		return allcrclst;
-
 	}
 
 
-
-
 }
-
-
-
-
-
 
