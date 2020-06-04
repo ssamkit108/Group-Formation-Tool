@@ -50,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 		
 		
 
+
 		public boolean checkexist(String bannerid) {
 			try {
 				connection = DBUtil.connect();
@@ -98,23 +99,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 			statement.setString(1,BannerId);
 			statement.setString(2, passwordencoder.encryptPassword(password));
 			statement.execute();
-	        String body ="Hi"+
-					"\n\n" +
-					"Here is a new password for your account "+
-					"\nPlease find below your login credential: "+
-					"\n\n\n"+
-					"\nUsername: "+BannerId+
-					"\nPassword: "+password+
-					"\n\nYou are most welcomed to be a part of this organisation."+
-					"\n\nBest Regards,\nCSCI5708-Grp12";
-	        body += "\nNote: for security reason, "
-	                + "you must change your password after logging in.";
-
-
-			String subject = "Forgot password";
-			
-
-			notificationService.send(fromgmail,fromPassword,sendto,subject,body);
+	       
+			notificationService.sendNotificationForPassword(BannerId,password,sendto);
 			logger.info("The forgot password mail sent successfully");
 			
 			}

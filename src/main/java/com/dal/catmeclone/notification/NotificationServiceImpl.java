@@ -14,8 +14,13 @@ import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.dal.catmeclone.DBUtility.DatabaseConnection;
+import com.dal.catmeclone.model.Course;
+import com.dal.catmeclone.model.User;
 
 
 /**
@@ -33,9 +38,30 @@ public class NotificationServiceImpl implements NotificationService {
 	
 	@Value("${from.password}")
 	private String fromPassword;
+	
+	@Autowired
+	PropertiesConfigUtil propertiesUtil;
+	
+	public void sendNotificationForPassword(String BannerId,String password,String sendto) {
+		 String body ="Hi"+
+					"\n\n" +
+					"Here is a new password for your account "+
+					"\nPlease find below your login credential: "+
+					"\n\n\n"+
+					"\nUsername: "+BannerId+
+					"\nPassword: "+password+
+					"\n\nYou are most welcomed to be a part of this organisation."+
+					"\n\nBest Regards,\nCSCI5708-Grp12";
+	        body += "\nNote: for security reason, "
+	                + "you must change your password after logging in.";
+
+
+			String subject = "Forgot password";
+			send(fromgmail,fromPassword,sendto,subject,body);
+	}
 
 	
-	public void send(String from,String password,String to,String sub,String msg){  
+	private void send(String from,String password,String to,String sub,String msg){  
 	        
 			//Get properties object    		
 	        Properties props = new Properties();    
@@ -70,6 +96,8 @@ public class NotificationServiceImpl implements NotificationService {
 					logger.error("Error in sending email");
 			 }  
 	}
+
+	
 	        
 
 }

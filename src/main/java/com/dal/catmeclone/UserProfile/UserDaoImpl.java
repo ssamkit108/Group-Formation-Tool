@@ -25,8 +25,10 @@ public class UserDaoImpl implements UserDao {
 	@Value("${procedure.createUser}")
 	private String createUserProcedure;
 
+
 	public boolean createUser(User user) throws SQLException, UserDefinedSQLException
-	{	
+	{		
+
 		connection=DBUtil.connect();
 		statement=connection.prepareCall("{call "+createUserProcedure+"}");
 		try

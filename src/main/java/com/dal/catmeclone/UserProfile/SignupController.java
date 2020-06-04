@@ -1,6 +1,6 @@
 package com.dal.catmeclone.UserProfile;
 
-import java.sql.SQLException;
+import java.sql.SQLException;	
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,19 +18,14 @@ import com.dal.catmeclone.model.User;
 
 @Controller
 public class SignupController
-{
-	private final String USERNAME = "username";
-	private final String PASSWORD = "password";
-	private final String confirm_password = "passwordConfirmation";
-	private final String FIRST_NAME = "firstName";
-	private final String LAST_NAME = "lastName";
-	private final String EMAIL = "email";
-	
+{	
 	@Autowired
 	private BCryptPasswordEncryption passwordencoder;
 	
 	@Autowired
 	UserService userservice;
+
+	
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 
 	@GetMapping("/signup")
@@ -42,15 +37,18 @@ public class SignupController
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST) 
    public ModelAndView processSignup(
-   	@RequestParam(name = USERNAME) String bannerID,
-   	@RequestParam(name = PASSWORD) String password,
-   	@RequestParam(name = confirm_password) String passwordConfirm,
-   	@RequestParam(name = FIRST_NAME) String firstName,
-   	@RequestParam(name = LAST_NAME) String lastName,
-   	@RequestParam(name = EMAIL) String email) throws SQLException, UserDefinedSQLException
+   	@RequestParam(name="username") String bannerID,
+   	@RequestParam(name ="password") String password,
+   	@RequestParam(name = "passwordConfirmation") String passwordConfirm,
+   	@RequestParam(name = "firstName") String firstName,
+   	@RequestParam(name = "lastName") String lastName,
+   	@RequestParam(name = "email") String email) throws SQLException, UserDefinedSQLException
 	{
 		boolean success = false;
+
 		try {
+			ModelAndView m;
+
 		if (password.equals(passwordConfirm))
 		{
 			User u = new User();
@@ -60,22 +58,28 @@ public class SignupController
 			u.setLastName(lastName);
 			u.setEmail(email);
 			success=userservice.Create(u);
-		}
+			if (success)
+			{
+				m = new ModelAndView("login");
+				m.addObject("message", "Succesfully created Account.");
+				return m;
 
-		ModelAndView m;
-		
-		if (success)
-		{
-			m = new ModelAndView("login");
-			m.addObject("message", "Succesfully created Account.");
+			}
+			else
+			{
+				m = new ModelAndView("signup");
+				m.addObject("message", "Sorry,some error generated in creating account.");
+				return m;
 
+			}
 		}
-		else
-		{
+		else {
 			m = new ModelAndView("signup");
-			m.addObject("message", "Data already exist in the system");
+			m.addObject("message", "Password and confirm password should be same.");
+			return m;
+
 		}
-		return m;
+		
 		}
 		catch(Exception e) {
 			logger.error(e.getMessage());

@@ -15,6 +15,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserDao userDb;
 
+
+
 	Boolean flag=false;
 	
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
@@ -22,10 +24,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean Create(User u) {
 		try {
-			if (User.isBannerIDValid(u.getBannerId()) &&
-					 User.isEmailValid(u.getEmail()) &&
-					 User.isFirstNameValid(u.getFirstName()) &&
-					 User.isLastNameValid(u.getLastName()) &&
+			if (User.isEmailValid(u.getEmail()) &&
 					 !u.getPassword().isEmpty())
 			{
 				flag=userDb.createUser(u);
