@@ -4,14 +4,13 @@
 package com.dal.catmeclone.DBUtility;
 
 import java.sql.CallableStatement;
-import java.sql.Connection;			
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+
 
 import org.springframework.context.annotation.Configuration;
 
@@ -23,9 +22,10 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
  */
 
 @Configuration
-public class DatabaseConnection {
+public class DatabaseConnection{
 
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 
 	@Value("${spring.datasource.username}")
 	private String user;
@@ -45,7 +45,7 @@ public class DatabaseConnection {
 	@Value("${spring.datasource.driver-class-name}")
 	private String drivername;
 
-	private static Connection databaseConnection;
+	private Connection databaseConnection;
 
 
 	/**
@@ -56,7 +56,7 @@ public class DatabaseConnection {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			//Throwing user defined exception for incorrect driver
+			// Throwing user defined exception for incorrect driver
 			throw new UserDefinedSQLException(
 					"SQL Connection Error : JDBC Driver not supported. Please verify Driver Details");
 		}
@@ -65,38 +65,41 @@ public class DatabaseConnection {
 			// Setting up the connection
 			String databaseConnectionURL = databaseurl + database + "?" + connectionProperty;
 			databaseConnection = DriverManager.getConnection(databaseConnectionURL, user, password);
-		
-			
+
 		} catch (SQLException e) {
-			//Throwing user defined exception for incorrect driver
-			throw new UserDefinedSQLException(
-					"SQL Connection Error: Please verify the Credentials : \n" + e.getMessage());
+			// Throwing user defined exception for incorrect driver
+			throw new UserDefinedSQLException(e.getLocalizedMessage());
 		}
 
+		logger.info("Database connected Successfully");
 		return databaseConnection;
 	}
 
-	
-	
 	/**
 	 * Method to Terminate JDBC Connection of Database
 	 */
 	public boolean terminateConnection() {
 
 		try {
-			//Check is database connection is already closed or not
+			logger.info("Closing Established Connection");
+			// Check is database connection is already closed or not
 			if (databaseConnection.isClosed() == false) {
 				databaseConnection.close();
 			}
 		} catch (SQLException e) {
+
 			//Logging the error
 			logger.error(e.getMessage());
+
 		}
+		logger.info("Connection Closed Successfully");
 		return true;
 
 	}
 	
 	public void terminateStatement(CallableStatement statement) throws UserDefinedSQLException
+
+
     {
           if (statement != null)
           {
@@ -109,5 +112,6 @@ public class DatabaseConnection {
             }
           }
     }
+
 
 }
