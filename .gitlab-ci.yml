@@ -32,5 +32,6 @@ deploy:
     - git push -fq heroku HEAD:master
   only:
     - development
+    - master
   tags:
     - dalfcs_gitlab_docker_ci
