@@ -1,0 +1,61 @@
+package com.dal.catmeclone.authenticationandauthorization;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;	
+import org.springframework.context.annotation.Configuration;
+
+import org.springframework.security.authentication.AuthenticationManager;
+
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
+	
+	@Autowired
+	UserAuthentication authenticationManager;
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		
+		
+		 http.authorizeRequests()
+		.antMatchers("/signup","/forgotpassword","/").permitAll().and().authorizeRequests();
+
+		http.authorizeRequests()
+		.antMatchers("/adminDashboard","/admin/**","/courseCreationForm").hasAnyAuthority("admin")
+		.antMatchers("/courses","/mycourse").hasAnyAuthority("user")
+				.anyRequest().authenticated();
+		
+		
+		http.authorizeRequests().and()
+			.formLogin()
+			.loginPage("/login").permitAll()
+			.successForwardUrl("/home")//redirecting to controller to decide the landing page
+			.and()
+			.logout()
+			.logoutUrl("/logout").permitAll()
+			.and()
+			.exceptionHandling().accessDeniedPage("/access-denied");
+		
+	
+			
+	}
+
+	@Override
+	protected AuthenticationManager authenticationManager() throws Exception {
+		return authenticationManager;
+	}
+	
+	@Override
+	   public void configure(WebSecurity web) throws Exception
+		{
+	   	web.ignoring().antMatchers("/resources/**");
+	   }
+	
+
+}
