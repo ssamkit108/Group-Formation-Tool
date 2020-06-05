@@ -21,14 +21,18 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		
+		 http.authorizeRequests()
+		.antMatchers("/signup","/forgotpassword","/").permitAll().and().authorizeRequests();
+
 		http.authorizeRequests()
-			.antMatchers("/signup","/forgotpassword","/").permitAll()
-			.and()
-			.authorizeRequests()
-			.antMatchers("**/admin**","**/admin/**","**/courseCreationForm").hasRole("admin")
-			.antMatchers("**/user").hasRole("user")
-			.anyRequest().authenticated()
-			.and()
+		.antMatchers("/adminDashboard","/admin/**","/courseCreationForm").hasAnyAuthority("admin")
+		.antMatchers("/courses","/mycourse").hasAnyAuthority("user")
+				.anyRequest().authenticated();
+		
+		
+		http.authorizeRequests().and()
 			.formLogin()
 			.loginPage("/login").permitAll()
 			.successForwardUrl("/home")//redirecting to controller to decide the landing page
@@ -38,7 +42,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 			.exceptionHandling().accessDeniedPage("/access-denied");
 		
-
+	
 			
 	}
 
