@@ -28,7 +28,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
             <td><span th:text="${c.courseID}"> ID </span></td>
             <td><span th:text="${c.courseName}"> Name </span></td>
             <td>
-            <form action="#" th:action="@{/adminDashboard}" th:object="${adminDashboard}" method=post>
+            <form action="#" th:action="@{/admin/adminDashboard}" th:object="${adminDashboard}" method=post>
             <input type="hidden" th:value="${c.courseID}" name="courseID"/><button type="submit" name="action" value="remove">Remove</button>
             <input type="hidden" th:value="${c.courseID}" name="courseID"/><button type="submit" name="action" value="assign">Assign Instructor</button>
             </form>
@@ -36,8 +36,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
         </tr>
       </tbody>
 	</table>
-        <a href="/courseCreationForm">Add Course</a>
+        <a href="/admin/courseCreationForm">Add Course</a>
         
      </div>
+     <div style="font-size: large; font-family: sans-serif">
+ 	<p style="color: #ff0000; background-color: #ffffff" th:if="${instructorassigned}" th:text="${instructorassigned}">No error</p>
+ 	</div>
 </body>
 </html>
