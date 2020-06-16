@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.UserProfile.UserService;
 import com.dal.catmeclone.exceptionhandler.FileRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
@@ -20,16 +22,15 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class CourseInstructorController {
 
-	@Autowired
+
 	CourseEnrollmentService courseenrollmentservice;
 	
-	@Autowired
-	com.dal.catmeclone.UserProfile.UserService userservice;
+	UserService userservice;
 
 	@PostMapping(value = "/uploadstudent", consumes = { "multipart/form-data" })
 	public String enrollStudents(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			 Model themodel, HttpSession session) {
-
+		courseenrollmentservice = SystemConfig.instance().getCourseEnrollmentService();
 		Course course = (Course) session.getAttribute("course");
 		
 		if (file.isEmpty()) {
@@ -71,7 +72,7 @@ public class CourseInstructorController {
 	@PostMapping(value = "/enrollTA")
 	public String enrollTA(@RequestParam String bannerid, RedirectAttributes attributes, Model themodel,
 			HttpSession session) {
-
+		courseenrollmentservice = SystemConfig.instance().getCourseEnrollmentService();
 		Course course = (Course) session.getAttribute("course");
 
 		if (courseenrollmentservice.enrollTAForCourse(new User(bannerid), course)) {
@@ -87,8 +88,8 @@ public class CourseInstructorController {
 	
 	@GetMapping(value = "/findTA")
 	public String enrollStudents(@RequestParam(name = "searchTA") String bannerId, Model themodel, HttpSession session) {
+		userservice =SystemConfig.instance().getUserService();
 		Course cs = (Course) session.getAttribute("course");
-		System.out.println(cs.getCourseID());
 		List<User> listOfUser = new ArrayList<User>();
 		try {
 			listOfUser = userservice.findAllMatchingUser(bannerId);

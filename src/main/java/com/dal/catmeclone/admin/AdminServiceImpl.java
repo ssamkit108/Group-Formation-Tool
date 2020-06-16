@@ -7,24 +7,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
 
-@Service
+
 public class AdminServiceImpl implements AdminService{
 
-	@Autowired
-	CourseInstructorAssignmentDao courseInstructor;
+	private CourseInstructorAssignmentDao courseInstructor;
 	
-	@Autowired
-	CourseManagementDao courseManagement;
+	private CourseManagementDao courseManagement;
 	
 	@Override
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role)
 			throws SQLException, UserDefinedSQLException {
 		boolean res = false;
+		courseInstructor =SystemConfig.instance().getCourseInstructorAssignmentDao();
 		res = courseInstructor.enrollInstructorForCourse(Instructor, course, role);
 		
 		return res;
@@ -33,6 +33,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<User> getAllUsers() throws SQLException, UserDefinedSQLException {
 		List<User> listOfUsers = new ArrayList<User>();
+		courseInstructor =SystemConfig.instance().getCourseInstructorAssignmentDao();
 		listOfUsers = courseInstructor.getAllUsers();
 		
 		return listOfUsers;
@@ -41,6 +42,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException {
 		List<Course> listOfCourses = new ArrayList<Course>();
+		courseManagement = SystemConfig.instance().getCourseManagementDao();
 		listOfCourses = courseManagement.getAllCourses();
 		
 		return listOfCourses;
@@ -49,6 +51,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
 		boolean res = false;
+		courseManagement = SystemConfig.instance().getCourseManagementDao();
 		res = courseManagement.deleteCourse(courseID);
 		return res;
 	}
@@ -56,6 +59,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public boolean insertCourse(Course course) throws UserDefinedSQLException, SQLException {
 		boolean res = false;
+		courseManagement = SystemConfig.instance().getCourseManagementDao();
 		res = courseManagement.insertCourse(course);
 		return res;
 	}
@@ -63,6 +67,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
 		boolean res = false;
+		courseManagement = SystemConfig.instance().getCourseManagementDao();
 		res = courseManagement.checkInstructorForCourse(course);
 		return res;
 	}
@@ -70,6 +75,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
 		boolean res = false;
+		courseManagement = SystemConfig.instance().getCourseManagementDao();
 		res = courseManagement.checkCourseExists(course);
 		return res;
 	}

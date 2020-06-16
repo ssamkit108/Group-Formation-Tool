@@ -7,13 +7,15 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-
-
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 /**
@@ -21,36 +23,35 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
  *
  */
 
-@Configuration
-public class DatabaseConnection{
+public class DatabaseConnectionImpl implements DataBaseConnection{
 
 
-	private static final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	private static final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
-	@Value("${spring.datasource.username}")
 	private String user;
-
-	@Value("${spring.datasource.password}")
 	private String password;
-
-	@Value("${spring.datasource.name}")
 	private String database;
-
-	@Value("${spring.datasource.url}")
 	private String databaseurl;
-
-	@Value("${datasource.connection.properties}")
 	private String connectionProperty;
-
-	@Value("${spring.datasource.driver-class-name}")
 	private String drivername;
 
 	private Connection databaseConnection;
-
+	
+	
+	public DatabaseConnectionImpl() {
+	
+		user = System.getenv("spring.datasource.username");
+		password = System.getenv("spring.datasource.password");
+		database = System.getenv("spring.datasource.name");
+		databaseurl = System.getenv("spring.datasource.url");
+		connectionProperty = System.getenv("datasource.connection.properties");
+		//drivername = propertiesUtil.getProperty("spring.datasource.driver-class-name");
+	}
 
 	/**
 	 * Method to Establish JDBC Connection to Database
 	 */
+	@Override
 	public Connection connect() throws UserDefinedSQLException {
 
 		try {
@@ -78,6 +79,7 @@ public class DatabaseConnection{
 	/**
 	 * Method to Terminate JDBC Connection of Database
 	 */
+	@Override
 	public boolean terminateConnection() {
 
 		try {
@@ -97,6 +99,7 @@ public class DatabaseConnection{
 
 	}
 	
+	@Override
 	public void terminateStatement(CallableStatement statement) throws UserDefinedSQLException
 
 
