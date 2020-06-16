@@ -11,17 +11,19 @@ import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DataBaseConnection;
+import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 
-@Component
+
 public class CourseManagementDaoImpl implements CourseManagementDao{
 
-	@Autowired
-	DatabaseConnection db;
+
+	DataBaseConnection db;
 	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 	
 	private CallableStatement statement;
 	private Connection con;
@@ -32,6 +34,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 	@Override
 	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException{
 		c = new ArrayList<Course>();
+		db = SystemConfig.instance().getDatabaseConnection();
 		con = db.connect();
 		try {
 		statement = con.prepareCall("{CALL GetAllCourses()}");
@@ -66,6 +69,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
 		// TODO Auto-generated method stub
 		// Connect to database
+		db = SystemConfig.instance().getDatabaseConnection();
 				con = db.connect();
 				statement = con.prepareCall("{CALL DeleteCourse(?)}");
 				
@@ -101,6 +105,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 		// TODO Auto-generated method stub
 		
 		// Connect to database
+		db = SystemConfig.instance().getDatabaseConnection();
 		con = db.connect();
 		statement = con.prepareCall("{CALL Createcourse(?,?)}");
 		
@@ -135,6 +140,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
 		boolean flag = true;
 		// Connect to database
+		db = SystemConfig.instance().getDatabaseConnection();
 				con = db.connect();
 				statement = con.prepareCall("{CALL checkInstructorAssignedForCourse(?)}");
 				
@@ -174,6 +180,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
 				boolean flag = true;
 				// Connect to database
+				db = SystemConfig.instance().getDatabaseConnection();
 						con = db.connect();
 						statement = con.prepareCall("{CALL CheckCourseAlreadyExists(?)}");
 						

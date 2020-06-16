@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/general.css">
+<script type="text/javascript" src="/js/courseci-message.js"></script>
+<title>QuestionManager</title>
+<style>
+h1 {
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+	<div th:replace="header :: header"></div>
+	<br>
+	<div class="container">
+	<div class="row">
+	<h1>Question Manager Page</h1>
+	</div>
+	<hr>
+	<div class="row justify-content-center">
+	<div class="col-3">
+	
+	<a class="btn btn-primary">View Question Titles</a>
+	
+	</div>
+	
+	<div class="col-3">
+	
+	<a class="btn btn-primary" th:href="@{/questionmanager/question}">Create Question</a>
+	
+	</div>
+	</div>
+	</div>
+	
+
+	
+</body>
+</html>

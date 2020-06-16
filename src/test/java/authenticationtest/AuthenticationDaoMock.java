@@ -28,32 +28,8 @@ public class AuthenticationDaoMock implements Interface_AuthenticateUserDao{
 		role_id = 1;
 		role_tagged = "Student";
 		
-		
-	}
-	@Override
-	public ArrayList<Course> getallcoursesbyuser(User user){
-		Course crc = new Course();
-		user.setBannerId(user.getBannerId());
-		crc.setCourseID(courseid);
-		crc.setCourseName(courseName);
-		
-		ArrayList<Course> crlst = new ArrayList<Course>();
-		crlst.add(crc);
-		
-		return crlst;
 	}
 
-
-	@Override
-	public ArrayList<Course> getallcourses()  {
-		Course crc = new Course();
-		crc.setCourseID(courseid);
-		crc.setCourseName(courseName);
-		
-		ArrayList<Course> crlst = new ArrayList<Course>();
-		crlst.add(crc);
-		return crlst;
-	}
 
 	@Override
 	public User authenticateUser(User user) {
