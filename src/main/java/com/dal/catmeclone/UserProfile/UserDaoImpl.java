@@ -9,6 +9,7 @@ import java.util.Properties;
 import com.dal.catmeclone.model.*;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.*;
+import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
@@ -23,7 +24,8 @@ public class UserDaoImpl implements UserDao {
 	
 
 	private DataBaseConnection DBUtil;
-	
+	private BCryptPasswordEncryption passwordencoder;
+
 	private CallableStatement statement;
 	private Connection connection;
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
@@ -36,6 +38,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 			// Establishing Database connection
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			passwordencoder=SystemConfig.instance().getBcryptPasswordEncrption();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			CallableStatement statement = connection.prepareCall("{call " + properties.getProperty("procedure.createUser") + "}");
@@ -44,7 +47,7 @@ public class UserDaoImpl implements UserDao {
 			statement.setString(2, student.getFirstName());
 			statement.setString(3, student.getLastName());
 			statement.setString(4, student.getEmail());
-			statement.setString(5, student.getPassword());
+			statement.setString(5, passwordencoder.encryptPassword(student.getPassword()));
 
 			// Calling Store procedure for execution
 			logger.info(
@@ -57,13 +60,13 @@ public class UserDaoImpl implements UserDao {
 			logger.error("Duplicate entry for email found. Error Encountered while creating user by bannerid: "
 					+ student.getBannerId());
 			logger.error(e.getLocalizedMessage());
-			throw new DuplicateUserRelatedException(e.getLocalizedMessage());
+			throw new DuplicateUserRelatedException("User with this details already exist in our system,");
 
 		} catch (SQLException e) {
 			// Handling error encountered and throwing custom user exception
 			logger.error("Error Encountered while creating user by bannerid: " + student.getBannerId());
 			logger.error(e.getLocalizedMessage());
-			return false;
+			throw new UserDefinedSQLException("User with BannerID"+student.getBannerId()+" already Exist in our system.");
 		} finally {
 
 			// Terminating the connection

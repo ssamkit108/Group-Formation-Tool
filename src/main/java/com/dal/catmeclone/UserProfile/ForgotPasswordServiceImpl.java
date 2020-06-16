@@ -1,5 +1,6 @@
 package com.dal.catmeclone.UserProfile;
 
+import java.sql.SQLException;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -10,63 +11,85 @@ import org.springframework.stereotype.Service;
 
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
+import java.util.UUID;
 
 
 public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	final Logger logger = LoggerFactory.getLogger(ForgotPasswordServiceImpl.class);
 
 	ForgotPasswordDao forgotpasswordDb;
 	
 	
-	public boolean forgotpassword(String username) throws Exception {	
-		boolean success;
-		success= ValidateUser(username);
-		return success;
+	public void Resetlink(String username) throws Exception {	
+		try {
+		forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
+
+		String token=GenerateToken();
+		
+		//This will update token in database and send mail to user
+		forgotpasswordDb.UpdateToken(username, token);
+		}
+		catch(Exception e) {
+			logger.error(e.getMessage());
+			throw new Exception(e.getMessage());
+		}
 	}
 	
 	@Override
 	public boolean ValidateUser(String username) throws Exception {
-		forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
 		try {
-		if(username.length()<10)
-		{
+			forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
 			if(forgotpasswordDb.checkexist(username)) {
-				String password=GeneratePassword();
-				forgotpasswordDb.UpdatePassword(username, password);
-				logger.info("User:"+username+" is validated in forgot password service.");
+				logger.info("Banner Id:"+username+" validated in successfully.");
 				return true;
 			}
 			else {
 				logger.error("User:"+username+" is not validated in forgot password service.");
-				return false;
+				throw new Exception("Banner Id:"+username+" does not exist in our system.");
 			}
 		}
-		else {
-			logger.error("User:"+username+" length should be less than 9.");
-			return false;
-		}
-		}
 		catch(Exception e) {
-            logger.error(e.getLocalizedMessage());
-            throw new Exception(e.getLocalizedMessage());
+            logger.error(e.getMessage());
+            throw new Exception(e.getMessage());
 		}
 	}
 
-	public String GeneratePassword() {    
-        
-		Properties properties = SystemConfig.instance().getProperties();
-        StringBuilder builder = new StringBuilder();
-        String ALPHA_NUMERIC_STRING = properties.getProperty("random");
-        builder.setLength(0);
-
-        for(int i=0;i<8;i++)
-        {
-            int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
-            builder.append(ALPHA_NUMERIC_STRING.charAt(character));
-        }
-        String new_password= builder.toString();
-        return new_password;
+	public String GenerateToken() {    
+        return UUID.randomUUID().toString();
     }
 
+	@Override
+	public String validatetoken(String confirmationToken) throws Exception {
+		try {
+		forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
+
+		String bannerid=forgotpasswordDb.checktokenexist(confirmationToken);
+		if(!bannerid.isEmpty() && bannerid!=null) {
+			return bannerid;
+		}
+		else {
+			return "";
+		}
+		}
+		catch(Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+
+	@Override
+	public void NewPassword(String username, String password) throws Exception {
+	try {
+		forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
+		if(password.length()<8) {
+			throw new Exception("Please enter a valid password");
+		}
+		forgotpasswordDb.SetNewPassword(username, password);
+	}catch(SQLException e) {
+		throw new SQLException(e.getMessage());
+	}
+	catch(Exception e) {
+		throw new Exception(e.getLocalizedMessage());
+	}
+	}
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
+import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 import com.dal.catmeclone.model.User;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
 	Boolean flag=false;
 	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
 	public boolean Create(User u) throws Exception {
@@ -41,7 +42,14 @@ public class UserServiceImpl implements UserService {
 				flag=userDb.createUser(u);
 			}
 			return flag;
-		} catch (Exception e) {
+		}catch(DuplicateUserRelatedException e) {
+			logger.error(e.getMessage());
+			throw new DuplicateUserRelatedException(e.getMessage());
+		}catch (UserDefinedSQLException e) {
+			logger.error(e.getMessage());
+			throw new UserDefinedSQLException(e.getMessage());
+		} 
+		catch (Exception e) {
 			flag=false;
 			logger.error(e.getLocalizedMessage());
 			throw new Exception(e.getLocalizedMessage());

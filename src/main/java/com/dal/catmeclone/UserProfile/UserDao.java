@@ -9,13 +9,7 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.*;
 
 public interface UserDao {
-	
-
-	
 	public User findUserByBannerID(String bannerId) throws UserDefinedSQLException;
 	public boolean createUser(User student) throws UserDefinedSQLException, DuplicateUserRelatedException;
 	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException;
-
-
-
 }
