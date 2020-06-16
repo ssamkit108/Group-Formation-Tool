@@ -2,12 +2,13 @@ package com.dal.catmeclone.authenticationandauthorization;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.*;
 import com.dal.catmeclone.exceptionhandler.*;
 import com.dal.catmeclone.model.Course;
@@ -20,17 +21,16 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 	private CallableStatement stored_pro;
 	private Connection connection;
 
-	@Autowired
-	DatabaseConnection db_connect;
-	
-	@Value("${procedure.authenticateUser}")
-	private String authenticateUser;
+	DataBaseConnection db_connect;
+
 
 	@Override
 	public User authenticateUser(User user)throws SQLException, UserDefinedSQLException {
 		User u = null;
-
+		Properties property = SystemConfig.instance().getProperties();
+		String authenticateUser = property.getProperty("procedure.authenticateUser");
 		try {
+			db_connect = SystemConfig.instance().getDatabaseConnection();
 			connection = db_connect.connect();
 			stored_pro = connection.prepareCall("{call " + authenticateUser + "}");
 
@@ -47,12 +47,15 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 		}
 
 		catch (SQLException e)
-		{	
-			return null;
+		{
+
+			throw new UserDefinedSQLException("Some error occured");
 		}
+		
 		finally
 		{
 			db_connect.terminateStatement(stored_pro);
+			if(connection!=null)
 			db_connect.terminateConnection();
 		}
 		return u;
@@ -61,76 +64,8 @@ public class AuthenticateUserDao implements Interface_AuthenticateUserDao{
 
 
 
-	@Override
-	public ArrayList<Course> getallcoursesbyuser(User user) throws UserDefinedSQLException {
-		ArrayList<Course> crclst = new ArrayList<Course>();
-
-		try {
+	
 
 
-			connection = db_connect.connect();
-			stored_pro = connection.prepareCall("{call GetCoursesForUser(?)}");
-			stored_pro.setString(1,user.getBannerId());
-
-
-			stored_pro.setString(1,user.getBannerId());
-			ResultSet result = stored_pro.executeQuery();
-
-			Course c = null;
-			while(result.next()) {
-				c = new Course();
-				c.setCourseID(result.getInt("courseid"));
-				c.setCourseName(result.getString("coursename"));
-				crclst.add(c);
-			}
-		}
-
-		catch (SQLException e)
-		{
-			throw new UserDefinedSQLException("Some error occured");
-		}
-		finally
-		{
-			db_connect.terminateStatement(stored_pro);
-			db_connect.terminateConnection();
-		}
-		return crclst;
-
-
-
-
-	}
-
-
-
-	@Override
-	public ArrayList<Course> getallcourses() throws SQLException, UserDefinedSQLException {
-		ArrayList<Course> allcrclst = new ArrayList<Course>();
-
-		try {
-
-
-			connection = db_connect.connect();
-			stored_pro = connection.prepareCall("{call GetAllCourses()}");
-
-			ResultSet result = stored_pro.executeQuery();
-			Course c = null;
-			while(result.next()) {
-				c = new Course();
-				c.setCourseID(result.getInt("courseid"));
-				c.setCourseName(result.getString("coursename"));
-				allcrclst.add(c);
-			}
-		}
-		catch (SQLException e)
-		{
-			return null;
-		}
-		finally
-		{
-			db_connect.terminateStatement(stored_pro);
-			db_connect.terminateConnection();
-		}
-		return allcrclst;
-	}
 }
+

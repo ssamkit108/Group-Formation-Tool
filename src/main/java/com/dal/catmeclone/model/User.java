@@ -1,22 +1,16 @@
-	package com.dal.catmeclone.model;
+package com.dal.catmeclone.model;
 
-import java.util.Set;	
-
+	
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class User {
 
 	private String bannerId;
-
 	private String firstName;
-
 	private String lastName;
-
 	private String password;
-
 	private String email;
-
 	private Role userRoles;
 
 	private static final String email_regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
@@ -46,6 +40,9 @@ public class User {
 		this.email = email;
 		this.userRoles = userRoles;
 	}
+	
+
+	
 
 	public User(String bannerId, String firstName, String lastName, String password, String email) {
 		super();
@@ -195,10 +192,27 @@ public class User {
 	}
 
 
+
+	public static boolean isFirstNameValid(String name) {
+		if (null == name) {
+			return false;
+		}
+		return !name.isEmpty();
+	}
+
+	public static boolean isLastNameValid(String name) {
+		if (null == name) {
+			return false;
+		}
+		return !name.isEmpty();
+	}
+
+
 	public static boolean isEmailValid(String email) {
 		if (null == email || email.isEmpty()) {
 			return false;
 		}
+
 
 		Pattern pattern = Pattern.compile(email_regex);
 		Matcher matcher = pattern.matcher(email);

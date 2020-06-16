@@ -1,40 +1,66 @@
 package com.dal.catmeclone.UserProfile;
 
-
+import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DataBaseConnection;
+import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
+import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+
 import com.dal.catmeclone.model.User;
 
-@Service
+
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	UserDao userDb;
 
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+	
+	UserDao userDb ;
 
 	Boolean flag=false;
 	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@Override
-	public boolean Create(User u) {
+	public boolean Create(User u) throws Exception {
+		userDb = SystemConfig.instance().getUserDao();
 		try {
-			if (User.isEmailValid(u.getEmail()) &&
+			//validating user details
+			if (User.isBannerIDValid(u.getBannerId()) &&
+					 User.isEmailValid(u.getEmail()) &&
+					 User.isFirstNameValid(u.getFirstName()) &&
+					 User.isLastNameValid(u.getLastName()) &&
 					 !u.getPassword().isEmpty())
 			{
+				LOGGER.info("Accessing DAO layer to create user to given banner id");
 				flag=userDb.createUser(u);
 			}
 			return flag;
 		} catch (Exception e) {
 			flag=false;
-			logger.error(e.getMessage());
-			return flag;
+			logger.error(e.getLocalizedMessage());
+			throw new Exception(e.getLocalizedMessage());
 		}
-		}
+
 	}
+	
+
+	@Override
+	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException {
+		
+		userDb = SystemConfig.instance().getUserDao();
+		
+		// Service layer method making a call to data access layer to retrieve the matching list of user
+		List<User> listOfUser= new ArrayList<User>();
+		LOGGER.info("Accessing DAO layer to get matching list of user to given banner id");
+		listOfUser=userDb.findAllMatchingUser(bannerId);
+		return listOfUser;
+	}
+}
+
 

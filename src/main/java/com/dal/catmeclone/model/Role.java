@@ -20,6 +20,18 @@ public class Role {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+
+	/**
+	 * @param roleName
+	 */
+	public Role(String roleName) {
+		super();
+		this.roleName = roleName;
+	}
+
+
 
 	/**
 	 * @param roleId
@@ -30,6 +42,7 @@ public class Role {
 		this.roleId = roleId;
 		this.roleName = roleName;
 	}
+
 
 	/**
 	 * @return the roleId
