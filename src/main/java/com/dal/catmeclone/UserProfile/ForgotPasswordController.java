@@ -33,11 +33,13 @@ public class ForgotPasswordController {
 	}
 
 	@RequestMapping(value = "/forgotpassword", method = RequestMethod.POST) 
-	public ModelAndView processForgotpassword(@RequestParam(name = "username") String bannerID) throws SQLException, UserDefinedSQLException
+	public ModelAndView processForgotpassword(
+	@RequestParam(name = "username") String bannerID) throws SQLException, UserDefinedSQLException
 	{
-		forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
 	try {
-	if(forgotpasswordservice.forgotpassword(bannerID)) {
+	forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
+	if(forgotpasswordservice.ValidateUser(bannerID)) {
+		forgotpasswordservice.Resetlink(bannerID);
 		ModelAndView m;
 		m = new ModelAndView("forgotpassword");
 		m.addObject("message", "Password is sent on your registred email address.");
@@ -46,17 +48,65 @@ public class ForgotPasswordController {
 	else {
 		ModelAndView m;
 		m = new ModelAndView("forgotpassword");
-		m.addObject("message", "Please enter the valid BannerID");
+		m.addObject("message", "User does not exist.Please enter the valid BannerID");
 		return m;
 	}
 	}
 	catch(Exception e) {
-		logger.error(e.getLocalizedMessage());
-		ModelAndView m = new ModelAndView("error");
+		logger.error(e.getMessage());
+		ModelAndView m = new ModelAndView("forgotpassword");
+		m.addObject("message",e.getMessage());
 		return m;
 	}
-	
-	
 	}
+	
+	@RequestMapping(value = "/reset",  method= {RequestMethod.GET, RequestMethod.POST}) 
+	public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {
+		try {
+        String bannerId=forgotpasswordservice.validatetoken(confirmationToken);
+        ModelAndView m;
+        if(!bannerId.isEmpty()  && !bannerId.equals(null))
+		{
+        	m=new ModelAndView("ResetPassword");
+    		m.addObject("bannerid",bannerId);
+    		return m;	
+		}
+		else {
+			m=new ModelAndView("forgotpassword");
+        	m.addObject("message", "The link is invalid or broken!");
+	        return m;
+	
+		}
+		}
+		catch(Exception e) {
+	        ModelAndView m;
+			m=new ModelAndView("forgotpassword");
+			logger.error(e.getLocalizedMessage());
+        	m.addObject("message", e.getLocalizedMessage());
+	        return m;
+		}
+    }
+	
+	
+    @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
+    public ModelAndView resetPassword(ModelAndView modelAndView, @RequestParam("password") String password,
+    		@RequestParam("bannerid") String BannerID) throws Exception {
+    	try {
+    		forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
+	    	ModelAndView m;
+	    	forgotpasswordservice.NewPassword(BannerID, password); 	
+	       	logger.info("Password for BannerID:"+BannerID+" has been changed Successfully");
+	    	m=new ModelAndView("login");
+	       	m.addObject("message","Your password has been changed successfully");
+	    	return m;
+	    	}
+	    	catch(Exception e) {
+	        	ModelAndView m;
+	    		m=new ModelAndView("ResetPassword");
+	    		m.addObject("message",e.getMessage());
+	    		return m;
+	    		
+	    	}
+    	}
 }
 

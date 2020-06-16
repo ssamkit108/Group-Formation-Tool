@@ -12,6 +12,7 @@ public class User {
 	private String password;
 	private String email;
 	private Role userRoles;
+	private String token;
 
 	private static final String email_regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
@@ -148,6 +149,13 @@ public class User {
 	 */
 	public void setUserRoles(Role userRoles) {
 		this.userRoles = userRoles;
+	}
+	public String gettoken() {
+		return token;
+	}
+	
+	public void setToken(String token) {
+		this.token=token;
 	}
 
 	@Override
