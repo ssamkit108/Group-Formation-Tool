@@ -4,50 +4,47 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DataBaseConnection;
+import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.notification.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Component
 public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 
-	@Autowired
-	private DatabaseConnection DBUtil;
+	private DataBaseConnection DBUtil ;
 
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	private CallableStatement statement;
 	private Connection connection;
 	private String sendto;
 
-	@Autowired
-	NotificationService notificationService;
+	//Getting instance of NotificationService
+	NotificationService notificationService ;
 
-	@Autowired
+	//Getting instance of BCryptPasswordEncryption
 	private BCryptPasswordEncryption passwordencoder;
 
 
-
-	@Value("${procedure.finduserBybannerId}")
-	private String FindUserByBannerId;
-
-	@Value("${procedure.UpdatePassword}")
-	private String UpdatePassword;
 	
 
 	public boolean checkexist(String bannerid) throws Exception {
 		try {
+			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
-			statement = connection.prepareCall("{call " + FindUserByBannerId + "}");
-
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.finduserBybannerId") + "}");
+			
 			statement.setString(1, bannerid);
 			ResultSet rs = statement.executeQuery();
 
@@ -71,8 +68,11 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 	@Override
 	public void UpdatePassword(String BannerId, String password) throws Exception {
 		try {
-			connection = DBUtil.connect();
-			statement = connection.prepareCall("{call " + UpdatePassword + "}");
+			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			Properties properties = SystemConfig.instance().getProperties();
+			notificationService = SystemConfig.instance().getNotificationService(); 
+			passwordencoder = SystemConfig.instance().getBcryptPasswordEncrption();
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.UpdatePassword") + "}");
 			statement.setString(1, BannerId);
 			statement.setString(2, passwordencoder.encryptPassword(password));
 			statement.execute();

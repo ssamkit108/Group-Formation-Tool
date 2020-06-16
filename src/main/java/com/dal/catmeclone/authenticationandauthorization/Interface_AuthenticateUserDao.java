@@ -10,10 +10,8 @@ import com.dal.catmeclone.model.User;
 
 
 public interface Interface_AuthenticateUserDao {
-	public ArrayList<Course> getallcoursesbyuser(User user)throws UserDefinedSQLException;
 
 	public User authenticateUser(User user) throws SQLException, UserDefinedSQLException;
 
-	public ArrayList<Course> getallcourses()throws SQLException, UserDefinedSQLException;
 
 }

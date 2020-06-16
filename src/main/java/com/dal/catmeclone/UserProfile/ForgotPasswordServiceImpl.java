@@ -1,29 +1,24 @@
 package com.dal.catmeclone.UserProfile;
 
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 
 
-@Service
 public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
-	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
-
-	@Autowired
 	ForgotPasswordDao forgotpasswordDb;
 	
-	@Value("${random}")
-    String ALPHA_NUMERIC_STRING;
 	
-	
-	
-
 	public boolean forgotpassword(String username) throws Exception {	
 		boolean success;
 		success= ValidateUser(username);
@@ -32,6 +27,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	
 	@Override
 	public boolean ValidateUser(String username) throws Exception {
+		forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
 		try {
 		if(username.length()<10)
 		{
@@ -59,10 +55,10 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
 	public String GeneratePassword() {    
         
+		Properties properties = SystemConfig.instance().getProperties();
         StringBuilder builder = new StringBuilder();
+        String ALPHA_NUMERIC_STRING = properties.getProperty("random");
         builder.setLength(0);
-
- 
 
         for(int i=0;i<8;i++)
         {

@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
@@ -23,13 +24,15 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class AdminController {
 	
-	@Autowired
-	AdminService adminService;
 	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	AdminService adminService = SystemConfig.instance().getAdminService();
+	
+	
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 	
 	@GetMapping("/admin/courseCreationForm")
 	public String getCourseForm(Model m) {
+		
 		m.addAttribute("courseCreationForm", new Course());
 		return "admin/courseCreationForm";
 	}
@@ -37,6 +40,7 @@ public class AdminController {
 	@PostMapping("/admin/courseCreationForm")
 	public String submitCourse(@ModelAttribute Course c, Model m, @ModelAttribute("message") Message message, BindingResult bindingResult) {
 	    
+		
 	    //If course already exists
 		try {
 			if(adminService.checkCourseExists(c)) {
@@ -89,7 +93,6 @@ public class AdminController {
 	@RequestMapping(value= "/admin/adminDashboard", method=RequestMethod.POST, params="action=assign")
 	public String assignCourse(@ModelAttribute Course c, Model m) {
 		
-		
 		m.addAttribute("assignCourse", new User());
 		try {
 		m.addAttribute("users", adminService.getAllUsers());
@@ -118,6 +121,7 @@ public class AdminController {
 	@PostMapping("/admin/assignInstructor")
 	public String enrollInstructor(@ModelAttribute User u,@ModelAttribute Course c,Model m)
 	{  
+		
 	    try {
 		adminService.enrollInstructorForCourse(u, c, new Role("Instructor"));
 	    } catch (SQLException | UserDefinedSQLException e) {
