@@ -10,7 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.encrypt.*;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
@@ -19,14 +20,13 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class SignupController
 {	
-	@Autowired
+
 	private BCryptPasswordEncryption passwordencoder;
-	
-	@Autowired
-	UserService userservice;
+
+	private UserService userservice;
 
 	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@GetMapping("/signup")
 	public String displaySignup(Model model)
@@ -45,7 +45,8 @@ public class SignupController
    	@RequestParam(name = "email") String email) throws SQLException, UserDefinedSQLException
 	{
 		boolean success = false;
-
+		userservice = SystemConfig.instance().getUserService();
+		passwordencoder = SystemConfig.instance().getBcryptPasswordEncrption();
 		try {
 			ModelAndView m;
 
@@ -82,9 +83,9 @@ public class SignupController
 		
 		}
 		catch(Exception e) {
-			logger.error(e.getMessage());
-			ModelAndView m=new ModelAndView("error");
-			return m;
+            logger.error(e.getLocalizedMessage());
+            ModelAndView m=new ModelAndView("error");
+            return m;
 		}
 	}
 }

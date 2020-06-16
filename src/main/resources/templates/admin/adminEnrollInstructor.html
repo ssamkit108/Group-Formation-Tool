@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<title>Getting started: Serving Web Content</title>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ 	<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet" />
+ 	<link rel="stylesheet" type="text/css" href="/css/general.css">
+<title>Course added successfully</title>
+<style>
+body {text-align: center;}
+</style>
+</head>
+<body>
+<div th:replace="admin/adminheader :: header"></div>
+	<div class="bodycontainer">
+	<h1>Instructor and course details:</h1>
+	<p th:text="'Course id: ' + ${course.courseID}"/>
+	<p th:text="'Instructor id:' + ${user.bannerId}"/>
+	<a href="/admin/adminDashboard">Return to dashboard</a>
+	</div>
+</body>
+</html>

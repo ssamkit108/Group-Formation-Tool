@@ -2,7 +2,6 @@ package com.dal.catmeclone.authenticationandauthorization;
 
 
 import java.sql.SQLException;
-import java.sql.SQLException;	
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,23 +14,27 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
 
 @Component
 public class UserAuthentication implements AuthenticationManager{
 
-	@Autowired
+
 	private Interface_AuthenticateUserDao validate;
-	private BCryptPasswordEncryption passwordencoder=new BCryptPasswordEncryption();
-	//private static final String Admin_bannerId = "ADMIN0000";
-	//private static final String Admin_bannerId = "B00100167";
+	private BCryptPasswordEncryption passwordencoder;
+
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		// TODO Auto-generated method stub
 		String bannerId = authentication.getPrincipal().toString();
 		String password = authentication.getCredentials().toString();
+		validate = SystemConfig.instance().getAuthenticateUserDao();
+		passwordencoder= SystemConfig.instance().getBcryptPasswordEncrption();
 
 
 		User flag= null;
@@ -44,6 +47,7 @@ public class UserAuthentication implements AuthenticationManager{
 			user.setPassword(password);
 
 			try {
+				
 				flag=validate.authenticateUser(user);
 			} catch (SQLException | UserDefinedSQLException e) {
 				// TODO Auto-generated catch block
@@ -52,7 +56,6 @@ public class UserAuthentication implements AuthenticationManager{
 			if (flag != null)
 			{
 				if (passwordencoder.matches(user.getPassword(), flag.getPassword())) {
-				//if (user.getPassword().equals(flag.getPassword())) {
 
 
 					if (flag.getUserRoles().getRoleName().equals("Admin")){
