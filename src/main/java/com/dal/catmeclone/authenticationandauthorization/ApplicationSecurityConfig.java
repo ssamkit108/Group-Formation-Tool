@@ -13,23 +13,23 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.dal.catmeclone.SystemConfig;
+
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 
-	@Autowired
 	UserAuthentication authenticationManager;
-	
-	@Autowired
-	SuccessHandler authenticationSuccessHandler;
+	AuthenticationSuccessHandler successHandler;
 	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
 		http.authorizeRequests()
 		.antMatchers("/signup","/forgotpassword","/").permitAll().and().authorizeRequests()
 		.antMatchers("/admin/**").hasAnyAuthority("admin")
-		.antMatchers("/courses","/allcourses").hasAnyAuthority("user")
+		.antMatchers("/courses","/allcourses","/mycourse/**").hasAnyAuthority("user")
 		.anyRequest().authenticated()
 		.and()
 		.formLogin()
@@ -41,17 +41,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 		.and()
 		.exceptionHandling().accessDeniedPage("/access-denied");
 
-
-
-
 	}
 	
 	public AuthenticationSuccessHandler authSuccessHandler() {
-		return authenticationSuccessHandler;
+		successHandler = SystemConfig.instance().getAuthenticationSuccessHandler();
+		return successHandler;
 	}
 
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
+		authenticationManager = SystemConfig.instance().getUserAuthentication();
 		return authenticationManager;
 	}
 

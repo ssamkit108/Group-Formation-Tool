@@ -7,15 +7,10 @@ import java.util.regex.Pattern;
 public class User {
 
 	private String bannerId;
-
 	private String firstName;
-
 	private String lastName;
-
 	private String password;
-
 	private String email;
-
 	private Role userRoles;
 
 	private static final String email_regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";

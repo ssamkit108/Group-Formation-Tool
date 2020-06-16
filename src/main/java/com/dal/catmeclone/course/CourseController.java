@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dal.catmeclone.exceptionhandler.CourseException;
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.authenticationandauthorization.AuthenticateUserDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
@@ -25,21 +26,19 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class CourseController {
 
-
-	@Autowired
+	
 	CourseService courseService;
 
-	@Autowired
 	CourseEnrollmentService courseEnrollmentService;
 	
-	@Autowired
-	AuthenticateUserDao authenticateUserDB;
-	
-	
 
-	@GetMapping("/mycourse/{courseid}")
+	@GetMapping("mycourse/{courseid}")
 	public String showCoursePage(ModelMap model, @PathVariable(name = "courseid") Integer courseid,
 			RedirectAttributes attributes, HttpSession session) {
+		
+		courseService = SystemConfig.instance().getCourseService();
+		courseEnrollmentService = SystemConfig.instance().getCourseEnrollmentService();
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		
@@ -97,7 +96,8 @@ public class CourseController {
 	public ModelAndView AllCourses(Model model) 
 	{
 		
-
+		courseService = SystemConfig.instance().getCourseService();
+		
 		ModelAndView modelview = null;
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.isAuthenticated())
@@ -105,7 +105,7 @@ public class CourseController {
 
 			ArrayList<Course> allcourses = null;
 			try {
-				allcourses = authenticateUserDB.getallcourses();
+				allcourses = courseService.getallcourses();
 			} catch (SQLException e) {
 
 				modelview = new ModelAndView("error");
@@ -135,7 +135,9 @@ public class CourseController {
 	@GetMapping("/courses") 
 	public ModelAndView Courses(Model model, HttpSession session) 
 	{
-
+		
+		courseService = SystemConfig.instance().getCourseService();
+		courseEnrollmentService = SystemConfig.instance().getCourseEnrollmentService();
 		//Interface_AuthenticateUserDao validate = new AuthenticateUserDao();
 		ModelAndView modelview = null;
 		
@@ -163,7 +165,7 @@ public class CourseController {
 				session.setAttribute("enrolled",false);
 				ArrayList<Course> allcourses = null;
 				try {
-					allcourses = authenticateUserDB.getallcourses();
+					allcourses = courseService.getallcourses();
 					if(!allcourses.isEmpty())
 					{
 						modelview.addObject("all_courses",allcourses);

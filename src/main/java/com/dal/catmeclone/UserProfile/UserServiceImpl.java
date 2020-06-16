@@ -6,28 +6,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DataBaseConnection;
+import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 import com.dal.catmeclone.model.User;
 
-@Service
+
 public class UserServiceImpl implements UserService {
 
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
-
-	@Autowired
-	UserDao userDb;
-
+	UserDao userDb ;
 
 	Boolean flag=false;
 	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@Override
 	public boolean Create(User u) throws Exception {
+		userDb = SystemConfig.instance().getUserDao();
 		try {
 			//validating user details
 			if (User.isBannerIDValid(u.getBannerId()) &&
@@ -51,6 +52,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException {
+		
+		userDb = SystemConfig.instance().getUserDao();
 		
 		// Service layer method making a call to data access layer to retrieve the matching list of user
 		List<User> listOfUser= new ArrayList<User>();

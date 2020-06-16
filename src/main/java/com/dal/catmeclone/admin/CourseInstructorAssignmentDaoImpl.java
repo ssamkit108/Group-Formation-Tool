@@ -12,19 +12,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DataBaseConnection;
+import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
 
-@Component
 public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssignmentDao {
 
-	@Autowired
-	DatabaseConnection db;
 	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	DataBaseConnection db;
+	
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 	
 	private Connection con;
 	private CallableStatement statement;
@@ -32,6 +33,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 	@Override
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role) throws SQLException, UserDefinedSQLException {
 		// TODO Auto-generated method stub
+		db = SystemConfig.instance().getDatabaseConnection();
 		con = db.connect();
 		try {
 			statement = con.prepareCall("{call enrollmentincourse(?,?,?)}");
@@ -69,6 +71,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 		List<User> c;
 		ResultSet rs;
 		c = new ArrayList<User>();
+		db = SystemConfig.instance().getDatabaseConnection();
 		con = db.connect();
 		try {
 		statement = con.prepareCall("{CALL GetAllUsers()}");

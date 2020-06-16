@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
@@ -36,7 +38,6 @@ import com.dal.catmeclone.notification.NotificationService;
  * @author Mayank
  *
  */
-@Service
 public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CourseEnrollmentServiceImpl.class);
@@ -44,24 +45,16 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	public List<String> recordsSuccessMessage = new ArrayList<String>();
 	public List<String> recordsFailureMessage = new ArrayList<String>();
 
-	@Autowired
 	NotificationService notificationService;
 
-	@Autowired
 	UserDao userDB;
 
-	@Autowired
 	CourseEnrollmentDao courseEnrollDB;
 	
-	@Autowired
 	BCryptPasswordEncryption bcryptEncoder;
 	
-	@Value("${random}")
     String ALPHA_NUMERIC_STRING;
 	
-
-
-
 	private static final String email_regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
 	public List<String> getRecordsSuccessMessage() {
@@ -159,6 +152,11 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	 */
 	private void enrollStudent(User user, Course course) throws UserDefinedSQLException {
 
+		notificationService= SystemConfig.instance().getNotificationService();
+		userDB = SystemConfig.instance().getUserDao();
+		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
+		bcryptEncoder =SystemConfig.instance().getBcryptPasswordEncrption();
+		
 		// Check if user exists with the given banner id or not
 		User u = userDB.findUserByBannerID(user.getBannerId());
 
@@ -209,6 +207,7 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	public boolean enrollTAForCourse(User Ta, Course course) {
 		// TODO Auto-generated method stub
 		Role role = new Role("TA");
+		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
 		boolean response = false;
 		try {
 			LOGGER.info("Calling Dao to enroll TA for the given course");
@@ -228,6 +227,8 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 		
 		//calling Database access layer to get the list of user enrolled in course
 		List<Course> listofCourses = new ArrayList<Course>();
+		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
+		System.out.println(courseEnrollDB.getClass());
 		LOGGER.info("calling Database access layer to get the list of user enrolled in course");
 		listofCourses= courseEnrollDB.getAllEnrolledCourse(user);
 		return listofCourses;
@@ -238,16 +239,17 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	public Role getUserRoleForCourse(User user, Course course) throws UserDefinedSQLException {
 		// TODO Auto-generated method stub
 		Role role=null;
+		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
 		role = courseEnrollDB.getUserRoleForCourse(user, course);
 		return role;
 	}
 	
 	public String GeneratePassword() {    
         
+		Properties properties= SystemConfig.instance().getProperties();
+		ALPHA_NUMERIC_STRING = properties.getProperty("random");
         StringBuilder builder = new StringBuilder();
         builder.setLength(0);
-
- 
 
         for(int i=0;i<8;i++)
         {
