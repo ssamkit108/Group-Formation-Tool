@@ -66,18 +66,19 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 	}
 
 	@Override
-	public void UpdatePassword(String BannerId, String password) throws Exception {
+	public void UpdateToken(String BannerId, String token) throws Exception {	
 		try {
+			notificationService=SystemConfig.instance().getNotificationService();
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
-			notificationService = SystemConfig.instance().getNotificationService(); 
-			passwordencoder = SystemConfig.instance().getBcryptPasswordEncrption();
-			statement = connection.prepareCall("{call " + properties.getProperty("procedure.UpdatePassword") + "}");
-			statement.setString(1, BannerId);
-			statement.setString(2, passwordencoder.encryptPassword(password));
+			connection = DBUtil.connect();
+			statement=connection.prepareCall("{call "+properties.getProperty("procedure.Updatetoken")+" }");
+			statement.setString(1, token);
+			statement.setString(2, BannerId);
 			statement.execute();
-
-			notificationService.sendNotificationForPassword(BannerId, password, sendto);
+			String appurl;
+			appurl="http://localhost:8080/"+"reset?token="+token;
+			notificationService.sendNotificationForPassword(BannerId, appurl, sendto);
 			logger.info("The forgot password mail sent successfully");
 
 		} catch (SQLException e) {
@@ -88,13 +89,10 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
             throw new Exception(e.getLocalizedMessage());
 		} finally {
 			try {
-				if (statement != null) {
-					statement.close();
-				}
+				// Terminating the connection
+				DBUtil.terminateStatement(statement);
 				if (connection != null) {
-					if (!connection.isClosed()) {
-						connection.close();
-					}
+					DBUtil.terminateConnection();
 				}
 			} catch (Exception e) {
 				logger.error("There is error about closing connection in the forgot password Dao.");
@@ -104,5 +102,72 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 		}
 
 	}
+	@Override
+	public void SetNewPassword(String BannerId, String password) throws Exception {	
+		try {
+			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			passwordencoder=SystemConfig.instance().getBcryptPasswordEncrption();
+			Properties properties = SystemConfig.instance().getProperties();
+			connection = DBUtil.connect();
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.UpdatePassword") + "}");
+			statement.setString(1, BannerId);
+			statement.setString(2, passwordencoder.encryptPassword(password));
+			statement.execute();
+		} catch (SQLException e) {
+            logger.error("There is SQL error in the forgot password Dao."+e.getLocalizedMessage());
+            throw new Exception("Sorry..Password could not able to reset. Try after sometime.");
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage());
+            throw new Exception(e.getLocalizedMessage());
+		} finally {
+			try {
+				// Terminating the connection
+				DBUtil.terminateStatement(statement);
+				if (connection != null) {
+					DBUtil.terminateConnection();
+				}
+			} catch (Exception e) {
+				logger.error("There is error about closing connection in the forgot password Dao.");
+				logger.error(e.getLocalizedMessage());
+				throw new Exception(e.getLocalizedMessage());
+			}
+		}
 
+	}
+	
+	//This method will check that token is already in the database or not
+	public String checktokenexist(String token) throws Exception {
+		try {
+			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			Properties properties = SystemConfig.instance().getProperties();
+			connection = DBUtil.connect();
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.findByResetToken") + "}");
+			statement.setString(1, token);
+			ResultSet rs = statement.executeQuery();
+			String BannerID;
+			if(rs.next()) {
+				BannerID=rs.getString("bannerid");
+			}
+			else {
+				BannerID="";
+			}
+			return BannerID;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally {
+			try {
+				// Terminating the connection
+				DBUtil.terminateStatement(statement);
+				if (connection != null) {
+					DBUtil.terminateConnection();
+				}
+			} catch (Exception e) {
+				logger.error("There is error about closing connection in the forgot password Dao.");
+				logger.error(e.getLocalizedMessage());
+				throw new Exception(e.getLocalizedMessage());
+			}
+		}
+	}
 }

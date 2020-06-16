@@ -115,7 +115,7 @@ public class NotificationServiceImpl implements NotificationService {
 	        Session session = Session.getInstance(props,    
 	         new javax.mail.Authenticator() {    
 	         protected PasswordAuthentication getPasswordAuthentication() {    
-	         return new PasswordAuthentication(from,password);  
+	         return new PasswordAuthentication(fromgmail,fromPassword);  
 	         }    
 	        });    
         
