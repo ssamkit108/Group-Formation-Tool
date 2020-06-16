@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.dal.catmeclone.course.CoursesDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
+import com.dal.catmeclone.model.User;
 
 public class CourseDaoMock implements CoursesDao {
 
@@ -13,12 +14,17 @@ public class CourseDaoMock implements CoursesDao {
 	ArrayList<Course>  courseList  = new ArrayList<Course>();
 	
 	
+	
+	
 
 	public CourseDaoMock() {
 		super();
 		this.courseid =100;
 		this.courseName="Advance Topic in SDC";
 		courseList.add(new Course(courseid, courseName));
+		courseList.add(new Course(101, "Advance topic in web"));
+		
+	
 	}
 
 
@@ -33,9 +39,21 @@ public class CourseDaoMock implements CoursesDao {
 
 
 	@Override
-	public ArrayList<Course> getallcourses() throws SQLException, UserDefinedSQLException {
+	public ArrayList<Course> getallcourses(){
 		// TODO Auto-generated method stub
 		return courseList;
 	}
+	
+	@Override
+	public ArrayList<Course> getallcoursesbyuser(User user){
+		if(user.getBannerId().equals("B00839818"))
+		{
+			return courseList;
+		}
+		else return null;
+	}
+
+
+	
 
 }

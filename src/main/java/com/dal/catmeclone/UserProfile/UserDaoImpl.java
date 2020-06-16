@@ -4,8 +4,10 @@ package com.dal.catmeclone.UserProfile;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import com.dal.catmeclone.model.*;
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.*;
 import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
 
@@ -17,26 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Component
 public class UserDaoImpl implements UserDao {
 	
-	@Autowired
-	private DatabaseConnection DBUtil;
+
+	private DataBaseConnection DBUtil;
 	
 	private CallableStatement statement;
 	private Connection connection;
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
-
-	@Value("${procedure.finduserBybannerId}")
-	private String FindUserByBannerId;
-
-
-	@Value("${procedure.createUser}")
-	private String createUserProcedure;
-
-
-	@Value("${procedure.findAllMatchingUser}")
-	private String findAllMatchingUser;
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 
 
@@ -45,8 +35,10 @@ public class UserDaoImpl implements UserDao {
 
 		try {
 			// Establishing Database connection
+			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
-			CallableStatement statement = connection.prepareCall("{call " + createUserProcedure + "}");
+			CallableStatement statement = connection.prepareCall("{call " + properties.getProperty("procedure.createUser") + "}");
 
 			statement.setString(1, student.getBannerId());
 			statement.setString(2, student.getFirstName());
@@ -94,10 +86,12 @@ public class UserDaoImpl implements UserDao {
 		User user = null;
 		try {
 			// Establishing Database connection
+			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			CallableStatement statement;
 
-			statement = connection.prepareCall("{call " + FindUserByBannerId + "}");
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.finduserBybannerId") + "}");
 			statement.setString(1, bannerId);
 
 			// Calling Store procedure for execution
@@ -131,8 +125,10 @@ public class UserDaoImpl implements UserDao {
 		List<User> listOfUser = new ArrayList<User>();
 		try {
 			// Establishing Database connection
+			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
-			CallableStatement statement = connection.prepareCall("{call " + findAllMatchingUser + "}");
+			CallableStatement statement = connection.prepareCall("{call " + properties.getProperty("procedure.findAllMatchingUser") + "}");
 
 			statement.setString(1, bannerId);
 

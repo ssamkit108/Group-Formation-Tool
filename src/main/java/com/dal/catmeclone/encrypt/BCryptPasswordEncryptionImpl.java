@@ -3,7 +3,6 @@ package com.dal.catmeclone.encrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component
 public class BCryptPasswordEncryptionImpl implements BCryptPasswordEncryption {
 	
 	private BCryptPasswordEncoder encoder;
