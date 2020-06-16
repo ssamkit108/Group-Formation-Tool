@@ -1,17 +1,21 @@
 package com.dal.catmeclone.admin;
 
-import java.sql.SQLException;	
+import java.sql.SQLException;
+
+import org.apache.logging.log4j.message.Message;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
@@ -20,24 +24,29 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class AdminController {
 	
-	@Autowired
-	AdminService adminService;
 	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
+	AdminService adminService = SystemConfig.instance().getAdminService();
 	
-	@GetMapping("/courseCreationForm")
+	
+	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	
+	@GetMapping("/admin/courseCreationForm")
 	public String getCourseForm(Model m) {
+		
 		m.addAttribute("courseCreationForm", new Course());
 		return "admin/courseCreationForm";
 	}
 	
-	@PostMapping("/courseCreationForm")
-	public String submitCourse(@ModelAttribute Course c, Model m) {
+	@PostMapping("/admin/courseCreationForm")
+	public String submitCourse(@ModelAttribute Course c, Model m, @ModelAttribute("message") Message message, BindingResult bindingResult) {
 	    
+		
 	    //If course already exists
 		try {
 			if(adminService.checkCourseExists(c)) {
-		    	return "admin/courseExists";
+				m.addAttribute("courseexists","Course already exists");
+				m.addAttribute("courseCreationForm", new Course());
+		    	return "admin/courseCreationForm";
 		    }
 		    } catch (SQLException | UserDefinedSQLException e) {
 		    	logger.error("Some Sql exception caught in admin controller");
@@ -54,7 +63,7 @@ public class AdminController {
 		return "admin/saveDetails";
 	}
 	
-	@GetMapping("/adminDashboard")
+	@GetMapping("/admin/adminDashboard")
 	public String getAdminDashboard(Model m) {
 		
 		m.addAttribute("adminDashboard",new Course());
@@ -68,7 +77,7 @@ public class AdminController {
 		return "admin/adminDashboard";
 	}
 	
-	@RequestMapping(value= "/adminDashboard", method=RequestMethod.POST, params="action=remove")
+	@RequestMapping(value= "/admin/adminDashboard", method=RequestMethod.POST, params="action=remove")
 		public String remCourse(@ModelAttribute Course c, Model m)  {
 			
 		    try {
@@ -81,9 +90,8 @@ public class AdminController {
 			return "admin/deleteDetails";
 		}
 	
-	@RequestMapping(value= "/adminDashboard", method=RequestMethod.POST, params="action=assign")
+	@RequestMapping(value= "/admin/adminDashboard", method=RequestMethod.POST, params="action=assign")
 	public String assignCourse(@ModelAttribute Course c, Model m) {
-		
 		
 		m.addAttribute("assignCourse", new User());
 		try {
@@ -94,10 +102,13 @@ public class AdminController {
 			return "error";
 		}
 		
-		//Check if instructor is already instructor for the course
+		//Check if instructor is already assigned for the course
 	    try {
 		if(adminService.checkInstructorForCourse(c)) {
-	    	return "admin/alreadyAssigned";
+			m.addAttribute("instructorassigned","Instructor is already assigned");
+			m.addAttribute("adminDashboard",new Course());
+			m.addAttribute("courses", adminService.getAllCourses());
+	    	return "admin/adminDashboard";
 	    }
 	    } catch (SQLException | UserDefinedSQLException e) {
 	    	logger.error("Some Sql exception caught in admin controller");
@@ -107,9 +118,10 @@ public class AdminController {
 		return "admin/assignInstructor";
 }
 	
-	@PostMapping("/assignInstructor")
+	@PostMapping("/admin/assignInstructor")
 	public String enrollInstructor(@ModelAttribute User u,@ModelAttribute Course c,Model m)
 	{  
+		
 	    try {
 		adminService.enrollInstructorForCourse(u, c, new Role("Instructor"));
 	    } catch (SQLException | UserDefinedSQLException e) {

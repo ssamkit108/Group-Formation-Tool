@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 
@@ -31,17 +32,13 @@ public class NotificationServiceImpl implements NotificationService {
 	
 	final Logger logger = LoggerFactory.getLogger(NotificationServiceImpl.class);
 	
-	@Value("${from.email}")
-	private String fromgmail;
 	
-	@Value("${from.password}")
+	private String fromgmail;
+
 	private String fromPassword;
 	
-	
-	@Value("${account.subject}")
 	private String subject;
 	
-	@Value("${login.url}")
 	private String loginurl;
 	
 
@@ -49,8 +46,12 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	public void sendNotificationToNewuser(User user,String password, Course course) {
 		// TODO Auto-generated method stub
-	
+		Properties property = SystemConfig.instance().getProperties();
 		
+		fromgmail = property.getProperty("from.email");
+		fromPassword = property.getProperty("from.password");
+		subject = property.getProperty("account.subject");
+		loginurl = property.getProperty("login.url");
 		
 		
 		String body ="<h2 >Hi "+user.getFirstName()+",</h2>"+
@@ -72,6 +73,13 @@ public class NotificationServiceImpl implements NotificationService {
 
 	public void sendNotificationForPassword(String BannerId,String password,String sendto) {
 		
+			Properties property = SystemConfig.instance().getProperties();
+		
+			fromgmail = property.getProperty("from.email");
+			fromPassword = property.getProperty("from.password");
+			
+			loginurl = property.getProperty("login.url");
+			
 	        String body ="<h2 >Hi "+BannerId+",</h2>"+
                     "<p>New Password for your account is geenrated successfully </p>"
                     + "<p>Please find below your login credential:&nbsp;</p>"
