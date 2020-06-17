@@ -1,10 +1,8 @@
 package com.dal.catmeclone.UserProfile;
 
 import java.sql.SQLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.Validation.ValidationException;
@@ -22,9 +19,7 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 @Controller
 public class ForgotPasswordController {
-
 	ForgotPasswordService forgotpasswordservice;
-
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@GetMapping("/forgotpassword")
@@ -71,7 +66,6 @@ public class ForgotPasswordController {
 				m = new ModelAndView("forgotpassword");
 				m.addObject("message", "The link is invalid or broken!");
 				return m;
-
 			}
 		} catch (Exception e) {
 			ModelAndView m;
@@ -92,6 +86,7 @@ public class ForgotPasswordController {
 
 			if (password.equals(confirmPassword)) {
 				forgotpasswordservice.setNewPassword(BannerID, password);
+
 				logger.info("Password for BannerID:" + BannerID + " has been changed Successfully");
 				m = new ModelAndView("login");
 				m.addObject("message", "Your password has been changed successfully");

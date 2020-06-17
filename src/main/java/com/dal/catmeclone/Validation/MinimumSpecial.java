@@ -4,20 +4,21 @@ import com.dal.catmeclone.model.User;
 
 public class MinimumSpecial implements ValidationPolicy {
 
-	String ruleValue="";
+	String ruleValue = "";
+
 	@Override
 	public void setValue(String ruleValue) {
-		this.ruleValue=ruleValue;
+		this.ruleValue = ruleValue;
 	}
 
 	@Override
 	public boolean isValid(User user) {
-		
-		String password=user.getPassword();
-		int count=0;
-		for(int i=0;i<password.length();i++) {
-			char ch=password.charAt(i);
-			if( !(ch>='A' && ch <= 'Z') && !(ch >= 'a' && ch <= 'z') && !(ch >= '0' && ch <= '9')) {
+
+		String password = user.getPassword();
+		int count = 0;
+		for (int i = 0; i < password.length(); i++) {
+			char ch = password.charAt(i);
+			if (!(ch >= 'A' && ch <= 'Z') && !(ch >= 'a' && ch <= 'z') && !(ch >= '0' && ch <= '9')) {
 				count++;
 			}
 		}
@@ -27,8 +28,7 @@ public class MinimumSpecial implements ValidationPolicy {
 
 	@Override
 	public String getError() {
-		return "Password must contain at least "+this.ruleValue+" Special Characters.";
+		return "Password must contain at least " + this.ruleValue + " Special Characters.";
 
 	}
-
 }
