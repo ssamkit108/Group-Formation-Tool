@@ -1,7 +1,7 @@
 package com.dal.catmeclone;
 
 
-import java.io.IOException;
+import java.io.IOException;	
 import java.util.Properties;
 
 import org.springframework.core.env.Environment;
@@ -18,6 +18,12 @@ import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.UserProfile.UserDaoImpl;
 import com.dal.catmeclone.UserProfile.UserService;
 import com.dal.catmeclone.UserProfile.UserServiceImpl;
+import com.dal.catmeclone.Validation.HistoryConstraintDaoImpl;
+import com.dal.catmeclone.Validation.HistoryContraintDao;
+import com.dal.catmeclone.Validation.PasswordRules;
+import com.dal.catmeclone.Validation.ValidatePassword;
+import com.dal.catmeclone.Validation.ValidationRulesDao;
+import com.dal.catmeclone.Validation.ValidationRulesDaoImpl;
 import com.dal.catmeclone.admin.AdminService;
 import com.dal.catmeclone.admin.AdminServiceImpl;
 import com.dal.catmeclone.admin.CourseInstructorAssignmentDao;
@@ -77,9 +83,10 @@ public class SystemConfig
 	private AuthenticationSuccessHandler authenticationSuccessHandler;
 	private Environment env;
 	private PropertiesConfigUtil propertiesConfig;
-	
-	
-	
+	private HistoryContraintDao historyConstraintDao;
+	private ValidationRulesDao validationRulesDao;
+	private PasswordRules passwordRules;
+	private ValidatePassword validatePassword;
 	
 	public SystemConfig() {
 		super();
@@ -102,10 +109,49 @@ public class SystemConfig
 		this.forgotPasswordDao = new ForgotPasswordDaoImpl();
 		this.userAuthentication = new UserAuthentication();
 		this.authenticationSuccessHandler = new SuccessHandler();
-		
+		this.historyConstraintDao=new HistoryConstraintDaoImpl();
+		this.validationRulesDao=new ValidationRulesDaoImpl();
+		this.passwordRules=new PasswordRules();
+		this.validatePassword=new ValidatePassword();
 	}
 
 	
+
+	public ValidatePassword getValidatePassword() {
+		return validatePassword;
+	}
+
+
+
+	public void setValidatePassword(ValidatePassword validatePassword) {
+		this.validatePassword = validatePassword;
+	}
+
+
+
+	public PasswordRules getPasswordRules() {
+		return passwordRules;
+	}
+
+
+
+	public void setPasswordRules(PasswordRules passwordRules) {
+		this.passwordRules = passwordRules;
+	}
+
+
+
+	public ValidationRulesDao getValidationRulesDao() {
+		return validationRulesDao;
+	}
+
+
+
+	public void setValidationRulesDao(ValidationRulesDao validationRulesDao) {
+		this.validationRulesDao = validationRulesDao;
+	}
+
+
 
 	// This is the way the rest of the application gets access to the System object.
 	public static SystemConfig instance()
@@ -363,6 +409,18 @@ public class SystemConfig
 
 
 
+	public HistoryContraintDao getHistoryConstraintDao() {
+		return historyConstraintDao;
+	}
+
+
+
+	public void setHistoryConstraintDao(HistoryContraintDao historyConstraintDao) {
+		this.historyConstraintDao = historyConstraintDao;
+	}
+
+
+
 	public Properties getProperties() {
 		return properties;
 	}
@@ -372,15 +430,5 @@ public class SystemConfig
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }
