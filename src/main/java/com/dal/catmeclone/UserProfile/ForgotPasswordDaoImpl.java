@@ -23,11 +23,9 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 	private Connection connection;
 	private String sendto;
 
-	// Getting instance of NotificationService
 	NotificationService notificationService;
 
-	// Getting instance of BCryptPasswordEncryption
-	private BCryptPasswordEncryption passwordencoder;
+	BCryptPasswordEncryption passwordencoder;
 
 	public boolean checkexist(String bannerid) throws Exception {
 		try {
@@ -59,7 +57,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 	@Override
 	public void UpdateToken(String BannerId, String token) throws Exception {
 		try {
-			notificationService=SystemConfig.instance().getNotificationService();
+			notificationService = SystemConfig.instance().getNotificationService();
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
@@ -71,7 +69,6 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 			appurl = System.getenv("appurl") + "/reset?token=" + token;
 			notificationService.sendNotificationForPassword(BannerId, appurl, sendto);
 			logger.info("The forgot password mail sent successfully");
-
 		} catch (SQLException e) {
 			logger.error("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
 			throw new Exception("There is SQL error in the forgot password Dao.");

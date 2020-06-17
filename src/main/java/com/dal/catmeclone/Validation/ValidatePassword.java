@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.ValidationException;
 
 public class ValidatePassword {
 	public String listoferror;

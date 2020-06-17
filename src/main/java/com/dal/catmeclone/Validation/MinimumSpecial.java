@@ -1,10 +1,14 @@
 package com.dal.catmeclone.Validation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dal.catmeclone.model.User;
 
 public class MinimumSpecial implements ValidationPolicy {
 
 	String ruleValue = "";
+	final Logger logger = LoggerFactory.getLogger(MinimumSpecial.class);
 
 	@Override
 	public void setValue(String ruleValue) {

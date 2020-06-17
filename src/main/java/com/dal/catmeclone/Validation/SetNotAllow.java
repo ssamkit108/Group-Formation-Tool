@@ -1,11 +1,16 @@
 package com.dal.catmeclone.Validation;
 
 import java.util.ArrayList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dal.catmeclone.model.User;
 
 public class SetNotAllow implements ValidationPolicy {
 
 	String ruleValue = "";
+	final Logger logger = LoggerFactory.getLogger(SetNotAllow.class);
 
 	@Override
 	public void setValue(String ruleValue) {

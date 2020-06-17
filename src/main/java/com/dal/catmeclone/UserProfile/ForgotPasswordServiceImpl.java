@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.Validation.ValidatePassword;
-import com.dal.catmeclone.Validation.ValidationException;
+import com.dal.catmeclone.exceptionhandler.ValidationException;
 import com.dal.catmeclone.model.User;
 import java.util.UUID;
 
@@ -18,24 +18,12 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
 	public void Resetlink(String username) throws Exception {
 		try {
-		forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
-		String token=GenerateToken();	
-		//This will update token in database and send mail to user
-		forgotpasswordDb.UpdateToken(username, token);
-		}
-		catch(Exception e) {
-			logger.error(e.getMessage());
-			throw new Exception(e.getMessage());
-		}
-	}
-
-	@Override
-	public boolean ValidateUser(String username) throws Exception {
-		try {
 			forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
 			if (forgotpasswordDb.checkexist(username)) {
 				logger.info("Banner Id:" + username + " validated in successfully.");
-				return true;
+				String token = GenerateToken();
+				forgotpasswordDb.UpdateToken(username, token);
+				logger.info("Banner Id:" + username + " token generated and sent an link to the user.");
 			} else {
 				logger.error("User:" + username + " is not validated in forgot password service.");
 				throw new Exception("Banner Id:" + username + " does not exist in our system.");
@@ -53,16 +41,14 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	@Override
 	public String validatetoken(String confirmationToken) throws Exception {
 		try {
-		forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
-		String bannerid=forgotpasswordDb.checktokenexist(confirmationToken);
-		if(!bannerid.isEmpty() && bannerid!=null) {
-			return bannerid;
-		}
-		else {
-			return "";
-		}
-		}
-		catch(Exception e) {
+			forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
+			String bannerid = forgotpasswordDb.checktokenexist(confirmationToken);
+			if (!bannerid.isEmpty() && bannerid != null) {
+				return bannerid;
+			} else {
+				return "";
+			}
+		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
 	}

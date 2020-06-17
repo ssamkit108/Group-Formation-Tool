@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -29,8 +31,9 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 		// TODO Auto-generated method stub
 		db = SystemConfig.instance().getDatabaseConnection();
 		connection = db.connect();
+		Properties properties = SystemConfig.instance().getProperties();
 		try {
-			statement = connection.prepareCall("{call enrollmentincourse(?,?,?)}");
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.enrollmentincourse") + "}");
 			statement.setString(1, Instructor.getBannerId());
 			statement.setInt(2, course.getCourseID());
 			statement.setString(3, role.getRoleName());
@@ -62,8 +65,9 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 		listOfUsers = new ArrayList<User>();
 		db = SystemConfig.instance().getDatabaseConnection();
 		connection = db.connect();
+		Properties properties = SystemConfig.instance().getProperties();
 		try {
-			statement = connection.prepareCall("{CALL GetAllUsers()}");
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.GetAllUsers") + "}");
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				listOfUsers.add(new User(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5)));
