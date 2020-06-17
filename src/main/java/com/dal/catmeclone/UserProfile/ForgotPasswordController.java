@@ -7,14 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
+import com.dal.catmeclone.Validation.ValidationException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 
@@ -23,17 +26,17 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 public class ForgotPasswordController {
 	
 	ForgotPasswordService forgotpasswordservice;
-	
+
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@GetMapping("/forgotpassword")
-	public String displayforgotpassword(Model model)
+	public String displayforgotpassword(Model model)	
 	{
 		return "forgotpassword";
 	}
 
 	@RequestMapping(value = "/forgotpassword", method = RequestMethod.POST) 
-	public ModelAndView processForgotpassword(
+	public ModelAndView processForgotpassword(	
 	@RequestParam(name = "username") String bannerID) throws SQLException, UserDefinedSQLException
 	{
 	try {
@@ -61,8 +64,9 @@ public class ForgotPasswordController {
 	}
 	
 	@RequestMapping(value = "/reset",  method= {RequestMethod.GET, RequestMethod.POST}) 
-	public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {
+	public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {	
 		try {
+		forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
         String bannerId=forgotpasswordservice.validatetoken(confirmationToken);
         ModelAndView m;
         if(!bannerId.isEmpty()  && !bannerId.equals(null))
@@ -89,8 +93,8 @@ public class ForgotPasswordController {
 	
 	
     @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
-    public ModelAndView resetPassword(ModelAndView modelAndView, @RequestParam("password") String password,
-    		@RequestParam("bannerid") String BannerID) throws Exception {
+    public ModelAndView resetPassword(ModelMap model,String bannerId, @RequestParam("password") String password,
+    		@RequestParam("bannerid") String BannerID,RedirectAttributes redirectAttributes) throws Exception {
     	try {
     		forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
 	    	ModelAndView m;
@@ -99,10 +103,16 @@ public class ForgotPasswordController {
 	    	m=new ModelAndView("login");
 	       	m.addObject("message","Your password has been changed successfully");
 	    	return m;
+	    	}catch(ValidationException e) {
+	            ModelAndView m=new ModelAndView("ResetPassword");
+	    		m.addObject("bannerid",BannerID);
+	    		m.addObject("message",e.getMessage());
+	    		return m;
 	    	}
 	    	catch(Exception e) {
 	        	ModelAndView m;
 	    		m=new ModelAndView("ResetPassword");
+	    		m.addObject("bannerid",BannerID);
 	    		m.addObject("message",e.getMessage());
 	    		return m;
 	    		
