@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import org.apache.logging.log4j.message.Message;
 import org.slf4j.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

@@ -44,15 +44,6 @@ public class CourseManagementTest {
 		assertEquals(mock.getAllCourses(), c);
 	};	
 	
-	@SuppressWarnings("deprecation")
-	@Test
-	public void checkInstructorForCourseTest() throws UserDefinedSQLException, SQLException{
-		Course u = new Course();
-		CourseMock mock = new CourseMock();
-		u.setCourseID(123);
-		u.setCourseName("sdc");
-		Assert.isTrue(mock.checkInstructorForCourse(new Course(u.getCourseID(), u.getCourseName())));
-	}
 	
 	@SuppressWarnings("deprecation")
 	@Test

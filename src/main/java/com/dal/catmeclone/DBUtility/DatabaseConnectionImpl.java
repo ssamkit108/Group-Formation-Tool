@@ -45,6 +45,7 @@ public class DatabaseConnectionImpl implements DataBaseConnection{
 		database = System.getenv("spring.datasource.name");
 		databaseurl = System.getenv("spring.datasource.url");
 		connectionProperty = System.getenv("datasource.connection.properties");
+		
 		//drivername = propertiesUtil.getProperty("spring.datasource.driver-class-name");
 	}
 
@@ -65,6 +66,7 @@ public class DatabaseConnectionImpl implements DataBaseConnection{
 		try {
 			// Setting up the connection
 			String databaseConnectionURL = databaseurl + database + "?" + connectionProperty;
+			System.out.println(databaseConnectionURL);
 			databaseConnection = DriverManager.getConnection(databaseConnectionURL, user, password);
 
 		} catch (SQLException e) {

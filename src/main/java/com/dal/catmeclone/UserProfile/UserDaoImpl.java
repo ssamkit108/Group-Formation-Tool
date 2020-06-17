@@ -15,9 +15,6 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 public class UserDaoImpl implements UserDao {
 	
@@ -158,6 +155,40 @@ public class UserDaoImpl implements UserDao {
 		return listOfUser;
 	}
 
+	@Override
+	public List<User> getAllUsers() throws SQLException, UserDefinedSQLException{
+		List<User> c;
+		ResultSet rs;
+		c = new ArrayList<User>();
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		connection = DBUtil.connect();
+		try {
+		statement = connection.prepareCall("{CALL GetAllUsers()}");
+		rs = statement.executeQuery();
+		while(rs.next()) {
+			c.add(new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4), rs.getString(5)));
+		}
+		logger.info("Retrieved successfully from the database");
+		}
+		catch(Exception e) {
+			logger.error("Unable to execute query to get all courses");
+		}
+		finally
+		{
+			if (statement != null)
+			{
+				statement.close();
+			}
+			if (connection != null)
+			{
+				if (!connection.isClosed())
+				{
+					connection.close();
+				}
+			}
+		}
+		return c;
+	}
 	
 
 }
