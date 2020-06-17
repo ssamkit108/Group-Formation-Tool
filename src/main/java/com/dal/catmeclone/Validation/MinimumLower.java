@@ -25,7 +25,7 @@ public class MinimumLower implements ValidationPolicy {
 			}
 		}
 		boolean result = count >= Integer.parseInt(this.ruleValue);
-		logger.info("Password lowercase validation. Result : " + result);
+		logger.info("Password Minimum lowercase validation. Result : " + result);
 		return result;
 	}
 

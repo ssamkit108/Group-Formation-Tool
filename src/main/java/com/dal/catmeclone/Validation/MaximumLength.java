@@ -20,7 +20,7 @@ public class MaximumLength implements ValidationPolicy {
 	public boolean isValid(User user) {
 		String password=user.getPassword();
 		boolean result = password.length() <= Integer.parseInt(this.ruleValue);
-		logger.info("Password length validation. Result : " + result);
+		logger.info("Password Maximum length validation. Result : " + result);
 		return result;
 		}
 

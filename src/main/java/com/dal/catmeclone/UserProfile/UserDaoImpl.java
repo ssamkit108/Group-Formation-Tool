@@ -25,7 +25,7 @@ public class UserDaoImpl implements UserDao {
 
 	private DataBaseConnection DBUtil;
 	private BCryptPasswordEncryption passwordencoder;
-
+	
 	private CallableStatement statement;
 	private Connection connection;
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
@@ -39,6 +39,7 @@ public class UserDaoImpl implements UserDao {
 			// Establishing Database connection
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
 			passwordencoder=SystemConfig.instance().getBcryptPasswordEncrption();
+
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			CallableStatement statement = connection.prepareCall("{call " + properties.getProperty("procedure.createUser") + "}");
