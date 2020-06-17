@@ -4,29 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.DBUtility.DataBaseConnection;
-import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.Validation.ValidatePassword;
 import com.dal.catmeclone.Validation.ValidationException;
 import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
-
 import com.dal.catmeclone.model.User;
 
-
 public class UserServiceImpl implements UserService {
-
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	ValidatePassword validatepassword;
 	UserDao userDb ;
-
 	Boolean flag=false;
-	
 	final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
@@ -55,7 +45,6 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
-
 	@Override
 	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException {
 		userDb = SystemConfig.instance().getUserDao();
