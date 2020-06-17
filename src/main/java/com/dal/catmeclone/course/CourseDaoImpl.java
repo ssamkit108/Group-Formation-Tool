@@ -88,15 +88,15 @@ public class CourseDaoImpl implements CoursesDao {
 	@Override
 	public ArrayList<Course> getallcourses() throws SQLException, UserDefinedSQLException {
 		ArrayList<Course> allcrclst = new ArrayList<Course>();
-		CallableStatement stored_pro = null;
+		CallableStatement statement = null;
 		try {
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			logger.info("querying database to get all the course");
-			stored_pro = connection.prepareCall("{call" + properties.getProperty("procedure.getAllCourse") + "}");
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.getAllCourse") + "}");
 
-			ResultSet result = stored_pro.executeQuery();
+			ResultSet result = statement.executeQuery();
 			Course c = null;
 			while (result.next()) {
 				c = new Course();
@@ -108,7 +108,7 @@ public class CourseDaoImpl implements CoursesDao {
 			logger.error("Exception occured:" + e.getLocalizedMessage());
 			return null;
 		} finally {
-			DBUtil.terminateStatement(stored_pro);
+			DBUtil.terminateStatement(statement);
 			if (connection != null) {
 				DBUtil.terminateConnection();
 			}
