@@ -94,15 +94,27 @@ public class ForgotPasswordController {
 	
     @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
     public ModelAndView resetPassword(ModelMap model,String bannerId, @RequestParam("password") String password,
-    		@RequestParam("bannerid") String BannerID,RedirectAttributes redirectAttributes) throws Exception {
+    		@RequestParam("bannerid") String BannerID,
+    		@RequestParam("confirmPassword") String confirmPassword,
+    		RedirectAttributes redirectAttributes) throws Exception {
     	try {
     		forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
 	    	ModelAndView m;
-	    	forgotpasswordservice.NewPassword(BannerID, password); 	
-	       	logger.info("Password for BannerID:"+BannerID+" has been changed Successfully");
-	    	m=new ModelAndView("login");
-	       	m.addObject("message","Your password has been changed successfully");
-	    	return m;
+	    	
+	    	if(password.equals(confirmPassword)) {
+		    	forgotpasswordservice.NewPassword(BannerID, password); 	
+		       	logger.info("Password for BannerID:"+BannerID+" has been changed Successfully");
+		    	m=new ModelAndView("login");
+		       	m.addObject("message","Your password has been changed successfully");
+		    	return m;	
+	    	}
+	    	else {
+	            m=new ModelAndView("ResetPassword");
+	    		m.addObject("bannerid",BannerID);
+	    		m.addObject("message","Please enter password and confirm password same.");
+	    		return m;
+	    	}
+
 	    	}catch(ValidationException e) {
 	            ModelAndView m=new ModelAndView("ResetPassword");
 	    		m.addObject("bannerid",BannerID);
