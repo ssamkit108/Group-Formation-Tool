@@ -7,10 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
@@ -19,13 +17,13 @@ import com.dal.catmeclone.model.User;
 public class HistoryConstraintDaoImpl implements HistoryContraintDao {
 
 	final Logger logger = LoggerFactory.getLogger(HistoryConstraintDaoImpl.class);
-	private DataBaseConnection DBUtil ;
+	private DataBaseConnection DBUtil;
 	private CallableStatement statement;
 	private Connection connection;
 	ResultSet rs;
 
 	private List<String> PasswordList;
-	
+
 	@Override
 	public List<String> fetchPasswordList(User u, int limit) throws UserDefinedSQLException, SQLException {
 		try {
@@ -37,7 +35,7 @@ public class HistoryConstraintDaoImpl implements HistoryContraintDao {
 			statement.setString(1, u.getBannerId());
 			statement.setInt(2, limit);
 			rs = statement.executeQuery();
-			
+
 			while (rs.next()) {
 				PasswordList.add(rs.getString("password"));
 			}
@@ -45,11 +43,11 @@ public class HistoryConstraintDaoImpl implements HistoryContraintDao {
 		} catch (UserDefinedSQLException e) {
 			logger.error("Error in loading Password History. ", e);
 			throw new UserDefinedSQLException(e.getLocalizedMessage());
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			logger.error("Error in loading Password History. ", e);
 			throw new SQLException(e.getLocalizedMessage());
 
-		}finally {
+		} finally {
 			try {
 				DBUtil.terminateStatement(statement);
 				if (connection != null) {
@@ -58,7 +56,7 @@ public class HistoryConstraintDaoImpl implements HistoryContraintDao {
 			} catch (UserDefinedSQLException e) {
 				logger.error("Error in loading Password History. ", e);
 			}
-			
+
 		}
 
 	}
