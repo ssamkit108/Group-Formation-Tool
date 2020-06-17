@@ -4,34 +4,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.CourseException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 
-/*
- * 
- */
-
 public class CourseServiceImpl implements CourseService {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(CourseServiceImpl.class);
-	
+
 	CoursesDao courseDB;
-	
+
 	@Override
-	public Course getCourse(int courseId) throws UserDefinedSQLException,CourseException {
+	public Course getCourse(int courseId) throws UserDefinedSQLException, CourseException {
 		// Calling DAO Method to get the course
 		courseDB = SystemConfig.instance().getCourseDao();
-		Course course=null;
+		Course course = null;
 		LOGGER.info("Calling Dao to get the course");
-		course = courseDB.getCourse(courseId);		
+		course = courseDB.getCourse(courseId);
 		return course;
 	}
-
 
 	@Override
 	public ArrayList<Course> getallcourses() throws SQLException, UserDefinedSQLException {
@@ -42,7 +34,4 @@ public class CourseServiceImpl implements CourseService {
 		courseList = courseDB.getallcourses();
 		return courseList;
 	}
-
-	
-
 }
