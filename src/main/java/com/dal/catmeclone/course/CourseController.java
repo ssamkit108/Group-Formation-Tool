@@ -163,7 +163,7 @@ public class CourseController {
 			{
 				modelview = new ModelAndView("guest_courses");
 				session.setAttribute("enrolled",false);
-				ArrayList<Course> allcourses = null;
+				ArrayList<Course> allcourses = new ArrayList<Course>();
 				try {
 					allcourses = courseService.getallcourses();
 					if(!allcourses.isEmpty())

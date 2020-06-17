@@ -77,9 +77,7 @@ public class CourseDaoImpl implements CoursesDao {
 			stored_pro = connection.prepareCall("{call"+ properties.getProperty("procedure.getCoursesForUser")+"}");
 			
 			stored_pro.setString(1,user.getBannerId());
-
-
-			stored_pro.setString(1,user.getBannerId());
+			
 			ResultSet result = stored_pro.executeQuery();
 
 			Course c = null;
