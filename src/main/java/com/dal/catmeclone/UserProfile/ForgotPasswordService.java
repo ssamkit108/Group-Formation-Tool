@@ -11,5 +11,5 @@ public interface ForgotPasswordService {
 
 	public String validatetoken(String confirmationToken) throws Exception;
 
-	public void NewPassword(String username,String password) throws Exception;
+	public void setNewPassword(String username,String password) throws Exception;
 }

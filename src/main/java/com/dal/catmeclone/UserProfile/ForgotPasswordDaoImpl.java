@@ -65,6 +65,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 	@Override
 	public void UpdateToken(String BannerId, String token) throws Exception {	
 		try {
+			
 			notificationService=SystemConfig.instance().getNotificationService();
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();

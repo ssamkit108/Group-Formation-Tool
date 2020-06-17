@@ -29,9 +29,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	public void Resetlink(String username) throws Exception {	
 		try {
 		forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
-
-		String token=GenerateToken();
-		
+		String token=GenerateToken();	
 		//This will update token in database and send mail to user
 		forgotpasswordDb.UpdateToken(username, token);
 		}
@@ -68,7 +66,6 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	public String validatetoken(String confirmationToken) throws Exception {
 		try {
 		forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
-
 		String bannerid=forgotpasswordDb.checktokenexist(confirmationToken);
 		if(!bannerid.isEmpty() && bannerid!=null) {
 			return bannerid;
@@ -83,7 +80,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	}
 
 	@Override
-	public void NewPassword(String username, String password) throws Exception {
+	public void setNewPassword(String username, String password) throws Exception {
 		try {
 			User u=new User();
 			u.setBannerId(username);
