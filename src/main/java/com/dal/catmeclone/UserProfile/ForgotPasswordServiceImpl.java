@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
+import com.dal.catmeclone.Validation.ValidatePassword;
+import com.dal.catmeclone.Validation.ValidationException;
+import com.dal.catmeclone.model.User;
+
 import java.util.UUID;
 
 
@@ -19,7 +23,8 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	final Logger logger = LoggerFactory.getLogger(ForgotPasswordServiceImpl.class);
 
 	ForgotPasswordDao forgotpasswordDb;
-	
+	ValidatePassword validatepassword;
+
 	
 	public void Resetlink(String username) throws Exception {	
 		try {
@@ -80,11 +85,16 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	@Override
 	public void NewPassword(String username, String password) throws Exception {
 	try {
+		User u=new User();
+		u.setBannerId(username);
+		u.setPassword(password);
+		validatepassword=SystemConfig.instance().getValidatePassword();
 		forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
-		if(password.length()<8) {
-			throw new Exception("Please enter a valid password");
-		}
+		validatepassword.validatepassword(u);
 		forgotpasswordDb.SetNewPassword(username, password);
+	}
+	catch(ValidationException e) {
+		throw new ValidationException(e.getMessage());
 	}catch(SQLException e) {
 		throw new SQLException(e.getMessage());
 	}

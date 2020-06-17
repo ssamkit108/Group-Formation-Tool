@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
+import com.dal.catmeclone.Validation.ValidatePassword;
+import com.dal.catmeclone.Validation.ValidationException;
 import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
@@ -20,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-	
+	ValidatePassword validatepassword;
 	UserDao userDb ;
 
 	Boolean flag=false;
@@ -30,18 +32,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean Create(User u) throws Exception {
 		userDb = SystemConfig.instance().getUserDao();
+		validatepassword=SystemConfig.instance().getValidatePassword();
 		try {
-			//validating user details
-			if (User.isBannerIDValid(u.getBannerId()) &&
-					 User.isEmailValid(u.getEmail()) &&
-					 User.isFirstNameValid(u.getFirstName()) &&
-					 User.isLastNameValid(u.getLastName()) &&
-					 !u.getPassword().isEmpty())
-			{
-				LOGGER.info("Accessing DAO layer to create user to given banner id");
-				flag=userDb.createUser(u);
-			}
+			validatepassword.validatepassword(u);
+			LOGGER.info("Accessing DAO layer to create user to given banner id");
+			flag=userDb.createUser(u);
 			return flag;
+		}catch(ValidationException e) {
+			flag=false;
+			throw new ValidationException(e.getMessage());
 		}catch(DuplicateUserRelatedException e) {
 			logger.error(e.getMessage());
 			throw new DuplicateUserRelatedException(e.getMessage());
