@@ -7,5 +7,4 @@ import com.dal.catmeclone.model.User;
 
 public interface HistoryContraintDao {
 	public List<String> fetchPasswordList(User u, int limit) throws UserDefinedSQLException, SQLException;
-
 }

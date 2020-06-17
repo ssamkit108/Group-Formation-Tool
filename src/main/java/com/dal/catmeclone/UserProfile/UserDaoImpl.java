@@ -23,7 +23,6 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean createUser(User student) throws UserDefinedSQLException, DuplicateUserRelatedException {
-
 		try {
 			// Establishing Database connection
 			DBUtil = SystemConfig.instance().getDatabaseConnection();

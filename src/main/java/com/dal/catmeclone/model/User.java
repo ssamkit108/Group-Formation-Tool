@@ -1,9 +1,5 @@
 package com.dal.catmeclone.model;
 
-	
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class User {
 
 	private String bannerId;
@@ -14,23 +10,10 @@ public class User {
 	private Role userRoles;
 	private String token;
 
-
-	/**
-	 * 
-	 */
 	public User() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @param bannerId
-	 * @param firstName
-	 * @param lastName
-	 * @param password
-	 * @param email
-	 * @param userRoles
-	 */
 	public User(String bannerId, String firstName, String lastName, String password, String email, Role userRoles) {
 		super();
 		this.bannerId = bannerId;
@@ -40,9 +23,6 @@ public class User {
 		this.email = email;
 		this.userRoles = userRoles;
 	}
-	
-
-	
 
 	public User(String bannerId, String firstName, String lastName, String password, String email) {
 		super();
@@ -66,95 +46,60 @@ public class User {
 		this.bannerId = bannerId;
 	}
 
-	/**
-	 * @return the bannerId
-	 */
 	public String getBannerId() {
 		return bannerId;
 	}
 
-	/**
-	 * @param bannerId the bannerId to set
-	 */
 	public void setBannerId(String bannerId) {
 		this.bannerId = bannerId;
 	}
 
-	/**
-	 * @return the firstName
-	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
-	/**
-	 * @param firstName the firstName to set
-	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-	/**
-	 * @return the lastName
-	 */
 	public String getLastName() {
 		return lastName;
 	}
 
-	/**
-	 * @param lastName the lastName to set
-	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
-	/**
-	 * @return the password
-	 */
 	public String getPassword() {
 		return password;
 	}
 
-	/**
-	 * @param password the password to set
-	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	/**
-	 * @return the email
-	 */
 	public String getEmail() {
 		return email;
 	}
 
-	/**
-	 * @param email the email to set
-	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	/**
-	 * @return the userRoles
-	 */
 	public Role getUserRoles() {
 		return userRoles;
 	}
 
-	/**
-	 * @param userRoles the userRoles to set
-	 */
 	public void setUserRoles(Role userRoles) {
 		this.userRoles = userRoles;
 	}
+
 	public String gettoken() {
 		return token;
 	}
-	
+
 	public void setToken(String token) {
-		this.token=token;
+		this.token = token;
 	}
 
 	@Override
@@ -189,6 +134,5 @@ public class User {
 		} else if (!email.equals(other.email))
 			return false;
 		return true;
-	}
-
+	}	
 }

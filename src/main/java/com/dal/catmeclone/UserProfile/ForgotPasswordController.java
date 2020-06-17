@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
-import com.dal.catmeclone.Validation.ValidationException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.ValidationException;
 
 @Controller
 public class ForgotPasswordController {
@@ -32,18 +32,11 @@ public class ForgotPasswordController {
 			throws SQLException, UserDefinedSQLException {
 		try {
 			forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
-			if (forgotpasswordservice.ValidateUser(bannerID)) {
 				forgotpasswordservice.Resetlink(bannerID);
 				ModelAndView m;
 				m = new ModelAndView("forgotpassword");
 				m.addObject("message", "Password is sent on your registred email address.");
 				return m;
-			} else {
-				ModelAndView m;
-				m = new ModelAndView("forgotpassword");
-				m.addObject("message", "User does not exist.Please enter the valid BannerID");
-				return m;
-			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			ModelAndView m = new ModelAndView("forgotpassword");

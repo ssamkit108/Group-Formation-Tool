@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
 import org.slf4j.*;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
@@ -26,9 +28,10 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException {
 		listOfCourses = new ArrayList<Course>();
 		db = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
 		connection = db.connect();
 		try {
-			statement = connection.prepareCall("{CALL GetAllCourses()}");
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.getAllCourse") + "}");
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				listOfCourses.add(new Course(resultSet.getInt(1), resultSet.getString(2)));
@@ -55,8 +58,11 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 		// TODO Auto-generated method stub
 		// Connect to database
 		db = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
 		connection = db.connect();
-		statement = connection.prepareCall("{CALL DeleteCourse(?)}");
+		statement = connection
+				.prepareCall("{call " + properties.getProperty("procedure.DeleteCourse") + "}");
+
 
 		try {
 			statement.setInt(1, courseID);
@@ -85,9 +91,10 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 
 		// Connect to database
 		db = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
 		connection = db.connect();
-		statement = connection.prepareCall("{CALL Createcourse(?,?)}");
-
+		statement = connection
+				.prepareCall("{call " + properties.getProperty("procedure.Createcourse") + "}");
 		try {
 			statement.setInt(1, course.getCourseID());
 			statement.setString(2, course.getCourseName());
@@ -112,15 +119,15 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
 		boolean flag = true;
-		// Connect to database
 		db = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
 		connection = db.connect();
-		statement = connection.prepareCall("{CALL checkInstructorAssignedForCourse(?)}");
+		statement = connection
+				.prepareCall("{call " + properties.getProperty("procedure.checkInstructorAssignedForCourse") + "}");
 
 		try {
 			statement.setInt(1, course.getCourseID());
 			resultSet = statement.executeQuery();
-			// Check if resultset is Empty
 			if (resultSet.next() == false) {
 				flag = false;
 			}
@@ -146,15 +153,15 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
 		boolean flag = true;
-		// Connect to database
 		db = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
 		connection = db.connect();
-		statement = connection.prepareCall("{CALL CheckCourseAlreadyExists(?)}");
+		statement = connection
+				.prepareCall("{call " + properties.getProperty("procedure.CheckCourseAlreadyExists") + "}");
 
 		try {
 			statement.setInt(1, course.getCourseID());
 			resultSet = statement.executeQuery();
-			// Check if resultset is Empty
 			if (resultSet.next() == false) {
 				flag = false;
 			}

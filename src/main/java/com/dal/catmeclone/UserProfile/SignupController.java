@@ -11,9 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
-import com.dal.catmeclone.Validation.ValidationException;
 import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.ValidationException;
 import com.dal.catmeclone.model.User;
 
 @Controller
@@ -52,7 +52,6 @@ public class SignupController {
 				m = new ModelAndView("signup");
 				m.addObject("message", "Password and confirm password should be same.");
 				return m;
-
 			}
 		} catch (DuplicateUserRelatedException e) {
 			ModelAndView m = new ModelAndView("signup");
