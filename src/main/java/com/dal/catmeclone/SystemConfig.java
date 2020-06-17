@@ -40,6 +40,10 @@ import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryptionImpl;
 import com.dal.catmeclone.notification.NotificationService;
 import com.dal.catmeclone.notification.NotificationServiceImpl;
+import com.dal.catmeclone.questionmanagement.QuestionManagementDao;
+import com.dal.catmeclone.questionmanagement.QuestionManagementDaoImpl;
+import com.dal.catmeclone.questionmanagement.QuestionManagementService;
+import com.dal.catmeclone.questionmanagement.QuestionManagementServiceImpl;
 
 
 /*
@@ -74,6 +78,8 @@ public class SystemConfig
 	private ForgotPasswordService forgotPasswordService;
 	private ForgotPasswordDao forgotPasswordDao;
 	private UserAuthentication userAuthentication;
+	private QuestionManagementDao questionManagementDao;
+	private QuestionManagementService questionManagementService;
 	private AuthenticationSuccessHandler authenticationSuccessHandler;
 	private Environment env;
 	private PropertiesConfigUtil propertiesConfig;
@@ -102,6 +108,8 @@ public class SystemConfig
 		this.forgotPasswordDao = new ForgotPasswordDaoImpl();
 		this.userAuthentication = new UserAuthentication();
 		this.authenticationSuccessHandler = new SuccessHandler();
+		this.questionManagementService = new QuestionManagementServiceImpl();
+		this.questionManagementDao = new QuestionManagementDaoImpl();
 		
 	}
 
@@ -371,6 +379,30 @@ public class SystemConfig
 
 	public void setProperties(Properties properties) {
 		this.properties = properties;
+	}
+
+
+
+	public QuestionManagementDao getQuestionManagementDao() {
+		return questionManagementDao;
+	}
+
+
+
+	public void setQuestionManagementDao(QuestionManagementDao questionManagementDao) {
+		this.questionManagementDao = questionManagementDao;
+	}
+
+
+
+	public QuestionManagementService getQuestionManagementService() {
+		return questionManagementService;
+	}
+
+
+
+	public void setQuestionManagementService(QuestionManagementService questionManagementService) {
+		this.questionManagementService = questionManagementService;
 	}
 	
 	

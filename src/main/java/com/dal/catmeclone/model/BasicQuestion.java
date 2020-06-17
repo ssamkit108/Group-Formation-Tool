@@ -1,11 +1,14 @@
 package com.dal.catmeclone.model;
 
+import java.util.Date;
+
 public class BasicQuestion {
 	
 	private String questionTitle;
 	private String questionText;
 	private QuestionType questionType;
-
+	private Date creationDate;
+	private User createdByInstructor;
 	
 	
 	public BasicQuestion() {
@@ -42,6 +45,30 @@ public class BasicQuestion {
 	public void setQuestionType(QuestionType questionType) {
 		this.questionType = questionType;
 	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+
+
+	public User getCreatedByInstructor() {
+		return createdByInstructor;
+	}
+
+
+
+	public void setCreatedByInstructor(User createdByInstructor) {
+		this.createdByInstructor = createdByInstructor;
+	}
+	
+	
+	
+	
 	
 
 }
