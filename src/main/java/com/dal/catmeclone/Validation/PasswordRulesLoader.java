@@ -14,9 +14,9 @@ import com.dal.catmeclone.SystemConfig;
 
 
 @Service
-public class PasswordRules {
+public class PasswordRulesLoader {
 	
-	final Logger logger = LoggerFactory.getLogger(PasswordRules.class);
+	final Logger logger = LoggerFactory.getLogger(PasswordRulesLoader.class);
 
 	//This will container only objects of rules which need to be validate
 	private List<ValidationPolicy> ListofRules;
@@ -26,7 +26,7 @@ public class PasswordRules {
     
     ValidationRulesDao ValidationDAO;
     
-    public PasswordRules(){
+    public PasswordRulesLoader(){
     	ListofRules=new ArrayList<ValidationPolicy>();
     	PrepareListMap();
     }
@@ -43,14 +43,15 @@ public class PasswordRules {
 	
 	public void CreateActiveRulesList() {
 		ValidationDAO=SystemConfig.instance().getValidationRulesDao();
+		ListofRules.clear();
 		List<String> rules=ValidationDAO.getRulesFromConfig();
 		for(String rule: rules) {
 			ValidationPolicy ValidationRule=HashMapofRules.get(rule);
-
 			String ruleValue=ValidationDAO.getRulesValueFromConfig(rule);
 			ValidationRule.setValue(ruleValue);
 			ListofRules.add(ValidationRule);
 		}
+		logger.info("Activated Rules are:"+ListofRules.toString());
 		logger.info("Active Password validation rules fetched from Database.");
 	}
 	

@@ -40,22 +40,21 @@ public class ForgotPasswordController {
 	@RequestParam(name = "username") String bannerID) throws SQLException, UserDefinedSQLException
 	{
 	try {
-	forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
-	if(forgotpasswordservice.ValidateUser(bannerID)) {
-		forgotpasswordservice.Resetlink(bannerID);
-		ModelAndView m;
-		m = new ModelAndView("forgotpassword");
-		m.addObject("message", "Password is sent on your registred email address.");
-		return m;
-	}
-	else {
-		ModelAndView m;
-		m = new ModelAndView("forgotpassword");
-		m.addObject("message", "User does not exist.Please enter the valid BannerID");
-		return m;
-	}
-	}
-	catch(Exception e) {
+		forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
+		if(forgotpasswordservice.ValidateUser(bannerID)) {
+			forgotpasswordservice.Resetlink(bannerID);
+			ModelAndView m;
+			m = new ModelAndView("forgotpassword");
+			m.addObject("message", "Password is sent on your registred email address.");
+			return m;
+		}
+		else {
+			ModelAndView m;
+			m = new ModelAndView("forgotpassword");
+			m.addObject("message", "User does not exist.Please enter the valid BannerID");
+			return m;
+			}
+		}catch(Exception e) {
 		logger.error(e.getMessage());
 		ModelAndView m = new ModelAndView("forgotpassword");
 		m.addObject("message",e.getMessage());
@@ -127,7 +126,6 @@ public class ForgotPasswordController {
 	    		m.addObject("bannerid",BannerID);
 	    		m.addObject("message",e.getMessage());
 	    		return m;
-	    		
 	    	}
     	}
 }

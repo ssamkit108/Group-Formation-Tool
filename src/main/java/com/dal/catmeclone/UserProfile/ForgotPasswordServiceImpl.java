@@ -84,22 +84,22 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
 	@Override
 	public void NewPassword(String username, String password) throws Exception {
-	try {
-		User u=new User();
-		u.setBannerId(username);
-		u.setPassword(password);
-		validatepassword=SystemConfig.instance().getValidatePassword();
-		forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
-		validatepassword.validatepassword(u);
-		forgotpasswordDb.SetNewPassword(username, password);
-	}
-	catch(ValidationException e) {
-		throw new ValidationException(e.getMessage());
-	}catch(SQLException e) {
-		throw new SQLException(e.getMessage());
-	}
-	catch(Exception e) {
-		throw new Exception(e.getLocalizedMessage());
-	}
+		try {
+			User u=new User();
+			u.setBannerId(username);
+			u.setPassword(password);
+			validatepassword=SystemConfig.instance().getValidatePassword();
+			forgotpasswordDb=SystemConfig.instance().getForgotPasswordDao();
+			validatepassword.validatepassword(u);
+			forgotpasswordDb.SetNewPassword(username, password);
+		}
+		catch(ValidationException e) {
+			throw new ValidationException(e.getMessage());
+		}catch(SQLException e) {
+			throw new SQLException(e.getMessage());
+		}
+		catch(Exception e) {
+			throw new Exception(e.getLocalizedMessage());
+		}
 	}
 }
