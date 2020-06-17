@@ -40,8 +40,6 @@ public class UserAuthentication implements AuthenticationManager{
 		User flag= null;
 		List<GrantedAuthority> authorize = new ArrayList<GrantedAuthority>();
 
-		if (User.isBannerIDValid(bannerId))
-		{
 			User user = new User();
 			user.setBannerId(bannerId);
 			user.setPassword(password);
@@ -82,7 +80,7 @@ public class UserAuthentication implements AuthenticationManager{
 				return token;
 
 			}
-		}
+		
 
 
 		return null;

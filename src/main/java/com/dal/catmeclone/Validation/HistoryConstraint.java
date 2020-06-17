@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
 
@@ -14,6 +15,7 @@ public class HistoryConstraint implements ValidationPolicy{
 	
 	final Logger logger = LoggerFactory.getLogger(HistoryConstraint.class);
 	HistoryContraintDao historyConstraintDao;
+	private BCryptPasswordEncryption passwordencoder;
 	private String ruleValue;
 	private List<String> passwordlist;
 
@@ -27,11 +29,17 @@ public class HistoryConstraint implements ValidationPolicy{
 			boolean result=false;
 			int limit=Integer.parseInt(ruleValue);
 			historyConstraintDao=SystemConfig.instance().getHistoryConstraintDao();
+			passwordencoder=SystemConfig.instance().getBcryptPasswordEncrption();
 			passwordlist = historyConstraintDao.fetchPasswordList(user,limit);
-			result=!(passwordlist.contains(user.getPassword()));
-			logger.info("Password History constraint validation. Result : " + result);
-			return result;
-			
+			for(String password:passwordlist) {
+				result=passwordencoder.matches(user.getPassword(), password);
+				if(result) {
+					logger.info("Does Password matched in the history Result : " + result);
+					return !result;
+				}
+			}
+			logger.info("Does Password matched in the history. Result : " + result);
+			return !result;
 		} catch (UserDefinedSQLException e) {
 			logger.error("Error in loading Password History. ", e);
 			throw new UserDefinedSQLException(e.getLocalizedMessage());

@@ -35,9 +35,6 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 	//Getting instance of BCryptPasswordEncryption
 	private BCryptPasswordEncryption passwordencoder;
 
-
-	
-
 	public boolean checkexist(String bannerid) throws Exception {
 		try {
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
@@ -77,7 +74,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 			statement.setString(2, BannerId);
 			statement.execute();
 			String appurl;
-			appurl="http://localhost:8080/"+"reset?token="+token;
+			appurl=System.getenv("appurl")+"/reset?token="+token;
 			notificationService.sendNotificationForPassword(BannerId, appurl, sendto);
 			logger.info("The forgot password mail sent successfully");
 
@@ -89,7 +86,6 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
             throw new Exception(e.getLocalizedMessage());
 		} finally {
 			try {
-				// Terminating the connection
 				DBUtil.terminateStatement(statement);
 				if (connection != null) {
 					DBUtil.terminateConnection();

@@ -21,14 +21,14 @@ public class MinimumLength implements ValidationPolicy {
 		// TODO Auto-generated method stub
 		String password=user.getPassword();
 		boolean result = password.length() >= Integer.parseInt(this.ruleValue);
-		logger.info("Password length validation. Result : " + result);
+		logger.info("Password Minimum length validation. Result : " + result);
 		return result;
 	}
 
 	@Override
 	public String getError() {
 		// TODO Auto-generated method stub
-		return "Password must be at least "  + this.ruleValue + " characters long";
+		return "Password must be at least "  + this.ruleValue + " characters long.";
 	}
 
 }

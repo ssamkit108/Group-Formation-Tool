@@ -20,7 +20,7 @@ import com.dal.catmeclone.UserProfile.UserService;
 import com.dal.catmeclone.UserProfile.UserServiceImpl;
 import com.dal.catmeclone.Validation.HistoryConstraintDaoImpl;
 import com.dal.catmeclone.Validation.HistoryContraintDao;
-import com.dal.catmeclone.Validation.PasswordRules;
+import com.dal.catmeclone.Validation.PasswordRulesLoader;
 import com.dal.catmeclone.Validation.ValidatePassword;
 import com.dal.catmeclone.Validation.ValidationRulesDao;
 import com.dal.catmeclone.Validation.ValidationRulesDaoImpl;
@@ -85,7 +85,7 @@ public class SystemConfig
 	private PropertiesConfigUtil propertiesConfig;
 	private HistoryContraintDao historyConstraintDao;
 	private ValidationRulesDao validationRulesDao;
-	private PasswordRules passwordRules;
+	private PasswordRulesLoader passwordRules;
 	private ValidatePassword validatePassword;
 	
 	public SystemConfig() {
@@ -111,7 +111,7 @@ public class SystemConfig
 		this.authenticationSuccessHandler = new SuccessHandler();
 		this.historyConstraintDao=new HistoryConstraintDaoImpl();
 		this.validationRulesDao=new ValidationRulesDaoImpl();
-		this.passwordRules=new PasswordRules();
+		this.passwordRules=new PasswordRulesLoader();
 		this.validatePassword=new ValidatePassword();
 	}
 
@@ -129,13 +129,13 @@ public class SystemConfig
 
 
 
-	public PasswordRules getPasswordRules() {
+	public PasswordRulesLoader getPasswordRules() {
 		return passwordRules;
 	}
 
 
 
-	public void setPasswordRules(PasswordRules passwordRules) {
+	public void setPasswordRules(PasswordRulesLoader passwordRules) {
 		this.passwordRules = passwordRules;
 	}
 

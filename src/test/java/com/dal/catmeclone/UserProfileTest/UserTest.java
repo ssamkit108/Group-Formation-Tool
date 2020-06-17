@@ -77,13 +77,4 @@ public class UserTest
 	}
 	
 	
-	@Test
-	public void isEmailValidTest()
-	{
-		Assert.isTrue(User.isEmailValid("bob@gmail.com"));
-		Assert.isTrue(!User.isEmailValid(null));
-		Assert.isTrue(!User.isEmailValid(""));
-		Assert.isTrue(!User.isEmailValid("ssss"));
-		Assert.isTrue(!User.isEmailValid("@gma.com"));
-	}	
 }

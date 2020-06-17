@@ -11,10 +11,11 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 public class ValidatePassword {
 	public String listoferror;
-	private PasswordRules PasswordValidation;
+	private PasswordRulesLoader PasswordValidation;
 	final Logger logger = LoggerFactory.getLogger(ValidatePassword.class);
 
 	public void validatepassword(User user) throws ValidationException, UserDefinedSQLException, SQLException {
+		
 		PasswordValidation=SystemConfig.instance().getPasswordRules();
 		PasswordValidation.CreateActiveRulesList();
 		List<ValidationPolicy> rules=PasswordValidation.getValidationRulesList();
