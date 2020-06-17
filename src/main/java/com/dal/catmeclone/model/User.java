@@ -14,7 +14,6 @@ public class User {
 	private Role userRoles;
 	private String token;
 
-	private static final String email_regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
 	/**
 	 * 
@@ -192,39 +191,4 @@ public class User {
 		return true;
 	}
 
-	public static boolean isBannerIDValid(String bannerID) {
-		if (null == bannerID) {
-			return false;
-		}
-		return !bannerID.isEmpty();
-	}
-
-
-
-	public static boolean isFirstNameValid(String name) {
-		if (null == name) {
-			return false;
-		}
-		return !name.isEmpty();
-	}
-
-	public static boolean isLastNameValid(String name) {
-		if (null == name) {
-			return false;
-		}
-		return !name.isEmpty();
-	}
-
-
-	public static boolean isEmailValid(String email) {
-		if (null == email || email.isEmpty()) {
-			return false;
-		}
-
-
-		Pattern pattern = Pattern.compile(email_regex);
-		Matcher matcher = pattern.matcher(email);
-		return matcher.matches();
-
-	}
 }
