@@ -26,13 +26,41 @@ h1 {
 	<div class="row justify-content-center">
 	<div class="col-3">
 	
-	<a class="btn btn-primary">View Question Titles</a>
+	<a class="btn btn-primary" th:href="@{/questionmanager/question}">Create Question</a>
 	
 	</div>
-	
 	<div class="col-3">
 	
-	<a class="btn btn-primary" th:href="@{/questionmanager/question}">Create Question</a>
+	<form action="#" th:action="@{/questionmanager}" th:object="${questionList}" method=post>
+            <input type="hidden" th:value="${questionList}" name="questionList"/><button type="submit" name="action" value="sortbytitle">Sort by Title</button>
+            <input type="hidden" th:value="${questionList}" name="questionList"/><button type="submit" name="action" value="sortbydate">Sort by Date</button>
+    </form>
+    <table>
+    	<thead>
+        	<tr>
+            	<th> Question Title: </th>
+            	<th> Question Text: </th>
+            	<th> Date created: </th>
+            	
+        	</tr>
+    	</thead>
+      <tbody>
+    	<tr th:if="${questionList.empty}">
+            <td colspan="2"> No Courses Available </td>
+        </tr>
+        <tr th:each="ques : ${questionList}">
+            <td><span th:text="${ques.questionTitle}"> Title </span></td>
+            <td><span th:text="${ques.questionText}"> Text </span></td>
+            <td><span th:text="${ques.date}"> Date </span></td>
+            
+            <td>
+            <form onSubmit = "return confirm('Confirm Delete?')" action="#" th:action="@{/questionmanager}" th:object="${questionList}" method=post>
+            <input type="hidden" th:value="${ques.questionTitle}" name="questionTitle"/><input type="hidden" th:value="${ques.questionText}" name="questionText"/><input type="hidden" th:value="${ques.date}" name="questionDate"/><button type="submit" name="action" value="remove">Remove</button>
+            </form>
+            </td>
+        </tr>
+      </tbody>
+	</table>   
 	
 	</div>
 	</div>

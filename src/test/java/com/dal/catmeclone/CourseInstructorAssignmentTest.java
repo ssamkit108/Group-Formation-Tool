@@ -23,4 +23,14 @@ public class CourseInstructorAssignmentTest {
 		CourseInstructorAssignmentMock mock= new CourseInstructorAssignmentMock();
 		Assert.isTrue(mock.enrollInstructorForCourse(u,c,r));
 	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void checkInstructorForCourseTest() throws UserDefinedSQLException, SQLException{
+		Course u = new Course();
+		CourseInstructorAssignmentMock mock= new CourseInstructorAssignmentMock();
+		u.setCourseID(123);
+		u.setCourseName("sdc");
+		Assert.isTrue(mock.checkInstructorForCourse(new Course(u.getCourseID(), u.getCourseName())));
+	}
 }

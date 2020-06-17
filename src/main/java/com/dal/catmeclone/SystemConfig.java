@@ -40,6 +40,8 @@ import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryptionImpl;
 import com.dal.catmeclone.notification.NotificationService;
 import com.dal.catmeclone.notification.NotificationServiceImpl;
+import com.dal.catmeclone.questionmanagement.QuestionManagementDao;
+import com.dal.catmeclone.questionmanagement.QuestionManagementDaoImpl;
 
 
 /*
@@ -77,8 +79,7 @@ public class SystemConfig
 	private AuthenticationSuccessHandler authenticationSuccessHandler;
 	private Environment env;
 	private PropertiesConfigUtil propertiesConfig;
-	
-	
+	private QuestionManagementDao questionManagementDao;
 	
 	
 	public SystemConfig() {
@@ -102,6 +103,7 @@ public class SystemConfig
 		this.forgotPasswordDao = new ForgotPasswordDaoImpl();
 		this.userAuthentication = new UserAuthentication();
 		this.authenticationSuccessHandler = new SuccessHandler();
+		this.questionManagementDao = new QuestionManagementDaoImpl();
 		
 	}
 
@@ -371,6 +373,18 @@ public class SystemConfig
 
 	public void setProperties(Properties properties) {
 		this.properties = properties;
+	}
+
+
+
+	public QuestionManagementDao getQuestionManagementDao() {
+		return questionManagementDao;
+	}
+
+
+
+	public void setQuestionManagementDao(QuestionManagementDao questionManagementDao) {
+		this.questionManagementDao = questionManagementDao;
 	}
 	
 	

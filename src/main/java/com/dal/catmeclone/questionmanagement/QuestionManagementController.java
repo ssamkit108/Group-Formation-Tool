@@ -1,8 +1,10 @@
 package com.dal.catmeclone.questionmanagement;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +12,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.BasicQuestion;
 import com.dal.catmeclone.model.MultipleChoiceQuestion;
-import com.dal.catmeclone.model.Option;
 import com.dal.catmeclone.model.QuestionType;
+import com.dal.catmeclone.model.User;
 
 
 @RequestMapping("/questionmanager")
@@ -22,17 +27,68 @@ import com.dal.catmeclone.model.QuestionType;
 public class QuestionManagementController {
 
 	private Logger log = Logger.getLogger(QuestionManagementController.class.getName());
-
-
-	@GetMapping("")
-	public String getCourseQuestionPage() {
+	
+	QuestionManagementDao quest = SystemConfig.instance().getQuestionManagementDao();
+	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public String viewQuestionTitlePage(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		try {
+			model.addAttribute("questionList", quest.getAllQuestionByUser(new User(username)));
+		} catch (SQLException | UserDefinedSQLException e) {
+			model.addAttribute("errormessage",e.getLocalizedMessage());
+			return "error";
+		}
 		return "questionmanager/questionmanagerhome";
 	}
+	
+	@RequestMapping(value= "", method=RequestMethod.POST, params="action=sortbytitle")
+	public String viewQuestionSortedByTitle(@ModelAttribute BasicQuestion q, Model m)  {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+	    try {
+			m.addAttribute("questionList", quest.getSortedQuestionsByTitle(new User(username)));
+		} catch (SQLException | UserDefinedSQLException e) {
+			m.addAttribute("errormessage",e.getLocalizedMessage());
+			return "error";
+		}
+	    return "questionmanager/questionmanagerhome";
+	}
+	
+	@RequestMapping(value= "", method=RequestMethod.POST, params="action=sortbydate")
+	public String viewQuestionSortedByDate(@ModelAttribute BasicQuestion q, Model m)  {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+	    try {
+			m.addAttribute("questionList", quest.getSortedQuestionsByDate(new User(username)));
+		} catch (SQLException | UserDefinedSQLException e) {
+			m.addAttribute("errormessage",e.getLocalizedMessage());
+			return "error";
+		}
+	    return "questionmanager/questionmanagerhome";
+	}
+	
+	@RequestMapping(value= "", method=RequestMethod.POST, params="action=remove")
+	public String removeQuestion(@RequestParam(name = "questionTitle") String questionTitle, @RequestParam(name = "questionText") String questionText, Model m) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		
+		 try {
+			 quest.deleteQuestionTitle(new User(username), new BasicQuestion(questionTitle, questionText));
+			} catch (SQLException | UserDefinedSQLException e) {
+				m.addAttribute("errormessage",e.getLocalizedMessage());
+				return "error";
+			}
+		 return "redirect:questionmanager";
+	}
+	
 
 	@GetMapping("/getCreateQuestionHome")
 	public String getcreateQuestionPage(Model model) {
 		return "QuestionCreateHome";
 	}
+	
 	
 	@RequestMapping(value = "/question", method = RequestMethod.GET)
 	public String getQuestionPage(Model model) {
