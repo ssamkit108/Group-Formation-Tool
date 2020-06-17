@@ -53,15 +53,12 @@ public class UserServiceImpl implements UserService {
 			logger.error(e.getLocalizedMessage());
 			throw new Exception(e.getLocalizedMessage());
 		}
-
 	}
 	
 
 	@Override
 	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException {
-		
 		userDb = SystemConfig.instance().getUserDao();
-		
 		// Service layer method making a call to data access layer to retrieve the matching list of user
 		List<User> listOfUser= new ArrayList<User>();
 		LOGGER.info("Accessing DAO layer to get matching list of user to given banner id");
