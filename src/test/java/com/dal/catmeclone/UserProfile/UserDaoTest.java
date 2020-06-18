@@ -1,4 +1,4 @@
-package com.dal.catmeclone.UserProfileTest;
+package com.dal.catmeclone.UserProfile;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;

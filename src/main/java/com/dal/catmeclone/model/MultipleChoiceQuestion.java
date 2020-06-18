@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.dal.catmeclone.questionmanagement.QuestionManagementController;
-
 public class MultipleChoiceQuestion extends BasicQuestion{
 
 	private List<Option> optionList=new ArrayList<Option>();

@@ -1,4 +1,4 @@
-package com.dal.catmeclone;
+package com.dal.catmeclone.admin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;

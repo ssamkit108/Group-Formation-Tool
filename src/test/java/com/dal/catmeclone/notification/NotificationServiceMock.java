@@ -8,16 +8,12 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.notification.NotificationService;
-import com.dal.catmeclone.notification.NotificationServiceImpl;
 
 
 public class NotificationServiceMock implements NotificationService {
