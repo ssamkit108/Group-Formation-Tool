@@ -13,7 +13,7 @@ public class CourseMock implements CourseManagementDao {
 	@Override
 	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException {
 		List<Course> l = new ArrayList<Course>();
-		l.add(new Course(123,"sdc"));
+		l.add(new Course(123, "sdc"));
 		return l;
 	}
 
@@ -33,4 +33,3 @@ public class CourseMock implements CourseManagementDao {
 	}
 
 }
-

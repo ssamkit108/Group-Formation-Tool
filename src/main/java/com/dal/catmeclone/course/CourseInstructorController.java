@@ -37,7 +37,6 @@ public class CourseInstructorController {
 		try {
 			courseenrollmentservice.enrollStudentForCourse(file, course);
 		} catch (FileRelatedException e) {
-			// TODO Auto-generated catch block
 			attributes.addFlashAttribute("message", e.getMessage());
 			return "redirect:/mycourse/" + course.getCourseID();
 		}

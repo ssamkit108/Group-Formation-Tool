@@ -1,51 +1,29 @@
-/**
- * 
- */
 package com.dal.catmeclone.DBUtility;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
-
-import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
-/**
- * @author Mayank
- *
- */
-
-public class DatabaseConnectionImpl implements DataBaseConnection{
-
+public class DatabaseConnectionImpl implements DataBaseConnection {
 
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
-
 	private String user;
 	private String password;
 	private String database;
 	private String databaseurl;
 	private String connectionProperty;
-	
-
 	private Connection databaseConnection;
-	
-	
+
 	public DatabaseConnectionImpl() {
-	
 		user = System.getenv("spring.datasource.username");
 		password = System.getenv("spring.datasource.password");
 		database = System.getenv("spring.datasource.name");
 		databaseurl = System.getenv("spring.datasource.url");
 		connectionProperty = System.getenv("datasource.connection.properties");
-		
 	}
 
 	/**
@@ -90,7 +68,7 @@ public class DatabaseConnectionImpl implements DataBaseConnection{
 			}
 		} catch (SQLException e) {
 
-			//Logging the error
+			// Logging the error
 			logger.error(e.getMessage());
 
 		}
@@ -98,23 +76,19 @@ public class DatabaseConnectionImpl implements DataBaseConnection{
 		return true;
 
 	}
-	
+
 	@Override
 	public void terminateStatement(CallableStatement statement) throws UserDefinedSQLException
 
-
-    {
-          if (statement != null)
-          {
-              try {
-                statement.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                logger.error("Error Occured in Closing Statement");
-                throw new UserDefinedSQLException("Some Error Occured");
-            }
-          }
-    }
-
+	{
+		if (statement != null) {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				logger.error("Error Occured in Closing Statement");
+				throw new UserDefinedSQLException("Some Error Occured");
+			}
+		}
+	}
 
 }

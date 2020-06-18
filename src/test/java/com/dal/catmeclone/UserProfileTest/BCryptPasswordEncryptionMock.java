@@ -11,7 +11,7 @@ public class BCryptPasswordEncryptionMock implements BCryptPasswordEncryption {
 
 	@Override
 	public boolean matches(String rawPassword, String encryptedPassword) {
-		if(encryptedPassword == null || encryptedPassword.isEmpty() || rawPassword==null || rawPassword.isEmpty()) {
+		if (encryptedPassword == null || encryptedPassword.isEmpty() || rawPassword == null || rawPassword.isEmpty()) {
 			return false;
 		}
 		return rawPassword.equals(encryptedPassword);

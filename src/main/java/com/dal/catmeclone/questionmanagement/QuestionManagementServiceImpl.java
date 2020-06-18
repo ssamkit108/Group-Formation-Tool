@@ -1,7 +1,6 @@
 package com.dal.catmeclone.questionmanagement;
 
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.BasicQuestion;
 import com.dal.catmeclone.model.MultipleChoiceQuestion;
@@ -28,7 +27,6 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 
 	@Override
 	public boolean ifQuestionTitleandTextExists(BasicQuestion basicQuestion) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		QuestionManagementDao questionManagemetDao = SystemConfig.instance().getQuestionManagementDao();
 		boolean isQuestionExists = questionManagemetDao.isQuestionExistForUserWithTitleandText(basicQuestion);
 		return isQuestionExists;
