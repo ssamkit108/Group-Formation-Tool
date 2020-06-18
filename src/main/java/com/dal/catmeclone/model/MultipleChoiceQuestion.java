@@ -35,15 +35,29 @@ public class MultipleChoiceQuestion extends BasicQuestion {
 				+ ", getQuestionText()=" + getQuestionText() + ", getQuestionType()=" + getQuestionType() + "]";
 	}
 
+
 	public void filterOptions() {
 		Iterator<Option> it = optionList.iterator();
 		while (it.hasNext()) {
 			Option option = it.next();
-			if (option.getOptionText().trim().isEmpty()) {
-				LOGGER.info("Removing the empty option from the list" + option.toString());
+			if (option.getOptionText().trim().isEmpty() || option.getOptionValue() == -1) {
+				LOGGER.info("Removing the empty option ( Text  or value ) from the list" + option.toString());
 				it.remove();
 			}
 		}
+	}
+
+	public boolean areAllOptionValid() {
+		boolean optionvalid = false;
+		Iterator<Option> it = optionList.iterator();
+		while (it.hasNext()) {
+			Option option = it.next();
+			if (!option.getOptionText().trim().isEmpty() && option.getOptionValue() != -1) {
+				optionvalid = true;
+				break;
+			}
+		}
+		return optionvalid;
 	}
 
 }
