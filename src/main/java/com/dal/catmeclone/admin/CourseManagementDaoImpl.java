@@ -55,14 +55,11 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 
 	@Override
 	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		// Connect to database
 		db = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = db.connect();
-		statement = connection
-				.prepareCall("{call " + properties.getProperty("procedure.DeleteCourse") + "}");
-
+		statement = connection.prepareCall("{call " + properties.getProperty("procedure.DeleteCourse") + "}");
 
 		try {
 			statement.setInt(1, courseID);
@@ -87,14 +84,11 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 
 	@Override
 	public boolean insertCourse(Course course) throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
-
 		// Connect to database
 		db = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = db.connect();
-		statement = connection
-				.prepareCall("{call " + properties.getProperty("procedure.Createcourse") + "}");
+		statement = connection.prepareCall("{call " + properties.getProperty("procedure.Createcourse") + "}");
 		try {
 			statement.setInt(1, course.getCourseID());
 			statement.setString(2, course.getCourseName());
@@ -115,8 +109,6 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 		}
 		return true;
 	}
-
-	
 
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {

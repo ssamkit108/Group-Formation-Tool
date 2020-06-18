@@ -19,7 +19,7 @@ import com.dal.catmeclone.model.User;
 @Component
 public class UserAuthentication implements AuthenticationManager {
 
-	private Interface_AuthenticateUserDao validate;
+	private AuthenticateUserDao validate;
 	private BCryptPasswordEncryption passwordencoder;
 
 	@Override
@@ -31,7 +31,6 @@ public class UserAuthentication implements AuthenticationManager {
 		passwordencoder = SystemConfig.instance().getBcryptPasswordEncrption();
 		User flag = null;
 		List<GrantedAuthority> authorize = new ArrayList<GrantedAuthority>();
-
 		User user = new User();
 		user.setBannerId(bannerId);
 		user.setPassword(password);
@@ -39,7 +38,6 @@ public class UserAuthentication implements AuthenticationManager {
 		try {
 			flag = validate.authenticateUser(user);
 		} catch (SQLException | UserDefinedSQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (flag != null) {

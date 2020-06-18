@@ -22,11 +22,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/signup", "/forgotpassword", "/", "/reset", "/reset-password", "/reset_password")
 				.permitAll().and().authorizeRequests().antMatchers("/admin/**").hasAnyAuthority("admin")
-				.antMatchers("/courses", "/allcourses", "/mycourse/**", "/questionmanager/**").hasAnyAuthority("user").anyRequest()
-				.authenticated().and().formLogin().loginPage("/login").permitAll().successHandler(authSuccessHandler())
-				.and().logout().logoutUrl("/logout").permitAll().and().exceptionHandling()
-				.accessDeniedPage("/access-denied");
-
+				.antMatchers("/courses", "/allcourses", "/mycourse/**", "/questionmanager/**").hasAnyAuthority("user")
+				.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll()
+				.successHandler(authSuccessHandler()).and().logout().logoutUrl("/logout").permitAll().and()
+				.exceptionHandling().accessDeniedPage("/access-denied");
 	}
 
 	public AuthenticationSuccessHandler authSuccessHandler() {
