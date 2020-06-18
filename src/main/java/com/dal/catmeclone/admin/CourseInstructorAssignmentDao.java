@@ -1,8 +1,6 @@
 package com.dal.catmeclone.admin;
 
 import java.sql.SQLException;
-import java.util.List;
-
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;

@@ -1,9 +1,8 @@
 package com.dal.catmeclone.courses;
 
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import com.dal.catmeclone.course.CoursesDao;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 
@@ -14,9 +13,6 @@ public class CourseDaoMock implements CoursesDao {
 	ArrayList<Course>  courseList  = new ArrayList<Course>();
 	
 	
-	
-	
-
 	public CourseDaoMock() {
 		super();
 		this.courseid =100;
@@ -26,7 +22,6 @@ public class CourseDaoMock implements CoursesDao {
 		
 	
 	}
-
 
 
 	@Override

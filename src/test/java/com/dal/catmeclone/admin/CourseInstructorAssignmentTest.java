@@ -1,4 +1,4 @@
-package com.dal.catmeclone;
+package com.dal.catmeclone.admin;
 
 import java.sql.SQLException;
 

@@ -1,4 +1,4 @@
-package com.dal.catmeclone.UserProfileTest;
+package com.dal.catmeclone.UserProfile;
 
 
 

@@ -167,6 +167,7 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 		// If user is not existing. create a profile for user and enroll user in course
 		else {
 			String password = GeneratePassword();
+			String passwordtobesend = password;
 			user.setPassword(bcryptEncoder.encryptPassword(password));
 			bcryptEncoder.encryptPassword(password);
 			boolean isCreated = false;
@@ -183,7 +184,7 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 				courseEnrollDB.enrollUserForCourse(user, course, role);
 				LOGGER.info(
 						"User with BannerId: " + user.getBannerId() + " enroll sucessfully as student to the course");
-				notificationService.sendNotificationToNewuser(user, password, course);
+				notificationService.sendNotificationToNewuser(user, passwordtobesend, course);
 				LOGGER.info("Notification email send to user");
 				recordsSuccessMessage.add("User with BannerId: " + user.getBannerId()
 						+ " created and enroll sucessfully as student to the course");
