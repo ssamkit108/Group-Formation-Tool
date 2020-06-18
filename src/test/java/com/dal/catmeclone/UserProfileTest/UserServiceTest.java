@@ -13,11 +13,10 @@ class UserServiceTest {
 	@Test
 	void CreateTest() {
 		UserValidateMock check = new UserValidateMock();
-
+		UserDaoMock DbMock=new UserDaoMock();
 		User u = new User();
 		u.setBannerId("");
 		Assert.isTrue(!check.validate(u));
-
 		u = new User();
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
@@ -25,7 +24,6 @@ class UserServiceTest {
 		u.setLastName("Shaw");
 		u.setPassword("12345");
 		Assert.isTrue(check.validate(u));
-
+		Assert.isTrue(DbMock.createUser(u));
 	}
-
 }

@@ -14,29 +14,32 @@ class ForgotPasswordServiceTest {
 
 	@Test
 	void validatetoken() {
-		User u = new User();
+		User u=new User();
 		u.setBannerId("B00852212");
 		u.setToken("$10$P2FBvrlVJaS1/aEHzfKmtuojZollAx/F1g0DnvO7QvNv7/AUyihDu");
-
+		
 		Assert.isTrue(u.gettoken().equals("$10$P2FBvrlVJaS1/aEHzfKmtuojZollAx/F1g0DnvO7QvNv7/AUyihDu"));
 	}
-
+	
+	
+	
 	@Test
-	void ResetlinkTest() {
-		String token = UUID.randomUUID().toString();
-		NotificationMock email = new NotificationMock();
-		Assert.isTrue(email.sendemail("B00852292", token));
+	void ResetlinkTest() { 
+    String token= UUID.randomUUID().toString();
+	NotificationMock email= new NotificationMock();
+	Assert.isTrue(email.sendemail("B00852292", token));
 	}
-
+				
 	@Test
-	void ValidateUserTest() {
-		UserValidateMock check = new UserValidateMock();
+	void ValidateUserTest() {	
+		UserValidateMock check=new UserValidateMock();
 
-		User u = new User();
+		User u=new User();
 		u.setBannerId("");
 		Assert.isTrue(!check.validate(u));
-
-		u = new User();
+		
+		
+		u=new User();
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
 		u.setFirstName("Bob");
@@ -45,10 +48,10 @@ class ForgotPasswordServiceTest {
 		Assert.isTrue(check.validate(u));
 
 	}
-
+	
 	@Test
 	void GeneratePasswordTest() {
-		String token = UUID.randomUUID().toString();
+        String token= UUID.randomUUID().toString();
 
 		Assert.isTrue(!token.equals("password"));
 	}
