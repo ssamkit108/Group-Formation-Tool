@@ -39,25 +39,25 @@ public class CourseController {
 		try {
 			Course course = courseService.getCourse(courseid);
 			if (course != null) {
-				Role r = courseEnrollmentService.getUserRoleForCourse(new User(username), course);
+				Role role = courseEnrollmentService.getUserRoleForCourse(new User(username), course);
 
-				if (r == null) {
+				if (role == null) {
 					attributes.addAttribute("InvalidAccessMessage", "Course " + courseid
 							+ "doesn't exist in system or access to course " + courseid + " is not provided for you");
 					responsepage = "redirect:/access-denied";
-				} else if (r.getRoleName().equals("Instructor")) {
+				} else if (role.getRoleName().equals("Instructor")) {
 
 					session.setAttribute("role", "Instructor");
 					session.setAttribute("course", course);
 					responsepage = "CI-course";
 
-				} else if (r.getRoleName().equals("Student")) {
+				} else if (role.getRoleName().equals("Student")) {
 
 					session.setAttribute("role", "Student");
 					session.setAttribute("course", course);
 					responsepage = "coursestudentpage";
 
-				} else if (r.getRoleName().equals("TA")) {
+				} else if (role.getRoleName().equals("TA")) {
 
 					session.setAttribute("role", "TA");
 					session.setAttribute("course", course);
@@ -66,12 +66,10 @@ public class CourseController {
 			}
 
 		} catch (UserDefinedSQLException e) {
-			// TODO Auto-generated catch block
 			attributes.addAttribute("InvalidAccessMessage", "Course " + courseid
 					+ "doesn't exist in system or access to course " + courseid + " is not provided");
 			return "redirect:/access-denied";
 		} catch (CourseException e1) {
-			// TODO Auto-generated catch block
 			attributes.addAttribute("InvalidAccessMessage " + courseid + "doesn't exist in system or access to course "
 					+ courseid + " is not provided");
 			responsepage = "redirect:/access-denied";
@@ -98,7 +96,6 @@ public class CourseController {
 				model.addAttribute("errormessage", "Some Error occured");
 
 			}
-
 			modelview = new ModelAndView("guest_courses");
 			if (!allcourses.isEmpty()) {
 				modelview.addObject("all_courses", allcourses);
@@ -153,7 +150,6 @@ public class CourseController {
 			}
 
 		} catch (UserDefinedSQLException e) {
-			// TODO Auto-generated catch block
 			modelview = new ModelAndView("error");
 			model.addAttribute("errormessage", "Some Error occured");
 

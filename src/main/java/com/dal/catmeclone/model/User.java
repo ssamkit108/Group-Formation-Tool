@@ -134,5 +134,5 @@ public class User {
 		} else if (!email.equals(other.email))
 			return false;
 		return true;
-	}	
+	}
 }
