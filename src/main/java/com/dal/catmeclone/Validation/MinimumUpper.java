@@ -7,7 +7,7 @@ import com.dal.catmeclone.model.User;
 public class MinimumUpper implements ValidationPolicy {
 
 	private String ruleValue;
-	final Logger logger = LoggerFactory.getLogger(MinimumUpper.class);
+	final Logger LOGGER = LoggerFactory.getLogger(MinimumUpper.class);
 
 	@Override
 	public void setValue(String ruleValue) {
@@ -25,7 +25,7 @@ public class MinimumUpper implements ValidationPolicy {
 			}
 		}
 		boolean result = count >= Integer.parseInt(this.ruleValue);
-		logger.info("Password UpperCase validation. Result : " + result);
+		LOGGER.info("Password UpperCase validation. Result : " + result);
 		return result;
 	}
 

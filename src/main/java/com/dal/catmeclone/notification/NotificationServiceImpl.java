@@ -29,19 +29,17 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public void sendNotificationToNewuser(User user, String password, Course course) {
-		
 
 		Properties property = SystemConfig.instance().getProperties();
 		subject = property.getProperty("account.subject");
 		appurl = property.getProperty("app.url");
 
 		String body = property.getProperty("accountcreation.email.body");
-		body =  body.replace("FIRSTNAME", user.getFirstName());
-		body =  body.replace("BANNERID", user.getBannerId());
-		body =  body.replace("PASSWORD", user.getPassword());
-		body =  body.replace("URL", appurl+"/login");
-		body =  body.replace("COURSE", String.valueOf(course.getCourseID()));
-		
+		body = body.replace("FIRSTNAME", user.getFirstName());
+		body = body.replace("BANNERID", user.getBannerId());
+		body = body.replace("PASSWORD", user.getPassword());
+		body = body.replace("URL", appurl + "/login");
+		body = body.replace("COURSE", String.valueOf(course.getCourseID()));
 
 		send(user.getEmail(), subject, body);
 
@@ -55,11 +53,11 @@ public class NotificationServiceImpl implements NotificationService {
 		fromPassword = property.getProperty("from.password");
 
 		appurl = System.getenv("loginurl");
-		
+
 		String body = property.getProperty("forgotpassword.email.body");
-		body=body.replaceAll("BANNERID", bannerId);
-		body=body.replace("URL", password);
-		
+		body = body.replaceAll("BANNERID", bannerId);
+		body = body.replace("URL", password);
+
 		String subject = "Forgot password";
 		send(sendto, subject, body);
 	}
@@ -91,7 +89,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 		MimeMessage message = new MimeMessage(session);
 		try {
-			
+
 			message.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
 			message.setSubject(sub);
 			message.setText(msg, "UTF-8", "html");

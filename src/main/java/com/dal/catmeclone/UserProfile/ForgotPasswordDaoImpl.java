@@ -17,7 +17,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 
 	private DataBaseConnection DBUtil;
 
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	private CallableStatement statement;
 	private Connection connection;
@@ -44,7 +44,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 				return false;
 			}
 		} catch (Exception e) {
-			logger.error("There is error about closing connection in the forgot password Dao.");
+			LOGGER.error("There is error about closing connection in the forgot password Dao.");
 			throw new Exception("There is error about closing connection in the forgot password Dao.");
 		} finally {
 			DBUtil.terminateStatement(statement);
@@ -68,12 +68,12 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 			String appurl;
 			appurl = System.getenv("appurl") + "/reset?token=" + token;
 			notificationService.sendNotificationForPassword(BannerId, appurl, sendto);
-			logger.info("The forgot password mail sent successfully");
+			LOGGER.info("The forgot password mail sent successfully");
 		} catch (SQLException e) {
-			logger.error("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
+			LOGGER.error("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
 			throw new Exception("There is SQL error in the forgot password Dao.");
 		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage());
+			LOGGER.error(e.getLocalizedMessage());
 			throw new Exception(e.getLocalizedMessage());
 		} finally {
 			try {
@@ -82,8 +82,8 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 					DBUtil.terminateConnection();
 				}
 			} catch (Exception e) {
-				logger.error("There is error about closing connection in the forgot password Dao.");
-				logger.error(e.getLocalizedMessage());
+				LOGGER.error("There is error about closing connection in the forgot password Dao.");
+				LOGGER.error(e.getLocalizedMessage());
 				throw new Exception(e.getLocalizedMessage());
 			}
 		}
@@ -102,10 +102,10 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 			statement.setString(2, passwordencoder.encryptPassword(password));
 			statement.execute();
 		} catch (SQLException e) {
-			logger.error("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
+			LOGGER.error("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
 			throw new Exception("Sorry..Password could not able to reset. Try after sometime.");
 		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage());
+			LOGGER.error(e.getLocalizedMessage());
 			throw new Exception(e.getLocalizedMessage());
 		} finally {
 			try {
@@ -115,8 +115,8 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 					DBUtil.terminateConnection();
 				}
 			} catch (Exception e) {
-				logger.error("There is error about closing connection in the forgot password Dao.");
-				logger.error(e.getLocalizedMessage());
+				LOGGER.error("There is error about closing connection in the forgot password Dao.");
+				LOGGER.error(e.getLocalizedMessage());
 				throw new Exception(e.getLocalizedMessage());
 			}
 		}
@@ -150,8 +150,8 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 					DBUtil.terminateConnection();
 				}
 			} catch (Exception e) {
-				logger.error("There is error about closing connection in the forgot password Dao.");
-				logger.error(e.getLocalizedMessage());
+				LOGGER.error("There is error about closing connection in the forgot password Dao.");
+				LOGGER.error(e.getLocalizedMessage());
 				throw new Exception(e.getLocalizedMessage());
 			}
 		}

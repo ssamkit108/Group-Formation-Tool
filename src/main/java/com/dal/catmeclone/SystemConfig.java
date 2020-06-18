@@ -52,9 +52,9 @@ public class SystemConfig {
 
 	private static SystemConfig uniqueInstance = null;
 	private Properties properties;
-	
+
 	private String resourceFilename = "application.properties";
-	
+
 	private AdminService adminService;
 	private CourseInstructorAssignmentDao courseInstructorAssignmentDao;
 	private CourseManagementDao courseManagementDao;

@@ -14,16 +14,16 @@ import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 public class ValidationRulesDaoImpl implements ValidationRulesDao {
-	
-	final Logger logger = LoggerFactory.getLogger(ValidationRulesDaoImpl.class);
-	private DataBaseConnection DBUtil ;
+
+	final Logger LOGGER = LoggerFactory.getLogger(ValidationRulesDaoImpl.class);
+	private DataBaseConnection DBUtil;
 	private CallableStatement statement;
 	private Connection connection;
 	ResultSet rs;
 
 	private List<String> rules;
 
-	private void loadRulesFromDB() {	
+	private void loadRulesFromDB() {
 		try {
 			rules = new ArrayList<String>();
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
@@ -31,28 +31,28 @@ public class ValidationRulesDaoImpl implements ValidationRulesDao {
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.fetchPasswordRules") + "}");
 			rs = statement.executeQuery();
-			
+
 			while (rs.next()) {
 				rules.add(rs.getString("Policy_Name"));
 			}
 		} catch (UserDefinedSQLException e) {
-			logger.error("Error in loading sign up validation rules. ", e);
-		}catch(SQLException e) {
-			logger.error("Error in loading sign up validation rules. ", e);
-		}finally {
+			LOGGER.error("Error in loading sign up validation rules. ", e);
+		} catch (SQLException e) {
+			LOGGER.error("Error in loading sign up validation rules. ", e);
+		} finally {
 			try {
 				DBUtil.terminateStatement(statement);
 				if (connection != null) {
 					DBUtil.terminateConnection();
 				}
 			} catch (UserDefinedSQLException e) {
-				logger.error("Error in loading sign up validation rules. ", e);
+				LOGGER.error("Error in loading sign up validation rules. ", e);
 			}
-			
+
 		}
 
 	}
-		
+
 	@Override
 	public List<String> getRulesFromConfig() {
 		loadRulesFromDB();
@@ -61,7 +61,7 @@ public class ValidationRulesDaoImpl implements ValidationRulesDao {
 
 	@Override
 	public String getRulesValueFromConfig(String ruleName) {
-		String ruleValue="";
+		String ruleValue = "";
 		try {
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
@@ -69,25 +69,24 @@ public class ValidationRulesDaoImpl implements ValidationRulesDao {
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.fetchRuleValue") + "}");
 			statement.setString(1, ruleName);
 			rs = statement.executeQuery();
-			
+
 			while (rs.next()) {
 				ruleValue = rs.getString("Policy_Value");
 			}
 		} catch (UserDefinedSQLException e) {
 			e.printStackTrace();
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			try {
 				DBUtil.terminateStatement(statement);
 				if (connection != null) {
 					DBUtil.terminateConnection();
 				}
 			} catch (UserDefinedSQLException e) {
-				logger.error("Error in loading sign up validation rules. ", e);
+				LOGGER.error("Error in loading sign up validation rules. ", e);
 			}
-			
+
 		}
 		return ruleValue;
 	}

@@ -7,7 +7,7 @@ import com.dal.catmeclone.model.User;
 public class MaximumLength implements ValidationPolicy {
 
 	private String ruleValue;
-	final Logger logger = LoggerFactory.getLogger(MaximumLength.class);
+	final Logger LOGGER = LoggerFactory.getLogger(MaximumLength.class);
 
 	@Override
 	public void setValue(String ruleValue) {
@@ -19,7 +19,7 @@ public class MaximumLength implements ValidationPolicy {
 	public boolean isValid(User user) {
 		String password = user.getPassword();
 		boolean result = password.length() <= Integer.parseInt(this.ruleValue);
-		logger.info("Password Maximum length validation. Result : " + result);
+		LOGGER.info("Password Maximum length validation. Result : " + result);
 		return result;
 	}
 

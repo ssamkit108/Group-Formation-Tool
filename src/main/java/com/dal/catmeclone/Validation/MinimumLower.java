@@ -7,7 +7,7 @@ import com.dal.catmeclone.model.User;
 public class MinimumLower implements ValidationPolicy {
 
 	private String ruleValue;
-	final Logger logger = LoggerFactory.getLogger(MinimumLower.class);
+	final Logger LOGGER = LoggerFactory.getLogger(MinimumLower.class);
 
 	@Override
 	public void setValue(String ruleValue) {
@@ -24,7 +24,7 @@ public class MinimumLower implements ValidationPolicy {
 			}
 		}
 		boolean result = count >= Integer.parseInt(this.ruleValue);
-		logger.info("Password Minimum lowercase validation. Result : " + result);
+		LOGGER.info("Password Minimum lowercase validation. Result : " + result);
 		return result;
 	}
 

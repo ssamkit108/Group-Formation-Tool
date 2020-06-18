@@ -16,7 +16,7 @@ public interface QuestionManagementDao {
 	public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoiceChoose)
 			throws UserDefinedSQLException;
 
-	public List<BasicQuestion> getAllQuestionByUser(User u) throws  UserDefinedSQLException;
+	public List<BasicQuestion> getAllQuestionByUser(User u) throws UserDefinedSQLException;
 
 	public boolean deleteQuestion(int questionId) throws UserDefinedSQLException;
 

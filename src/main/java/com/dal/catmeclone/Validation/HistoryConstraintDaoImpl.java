@@ -16,7 +16,7 @@ import com.dal.catmeclone.model.User;
 
 public class HistoryConstraintDaoImpl implements HistoryContraintDao {
 
-	final Logger logger = LoggerFactory.getLogger(HistoryConstraintDaoImpl.class);
+	final Logger LOGGER = LoggerFactory.getLogger(HistoryConstraintDaoImpl.class);
 	private DataBaseConnection DBUtil;
 	private CallableStatement statement;
 	private Connection connection;
@@ -41,10 +41,10 @@ public class HistoryConstraintDaoImpl implements HistoryContraintDao {
 			}
 			return PasswordList;
 		} catch (UserDefinedSQLException e) {
-			logger.error("Error in loading Password History. ", e);
+			LOGGER.error("Error in loading Password History. ", e);
 			throw new UserDefinedSQLException(e.getLocalizedMessage());
 		} catch (SQLException e) {
-			logger.error("Error in loading Password History. ", e);
+			LOGGER.error("Error in loading Password History. ", e);
 			throw new SQLException(e.getLocalizedMessage());
 
 		} finally {
@@ -54,7 +54,7 @@ public class HistoryConstraintDaoImpl implements HistoryContraintDao {
 					DBUtil.terminateConnection();
 				}
 			} catch (UserDefinedSQLException e) {
-				logger.error("Error in loading Password History. ", e);
+				LOGGER.error("Error in loading Password History. ", e);
 			}
 
 		}

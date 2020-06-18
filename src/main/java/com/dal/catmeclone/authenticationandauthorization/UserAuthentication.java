@@ -24,7 +24,7 @@ public class UserAuthentication implements AuthenticationManager {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		
+
 		String bannerId = authentication.getPrincipal().toString();
 		String password = authentication.getCredentials().toString();
 		validate = SystemConfig.instance().getAuthenticateUserDao();
@@ -37,7 +37,7 @@ public class UserAuthentication implements AuthenticationManager {
 
 		try {
 			flag = validate.authenticateUser(user);
-		} catch (SQLException | UserDefinedSQLException e) {
+		} catch (UserDefinedSQLException e) {
 			e.printStackTrace();
 		}
 		if (flag != null) {

@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
-	final Logger logger = LoggerFactory.getLogger(ForgotPasswordServiceImpl.class);
+	final Logger LOGGER = LoggerFactory.getLogger(ForgotPasswordServiceImpl.class);
 
 	ForgotPasswordDao forgotpasswordDb;
 	ValidatePassword validatepassword;
@@ -20,16 +20,16 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 		try {
 			forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
 			if (forgotpasswordDb.checkexist(username)) {
-				logger.info("Banner Id:" + username + " validated in successfully.");
+				LOGGER.info("Banner Id:" + username + " validated in successfully.");
 				String token = GenerateToken();
 				forgotpasswordDb.UpdateToken(username, token);
-				logger.info("Banner Id:" + username + " token generated and sent an link to the user.");
+				LOGGER.info("Banner Id:" + username + " token generated and sent an link to the user.");
 			} else {
-				logger.error("User:" + username + " is not validated in forgot password service.");
+				LOGGER.error("User:" + username + " is not validated in forgot password service.");
 				throw new Exception("Banner Id:" + username + " does not exist in our system.");
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			throw new Exception(e.getMessage());
 		}
 	}

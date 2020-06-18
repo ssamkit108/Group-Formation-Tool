@@ -32,28 +32,28 @@ public class QuestionManagementController {
 	private static final String AJAX_HEADER_NAME = "X-Requested-With";
 	private static final String AJAX_HEADER_VALUE = "XMLHttpRequest";
 
-	
-
 	/**
 	 * Controller Method to display question Home page with all question title
+	 * 
 	 * @param model
 	 * @return View
 	 */
 	@GetMapping(value = "")
 	public String viewQuestionTitlePage(Model model) {
-		
-		//Getting QuestionManagementService Instance
+
+		// Getting QuestionManagementService Instance
 		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
-		
+
 		// getting Logged in user from authentication object
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-		
+
 		try {
 			LOGGER.info("Fetching the list of questions for Displaying on View");
 			model.addAttribute("questionList", questionManagementService.getAllQuestionByUser(new User(username)));
 		} catch (UserDefinedSQLException e) {
-			//Handling Error occurred by throwing to Error view with user defined error message.
+			// Handling Error occurred by throwing to Error view with user defined error
+			// message.
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
@@ -74,45 +74,48 @@ public class QuestionManagementController {
 	 * return "questionmanager/questionmanagerhome"; }
 	 */
 
-	
 	/**
-	 * Controller Method to display question Home page with all question title sorted by title
+	 * Controller Method to display question Home page with all question title
+	 * sorted by title
+	 * 
 	 * @param model
 	 * @return View
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST, params = "action=sortbytitle")
 	public String viewQuestionSortedByTitleDB(@ModelAttribute BasicQuestion q, Model model) {
-		
-		//Getting QuestionManagementService Instance
+
+		// Getting QuestionManagementService Instance
 		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
-		
-		//getting Logged in user from authentication object
+
+		// getting Logged in user from authentication object
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-		
+
 		try {
 			LOGGER.info("Fetching the list of questions sorted by title");
 			model.addAttribute("questionList", questionManagementService.getSortedQuestionsByTitle(new User(username)));
-		} catch ( UserDefinedSQLException e) {
-			//Handling Error occurred by throwing to Error view with user defined error message.
+		} catch (UserDefinedSQLException e) {
+			// Handling Error occurred by throwing to Error view with user defined error
+			// message.
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
 		return "questionmanager/questionmanagerhome";
 	}
 
-	
 	/**
-	 * Controller Method to display question Home page with all question title sorted by date
+	 * Controller Method to display question Home page with all question title
+	 * sorted by date
+	 * 
 	 * @param model
 	 * @return View
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST, params = "action=sortbydate")
 	public String viewQuestionSortedByDate(@ModelAttribute BasicQuestion q, Model m) {
 
-		//Getting QuestionManagementService Instance
+		// Getting QuestionManagementService Instance
 		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
-		
+
 		// getting Logged in user from authentication object
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
@@ -128,33 +131,33 @@ public class QuestionManagementController {
 		return "questionmanager/questionmanagerhome";
 	}
 
-	
 	/**
 	 * Controller Method to delete question by given question Id
+	 * 
 	 * @param model
 	 * @return View
 	 */
 	@PostMapping(value = "/delete")
 	public String removeQuestion(@RequestParam(name = "question") int questionId, Model m) {
-			
-		//Getting QuestionManagementService Instance
+
+		// Getting QuestionManagementService Instance
 		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
-		
+
 		try {
 			LOGGER.info("Making a call to delete Question");
 			questionManagementService.deleteQuestion(questionId);
-		} catch ( UserDefinedSQLException e) {
-			//Handling Error occurred by throwing to Error view with user defined error message.
+		} catch (UserDefinedSQLException e) {
+			// Handling Error occurred by throwing to Error view with user defined error
+			// message.
 			m.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
 		return "redirect:/questionmanager";
 	}
-	
-	
 
 	/**
-	 * Controller Method to display create question page 
+	 * Controller Method to display create question page
+	 * 
 	 * @param model
 	 * @return View
 	 */
@@ -169,9 +172,9 @@ public class QuestionManagementController {
 
 	}
 
-	
 	/**
-	 * Controller Method to formulate question based on chosen question type 
+	 * Controller Method to formulate question based on chosen question type
+	 * 
 	 * @param model
 	 * @return View
 	 */
@@ -181,9 +184,9 @@ public class QuestionManagementController {
 
 		LOGGER.info("Formulating questions based on selected question type");
 
-		//Getting QuestionManagementService Instance
+		// Getting QuestionManagementService Instance
 		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
-				
+
 		// getting Logged in user from authentication object
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
@@ -227,10 +230,10 @@ public class QuestionManagementController {
 		return "error";
 	}
 
-	
-	
 	/**
-	 * Controller Method called by AJAX/JQUERY to add new Option and bind it to model attribute form data 
+	 * Controller Method called by AJAX/JQUERY to add new Option and bind it to
+	 * model attribute form data
+	 * 
 	 * @param model
 	 * @return View
 	 */
@@ -250,10 +253,9 @@ public class QuestionManagementController {
 		}
 	}
 
-
-	
 	/**
-	 * Controller Method to create numeric and free text question  
+	 * Controller Method to create numeric and free text question
+	 * 
 	 * @param model
 	 * @return View
 	 */
@@ -263,9 +265,9 @@ public class QuestionManagementController {
 
 		LOGGER.info("Creating " + basicQuestion.getQuestionType() + " question");
 
-		//Getting QuestionManagementService Instance
+		// Getting QuestionManagementService Instance
 		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
-				
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 
@@ -292,10 +294,9 @@ public class QuestionManagementController {
 		}
 	}
 
-	
-	
 	/**
-	 * Controller Method to create multiple choice question  
+	 * Controller Method to create multiple choice question
+	 * 
 	 * @param model
 	 * @return View
 	 */
@@ -305,9 +306,9 @@ public class QuestionManagementController {
 
 		LOGGER.info("creating " + multipleChoice.getQuestionType() + " question");
 
-		//Getting QuestionManagementService Instance
+		// Getting QuestionManagementService Instance
 		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
-		
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 

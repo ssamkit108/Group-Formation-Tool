@@ -19,7 +19,7 @@ public class UserDaoImpl implements UserDao {
 	private BCryptPasswordEncryption passwordencoder;
 	private CallableStatement statement;
 	private Connection connection;
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@Override
 	public boolean createUser(User student) throws UserDefinedSQLException, DuplicateEntityException {
@@ -40,22 +40,22 @@ public class UserDaoImpl implements UserDao {
 			statement.setString(5, passwordencoder.encryptPassword(student.getPassword()));
 
 			// Calling Store procedure for execution
-			logger.info(
+			LOGGER.info(
 					"Calling Store procedure to execute query and create user with banner id:" + student.getBannerId());
 			statement.execute();
-			logger.info("User:" + student.getBannerId() + " Inserted in the database successfully.");
+			LOGGER.info("User:" + student.getBannerId() + " Inserted in the database successfully.");
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 
-			logger.error("Duplicate entry for email found. Error Encountered while creating user by bannerid: "
+			LOGGER.error("Duplicate entry for email found. Error Encountered while creating user by bannerid: "
 					+ student.getBannerId());
-			logger.error(e.getLocalizedMessage());
+			LOGGER.error(e.getLocalizedMessage());
 			throw new DuplicateEntityException("User with this details already exist in our system,");
 
 		} catch (SQLException e) {
 			// Handling error encountered and throwing custom user exception
-			logger.error("Error Encountered while creating user by bannerid: " + student.getBannerId());
-			logger.error(e.getLocalizedMessage());
+			LOGGER.error("Error Encountered while creating user by bannerid: " + student.getBannerId());
+			LOGGER.error(e.getLocalizedMessage());
 			throw new UserDefinedSQLException(
 					"User with BannerID" + student.getBannerId() + " already Exist in our system.");
 		} finally {
@@ -66,7 +66,7 @@ public class UserDaoImpl implements UserDao {
 				DBUtil.terminateConnection();
 			}
 		}
-		logger.info("User with banner id:" + student.getBannerId() + "created successfully");
+		LOGGER.info("User with banner id:" + student.getBannerId() + "created successfully");
 		return true;
 	}
 
@@ -83,7 +83,7 @@ public class UserDaoImpl implements UserDao {
 			statement.setString(1, bannerId);
 
 			// Calling Store procedure for execution
-			logger.info("Calling Store procedure to execute query and get result");
+			LOGGER.info("Calling Store procedure to execute query and get result");
 			ResultSet rs = statement.executeQuery();
 			if (rs != null) {
 				while (rs.next()) {
@@ -93,8 +93,8 @@ public class UserDaoImpl implements UserDao {
 
 		} catch (SQLException e) {
 			// Handling error encountered and throwing custom user exception
-			logger.error("Error Encountered while finding user by bannerid: " + bannerId);
-			logger.error(e.getLocalizedMessage());
+			LOGGER.error("Error Encountered while finding user by bannerid: " + bannerId);
+			LOGGER.error(e.getLocalizedMessage());
 			throw new UserDefinedSQLException(e.getLocalizedMessage());
 		} finally {
 			// Terminating the connection
@@ -121,7 +121,7 @@ public class UserDaoImpl implements UserDao {
 			statement.setString(1, bannerId);
 
 			// Calling Store procedure for execution
-			logger.info("Calling Store procedure to execute query and get result");
+			LOGGER.info("Calling Store procedure to execute query and get result");
 			ResultSet rs = statement.executeQuery();
 			if (rs != null) {
 				while (rs.next()) {
@@ -132,8 +132,8 @@ public class UserDaoImpl implements UserDao {
 
 		} catch (SQLException e) {
 			// Handling error encountered and throwing custom user exception
-			logger.error("Error Encountered while finding user by bannerid: " + bannerId);
-			logger.error(e.getLocalizedMessage());
+			LOGGER.error("Error Encountered while finding user by bannerid: " + bannerId);
+			LOGGER.error(e.getLocalizedMessage());
 
 		} finally {
 			// Terminating the connection
@@ -151,16 +151,18 @@ public class UserDaoImpl implements UserDao {
 		ResultSet rs;
 		c = new ArrayList<User>();
 		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
 		connection = DBUtil.connect();
 		try {
-			statement = connection.prepareCall("{CALL GetAllUsers()}");
+			CallableStatement statement = connection
+					.prepareCall("{call " + properties.getProperty("procedure.getAllCourse") + "}");
 			rs = statement.executeQuery();
 			while (rs.next()) {
 				c.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
 			}
-			logger.info("Retrieved successfully from the database");
+			LOGGER.info("Retrieved successfully from the database");
 		} catch (Exception e) {
-			logger.error("Unable to execute query to get all courses");
+			LOGGER.error("Unable to execute query to get all courses");
 		} finally {
 			if (null != statement) {
 				DBUtil.terminateStatement(statement);

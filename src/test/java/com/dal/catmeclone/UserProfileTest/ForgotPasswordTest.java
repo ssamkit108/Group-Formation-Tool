@@ -9,7 +9,7 @@ import com.dal.catmeclone.model.User;
 
 @SpringBootTest
 @SuppressWarnings("deprecation")
-class ForgotPasswordDaoTest {
+class ForgotPasswordTest {
 	
 	UserDaoMock dbservice=new UserDaoMock();
 	@Test
