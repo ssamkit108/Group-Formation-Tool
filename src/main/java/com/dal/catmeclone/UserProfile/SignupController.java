@@ -19,7 +19,7 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class SignupController {
 	private UserService userservice;
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@GetMapping("/signup")
 	public String displaySignup(Model model) {

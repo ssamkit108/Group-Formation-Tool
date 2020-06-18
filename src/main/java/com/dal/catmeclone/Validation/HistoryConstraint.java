@@ -11,7 +11,7 @@ import com.dal.catmeclone.model.User;
 
 public class HistoryConstraint implements ValidationPolicy {
 
-	final Logger logger = LoggerFactory.getLogger(HistoryConstraint.class);
+	final Logger LOGGER = LoggerFactory.getLogger(HistoryConstraint.class);
 	HistoryContraintDao historyConstraintDao;
 	private BCryptPasswordEncryption passwordencoder;
 	private String ruleValue;
@@ -31,17 +31,17 @@ public class HistoryConstraint implements ValidationPolicy {
 			for (String password : passwordlist) {
 				result = passwordencoder.matches(user.getPassword(), password);
 				if (result) {
-					logger.info("Does Password matched in the history Result : " + result);
+					LOGGER.info("Does Password matched in the history Result : " + result);
 					return !result;
 				}
 			}
-			logger.info("Does Password matched in the history. Result : " + result);
+			LOGGER.info("Does Password matched in the history. Result : " + result);
 			return !result;
 		} catch (UserDefinedSQLException e) {
-			logger.error("Error in loading Password History. ", e);
+			LOGGER.error("Error in loading Password History. ", e);
 			throw new UserDefinedSQLException(e.getLocalizedMessage());
 		} catch (SQLException e) {
-			logger.error("Error in loading Password History. ", e);
+			LOGGER.error("Error in loading Password History. ", e);
 			throw new SQLException(e.getLocalizedMessage());
 
 		} catch (NumberFormatException e) {

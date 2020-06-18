@@ -87,11 +87,7 @@ public class CourseException extends Exception {
 		return super.equals(obj);
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-
-		super.finalize();
-	}
+	
 
 	@Override
 	public int hashCode() {

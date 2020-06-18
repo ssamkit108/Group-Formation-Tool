@@ -22,19 +22,19 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 
 	Logger LOGGER = Logger.getLogger(QuestionManagementDaoImpl.class.getName());
 
-	private DataBaseConnection dbUtil;
+	private DataBaseConnection DBUtil;
 	private Connection connection;
 
-	
-	
 	/**
-	 * Method To Check if Question with Given Title and text and By same User Exists or Not
+	 * Method To Check if Question with Given Title and text and By same User Exists
+	 * or Not
+	 * 
 	 * @Parameter : BasicQuestion
 	 */
 	@Override
 	public boolean isQuestionExistForUserWithTitleandText(BasicQuestion basicQuestion) throws UserDefinedSQLException {
 
-		DataBaseConnection dbUtil = SystemConfig.instance().getDatabaseConnection();
+		DataBaseConnection DBUtil = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		CallableStatement statement = null;
 		ResultSet result = null;
@@ -42,7 +42,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 
 		try {
 			// Connecting to Database
-			connection = dbUtil.connect();
+			connection = DBUtil.connect();
 
 			// Creating a CallableStatement - Store procedure
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.checkForQuestion") + "}");
@@ -66,30 +66,28 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 		} finally {
 			// Closing the Statement and Connection
 			if (null != statement) {
-				dbUtil.terminateStatement(statement);
+				DBUtil.terminateStatement(statement);
 			}
-			dbUtil.terminateConnection();
+			DBUtil.terminateConnection();
 		}
 		return isQuestionTitleExists;
 	}
 
-	
-	
-	
 	/**
 	 * Method To Create Numeric or Free Text Question
+	 * 
 	 * @Parameter : BasicQuestion
 	 */
 	@Override
 	public boolean createNumericOrTextQuestion(BasicQuestion textOrNumericQuestion) throws UserDefinedSQLException {
 
-		DataBaseConnection dbUtil = SystemConfig.instance().getDatabaseConnection();
+		DataBaseConnection DBUtil = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		CallableStatement statement = null;
 
 		try {
 			// Connecting to Database
-			connection = dbUtil.connect();
+			connection = DBUtil.connect();
 
 			// Creating a CallableStatement
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.createQuestion") + "}");
@@ -114,31 +112,29 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 		} finally {
 			// Closing the Statement and Connection
 			if (null != statement) {
-				dbUtil.terminateStatement(statement);
+				DBUtil.terminateStatement(statement);
 			}
-			dbUtil.terminateConnection();
+			DBUtil.terminateConnection();
 		}
 		return true;
 	}
 
-	
-	
-	
 	/**
 	 * Method To Create Multiple Choice Question
+	 * 
 	 * @Parameter : MultipleChoiceQuestion
 	 */
 	@Override
 	public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoiceQuestion)
 			throws UserDefinedSQLException {
 
-		DataBaseConnection dbUtil = SystemConfig.instance().getDatabaseConnection();
+		DataBaseConnection DBUtil = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		CallableStatement questionCreateStatement = null, optionCreateStatement = null;
 
 		try {
 			// Connecting to Database
-			connection = dbUtil.connect();
+			connection = DBUtil.connect();
 
 			/*
 			 * Making auto commit as false So that roll back can be done on question table
@@ -146,8 +142,10 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 			 */
 			connection.setAutoCommit(false);
 
-			/* Creating a CallableStatement - Store procedure for inserting into question
-			   table */
+			/*
+			 * Creating a CallableStatement - Store procedure for inserting into question
+			 * table
+			 */
 			questionCreateStatement = connection
 					.prepareCall("{call " + properties.getProperty("procedure.createQuestion") + "}");
 			questionCreateStatement.setString(1, multipleChoiceQuestion.getCreatedByInstructor().getBannerId());
@@ -169,8 +167,10 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 			LOGGER.info("Question :" + multipleChoiceQuestion.getQuestionText()
 					+ " inserted in the question taable successfully.");
 
-			/* Creating a CallableStatement - Store procedure for inserting into options
-			   table*/
+			/*
+			 * Creating a CallableStatement - Store procedure for inserting into options
+			 * table
+			 */
 			optionCreateStatement = connection
 					.prepareCall("{call " + properties.getProperty("procedure.insertOptionforQuestion") + "}");
 
@@ -203,35 +203,33 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 		} finally {
 			// Closing the Statement and Connection
 			if (questionCreateStatement != null) {
-				dbUtil.terminateStatement(questionCreateStatement);
+				DBUtil.terminateStatement(questionCreateStatement);
 			}
 			if (optionCreateStatement != null) {
-				dbUtil.terminateStatement(optionCreateStatement);
+				DBUtil.terminateStatement(optionCreateStatement);
 			}
-			dbUtil.terminateConnection();
+			DBUtil.terminateConnection();
 		}
 
 		return true;
 	}
 
-	
-	
-	
 	/**
 	 * Method To Get All Questions for the User
+	 * 
 	 * @Parameter : MultipleChoiceQuestion
 	 */
 	@Override
 	public List<BasicQuestion> getAllQuestionByUser(User u) throws UserDefinedSQLException {
 
-		dbUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
 		CallableStatement statement = null;
 
 		try {
 			// Connecting to Database
-			connection = dbUtil.connect();
+			connection = DBUtil.connect();
 			LOGGER.info("Retrieving from database");
 
 			/*
@@ -239,7 +237,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 			 * given user
 			 */
 			statement = connection
-					.prepareCall("{call "+ properties.getProperty("procedure.getAllQuestionTitles") + "}");
+					.prepareCall("{call " + properties.getProperty("procedure.getAllQuestionTitles") + "}");
 			statement.setString(1, u.getBannerId());
 
 			// Executing the Store Procedure
@@ -270,29 +268,27 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 		} finally {
 			// Closing the Statement and Connection
 			if (null != statement) {
-				dbUtil.terminateStatement(statement);
+				DBUtil.terminateStatement(statement);
 			}
-			dbUtil.terminateConnection();
+			DBUtil.terminateConnection();
 		}
 
 		return listOfQuestion;
 	}
 
-	
-	
-	
 	/**
 	 * Method To Delete Question with given Question Id
+	 * 
 	 * @Parameter : questionId
 	 */
 	@Override
 	public boolean deleteQuestion(int questionId) throws UserDefinedSQLException {
 
-		dbUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
 		CallableStatement statement = null;
 		try {
 			// Connect to database
-			connection = dbUtil.connect();
+			connection = DBUtil.connect();
 
 			/*
 			 * Creating a CallableStatement - Store procedure to delete question and its
@@ -313,9 +309,9 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 		} finally {
 			// Closing the Statement and Connection
 			if (null != statement) {
-				dbUtil.terminateStatement(statement);
+				DBUtil.terminateStatement(statement);
 			}
-			dbUtil.terminateConnection();
+			DBUtil.terminateConnection();
 		}
 		return true;
 	}

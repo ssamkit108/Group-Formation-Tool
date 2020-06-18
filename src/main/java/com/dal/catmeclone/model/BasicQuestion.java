@@ -18,7 +18,6 @@ public class BasicQuestion {
 		super();
 	}
 
-
 	public BasicQuestion(String questionTitle, String questionText) {
 		super();
 		this.questionTitle = questionTitle;
@@ -32,7 +31,7 @@ public class BasicQuestion {
 	 * @param creationDate
 	 * @param createdByInstructor
 	 */
-	public BasicQuestion(String questionTitle, String questionText, QuestionType questionType, Date creationDate, 
+	public BasicQuestion(String questionTitle, String questionText, QuestionType questionType, Date creationDate,
 			User createdByInstructor) {
 		super();
 		this.questionTitle = questionTitle;
@@ -41,7 +40,6 @@ public class BasicQuestion {
 		this.creationDate = creationDate;
 		this.createdByInstructor = createdByInstructor;
 	}
-
 
 	/**
 	 * @param questionId
@@ -75,7 +73,6 @@ public class BasicQuestion {
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
 	}
-
 
 	/**
 	 * @return the questionTitle
@@ -195,6 +192,5 @@ public class BasicQuestion {
 			return false;
 		return true;
 	}
-
 
 }

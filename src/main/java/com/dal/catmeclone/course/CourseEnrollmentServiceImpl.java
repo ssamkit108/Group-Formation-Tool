@@ -83,15 +83,15 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	 */
 	private Set<User> loadDataFromCSV(MultipartFile file) throws FileRelatedException {
 		Set<User> usersToBeEnrolled = new HashSet<User>();
-		BufferedReader br = null;
+		BufferedReader bufferReader = null;
 		try {
 
-			br = new BufferedReader(new InputStreamReader(file.getInputStream()));
-			String line = br.readLine();
+			bufferReader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+			String line = bufferReader.readLine();
 			int count = 1;
 			// reading the file line by line
 			LOGGER.info("START: Parsing the Provided CSV File: " + file.getName());
-			while ((line = br.readLine()) != null) {
+			while ((line = bufferReader.readLine()) != null) {
 				// considering comma as separator for csv
 				String[] details = line.split(",");
 				if (4 == details.length) {
