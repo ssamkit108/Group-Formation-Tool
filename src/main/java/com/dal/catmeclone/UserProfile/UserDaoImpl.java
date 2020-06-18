@@ -155,7 +155,7 @@ public class UserDaoImpl implements UserDao {
 		connection = DBUtil.connect();
 		try {
 			CallableStatement statement = connection
-					.prepareCall("{call " + properties.getProperty("procedure.getAllCourse") + "}");
+					.prepareCall("{call " + properties.getProperty("procedure.GetAllUsers") + "}");
 			rs = statement.executeQuery();
 			while (rs.next()) {
 				c.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
