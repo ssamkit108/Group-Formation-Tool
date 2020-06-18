@@ -6,206 +6,132 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.slf4j.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.dal.catmeclone.DBUtility.DatabaseConnection;
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 
-@Component
-public class CourseManagementDaoImpl implements CourseManagementDao{
+public class CourseManagementDaoImpl implements CourseManagementDao {
 
-	@Autowired
-	DatabaseConnection db;
-	
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
-	
+	DataBaseConnection DBUtil;
+	final Logger LOGGER = LoggerFactory.getLogger(CourseManagementDaoImpl.class);
 	private CallableStatement statement;
-	private Connection con;
-	private ResultSet rs;
-	
-	List<Course> c;
+	private Connection connection;
+	private ResultSet resultSet;
+	List<Course> listOfCourses;
 
 	@Override
-	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException{
-		c = new ArrayList<Course>();
-		con = db.connect();
+	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException {
+		listOfCourses = new ArrayList<Course>();
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
+		connection = DBUtil.connect();
 		try {
-		statement = con.prepareCall("{CALL GetAllCourses()}");
-		rs = statement.executeQuery();
-		while(rs.next()) {
-			c.add(new Course(rs.getInt(1),rs.getString(2)));
-		}
-		logger.info("Retrieved successfully from the database");
-		}
-		catch(Exception e) {
-			logger.error("Unable to execute query to get all courses");
+			statement = connection.prepareCall("{call " + properties.getProperty("procedure.getAllCourse") + "}");
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				listOfCourses.add(new Course(resultSet.getInt(1), resultSet.getString(2)));
+			}
+			LOGGER.info("Retrieved successfully from the database");
+		} catch (Exception e) {
+			LOGGER.error("Unable to execute query to get all courses");
 			throw new UserDefinedSQLException("Some Error occured in executig query");
-		}
-		finally
-		{
-			if (statement != null)
-			{
-				statement.close();
-			}
-			if (con != null)
-			{
-				if (!con.isClosed())
-				{
-					con.close();
-				}
+		} finally {
+			DBUtil.terminateStatement(statement);
+			if (connection != null) {
+				DBUtil.terminateConnection();
 			}
 		}
-		return c;
+		return listOfCourses;
 	}
 
 	@Override
 	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		// Connect to database
-				con = db.connect();
-				statement = con.prepareCall("{CALL DeleteCourse(?)}");
-				
-				try {
-					statement.setInt(1, courseID);
-					statement.execute();
-					logger.info("Course:"+courseID+"Deleted successfully from the database");
-				}
-				catch(Exception e) {
-					
-					logger.error("Unable to execute query to delete course");
-					return false;
-				}
-				finally
-				{
-					if (statement != null)
-					{
-						statement.close();
-					}
-					if (con != null)
-					{
-						if (!con.isClosed())
-						{
-							con.close();
-						}
-					}
-				}
-				return true;
-	}
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
+		connection = DBUtil.connect();
+		statement = connection.prepareCall("{call " + properties.getProperty("procedure.DeleteCourse") + "}");
 
-	@Override
-	public boolean insertCourse(Course course) throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
-		
-		// Connect to database
-		con = db.connect();
-		statement = con.prepareCall("{CALL Createcourse(?,?)}");
-		
 		try {
-			statement.setInt(1, course.getCourseID());
-			statement.setString(2, course.getCourseName());
+			statement.setInt(1, courseID);
 			statement.execute();
-			logger.info("Course:"+course.getCourseID()+"Added successfully in the database");
-		}
-		catch(Exception e) {
-			logger.error("Unable to execute query to insert course");
+			LOGGER.info("Course:" + courseID + "Deleted successfully from the database");
+		} catch (Exception e) {
+
+			LOGGER.error("Unable to execute query to delete course");
 			return false;
-		}
-		finally
-		{
-			if (statement != null)
-			{
+		} finally {
+			if (statement != null) {
 				statement.close();
 			}
-			if (con != null)
-			{
-				if (!con.isClosed())
-				{
-					con.close();
+			if (connection != null) {
+				if (!connection.isClosed()) {
+					connection.close();
 				}
 			}
 		}
 		return true;
 	}
-	
-	@Override
-	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
-		boolean flag = true;
-		// Connect to database
-				con = db.connect();
-				statement = con.prepareCall("{CALL checkInstructorAssignedForCourse(?)}");
-				
-				try {
-					statement.setInt(1, course.getCourseID());
-					rs = statement.executeQuery();
-					//Check if resultset is Empty
-					if(rs.next() == false) {
-						flag = false;
-					}
-					logger.info("Executed check instructor query successfully");
-				}
-				catch(Exception e) {
-					
-					logger.error("Unable to execute query to check instructor assigned for course");
-					throw new UserDefinedSQLException("Unable to execute query to check instructor assigned for course");
 
+	@Override
+	public boolean insertCourse(Course course) throws SQLException, UserDefinedSQLException {
+		// Connect to database
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
+		connection = DBUtil.connect();
+		statement = connection.prepareCall("{call " + properties.getProperty("procedure.Createcourse") + "}");
+		try {
+			statement.setInt(1, course.getCourseID());
+			statement.setString(2, course.getCourseName());
+			statement.execute();
+			LOGGER.info("Course:" + course.getCourseID() + "Added successfully in the database");
+		} catch (Exception e) {
+			LOGGER.error("Unable to execute query to insert course");
+			return false;
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			if (connection != null) {
+				if (!connection.isClosed()) {
+					connection.close();
 				}
-				finally
-				{
-					if (statement != null)
-					{
-						statement.close();
-					}
-					if (con != null)
-					{
-						if (!con.isClosed())
-						{
-							con.close();
-						}
-					}
-				}
-		return flag;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
-				boolean flag = true;
-				// Connect to database
-						con = db.connect();
-						statement = con.prepareCall("{CALL CheckCourseAlreadyExists(?)}");
-						
-						try {
-							statement.setInt(1, course.getCourseID());
-							rs = statement.executeQuery();
-							//Check if resultset is Empty
-							if(rs.next() == false) {
-								flag = false;
-							}
-							logger.info("Executed check course query successfully");
-						}
-						catch(Exception e) {
-							
-							logger.error("Unable to execute query to check if course exists");
-							throw new UserDefinedSQLException("Unable to execute query to check if course exists");
-						}
-						finally
-						{
-							if (statement != null)
-							{
-								statement.close();
-							}
-							if (con != null)
-							{
-								if (!con.isClosed())
-								{
-									con.close();
-								}
-							}
-						}
-				return flag;
+		boolean flag = true;
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		Properties properties = SystemConfig.instance().getProperties();
+		connection = DBUtil.connect();
+		statement = connection
+				.prepareCall("{call " + properties.getProperty("procedure.CheckCourseAlreadyExists") + "}");
+
+		try {
+			statement.setInt(1, course.getCourseID());
+			resultSet = statement.executeQuery();
+			if (resultSet.next() == false) {
+				flag = false;
+			}
+			LOGGER.info("Executed check course query successfully");
+		} catch (Exception e) {
+
+			LOGGER.error("Unable to execute query to check if course exists");
+			throw new UserDefinedSQLException("Unable to execute query to check if course exists");
+		} finally {
+			DBUtil.terminateStatement(statement);
+			if (connection != null) {
+				DBUtil.terminateConnection();
+			}
+		}
+		return flag;
 	}
 
 }
