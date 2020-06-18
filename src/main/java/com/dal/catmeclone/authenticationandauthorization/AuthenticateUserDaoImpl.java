@@ -14,16 +14,16 @@ public class AuthenticateUserDaoImpl implements AuthenticateUserDao {
 
 	private CallableStatement statement;
 	private Connection connection;
-	DataBaseConnection db;
+	DataBaseConnection DBUtil;
 
 	@Override
-	public User authenticateUser(User currentUser) throws SQLException, UserDefinedSQLException {
+	public User authenticateUser(User currentUser) throws UserDefinedSQLException {
 		User user = null;
 		Properties property = SystemConfig.instance().getProperties();
 		String authenticateUser = property.getProperty("procedure.authenticateUser");
 		try {
-			db = SystemConfig.instance().getDatabaseConnection();
-			connection = db.connect();
+			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + authenticateUser + "}");
 
 			statement.setString(1, currentUser.getBannerId());
@@ -37,9 +37,9 @@ public class AuthenticateUserDaoImpl implements AuthenticateUserDao {
 		} catch (SQLException e) {
 			throw new UserDefinedSQLException("Some error occured");
 		} finally {
-			db.terminateStatement(statement);
+			DBUtil.terminateStatement(statement);
 			if (connection != null)
-				db.terminateConnection();
+				DBUtil.terminateConnection();
 		}
 		return user;
 	}

@@ -8,7 +8,7 @@ import com.dal.catmeclone.model.User;
 public class MinimumSpecial implements ValidationPolicy {
 
 	String ruleValue = "";
-	final Logger logger = LoggerFactory.getLogger(MinimumSpecial.class);
+	final Logger LOGGER = LoggerFactory.getLogger(MinimumSpecial.class);
 
 	@Override
 	public void setValue(String ruleValue) {

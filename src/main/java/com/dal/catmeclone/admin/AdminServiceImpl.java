@@ -3,6 +3,10 @@ package com.dal.catmeclone.admin;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
@@ -15,15 +19,16 @@ public class AdminServiceImpl implements AdminService {
 	private CourseInstructorAssignmentDao courseInstructor;
 	private CourseManagementDao courseManagement;
 	private UserDao userDao;
+	final Logger LOGGER = LoggerFactory.getLogger(AdminServiceImpl.class);
 
 	@Override
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role)
 			throws SQLException, UserDefinedSQLException {
-		boolean res = false;
+		boolean result = false;
 		courseInstructor = SystemConfig.instance().getCourseInstructorAssignmentDao();
-		res = courseInstructor.enrollInstructorForCourse(Instructor, course, role);
+		result = courseInstructor.enrollInstructorForCourse(Instructor, course, role);
 
-		return res;
+		return result;
 	}
 
 	@Override
@@ -46,38 +51,38 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
-		boolean res = false;
+		boolean result = false;
 		courseManagement = SystemConfig.instance().getCourseManagementDao();
-		res = courseManagement.deleteCourse(courseID);
+		result = courseManagement.deleteCourse(courseID);
 
-		return res;
+		return result;
 	}
 
 	@Override
 	public boolean insertCourse(Course course) throws UserDefinedSQLException, SQLException {
-		boolean res = false;
+		boolean result = false;
 		courseManagement = SystemConfig.instance().getCourseManagementDao();
-		res = courseManagement.insertCourse(course);
+		result = courseManagement.insertCourse(course);
 
-		return res;
+		return result;
 	}
 
 	@Override
 	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
-		boolean res = false;
+		boolean result = false;
 		courseInstructor = SystemConfig.instance().getCourseInstructorAssignmentDao();
-		res = courseInstructor.checkInstructorForCourse(course);
+		result = courseInstructor.checkInstructorForCourse(course);
 
-		return res;
+		return result;
 	}
 
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
-		boolean res = false;
+		boolean result = false;
 		courseManagement = SystemConfig.instance().getCourseManagementDao();
-		res = courseManagement.checkCourseExists(course);
+		result = courseManagement.checkCourseExists(course);
 
-		return res;
+		return result;
 	}
 
 }

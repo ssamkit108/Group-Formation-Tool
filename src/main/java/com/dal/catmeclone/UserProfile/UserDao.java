@@ -14,4 +14,5 @@ public interface UserDao {
 	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException;
 	
 	public List<User> getAllUsers() throws  UserDefinedSQLException;
+
 }

@@ -10,7 +10,7 @@ import com.dal.catmeclone.model.User;
 public class SetNotAllow implements ValidationPolicy {
 
 	String ruleValue = "";
-	final Logger logger = LoggerFactory.getLogger(SetNotAllow.class);
+	final Logger LOGGER = LoggerFactory.getLogger(SetNotAllow.class);
 
 	@Override
 	public void setValue(String ruleValue) {

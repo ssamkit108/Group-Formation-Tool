@@ -12,7 +12,7 @@ import com.dal.catmeclone.SystemConfig;
 @Service
 public class PasswordRulesLoader {
 
-	final Logger logger = LoggerFactory.getLogger(PasswordRulesLoader.class);
+	final Logger LOGGER = LoggerFactory.getLogger(PasswordRulesLoader.class);
 
 	// This will container only objects of rules which need to be validate
 	private List<ValidationPolicy> ListofRules;
@@ -47,12 +47,12 @@ public class PasswordRulesLoader {
 			ValidationRule.setValue(ruleValue);
 			ListofRules.add(ValidationRule);
 		}
-		logger.info("Activated Rules are:" + ListofRules.toString());
-		logger.info("Active Password validation rules fetched from Database.");
+		LOGGER.info("Activated Rules are:" + ListofRules.toString());
+		LOGGER.info("Active Password validation rules fetched from Database.");
 	}
 
 	public List<ValidationPolicy> getValidationRulesList() {
-		logger.info("Getting Password validation rules.");
+		LOGGER.info("Getting Password validation rules.");
 		return ListofRules;
 	}
 }

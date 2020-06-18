@@ -6,12 +6,6 @@ import java.util.Properties;
 
 public class PropertiesConfigUtil {
 
-	/**
-	 * Method to load the the properties from application.properties
-	 * @param resourceFileName
-	 * @return
-	 * @throws IOException
-	 */
     public static Properties loadProperties(String resourceFileName) throws IOException {
         Properties configuration = new Properties();
         InputStream inputStream = PropertiesConfigUtil.class
@@ -21,5 +15,6 @@ public class PropertiesConfigUtil {
         inputStream.close();
         return configuration;
     }  
+
 
 }

@@ -11,14 +11,13 @@ import java.util.Properties;
 import org.slf4j.*;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
-import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 
 public class CourseManagementDaoImpl implements CourseManagementDao {
 
-	DataBaseConnection db;
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	DataBaseConnection DBUtil;
+	final Logger LOGGER = LoggerFactory.getLogger(CourseManagementDaoImpl.class);
 	private CallableStatement statement;
 	private Connection connection;
 	private ResultSet resultSet;
@@ -27,27 +26,23 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException {
 		listOfCourses = new ArrayList<Course>();
-		db = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
-		connection = db.connect();
+		connection = DBUtil.connect();
 		try {
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.getAllCourse") + "}");
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				listOfCourses.add(new Course(resultSet.getInt(1), resultSet.getString(2)));
 			}
-			logger.info("Retrieved successfully from the database");
+			LOGGER.info("Retrieved successfully from the database");
 		} catch (Exception e) {
-			logger.error("Unable to execute query to get all courses");
+			LOGGER.error("Unable to execute query to get all courses");
 			throw new UserDefinedSQLException("Some Error occured in executig query");
 		} finally {
-			if (statement != null) {
-				statement.close();
-			}
+			DBUtil.terminateStatement(statement);
 			if (connection != null) {
-				if (!connection.isClosed()) {
-					connection.close();
-				}
+				DBUtil.terminateConnection();
 			}
 		}
 		return listOfCourses;
@@ -56,18 +51,18 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
 		// Connect to database
-		db = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
-		connection = db.connect();
+		connection = DBUtil.connect();
 		statement = connection.prepareCall("{call " + properties.getProperty("procedure.DeleteCourse") + "}");
 
 		try {
 			statement.setInt(1, courseID);
 			statement.execute();
-			logger.info("Course:" + courseID + "Deleted successfully from the database");
+			LOGGER.info("Course:" + courseID + "Deleted successfully from the database");
 		} catch (Exception e) {
 
-			logger.error("Unable to execute query to delete course");
+			LOGGER.error("Unable to execute query to delete course");
 			return false;
 		} finally {
 			if (statement != null) {
@@ -85,17 +80,17 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public boolean insertCourse(Course course) throws SQLException, UserDefinedSQLException {
 		// Connect to database
-		db = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
-		connection = db.connect();
+		connection = DBUtil.connect();
 		statement = connection.prepareCall("{call " + properties.getProperty("procedure.Createcourse") + "}");
 		try {
 			statement.setInt(1, course.getCourseID());
 			statement.setString(2, course.getCourseName());
 			statement.execute();
-			logger.info("Course:" + course.getCourseID() + "Added successfully in the database");
+			LOGGER.info("Course:" + course.getCourseID() + "Added successfully in the database");
 		} catch (Exception e) {
-			logger.error("Unable to execute query to insert course");
+			LOGGER.error("Unable to execute query to insert course");
 			return false;
 		} finally {
 			if (statement != null) {
@@ -113,9 +108,9 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
 		boolean flag = true;
-		db = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
-		connection = db.connect();
+		connection = DBUtil.connect();
 		statement = connection
 				.prepareCall("{call " + properties.getProperty("procedure.CheckCourseAlreadyExists") + "}");
 
@@ -125,19 +120,15 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 			if (resultSet.next() == false) {
 				flag = false;
 			}
-			logger.info("Executed check course query successfully");
+			LOGGER.info("Executed check course query successfully");
 		} catch (Exception e) {
 
-			logger.error("Unable to execute query to check if course exists");
+			LOGGER.error("Unable to execute query to check if course exists");
 			throw new UserDefinedSQLException("Unable to execute query to check if course exists");
 		} finally {
-			if (statement != null) {
-				statement.close();
-			}
+			DBUtil.terminateStatement(statement);
 			if (connection != null) {
-				if (!connection.isClosed()) {
-					connection.close();
-				}
+				DBUtil.terminateConnection();
 			}
 		}
 		return flag;

@@ -20,7 +20,7 @@ import com.dal.catmeclone.exceptionhandler.ValidationException;
 @Controller
 public class ForgotPasswordController {
 	ForgotPasswordService forgotpasswordservice;
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@GetMapping("/forgotpassword")
 	public String displayforgotpassword(Model model) {
@@ -32,13 +32,13 @@ public class ForgotPasswordController {
 			throws SQLException, UserDefinedSQLException {
 		try {
 			forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
-				forgotpasswordservice.Resetlink(bannerID);
-				ModelAndView m;
-				m = new ModelAndView("forgotpassword");
-				m.addObject("message", "Password is sent on your registred email address.");
-				return m;
+			forgotpasswordservice.Resetlink(bannerID);
+			ModelAndView m;
+			m = new ModelAndView("forgotpassword");
+			m.addObject("message", "Password is sent on your registred email address.");
+			return m;
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 			ModelAndView m = new ModelAndView("forgotpassword");
 			m.addObject("message", e.getMessage());
 			return m;
@@ -63,7 +63,7 @@ public class ForgotPasswordController {
 		} catch (Exception e) {
 			ModelAndView m;
 			m = new ModelAndView("forgotpassword");
-			logger.error(e.getLocalizedMessage());
+			LOGGER.error(e.getLocalizedMessage());
 			m.addObject("message", e.getLocalizedMessage());
 			return m;
 		}
@@ -80,7 +80,7 @@ public class ForgotPasswordController {
 			if (password.equals(confirmPassword)) {
 				forgotpasswordservice.setNewPassword(BannerID, password);
 
-				logger.info("Password for BannerID:" + BannerID + " has been changed Successfully");
+				LOGGER.info("Password for BannerID:" + BannerID + " has been changed Successfully");
 				m = new ModelAndView("login");
 				m.addObject("message", "Your password has been changed successfully");
 				return m;
