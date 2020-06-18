@@ -3,7 +3,6 @@ package com.dal.catmeclone.admin;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
@@ -11,31 +10,28 @@ import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
 
-
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
 
 	private CourseInstructorAssignmentDao courseInstructor;
-	
 	private CourseManagementDao courseManagement;
-	
 	private UserDao userDao;
-	
+
 	@Override
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role)
 			throws SQLException, UserDefinedSQLException {
 		boolean res = false;
-		courseInstructor =SystemConfig.instance().getCourseInstructorAssignmentDao();
+		courseInstructor = SystemConfig.instance().getCourseInstructorAssignmentDao();
 		res = courseInstructor.enrollInstructorForCourse(Instructor, course, role);
-		
+
 		return res;
 	}
 
 	@Override
 	public List<User> getAllUsers() throws SQLException, UserDefinedSQLException {
 		List<User> listOfUsers = new ArrayList<User>();
-		userDao =SystemConfig.instance().getUserDao();
+		userDao = SystemConfig.instance().getUserDao();
 		listOfUsers = userDao.getAllUsers();
-		
+
 		return listOfUsers;
 	}
 
@@ -44,7 +40,7 @@ public class AdminServiceImpl implements AdminService{
 		List<Course> listOfCourses = new ArrayList<Course>();
 		courseManagement = SystemConfig.instance().getCourseManagementDao();
 		listOfCourses = courseManagement.getAllCourses();
-		
+
 		return listOfCourses;
 	}
 
@@ -53,6 +49,7 @@ public class AdminServiceImpl implements AdminService{
 		boolean res = false;
 		courseManagement = SystemConfig.instance().getCourseManagementDao();
 		res = courseManagement.deleteCourse(courseID);
+
 		return res;
 	}
 
@@ -61,6 +58,7 @@ public class AdminServiceImpl implements AdminService{
 		boolean res = false;
 		courseManagement = SystemConfig.instance().getCourseManagementDao();
 		res = courseManagement.insertCourse(course);
+
 		return res;
 	}
 
@@ -69,6 +67,7 @@ public class AdminServiceImpl implements AdminService{
 		boolean res = false;
 		courseInstructor = SystemConfig.instance().getCourseInstructorAssignmentDao();
 		res = courseInstructor.checkInstructorForCourse(course);
+
 		return res;
 	}
 
@@ -77,6 +76,7 @@ public class AdminServiceImpl implements AdminService{
 		boolean res = false;
 		courseManagement = SystemConfig.instance().getCourseManagementDao();
 		res = courseManagement.checkCourseExists(course);
+
 		return res;
 	}
 
