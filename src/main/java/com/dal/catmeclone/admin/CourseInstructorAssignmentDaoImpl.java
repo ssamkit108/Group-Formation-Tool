@@ -4,10 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -28,7 +25,6 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 	@Override
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role)
 			throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		db = SystemConfig.instance().getDatabaseConnection();
 		connection = db.connect();
 		Properties properties = SystemConfig.instance().getProperties();
@@ -39,7 +35,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 			statement.setString(3, role.getRoleName());
 			statement.execute();
 			logger.info("Course:" + Instructor.getBannerId() + course.getCourseID() + role.getRoleName()
-					+ "Instructor Enrolled successfully");
+			+ "Instructor Enrolled successfully");
 
 		} catch (SQLException e) {
 			logger.error("Unable to execute query to check if course exists");
@@ -59,22 +55,26 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 	}
 
 	@Override
-	public List<User> getAllUsers() throws SQLException, UserDefinedSQLException {
-		List<User> listOfUsers;
-		ResultSet resultSet;
-		listOfUsers = new ArrayList<User>();
+	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
+		boolean flag = true;
 		db = SystemConfig.instance().getDatabaseConnection();
-		connection = db.connect();
 		Properties properties = SystemConfig.instance().getProperties();
+		connection = db.connect();
+		statement = connection
+				.prepareCall("{call " + properties.getProperty("procedure.checkInstructorAssignedForCourse") + "}");
+
 		try {
-			statement = connection.prepareCall("{call " + properties.getProperty("procedure.GetAllUsers") + "}");
-			resultSet = statement.executeQuery();
-			while (resultSet.next()) {
-				listOfUsers.add(new User(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5)));
+			statement.setInt(1, course.getCourseID());
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next() == false) {
+				flag = false;
 			}
-			logger.info("Retrieved successfully from the database");
+			logger.info("Executed check instructor query successfully");
 		} catch (Exception e) {
-			logger.error("Unable to execute query to get all courses");
+
+			logger.error("Unable to execute query to check instructor assigned for course");
+			throw new UserDefinedSQLException("Unable to execute query to check instructor assigned for course");
+
 		} finally {
 			if (statement != null) {
 				statement.close();
@@ -85,7 +85,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 				}
 			}
 		}
-		return listOfUsers;
+		return flag;
 	}
 
 }

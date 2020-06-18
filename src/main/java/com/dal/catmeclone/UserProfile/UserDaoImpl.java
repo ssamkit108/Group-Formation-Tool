@@ -8,7 +8,7 @@ import com.dal.catmeclone.model.*;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.*;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
-import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
+import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class UserDaoImpl implements UserDao {
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@Override
-	public boolean createUser(User student) throws UserDefinedSQLException, DuplicateUserRelatedException {
+	public boolean createUser(User student) throws UserDefinedSQLException, DuplicateEntityException {
 		try {
 			// Establishing Database connection
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
@@ -50,7 +50,7 @@ public class UserDaoImpl implements UserDao {
 			logger.error("Duplicate entry for email found. Error Encountered while creating user by bannerid: "
 					+ student.getBannerId());
 			logger.error(e.getLocalizedMessage());
-			throw new DuplicateUserRelatedException("User with this details already exist in our system,");
+			throw new DuplicateEntityException("User with this details already exist in our system,");
 
 		} catch (SQLException e) {
 			// Handling error encountered and throwing custom user exception
@@ -143,5 +143,30 @@ public class UserDaoImpl implements UserDao {
 			}
 		}
 		return listOfUser;
+	}
+
+	@Override
+	public List<User> getAllUsers() throws UserDefinedSQLException {
+		List<User> c;
+		ResultSet rs;
+		c = new ArrayList<User>();
+		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		connection = DBUtil.connect();
+		try {
+			statement = connection.prepareCall("{CALL GetAllUsers()}");
+			rs = statement.executeQuery();
+			while (rs.next()) {
+				c.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+			}
+			logger.info("Retrieved successfully from the database");
+		} catch (Exception e) {
+			logger.error("Unable to execute query to get all courses");
+		} finally {
+			if (null != statement) {
+				DBUtil.terminateStatement(statement);
+			}
+			DBUtil.terminateConnection();
+		}
+		return c;
 	}
 }

@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
-import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
+import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
 import com.dal.catmeclone.exceptionhandler.FileRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
@@ -59,7 +59,6 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	 */
 	@Override
 	public boolean enrollStudentForCourse(MultipartFile file, Course course) throws FileRelatedException {
-		// TODO Auto-generated method stub
 		recordsSuccessMessage = new ArrayList<String>();
 		recordsFailureMessage = new ArrayList<String>();
 		Set<User> usersToBeEnrolled = new HashSet<User>();
@@ -72,11 +71,9 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 				// call enrollStudent method to enroll student
 				enrollStudent(student, course);
 			} catch (UserDefinedSQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
 		return false;
 	}
 
@@ -167,13 +164,14 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 		// If user is not existing. create a profile for user and enroll user in course
 		else {
 			String password = GeneratePassword();
+			String passwordtobesend = password;
 			user.setPassword(bcryptEncoder.encryptPassword(password));
 			bcryptEncoder.encryptPassword(password);
 			boolean isCreated = false;
 			try {
 				// Create User in System
 				isCreated = userDB.createUser(user);
-			} catch (DuplicateUserRelatedException e) {
+			} catch (DuplicateEntityException e) {
 				// Handle error for error thrown is another exist with same email id
 				recordsFailureMessage.add("User already exists with " + user.getEmail());
 			}
@@ -183,18 +181,16 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 				courseEnrollDB.enrollUserForCourse(user, course, role);
 				LOGGER.info(
 						"User with BannerId: " + user.getBannerId() + " enroll sucessfully as student to the course");
-				notificationService.sendNotificationToNewuser(user, password, course);
+				notificationService.sendNotificationToNewuser(user, passwordtobesend, course);
 				LOGGER.info("Notification email send to user");
 				recordsSuccessMessage.add("User with BannerId: " + user.getBannerId()
 						+ " created and enroll sucessfully as student to the course");
 			}
-
 		}
 	}
 
 	@Override
 	public boolean enrollTAForCourse(User Ta, Course course) {
-		// TODO Auto-generated method stub
 		Role role = new Role("TA");
 		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
 		boolean response = false;
@@ -203,7 +199,6 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 			response = courseEnrollDB.enrollUserForCourse(Ta, course, role);
 
 		} catch (UserDefinedSQLException e) {
-			// TODO Auto-generated catch block
 			return false;
 		}
 		return response;
@@ -223,7 +218,6 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 
 	@Override
 	public Role getUserRoleForCourse(User user, Course course) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		Role role = null;
 		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
 		role = courseEnrollDB.getUserRoleForCourse(user, course);

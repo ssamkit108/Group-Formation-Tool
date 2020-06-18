@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.Validation.ValidatePassword;
-import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
+import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.exceptionhandler.ValidationException;
 import com.dal.catmeclone.model.User;
@@ -30,9 +30,9 @@ public class UserServiceImpl implements UserService {
 		}catch(ValidationException e) {
 			flag=false;
 			throw new ValidationException(e.getMessage());
-		}catch(DuplicateUserRelatedException e) {
+		}catch(DuplicateEntityException e) {
 			logger.error(e.getMessage());
-			throw new DuplicateUserRelatedException(e.getMessage());
+			throw new DuplicateEntityException(e.getMessage());
 		}catch (UserDefinedSQLException e) {
 			logger.error(e.getMessage());
 			throw new UserDefinedSQLException(e.getMessage());

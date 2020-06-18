@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet"
@@ -16,49 +16,60 @@ h1 {
 </style>
 </head>
 <body>
-
-	<div th:replace="header :: header"></div>
+	<section>
+		<div th:replace="header :: header"></div>
+	</section>
 	<br>
-	<div class="container">
-		<!-- container starts -->
-		<div class="row">
-			<h1>Basic Question Information</h1>
-		</div>
-		<hr>
-		<!-- Row Start for Question Form -->
-		<div class="row">
-
-			<!-- Question Form Start -->
-			<div class="col-8">
-				<form th:action="@{/questionmanager/question}"
-					th:object="${BasicQuestion}" method="post">
-					<div class="form-group">
-						<label for="formGroupExampleInput">Question title:</label> <input
-							type="text" class="form-control" id="formGroupExampleInput"
-							placeholder="Enter Question title" th:field="*{questionTitle}" required>
-					</div>
-					<div class="form-group">
-						<label for="formGroupExampleInput2">Question text:</label> <input
-							type="text" class="form-control" id="formGroupExampleInput2"
-							placeholder="Enter Question text" th:field="*{questionText}" required>
-					</div>
-
-					<label class="my-1 mr-2" for="question type">Question type:</label>
-					<select class="custom-select" id="question type"
-						name="question type" th:field="*{questionType}">
-						<option value="NUMERIC">Numeric</option>
-						<option value="MULTIPLECHOICEONE">Multiple choice
-							– choose one</option>
-						<option value="MULTIPLECHOICEMANY">Multiple
-							choice – choose multiple</option>
-						<option value="FREETEXT">Free text</option>
-					</select>
-					<hr>
-					<button type="submit" class="btn btn-primary" style="width: 30%;">Next</button>
-				</form>
+	<section>
+		<div class="container">
+			<!-- container starts -->
+			<div class="row" style="margin-top: 40px">
+				<h1>Basic Question Information</h1>
 			</div>
-			<!-- Question Form End -->
+			<hr>
+			<!-- Row Start for Question Form -->
+			<div class="row">
+				<p class="m-auto" style="color: red">
+					<span th:text="${message}" th:if="${message ne null}"></span>
+				</p>
+				<!-- Question Form Start -->
+				<div class="col-md-10 justify-content-center">
+					<form th:action="@{/questionmanager/questiondetails}"
+						th:object="${BasicQuestion}" method="post">
+						<div class="form-group">
+							<label for="questiontitle">Question title: <sup
+								style="color: red">*</sup></label> <input type="text"
+								class="form-control" id="questiontitle"
+								placeholder="Enter Question title" th:field="*{questionTitle}"
+								required>
+						</div>
+						<div class="form-group">
+							<label for="questiontext">Question text: <sup
+								style="color: red">*</sup></label> <input type="text"
+								class="form-control" id="questiontext"
+								placeholder="Enter Question text" th:field="*{questionText}"
+								required>
+						</div>
+
+						<label class="my-1 mr-2" for="question type">Question
+							type:</label> <select class="custom-select" id="question type"
+							name="question type" th:field="*{questionType}">
+							<option value="NUMERIC">Numeric</option>
+							<option value="MULTIPLECHOICEONE">Multiple choice –
+								choose one</option>
+							<option value="MULTIPLECHOICEMANY">Multiple choice –
+								choose multiple</option>
+							<option value="FREETEXT">Free text</option>
+						</select>
+						<hr>
+						<button type="submit" class="btn btn-primary" style="width: 30%;">Next</button>
+						<a th:href="@{/questionmanager}" class="btn btn-primary"
+							style="width: 30%">Return</a>
+					</form>
+				</div>
+				<!-- Question Form End -->
+			</div>
 		</div>
-	</div>
+	</section>
 </body>
 </html>

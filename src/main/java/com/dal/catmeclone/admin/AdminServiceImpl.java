@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
@@ -13,6 +14,7 @@ public class AdminServiceImpl implements AdminService {
 
 	private CourseInstructorAssignmentDao courseInstructor;
 	private CourseManagementDao courseManagement;
+	private UserDao userDao;
 
 	@Override
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role)
@@ -27,8 +29,8 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<User> getAllUsers() throws SQLException, UserDefinedSQLException {
 		List<User> listOfUsers = new ArrayList<User>();
-		courseInstructor = SystemConfig.instance().getCourseInstructorAssignmentDao();
-		listOfUsers = courseInstructor.getAllUsers();
+		userDao = SystemConfig.instance().getUserDao();
+		listOfUsers = userDao.getAllUsers();
 
 		return listOfUsers;
 	}
@@ -63,8 +65,8 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
 		boolean res = false;
-		courseManagement = SystemConfig.instance().getCourseManagementDao();
-		res = courseManagement.checkInstructorForCourse(course);
+		courseInstructor = SystemConfig.instance().getCourseInstructorAssignmentDao();
+		res = courseInstructor.checkInstructorForCourse(course);
 
 		return res;
 	}
