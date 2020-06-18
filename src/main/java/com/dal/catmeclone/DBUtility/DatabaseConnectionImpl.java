@@ -33,7 +33,7 @@ public class DatabaseConnectionImpl implements DataBaseConnection{
 	private String database;
 	private String databaseurl;
 	private String connectionProperty;
-	private String drivername;
+	
 
 	private Connection databaseConnection;
 	
@@ -46,7 +46,6 @@ public class DatabaseConnectionImpl implements DataBaseConnection{
 		databaseurl = System.getenv("spring.datasource.url");
 		connectionProperty = System.getenv("datasource.connection.properties");
 		
-		//drivername = propertiesUtil.getProperty("spring.datasource.driver-class-name");
 	}
 
 	/**
@@ -66,7 +65,6 @@ public class DatabaseConnectionImpl implements DataBaseConnection{
 		try {
 			// Setting up the connection
 			String databaseConnectionURL = databaseurl + database + "?" + connectionProperty;
-			
 			databaseConnection = DriverManager.getConnection(databaseConnectionURL, user, password);
 
 		} catch (SQLException e) {

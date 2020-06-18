@@ -254,11 +254,11 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 		
 		Collections.sort(listOfQuestion, new Comparator<BasicQuestion>() {
 			  public int compare(BasicQuestion o1, BasicQuestion o2) {
-			      return o1.getQuestionTitle().compareTo(o2.getQuestionTitle());
+			      return o1.getQuestionTitle().toLowerCase().compareTo(o2.getQuestionTitle().toLowerCase());
 			  }
 			});
 		
-		Collections.reverse(listOfQuestion);
+		
 		return listOfQuestion;		
 	}
 

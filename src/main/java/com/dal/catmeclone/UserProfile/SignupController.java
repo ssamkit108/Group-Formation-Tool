@@ -1,91 +1,74 @@
 package com.dal.catmeclone.UserProfile;
 
-import java.sql.SQLException;	
-
+import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;		
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
-import com.dal.catmeclone.encrypt.*;
+import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.ValidationException;
 import com.dal.catmeclone.model.User;
 
-
 @Controller
-public class SignupController
-{	
-
-	private BCryptPasswordEncryption passwordencoder;
-
+public class SignupController {
 	private UserService userservice;
-
-	
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
 	@GetMapping("/signup")
-	public String displaySignup(Model model)
-	{
+	public String displaySignup(Model model) {
+		model.addAttribute("user", new User());
 		return "signup";
 	}
-	
-	
-	@RequestMapping(value = "/signup", method = RequestMethod.POST) 
-   public ModelAndView processSignup(
-   	@RequestParam(name="username") String bannerID,
-   	@RequestParam(name ="password") String password,
-   	@RequestParam(name = "passwordConfirmation") String passwordConfirm,
-   	@RequestParam(name = "firstName") String firstName,
-   	@RequestParam(name = "lastName") String lastName,
-   	@RequestParam(name = "email") String email) throws SQLException, UserDefinedSQLException
-	{
+
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	public ModelAndView processSignup(ModelMap model, User user,
+			@RequestParam(name = "passwordConfirmation") String passwordConfirm, RedirectAttributes redirectAttributes)
+			throws SQLException, ValidationException, UserDefinedSQLException {
 		boolean success = false;
 		userservice = SystemConfig.instance().getUserService();
-		passwordencoder = SystemConfig.instance().getBcryptPasswordEncrption();
+
 		try {
 			ModelAndView m;
 
-		if (password.equals(passwordConfirm))
-		{
-			User u = new User();
-			u.setBannerId(bannerID);
-			u.setPassword(passwordencoder.encryptPassword(password));
-			u.setFirstName(firstName);
-			u.setLastName(lastName);
-			u.setEmail(email);
-			success=userservice.Create(u);
-			if (success)
-			{
-				m = new ModelAndView("login");
-				m.addObject("message", "Succesfully created Account.");
-				return m;
-
-			}
-			else
-			{
+			if (user.getPassword().equals(passwordConfirm)) {
+				success = userservice.Create(user);
+				if (success) {
+					m = new ModelAndView("login");
+					m.addObject("message", "Succesfully created Account.");
+					return m;
+				} else {
+					m = new ModelAndView("signup");
+					m.addObject("message", "Sorry,some error generated in creating account.");
+					return m;
+				}
+			} else {
 				m = new ModelAndView("signup");
-				m.addObject("message", "Sorry,some error generated in creating account.");
+				m.addObject("message", "Password and confirm password should be same.");
 				return m;
-
 			}
-		}
-		else {
-			m = new ModelAndView("signup");
-			m.addObject("message", "Password and confirm password should be same.");
+		} catch (DuplicateEntityException e) {
+			ModelAndView m = new ModelAndView("signup");
+			m.addObject("message", e.getMessage());
 			return m;
-
-		}
-		
-		}
-		catch(Exception e) {
-            logger.error(e.getLocalizedMessage());
-            ModelAndView m=new ModelAndView("error");
-            return m;
+		} catch (UserDefinedSQLException e) {
+			ModelAndView m = new ModelAndView("signup");
+			m.addObject("message", e.getMessage());
+			return m;
+		} catch (ValidationException e) {
+			ModelAndView m = new ModelAndView("signup");
+			m.addObject("message", e.getMessage());
+			return m;
+		} catch (Exception e) {
+			ModelAndView m = new ModelAndView("signup");
+			m.addObject("message", e.getLocalizedMessage());
+			return m;
 		}
 	}
 }

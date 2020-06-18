@@ -20,7 +20,7 @@ public class BasicQuestion {
 
 	public BasicQuestion() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	public BasicQuestion(String questionTitle, Date date) {

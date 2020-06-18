@@ -3,10 +3,8 @@ package com.dal.catmeclone;
 
 import java.io.IOException;
 import java.util.Properties;
-
 import org.springframework.core.env.Environment;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.DBUtility.PropertiesConfigUtil;
@@ -18,6 +16,12 @@ import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.UserProfile.UserDaoImpl;
 import com.dal.catmeclone.UserProfile.UserService;
 import com.dal.catmeclone.UserProfile.UserServiceImpl;
+import com.dal.catmeclone.Validation.HistoryConstraintDaoImpl;
+import com.dal.catmeclone.Validation.HistoryContraintDao;
+import com.dal.catmeclone.Validation.PasswordRulesLoader;
+import com.dal.catmeclone.Validation.ValidatePassword;
+import com.dal.catmeclone.Validation.ValidationRulesDao;
+import com.dal.catmeclone.Validation.ValidationRulesDaoImpl;
 import com.dal.catmeclone.admin.AdminService;
 import com.dal.catmeclone.admin.AdminServiceImpl;
 import com.dal.catmeclone.admin.CourseInstructorAssignmentDao;
@@ -47,29 +51,23 @@ import com.dal.catmeclone.questionmanagement.QuestionManagementServiceImpl;
 
 
 
-/*
- * This is a singleton, we will learn about these when we learn design patterns.
- * 
- * The single responsibility of this singleton is to store concrete classes
- * selected by the system for use in the rest of the system. This will allow
- * a form of dependency injection in places where we cannot use normal
- * dependency injection (for example classes that override or extend existing
- * library classes in the framework).
- */
-public class SystemConfig
-{
+
+	
+
+public class SystemConfig {
 	private static SystemConfig uniqueInstance = null;
 	private Properties properties;
-	
-	private String resourceFilename ="application.properties";
-	
+
+	private String resourceFilename = "application.properties";
+
+
 	private AdminService adminService;
 	private CourseInstructorAssignmentDao courseInstructorAssignmentDao;
 	private CourseManagementDao courseManagementDao;
 	private Interface_AuthenticateUserDao authenticateUserDao;
 	private CourseService courseService;
 	private CourseEnrollmentService courseEnrollmentService;
-	private CoursesDao  courseDao;
+	private CoursesDao courseDao;
 	private CourseEnrollmentDao courseEnrollmentDao;
 	private DataBaseConnection databaseConnection;
 	private BCryptPasswordEncryption bcryptPasswordEncrption;
@@ -78,15 +76,17 @@ public class SystemConfig
 	private UserService userService;
 	private ForgotPasswordService forgotPasswordService;
 	private ForgotPasswordDao forgotPasswordDao;
-	private UserAuthentication userAuthentication;
 	private QuestionManagementDao questionManagementDao;
 	private QuestionManagementService questionManagementService;
-	private AuthenticationSuccessHandler authenticationSuccessHandler;
 	private Environment env;
 	private PropertiesConfigUtil propertiesConfig;
-	
-	
-	
+	private AuthenticationSuccessHandler authenticationSuccessHandler;
+	private HistoryContraintDao historyConstraintDao;
+	private ValidationRulesDao validationRulesDao;
+	private PasswordRulesLoader passwordRules;
+	private ValidatePassword validatePassword;
+	private UserAuthentication userAuthentication;
+
 	public SystemConfig() {
 		super();
 		this.adminService = new AdminServiceImpl();
@@ -110,22 +110,28 @@ public class SystemConfig
 		this.authenticationSuccessHandler = new SuccessHandler();
 		this.questionManagementService = new QuestionManagementServiceImpl();
 		this.questionManagementDao = new QuestionManagementDaoImpl();
-		
+		this.historyConstraintDao = new HistoryConstraintDaoImpl();
+		this.validationRulesDao = new ValidationRulesDaoImpl();
+		this.passwordRules = new PasswordRulesLoader();
+		this.validatePassword = new ValidatePassword();
 	}
 
 	
 
+	public void setValidationRulesDao(ValidationRulesDao validationRulesDao) {
+		this.validationRulesDao = validationRulesDao;
+	}
+
 	// This is the way the rest of the application gets access to the System object.
-	public static SystemConfig instance()
-	{
+	public static SystemConfig instance() {
 		// Using lazy initialization, this is the one and only place that the System
 		// object will be instantiated.
-		if (null == uniqueInstance)
-		{
+		if (null == uniqueInstance) {
 			uniqueInstance = new SystemConfig();
 		}
 		return uniqueInstance;
 	}
+
 	
 	
 	public Properties initializProperties(PropertiesConfigUtil propertiesConfig)
@@ -134,10 +140,22 @@ public class SystemConfig
 		try {
 			property= propertiesConfig.loadProperties(resourceFilename);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		return property;
+	}
+
+
+
+	public Properties getProperties() {
+		return properties;
+	}
+
+
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
 	}
 
 
@@ -227,7 +245,6 @@ public class SystemConfig
 
 
 	public CourseEnrollmentDao getCourseEnrollmentDao() {
-		System.out.println(courseEnrollmentDao);
 		return courseEnrollmentDao;
 	}
 
@@ -323,26 +340,26 @@ public class SystemConfig
 
 
 
-	public UserAuthentication getUserAuthentication() {
-		return userAuthentication;
+	public QuestionManagementDao getQuestionManagementDao() {
+		return questionManagementDao;
 	}
 
 
 
-	public void setUserAuthentication(UserAuthentication userAuthentication) {
-		this.userAuthentication = userAuthentication;
+	public void setQuestionManagementDao(QuestionManagementDao questionManagementDao) {
+		this.questionManagementDao = questionManagementDao;
 	}
 
 
 
-	public AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
-		return authenticationSuccessHandler;
+	public QuestionManagementService getQuestionManagementService() {
+		return questionManagementService;
 	}
 
 
 
-	public void setAuthenticationSuccessHandler(AuthenticationSuccessHandler authenticationSuccessHandler) {
-		this.authenticationSuccessHandler = authenticationSuccessHandler;
+	public void setQuestionManagementService(QuestionManagementService questionManagementService) {
+		this.questionManagementService = questionManagementService;
 	}
 
 
@@ -371,40 +388,71 @@ public class SystemConfig
 
 
 
-	public Properties getProperties() {
-		return properties;
+	public AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
+		return authenticationSuccessHandler;
 	}
 
 
 
-	public void setProperties(Properties properties) {
-		this.properties = properties;
+	public void setAuthenticationSuccessHandler(AuthenticationSuccessHandler authenticationSuccessHandler) {
+		this.authenticationSuccessHandler = authenticationSuccessHandler;
 	}
 
 
 
-	public QuestionManagementDao getQuestionManagementDao() {
-		return questionManagementDao;
+	public HistoryContraintDao getHistoryConstraintDao() {
+		return historyConstraintDao;
 	}
 
 
 
-	public void setQuestionManagementDao(QuestionManagementDao questionManagementDao) {
-		this.questionManagementDao = questionManagementDao;
+	public void setHistoryConstraintDao(HistoryContraintDao historyConstraintDao) {
+		this.historyConstraintDao = historyConstraintDao;
 	}
 
 
 
-	public QuestionManagementService getQuestionManagementService() {
-		return questionManagementService;
+	public PasswordRulesLoader getPasswordRules() {
+		return passwordRules;
 	}
 
 
 
-	public void setQuestionManagementService(QuestionManagementService questionManagementService) {
-		this.questionManagementService = questionManagementService;
+	public void setPasswordRules(PasswordRulesLoader passwordRules) {
+		this.passwordRules = passwordRules;
 	}
 
+
+
+	public ValidatePassword getValidatePassword() {
+		return validatePassword;
+	}
+
+
+
+	public void setValidatePassword(ValidatePassword validatePassword) {
+		this.validatePassword = validatePassword;
+	}
+
+
+
+	public UserAuthentication getUserAuthentication() {
+		return userAuthentication;
+	}
+
+
+
+	public void setUserAuthentication(UserAuthentication userAuthentication) {
+		this.userAuthentication = userAuthentication;
+	}
+
+
+
+	public ValidationRulesDao getValidationRulesDao() {
+		return validationRulesDao;
+	}
 	
 	
+
+
 }
