@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>EvalMe</title>
+<link th:href="@{/public/bootstrap.min.css}" rel="stylesheet">
+<style>
+h1 {
+	text-align: center;
+}
+</style>
+</head>
+<body>
+
+	<div th:replace="fragments/courseheader :: header"></div>
+	<br>
+	<div class="container">
+		<!-- container starts -->
+		<div class="row">
+			<h1>Basic Question Information</h1>
+		</div>
+		<hr>
+		<!-- Row Start for Question Form -->
+		<div class="row">
+
+			<!-- Question Form Start -->
+			<div class="col-8">
+				<form th:action="@{/questionpage/getQuestionConfirm}"
+					th:object="${question}" method="post">
+					<div class="form-group">
+						<label for="formGroupExampleInput">Question title:</label> <input
+							type="text" class="form-control" id="formGroupExampleInput"
+							placeholder="Enter Question title" th:field="*{questionTitle}" required>
+					</div>
+					<div class="form-group">
+						<label for="formGroupExampleInput2">Question text:</label> <input
+							type="text" class="form-control" id="formGroupExampleInput2"
+							placeholder="Enter Question text" th:field="*{questionText}" required>
+					</div>
+
+					<label class="my-1 mr-2" for="question type">Question type:</label>
+					<select class="custom-select" id="question type"
+						name="question type" th:field="*{questionType}">
+						<option value="numeric">Numeric</option>
+						<option value="multiple-choice-choose-one">Multiple choice
+							– choose one</option>
+						<option value="multiple-choice-choose-more">Multiple
+							choice – choose multiple</option>
+						<option value="freetext">Free text</option>
+					</select>
+					<hr>
+					<button type="submit" class="btn btn-primary" style="width: 30%;">Next</button>
+				</form>
+			</div>
+			<!-- Question Form End -->
+		</div>
+	</div>
+</body>
+</html>

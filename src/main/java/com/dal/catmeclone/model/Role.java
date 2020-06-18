@@ -1,27 +1,14 @@
-/**
- * 
- */
 package com.dal.catmeclone.model;
 
-/**
- * @author Mayank
- *
- */
 public class Role {
 
 	public int roleId;
-	
+
 	public String roleName;
 
-	/**
-	 * 
-	 */
 	public Role() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	
-	
 
 	/**
 	 * @param roleName
@@ -30,8 +17,6 @@ public class Role {
 		super();
 		this.roleName = roleName;
 	}
-
-
 
 	/**
 	 * @param roleId
@@ -42,7 +27,6 @@ public class Role {
 		this.roleId = roleId;
 		this.roleName = roleName;
 	}
-
 
 	/**
 	 * @return the roleId
@@ -99,7 +83,5 @@ public class Role {
 			return false;
 		return true;
 	}
-	
-	
-	
+
 }
