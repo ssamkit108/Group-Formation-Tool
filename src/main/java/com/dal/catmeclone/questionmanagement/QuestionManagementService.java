@@ -19,7 +19,7 @@ public interface QuestionManagementService {
 	public List<BasicQuestion> getSortedQuestionsByTitle(User user) throws UserDefinedSQLException;
 
 	public List<BasicQuestion> getSortedQuestionsByDate(User user) throws UserDefinedSQLException;
-	
+
 	public boolean deleteQuestion(int questionId) throws UserDefinedSQLException;
 
 }

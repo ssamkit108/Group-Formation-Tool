@@ -10,25 +10,25 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.exceptionhandler.ValidationException;
 
 public class ValidatePassword {
-	public String listoferror;
+	public String recordsErrorMessage;
 	private PasswordRulesLoader PasswordValidation;
-	final Logger logger = LoggerFactory.getLogger(ValidatePassword.class);
+	final Logger LOGGER = LoggerFactory.getLogger(ValidatePassword.class);
 
 	public void validatepassword(User user) throws ValidationException, UserDefinedSQLException, SQLException {
 
 		PasswordValidation = SystemConfig.instance().getPasswordRules();
 		PasswordValidation.CreateActiveRulesList();
 		List<ValidationPolicy> rules = PasswordValidation.getValidationRulesList();
-		this.listoferror = "";
+		this.recordsErrorMessage = "";
 		for (ValidationPolicy rule : rules) {
 			if (!rule.isValid(user)) {
 				String error = rule.getError();
-				listoferror = listoferror + "\n" + error;
-				logger.error("Registration failed with error : " + error);
+				recordsErrorMessage = recordsErrorMessage + "\n" + error;
+				LOGGER.error("Registration failed with error : " + error);
 			}
 		}
-		if (!listoferror.isEmpty()) {
-			throw new ValidationException(listoferror);
+		if (!recordsErrorMessage.isEmpty()) {
+			throw new ValidationException(recordsErrorMessage);
 		}
 	}
 

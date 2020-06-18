@@ -14,7 +14,7 @@ import com.dal.catmeclone.model.User;
 public class QuestionManagementServiceImpl implements QuestionManagementService {
 
 	private Logger LOGGER = Logger.getLogger(QuestionManagementServiceImpl.class.getName());
-	QuestionManagementDao questionManagementDao =null;
+	QuestionManagementDao questionManagementDao = null;
 
 	/*
 	 * Service Layer method to get all list of question for the user
@@ -23,7 +23,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	public List<BasicQuestion> getAllQuestionByUser(User user) throws UserDefinedSQLException {
 
 		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
-		
+
 		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
 		// Calling Dao layer to perform interaction wwith DB to fetch list of question
 		listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
@@ -37,7 +37,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	public List<BasicQuestion> getSortedQuestionsByTitle(User user) throws UserDefinedSQLException {
 
 		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
-		
+
 		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
 		// Calling Dao layer to perform interaction wwith DB to fetch list of question
 		listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
@@ -58,7 +58,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	public List<BasicQuestion> getSortedQuestionsByDate(User user) throws UserDefinedSQLException {
 
 		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
-		
+
 		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
 		// Calling Dao layer to perform interaction wwith DB to fetch list of question
 		listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
@@ -76,9 +76,9 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 
 	@Override
 	public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoice) throws UserDefinedSQLException {
-		
+
 		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
-		
+
 		multipleChoice.filterOptions();
 		boolean isQuestionCreated = questionManagementDao.createMultipleChoiceQuestion(multipleChoice);
 		return isQuestionCreated;
@@ -88,7 +88,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	public boolean createNumericOrTextQuestion(BasicQuestion basicQuestion) throws UserDefinedSQLException {
 
 		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
-		
+
 		boolean isQuestionCreated = questionManagementDao.createNumericOrTextQuestion(basicQuestion);
 		return isQuestionCreated;
 	}
@@ -97,16 +97,16 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	public boolean ifQuestionTitleandTextExists(BasicQuestion basicQuestion) throws UserDefinedSQLException {
 
 		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
-		
+
 		boolean isQuestionExists = questionManagementDao.isQuestionExistForUserWithTitleandText(basicQuestion);
 		return isQuestionExists;
 	}
 
 	@Override
 	public boolean deleteQuestion(int questionId) throws UserDefinedSQLException {
-		
+
 		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
-		
+
 		boolean isQuestionDeleted = questionManagementDao.deleteQuestion(questionId);
 		return isQuestionDeleted;
 	}

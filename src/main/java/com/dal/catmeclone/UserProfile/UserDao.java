@@ -12,6 +12,6 @@ public interface UserDao {
 	public boolean createUser(User student) throws UserDefinedSQLException, DuplicateEntityException;
 
 	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException;
-	
-	public List<User> getAllUsers() throws  UserDefinedSQLException;
+
+	public List<User> getAllUsers() throws UserDefinedSQLException;
 }

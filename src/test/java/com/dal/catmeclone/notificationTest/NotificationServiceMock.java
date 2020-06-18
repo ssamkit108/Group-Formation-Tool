@@ -31,7 +31,7 @@ public class NotificationServiceMock implements NotificationService {
 	@Value("${login.url}")
 	private String loginurl;
 
-	String success = "";
+	public String success = "";
 
 	private void send(String from, String password, String to, String sub, String msg) {
 		Properties props = new Properties();
@@ -73,6 +73,7 @@ public class NotificationServiceMock implements NotificationService {
 				+ password + "\n\nYou are most welcomed to be a part of this organisation."
 				+ "\n\nBest Regards,\nCSCI5708-Grp12";
 		body += "\nNote: for security reason, " + "you must change your password after logging in.";
+		success = "Sent";
 
 		String subject = "Forgot password";
 		send(fromgmail, fromPassword, sendto, subject, body);

@@ -23,7 +23,7 @@ public class AdminController {
 
 	AdminService adminService = SystemConfig.instance().getAdminService();
 
-	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
 
 	@GetMapping("/admin/courseCreationForm")
 	public String getCourseForm(Model model) {
@@ -44,14 +44,14 @@ public class AdminController {
 				return "admin/courseCreationForm";
 			}
 		} catch (SQLException | UserDefinedSQLException e) {
-			logger.error("Some Sql exception caught in admin controller");
+			LOGGER.error("Some Sql exception caught in admin controller");
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
 		try {
 			adminService.insertCourse(new Course(course.getCourseID(), course.getCourseName()));
 		} catch (SQLException | UserDefinedSQLException e) {
-			logger.error("Some Sql exception caught in admin controller");
+			LOGGER.error("Some Sql exception caught in admin controller");
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
@@ -65,7 +65,7 @@ public class AdminController {
 		try {
 			model.addAttribute("courses", adminService.getAllCourses());
 		} catch (SQLException | UserDefinedSQLException e) {
-			logger.error("Some Sql exception caught in admin controller");
+			LOGGER.error("Some Sql exception caught in admin controller");
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
@@ -78,7 +78,7 @@ public class AdminController {
 		try {
 			adminService.deleteCourse(course.getCourseID());
 		} catch (SQLException | UserDefinedSQLException e) {
-			logger.error("Some Sql exception caught in admin controller");
+			LOGGER.error("Some Sql exception caught in admin controller");
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
@@ -92,7 +92,7 @@ public class AdminController {
 		try {
 			model.addAttribute("users", adminService.getAllUsers());
 		} catch (SQLException | UserDefinedSQLException e) {
-			logger.error("Some Sql exception caught in admin controller");
+			LOGGER.error("Some Sql exception caught in admin controller");
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
@@ -106,7 +106,7 @@ public class AdminController {
 				return "admin/adminDashboard";
 			}
 		} catch (SQLException | UserDefinedSQLException e) {
-			logger.error("Some Sql exception caught in admin controller");
+			LOGGER.error("Some Sql exception caught in admin controller");
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
@@ -119,7 +119,7 @@ public class AdminController {
 		try {
 			adminService.enrollInstructorForCourse(user, course, new Role("Instructor"));
 		} catch (SQLException | UserDefinedSQLException e) {
-			logger.error("Some Sql exception caught in admin controller");
+			LOGGER.error("Some Sql exception caught in admin controller");
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}

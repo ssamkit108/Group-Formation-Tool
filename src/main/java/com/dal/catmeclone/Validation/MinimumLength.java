@@ -7,7 +7,7 @@ import com.dal.catmeclone.model.User;
 public class MinimumLength implements ValidationPolicy {
 
 	private String ruleValue;
-	final Logger logger = LoggerFactory.getLogger(MinimumLength.class);
+	final Logger LOGGER = LoggerFactory.getLogger(MinimumLength.class);
 
 	@Override
 	public void setValue(String ruleValue) {
@@ -20,7 +20,7 @@ public class MinimumLength implements ValidationPolicy {
 		// TODO Auto-generated method stub
 		String password = user.getPassword();
 		boolean result = password.length() >= Integer.parseInt(this.ruleValue);
-		logger.info("Password Minimum length validation. Result : " + result);
+		LOGGER.info("Password Minimum length validation. Result : " + result);
 		return result;
 	}
 
