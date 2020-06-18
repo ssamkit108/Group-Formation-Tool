@@ -18,23 +18,23 @@ public class CourseManagementTest {
 	@Test
 	public void insertCourseTest() throws UserDefinedSQLException, SQLException {
 		Course u = new Course();
-		CourseMock mock= new CourseMock();
+		CourseMock mock = new CourseMock();
 		u.setCourseID(123);
 		u.setCourseName("sdc");
 		Assert.isTrue(mock.insertCourse(u));
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Test
-	public void deleteCourseTest() throws UserDefinedSQLException, SQLException{
+	public void deleteCourseTest() throws UserDefinedSQLException, SQLException {
 		Course u = new Course();
 		CourseMock mock = new CourseMock();
 		u.setCourseID(123);
 		Assert.isTrue(mock.deleteCourse(u.getCourseID()));
 	};
-	
+
 	@Test
-	public void getAllCoursesTest() throws UserDefinedSQLException, SQLException{
+	public void getAllCoursesTest() throws UserDefinedSQLException, SQLException {
 		Course u = new Course();
 		CourseMock mock = new CourseMock();
 		u.setCourseID(123);
@@ -42,17 +42,16 @@ public class CourseManagementTest {
 		List<Course> c = new ArrayList<Course>();
 		c.add(u);
 		assertEquals(mock.getAllCourses(), c);
-	};	
-	
-	
+	};
+
 	@SuppressWarnings("deprecation")
 	@Test
-	public void checkCourseExists() throws UserDefinedSQLException, SQLException{
+	public void checkCourseExists() throws UserDefinedSQLException, SQLException {
 		Course u = new Course();
 		CourseMock mock = new CourseMock();
 		u.setCourseID(123);
 		u.setCourseName("sdc");
 		Assert.isTrue(mock.checkCourseExists(new Course(u.getCourseID(), u.getCourseName())));
 	}
-	
+
 }

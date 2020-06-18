@@ -1,4 +1,5 @@
 package com.dal.catmeclone.UserProfileTest;
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -10,16 +11,14 @@ import org.springframework.util.Assert;
 
 import com.dal.catmeclone.model.*;
 
-
 @SpringBootTest
 public class UserDaoTest {
-	
+
 	@SuppressWarnings("deprecation")
 	@Test
-	public void CreateUserTest()
-	{
+	public void CreateUserTest() {
 		User u = new User();
-		UserDaoMock mock=new UserDaoMock();
+		UserDaoMock mock = new UserDaoMock();
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
 		u.setFirstName("Bob");
@@ -27,7 +26,7 @@ public class UserDaoTest {
 		u.setPassword("12345");
 		Assert.isTrue(mock.createUser(u));
 	}
-	
+
 	@Test
 	public void GetAllUsersTest() {
 		User u = new User();
@@ -39,7 +38,7 @@ public class UserDaoTest {
 		u.setPassword("12345");
 		List<User> li = new ArrayList<User>();
 		li.add(u);
-		assertEquals(mock.getAllUsers(), li);	
+		assertEquals(mock.getAllUsers(), li);
 	}
 
 }

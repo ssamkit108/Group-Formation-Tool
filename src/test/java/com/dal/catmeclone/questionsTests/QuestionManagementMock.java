@@ -15,14 +15,14 @@ public class QuestionManagementMock implements QuestionManagementDao {
 	@Override
 	public List<BasicQuestion> getAllQuestionByUser(User u) throws SQLException, UserDefinedSQLException {
 		List<BasicQuestion> q = new ArrayList<BasicQuestion>();
-		q.add(new BasicQuestion("Java","Rate?"));
+		q.add(new BasicQuestion("Java", "Rate?"));
 		return q;
 	}
 
 	@Override
 	public List<BasicQuestion> getSortedQuestionsByTitle(User u) throws SQLException, UserDefinedSQLException {
 		List<BasicQuestion> q = new ArrayList<BasicQuestion>();
-		q.add(new BasicQuestion("Java","Rate?"));
+		q.add(new BasicQuestion("Java", "Rate?"));
 		return q;
 	}
 
@@ -35,35 +35,23 @@ public class QuestionManagementMock implements QuestionManagementDao {
 
 	@Override
 	public boolean isQuestionExistForUserWithTitleandText(BasicQuestion basicQuestion) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean createNumericOrTextQuestion(BasicQuestion textOrNumericQuestion) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoiceChoose)
 			throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean deleteQuestion(int questionId) throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
-	/*@Override
-	public boolean deleteQuestion(int questionId) throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
-		return false;
-	}*/
-
-	
 
 }

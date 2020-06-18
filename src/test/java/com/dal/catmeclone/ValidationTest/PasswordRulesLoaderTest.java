@@ -10,10 +10,10 @@ import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.Validation.PasswordRulesLoader;
 
 public class PasswordRulesLoaderTest {
-	
+
 	@Test
 	public void TestgetValidationRulesList() {
-		PasswordRulesLoader passwordrules=SystemConfig.instance().getPasswordRules();
+		PasswordRulesLoader passwordrules = SystemConfig.instance().getPasswordRules();
 		assertTrue(passwordrules.getValidationRulesList() instanceof List<?>);
 	}
 }

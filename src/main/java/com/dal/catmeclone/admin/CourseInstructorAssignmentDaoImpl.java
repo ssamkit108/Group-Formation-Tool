@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -26,7 +25,6 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 	@Override
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role)
 			throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		db = SystemConfig.instance().getDatabaseConnection();
 		connection = db.connect();
 		Properties properties = SystemConfig.instance().getProperties();
@@ -37,7 +35,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 			statement.setString(3, role.getRoleName());
 			statement.execute();
 			logger.info("Course:" + Instructor.getBannerId() + course.getCourseID() + role.getRoleName()
-					+ "Instructor Enrolled successfully");
+			+ "Instructor Enrolled successfully");
 
 		} catch (SQLException e) {
 			logger.error("Unable to execute query to check if course exists");
