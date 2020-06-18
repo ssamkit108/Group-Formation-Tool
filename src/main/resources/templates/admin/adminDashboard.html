@@ -24,7 +24,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
             <td colspan="2"> No Courses Available </td>
         </tr>
         <tr th:each="c : ${courses}">
-            
             <td><span th:text="${c.courseID}"> ID </span></td>
             <td><span th:text="${c.courseName}"> Name </span></td>
             <td>

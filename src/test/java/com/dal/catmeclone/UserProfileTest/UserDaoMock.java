@@ -5,8 +5,6 @@ import java.util.*;
 import com.dal.catmeclone.model.*;
 
 public class UserDaoMock{
-
-
 	public boolean createUser(User user)
 	{	
 		List<User> users=new ArrayList<User>();
@@ -26,6 +24,5 @@ public class UserDaoMock{
 		l.add(new User("B00825292", "Bob", "Shaw", "12345", "bob123@gmail.com"));
 		return l;
 	}
-
 
 }
