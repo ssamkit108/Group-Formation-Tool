@@ -25,67 +25,60 @@ public class NotificationServiceImpl implements NotificationService {
 
 	private String subject;
 
-	private String loginurl;
+	private String appurl;
 
 	@Override
 	public void sendNotificationToNewuser(User user, String password, Course course) {
-		Properties property = SystemConfig.instance().getProperties();
+		
 
-		fromgmail = property.getProperty("from.email");
-		fromPassword = property.getProperty("from.password");
+		Properties property = SystemConfig.instance().getProperties();
 		subject = property.getProperty("account.subject");
-		loginurl = property.getProperty("login.url");
+		appurl = property.getProperty("app.url");
 
-		String body = "<h2 >Hi " + user.getFirstName() + ",</h2>"
-				+ "<p>Your Account has been created successfully and you have also been enrolled to subject: "
-				+ course.getCourseID() + "</p>" + "<p>Please find below your login credential:&nbsp;</p>"
-				+ "<p ><strong>Username: " + user.getBannerId() + "</strong></p>" + "<p ><strong>Password: " + password
-				+ "</strong></p>"
-				+ "<p style='text-align: center;'><strong> Please click on the button to log in</strong></p>"
-				+ "<p style='text-align: center;'><a href=" + loginurl
-				+ " target='_blank'><button style='background-color: #a0e9ed;'>Log In</button></a></p>"
-				+ "<p style='text-align: left;'>&nbsp;</p>"
-				+ "<p style='text-align: left;'>You are most welcomed to be a part of this organisation.</p>"
-				+ "<p >Best Regards,</p>" + "<p>CSCI5708-Grp12</p>" + "<p>&nbsp;</p>";
+		String body = property.getProperty("accountcreation.email.body");
+		body =  body.replace("FIRSTNAME", user.getFirstName());
+		body =  body.replace("BANNERID", user.getBannerId());
+		body =  body.replace("PASSWORD", user.getPassword());
+		body =  body.replace("URL", appurl+"/login");
+		body =  body.replace("COURSE", String.valueOf(course.getCourseID()));
+		
 
-		send(fromgmail, fromPassword, user.getEmail(), subject, body);
+		send(user.getEmail(), subject, body);
 
 	}
 
-	public void sendNotificationForPassword(String BannerId, String password, String sendto) {
+	public void sendNotificationForPassword(String bannerId, String password, String sendto) {
 
 		Properties property = SystemConfig.instance().getProperties();
 
 		fromgmail = property.getProperty("from.email");
 		fromPassword = property.getProperty("from.password");
 
-		loginurl = property.getProperty("login.url");
-
-		String body = "<h2 >Hi " + BannerId + ",</h2>"
-				+ "<p>New Password for your account is geenrated successfully </p>"
-				+ "<p>Please find below your login credential:&nbsp;</p>" + "<p ><strong>Username: " + BannerId
-				+ "</strong></p>" + "<p ><strong>Password: " + password + "</strong></p>"
-				+ "<p style='text-align: center;'><strong> Please click on the button to log in</strong></p>"
-				+ "<p style='text-align: center;'><a href=" + loginurl
-				+ " target='_blank'><button style='background-color: #a0e9ed;'>Log In</button></a></p>"
-				+ "<p style='text-align: left;'>&nbsp;</p>" + "<p Note: for security reason, </p>"
-				+ "<p> you must change your password after logging in.</p>" + "<p >Best Regards,</p>"
-				+ "<p>CSCI5708-Grp12</p>" + "<p>&nbsp;</p>";
-
+		appurl = System.getenv("loginurl");
+		
+		String body = property.getProperty("forgotpassword.email.body");
+		body=body.replaceAll("BANNERID", bannerId);
+		body=body.replace("URL", password);
+		
 		String subject = "Forgot password";
-		send(fromgmail, fromPassword, sendto, subject, body);
+		send(sendto, subject, body);
 	}
 
-	private void send(String from, String password, String to, String sub, String msg) {
+	private void send(String to, String sub, String msg) {
+
+		Properties property = SystemConfig.instance().getProperties();
+
+		fromgmail = property.getProperty("from.email");
+		fromPassword = property.getProperty("from.password");
 
 		// Get properties object
 		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.socketFactory.port", "465");
-		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.port", "465");
-		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", property.getProperty("mail.smtp.host"));
+		props.put("mail.smtp.socketFactory.port", property.getProperty("mail.smtp.socketFactory.port"));
+		props.put("mail.smtp.socketFactory.class", property.getProperty("mail.smtp.socketFactory.class"));
+		props.put("mail.smtp.auth", property.getProperty("mail.smtp.auth"));
+		props.put("mail.smtp.port", property.getProperty("mail.smtp.port"));
+		props.put("mail.smtp.starttls.enable", property.getProperty("mail.smtp.starttls.enable"));
 
 		// get Session
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
@@ -98,10 +91,9 @@ public class NotificationServiceImpl implements NotificationService {
 
 		MimeMessage message = new MimeMessage(session);
 		try {
+			
 			message.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
-
 			message.setSubject(sub);
-
 			message.setText(msg, "UTF-8", "html");
 
 			// send message

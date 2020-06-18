@@ -8,9 +8,6 @@ public class Course {
 	private int courseID;
 	private String courseName;
 
-	/**
-	 * 
-	 */
 	public Course() {
 		super();
 	}
@@ -60,24 +57,20 @@ public class Course {
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
-	
+
 	/*
 	 * To check if Courseid is valid
 	 */
-	public boolean isCourseIDValid()
-	{
-		return (this.courseID!=0);
+	public boolean isCourseIDValid() {
+		return (this.courseID != 0);
 	}
-		
-	
-	public boolean  isCourseNameValid()
-	{
-		if(courseName!=null && !courseName.isEmpty())
+
+	public boolean isCourseNameValid() {
+		if (courseName != null && !courseName.isEmpty())
 			return true;
 		else
 			return false;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -107,13 +100,11 @@ public class Course {
 		return true;
 	}
 
-	
 	public static boolean isCourseNameValid(String courseName) {
-		if(courseName == null) {
+		if (courseName == null) {
 			return false;
 		}
 		return !courseName.isEmpty();
 	}
-
 
 }

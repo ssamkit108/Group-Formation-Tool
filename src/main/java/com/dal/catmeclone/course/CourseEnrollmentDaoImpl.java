@@ -24,7 +24,6 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 
 	@Override
 	public boolean enrollUserForCourse(User student, Course course, Role role) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		CallableStatement statement = null;
 		try {
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
@@ -40,7 +39,6 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 			statement.execute();
 			logger.info("user enrolled");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			return false;
 		} finally {
 			DBUtil.terminateStatement(statement);
@@ -53,8 +51,6 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 
 	@Override
 	public boolean hasEnrolledInCourse(String bannerId, int courseId) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
-
 		CallableStatement statement = null;
 		try {
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
@@ -77,7 +73,6 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			return false;
 		} finally {
 			DBUtil.terminateStatement(statement);
@@ -85,12 +80,10 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 				DBUtil.terminateConnection();
 			}
 		}
-
 	}
 
 	@Override
 	public List<Course> getAllEnrolledCourse(User user) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		List<Course> listofCourses = new ArrayList<Course>();
 		CallableStatement statement = null;
 		try {
@@ -107,7 +100,6 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			return listofCourses;
 		} finally {
 			DBUtil.terminateStatement(statement);
@@ -120,7 +112,6 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 
 	@Override
 	public Role getUserRoleForCourse(User user, Course course) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		Role role = null;
 		CallableStatement statement = null;
 		try {
@@ -141,7 +132,6 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return role;
 		} finally {
