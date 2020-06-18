@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/general.css">
+<script type="text/javascript" src="/js/courseci-message.js"></script>
+<title>QuestionManager</title>
+<style>
+h1 {
+	text-align: center;
+}
+</style>
+</head>
+<body>
+	<section>
+		<div th:replace="header :: header"></div>
+	</section>
+	<br>
+	<section>
+		<div class="container">
+			<div class="row" style="margin-top: 40px">
+				<h1>Question Manager Page</h1>
+			</div>
+			<hr>
+
+			<div class="row justify-content-center">
+				<section>
+					<div class="container" style="margin-bottom: 25px">
+
+						<h4>
+							<span th:text="${message}" th:if="${message ne null}"
+								style="color: darkblue;"></span>
+						</h4>
+
+
+						<div class="row">
+
+							<div class="col-md-4 m-auto justify-content-right">
+								<a class="btn btn-primary"
+									th:href="@{/questionmanager/question}">Create New Question</a>
+							</div>
+
+							<div class="col-md-4 m-auto justify-content-centre"></div>
+							<form action="#" th:action="@{/questionmanager}"
+								th:object="${questionList}" method=post>
+
+								<div class="col-md-4 m-auto justify-content-left">
+
+
+									<!-- <input type="hidden" th:value="${questionList}"
+										name="questionList" /> -->
+									<button type="submit" class="btn btn-primary" name="action"
+										value="sortbytitle">Sort by Title</button>
+
+									<input type="hidden" th:value="${questionList}"
+										name="questionList" />
+									<button type="submit" class="btn btn-primary" name="action"
+										value="sortbydate" style="float: right">Sort by Date</button>
+								</div>
+
+							</form>
+						</div>
+					</div>
+				</section>
+				<table class="table table-bordered">
+					<thead class="dark">
+						<tr>
+							<th>Question Title</th>
+							<th>Question Text</th>
+							<th>Date created</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${questionList.empty}">
+							<td colspan="2">No Courses Available</td>
+						</tr>
+						<tr th:each="ques : ${questionList}">
+							<td th:text="${ques.questionTitle}"></td>
+							<td th:text="${ques.questionText}"></td>
+							<td th:text="${ques.creationDate}"></td>
+							<td>
+
+								<form
+									onSubmit="return confirm('Are you sure you want to delete this Question?')"
+									action="#"
+									th:action="@{/questionmanager/delete(question=${ques.questionId})}"
+									method="post">
+
+									<button type="submit" class="btn btn-danger btn-sm"
+										name="action" value="remove">Delete</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+
+
+
+			</div>
+		</div>
+
+	</section>
+
+
+
+</body>
+</html>

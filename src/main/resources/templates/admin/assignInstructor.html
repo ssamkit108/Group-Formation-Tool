@@ -25,13 +25,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
             
             <td><span th:text="${u.bannerId}"> ID </span></td>
             <td>
-            <form action="#" th:action="@{/assignInstructor}" th:object="${assignInstructor}" method=post>
+            <form action="#" th:action="@{/admin/assignInstructor}" th:object="${assignInstructor}" method=post>
             <input type="hidden" th:value="${course.courseID}" name="courseID"/><input type="hidden" th:value="${u.bannerId}" name="bannerId"/><button type="submit" name="action">Assign</button>
             </form>
             </td>
         </tr>
       </tbody>
 	</table>
-        <a href="/courseCreationForm">Add Course</a>
+        <a href="/admin/courseCreationForm">Add Course</a>
 </body>
 </html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/general.css">
+<script type="text/javascript" src="/js/courseci-message.js"></script>
+<title>QuestionManager</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	// Query to add row
+	$(document).ready(function() {
+
+		function replaceItems(html) {
+			// Replace the <fieldset id="items"> with a new one returned by server.
+			$('#details').replaceWith($(html));
+		}
+
+		$('#addOption').click(function(event) {
+			event.preventDefault();
+			var data = $('form').serialize();
+			// Add parameter "addItem" to POSTed form data. Button's name and value is
+			// POSTed only when clicked.
+			data += '&addOption';
+			$.post('/questionmanager/question', data, replaceItems);
+		});
+
+	});
+
+	// javascript to validate option rows
+	function validate() {
+		var myCollection = document.getElementsByClassName("optionvalue");
+		var i;
+		for (i = 0; i < myCollection.length; i++) {
+			if (myCollection[i].value == "") {
+				myCollection[i].value = "-1";
+			}
+		}
+		return true;
+	}
+</script>
+
+
+
+
+<style>
+h1 {
+	text-align: center;
+}
+</style>
+</head>
+<body>
+	<section>
+		<div th:replace="header :: header"></div>
+	</section>
+	<br>
+	<section>
+		<div class="container">
+			<!-- container starts -->
+
+
+
+			<div class="row" style="margin-top: 40px">
+				<h2>Provide Options</h2>
+			</div>
+			<hr>
+			<div id="details" class="container">
+
+
+
+				<p class="m-auto" style="color: red">
+					<span th:text="${message}" th:if="${message ne null}"></span>
+				</p>
+
+
+
+				<form th:action="@{/questionmanager/question/multiplechoice}"
+					th:object="${question}" onsubmit="return validate()" method="post"
+					id="form">
+					<!-- option start -->
+					<input type="hidden" class="form-control" id="question-title"
+						name="question-title" th:field="*{questionTitle}"
+						value="${questionTitle}"> <input type="hidden"
+						class="form-control" id="question-text" name="question-text"
+						th:field="*{questionText}" value="${questionText}"> <input
+						type="hidden" class="form-control" id="question-type"
+						name="question-type" th:field="*{questionType}"
+						value="${questionType}">
+
+
+
+					<fieldset id="options">
+						<div class="row" th:id=${itemStat.index}
+							th:each="option,itemStat : *{optionList}">
+							<!-- <div th:each="option : ${question.optionList}"> -->
+							<!-- <div class="row" th:id =${itemStat.index}> -->
+							<div class="col-lg-6">
+								<label for="displaytext-1">Display Text:</label> <input
+									type="text" class="form-control" id="optiontext"
+									name="optiontext" placeholder="Enter Option Display text"
+									th:field="*{optionList[__${itemStat.index}__].optionText}">
+							</div>
+							<div class="col-lg-6">
+								<label for="stored-1">Stored As:</label> <input type="number"
+									class="form-control optionvalue" id="optionvalue"
+									name="optionvalue" min=0 placeholder="stored as"
+									th:field="*{optionList[__${itemStat.index}__].optionValue}"
+									value="${option.optionValue}">
+							</div>
+							<hr>
+							<!-- </div> -->
+						</div>
+
+					</fieldset>
+
+					<hr>
+
+					<a th:href="@{/questionmanager}" class="btn btn-primary"
+						style="width: 15%; color: white;">Return Home</a>
+
+					<button type="submit" class="btn btn-primary" style="width: 15%;">Save</button>
+
+				</form>
+			</div>
+			<button type="button" id="addOption" class="btn btn-primary"
+				name="addOption" style="float: right; margin-top: -20px">Add
+				item</button>
+
+		</div>
+	</section>
+</body>
+</html>
