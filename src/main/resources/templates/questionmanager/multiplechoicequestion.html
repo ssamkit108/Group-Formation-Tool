@@ -11,69 +11,27 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
-	var i=4;
-	function addOption() {	
-		let parent = document.getElementById(i);
-		i=i+1;
-		alert(i);
-		var j=i+1;
-		alert(j);
-	  var div = document.createElement("div");
-	  div.className = 'row';
-	  div.id = i;
-	  var div1 = document.createElement("div");
-	  div1.className = 'col-lg-6';
-	  div1.innerHTML = "<label for='displaytext-1'>Display Text:</label> <input type='text' class='form-control' id='optiontext' name='optiontext' placeholder='Enter Option Display text' th:field='optionList["+i+"].optionText' required>";
-	  alert("here");
-	  var div2 = document.createElement("div");
-	  div2.className = 'col-lg-6';
-	  div2.innerHTML = "<label for='stored-1'>Stored As:</label> <input type='text' class='form-control' id='optionvalue' name='optionvalue' placeholder='stored as' th:field='optionList["+i+"].optionValue'value="+j+"  required >";
-	  alert("here2");
-	  div.appendChild(div1);
-	  div.appendChild(div2);
-	  alert("here3");
-	  console.log(parent);
-	  parent.parentNode.insertBefore(div, parent.nextSibling);
-	 //parent.append(div);
-	} 
 
+	$(document).ready(function() {
+		
+		function replaceItems (html) {
+		    // Replace the <fieldset id="items"> with a new one returned by server.
+		    $('#details').replaceWith($(html) );
+		}
 
-$(document).ready(function(){
-function replaceItems (res) {
-    // Replace the <fieldset id="items"> with a new one returned by server.
-    console.log(res);
-   // $('#optionList').html($('#optionList',data).html());
-   $('#options').replaceWith($('#options',data));
-}
-
-	$('button[name="addOption"]').click(function (event) {
-		console.log("here");
-	    event.preventDefault();
-	    var data = $('form').serialize();
-	    console.log(data);
-	    // Add parameter "addItem" to POSTed form data. Button's name and value is
-	    // POSTed only when clicked. Since "event.preventDefault();" prevents from
-	    // actual clicking the button, following line will add parameter to form
-	    // data.
-	    data += '&addOption';
-	    console.log(data);
-	    $.post('/questionmanager/question/option', data,  function(data){
-	        alert("Data: " + data );
-	    });
+		$('#addOption').click(function (event) {
+		    event.preventDefault();
+		    var data = $('form').serialize();
+		    // Add parameter "addItem" to POSTed form data. Button's name and value is
+		    // POSTed only when clicked.
+		    data += '&addOption';
+		    $.post('/questionmanager/question', data, replaceItems);
+		});
+	
 	});
-
-
-	$('button[name="removeItem"]').click(function (event) {
-	    event.preventDefault();
-	    var data = $('form').serialize();
-	    // Add parameter and index of item that is going to be removed.
-	    data += 'removeItem=' + $(this).val();
-	    $.post('/order', data, function(data, status){
-	        alert("Data: " + data + "\nStatus: " + status);
-	    });
-	});
-});
 </script>
+
+
 <style>
 h1 {
 	text-align: center;
@@ -81,19 +39,22 @@ h1 {
 </style>
 </head>
 <body>
-
+	<section>
 	<div th:replace="header :: header"></div>
+	</section>
 	<br>
+	<section>
 	<div class="container">
 		<!-- container starts -->
 
 		<!-- Multiple choice– choose one Form Start  th:if="${isMultipleOne} == 'YES'" -->
-		<div class="container">
-	
-			<div class="row">
-				<h4>Answers</h4>
+			
+			<div class="row" style ="margin-top: 40px">
+				<h4>Options</h4>
 			</div>
 			<hr>
+			<div id="details" class="container">
+			
 			<form th:action="@{/questionmanager/question/multiplechoice}"
 			th:object="${question}" method="post">
 				<!-- option start -->
@@ -122,72 +83,34 @@ h1 {
 						<hr>
 					<!-- </div> -->
 				</div> 
-				
-				<button type="submit" name="addOption1">Add row</button>
-				
-				
-					
-
 					
 				</fieldset>
 				
 				
 				<hr>
-				<!-- <button class="btn btn-primary"  id="addOption" name="addOption"  style="width: 15%; color: white; float: right; margin:-20px" onclick="addOption(${question.optionList.size})" >Add More Option</button> -->
-				<button type="button" name="addOption"  >Add item</button>	
-				<!-- option start -->
-				<hr>
 				
-				<a href="questionmanager/question/multiplechoice"
+				<a th:href="@{/questionmanager}"
 					class="btn btn-primary" style="width: 15%; color: white;">Return
 					Home</a>
 				
 
-				<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
+				<button type="submit" class="btn btn-primary" style="width: 15%;">Save</button>
+				
 			</form>
+			</div>
+			<button type="button" id="addOption" class="btn btn-primary" name="addOption" style="float:right; margin-top:-20px"  >Add item</button>	
 			
 			
 
-			<hr>
-				<button class="btn btn-primary"  id="addOption" name="addOption2"  style="width: 15%; color: white; float: right; margin:-20px" onclick='addOption()' >Add More Option</button>
-			<hr>
-			<!-- Confirm Multiple One Form Start th:if="${isMultipleOneFixed} == 'YES'" -->
-			<!-- <div class="container">
-				<form>
-					<div class="row">
-						<h4>Displaying Multiple Choice – Choose One questions looks
-							like this:</h4>
-					</div>
-					<hr>
-					<div class="row">
-						<div class="col-8">
-							<p>How many Credit hours are you attempting this term?</p>
-						</div>
-						<div class="col-4">
-							<select class="custom-select" id="question type"
-								name="question type">
-								<option value="1">Numeric</option>
-								<option value="2">Multiple choice – choose one</option>
-								<option value="3">Multiple choice – choose multiple</option>
-								<option value="4">Free text</option>
-							</select>
-						</div>
-					</div>
-					<hr>
-					<a href="/questionmanager"
-						class="btn btn-primary" style="width: 15%; color: white;">Return
-						Home</a>
-
-					<button type="submit" class="btn btn-primary" style="width: 15%;">Next</button>
-
-				</form>
-
-			</div> -->
-			<!-- Confirm Multiple One Form End -->
-		</div>
+			<!-- <hr>
+				<button class="btn btn-primary"  id="addOption2" name="addOption2"  style="width: 15%; color: white; float: right; margin:-20px" onclick='addOption()' >Add More Option</button>
+			<hr> -->
+			
+		
 		<!-- Multiple choice–choose one Form End -->
 
 
 	</div>
+	</section>
 </body>
 </html>

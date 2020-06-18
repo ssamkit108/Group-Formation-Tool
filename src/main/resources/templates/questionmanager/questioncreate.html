@@ -16,30 +16,32 @@ h1 {
 </style>
 </head>
 <body>
-
+	<section>
 	<div th:replace="header :: header"></div>
+	</section>
 	<br>
+	<section>
 	<div class="container">
 		<!-- container starts -->
-		<div class="row">
+		<div class="row" style ="margin-top: 40px">
 			<h1>Basic Question Information</h1>
 		</div>
 		<hr>
 		<!-- Row Start for Question Form -->
 		<div class="row">
-
+			<p class="m-auto" style ="color:red"><span th:text="${message}" th:if ="${message ne null}"></span></p>
 			<!-- Question Form Start -->
-			<div class="col-8">
-				<form th:action="@{/questionmanager/question}"
+			<div class="col-md-10 justify-content-center">
+				<form th:action="@{/questionmanager/questiondetails}"
 					th:object="${BasicQuestion}" method="post">
 					<div class="form-group">
-						<label for="formGroupExampleInput">Question title:</label> <input
-							type="text" class="form-control" id="formGroupExampleInput"
+						<label for="questiontitle">Question title: <sup style="color:red">*</sup></label> <input
+							type="text" class="form-control" id="questiontitle"
 							placeholder="Enter Question title" th:field="*{questionTitle}" required>
 					</div>
 					<div class="form-group">
-						<label for="formGroupExampleInput2">Question text:</label> <input
-							type="text" class="form-control" id="formGroupExampleInput2"
+						<label for="questiontext">Question text: <sup style="color:red">*</sup></label> <input
+							type="text" class="form-control" id="questiontext"
 							placeholder="Enter Question text" th:field="*{questionText}" required>
 					</div>
 
@@ -55,10 +57,12 @@ h1 {
 					</select>
 					<hr>
 					<button type="submit" class="btn btn-primary" style="width: 30%;">Next</button>
+					<a th:href="@{/questionmanager}" class="btn btn-primary" style="width:30%" >Return</a>
 				</form>
 			</div>
 			<!-- Question Form End -->
 		</div>
 	</div>
+	</section>
 </body>
 </html>

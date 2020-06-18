@@ -3,14 +3,14 @@ package com.dal.catmeclone.exceptionhandler;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-public class DuplicateUserRelatedException extends Exception {
+public class DuplicateEntityException extends Exception {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8461874431183399030L;
 
-	public DuplicateUserRelatedException(String arg0) {
+	public DuplicateEntityException(String arg0) {
 		super(arg0);
 		// TODO Auto-generated constructor stub
 	}

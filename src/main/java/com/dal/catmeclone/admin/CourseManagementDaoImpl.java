@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
@@ -136,83 +133,44 @@ public class CourseManagementDaoImpl implements CourseManagementDao{
 		return true;
 	}
 	
-	@Override
-	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
-		boolean flag = true;
-		// Connect to database
-		db = SystemConfig.instance().getDatabaseConnection();
-				con = db.connect();
-				statement = con.prepareCall("{CALL checkInstructorAssignedForCourse(?)}");
-				
-				try {
-					statement.setInt(1, course.getCourseID());
-					rs = statement.executeQuery();
-					//Check if resultset is Empty
-					if(rs.next() == false) {
-						flag = false;
-					}
-					logger.info("Executed check instructor query successfully");
-				}
-				catch(Exception e) {
-					
-					logger.error("Unable to execute query to check instructor assigned for course");
-					throw new UserDefinedSQLException("Unable to execute query to check instructor assigned for course");
-
-				}
-				finally
-				{
-					if (statement != null)
-					{
-						statement.close();
-					}
-					if (con != null)
-					{
-						if (!con.isClosed())
-						{
-							con.close();
-						}
-					}
-				}
-		return flag;
-	}
 
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
-				boolean flag = true;
-				// Connect to database
-				db = SystemConfig.instance().getDatabaseConnection();
-						con = db.connect();
-						statement = con.prepareCall("{CALL CheckCourseAlreadyExists(?)}");
-						
-						try {
-							statement.setInt(1, course.getCourseID());
-							rs = statement.executeQuery();
-							//Check if resultset is Empty
-							if(rs.next() == false) {
-								flag = false;
-							}
-							logger.info("Executed check course query successfully");
-						}
-						catch(Exception e) {
-							
-							logger.error("Unable to execute query to check if course exists");
-							throw new UserDefinedSQLException("Unable to execute query to check if course exists");
-						}
-						finally
-						{
-							if (statement != null)
-							{
-								statement.close();
-							}
-							if (con != null)
-							{
-								if (!con.isClosed())
-								{
-									con.close();
-								}
-							}
-						}
-				return flag;
+		boolean flag = true;
+		// Connect to database
+		db = SystemConfig.instance().getDatabaseConnection();
+		con = db.connect();
+		statement = con.prepareCall("{CALL CheckCourseAlreadyExists(?)}");
+
+		try {
+			statement.setInt(1, course.getCourseID());
+			rs = statement.executeQuery();
+			//Check if resultset is Empty
+			if(rs.next() == false) {
+				flag = false;
+			}
+			logger.info("Executed check course query successfully");
+		}
+		catch(Exception e) {
+
+			logger.error("Unable to execute query to check if course exists");
+			throw new UserDefinedSQLException("Unable to execute query to check if course exists");
+		}
+		finally
+		{
+			if (statement != null)
+			{
+				statement.close();
+			}
+			if (con != null)
+			{
+				if (!con.isClosed())
+				{
+					con.close();
+				}
+			}
+		}
+		return flag;
 	}
 
 }

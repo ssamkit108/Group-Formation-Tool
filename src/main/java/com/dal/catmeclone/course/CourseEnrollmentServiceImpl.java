@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
-import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
+import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
 import com.dal.catmeclone.exceptionhandler.FileRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
@@ -184,7 +184,7 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 			try {
 				// Create User in System
 				isCreated = userDB.createUser(user);
-			} catch (DuplicateUserRelatedException e) {
+			} catch (DuplicateEntityException e) {
 				// Handle error for error thrown is another exist with same email id
 				recordsFailureMessage.add("User already exists with " + user.getEmail());
 			}
