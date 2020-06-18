@@ -2,8 +2,14 @@ package com.dal.catmeclone.model;
 
 import java.util.Date;
 
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.questionmanagement.QuestionManagementDao;
+
 public class BasicQuestion {
 	
+	private int questionId;
 	private String questionTitle;
 	private String questionText;
 	private QuestionType questionType;
@@ -11,21 +17,43 @@ public class BasicQuestion {
 	private User createdByInstructor;
 	
 	
+
 	public BasicQuestion() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
+	public BasicQuestion(String questionTitle, Date date) {
+		super();
+		this.questionTitle = questionTitle;
+		this.creationDate = date;
+	}
 	
+	public BasicQuestion(String questionTitle, String questionText) {
+		super();
+		this.questionTitle = questionTitle;
+		this.questionText = questionText;
+	}
 	
-	public BasicQuestion(String questionTitle, String questionText, QuestionType questionType) {
+	public BasicQuestion(String questionTitle, String questionText, QuestionType questionType, Date date) {
 		super();
 		this.questionTitle = questionTitle;
 		this.questionText = questionText;
 		this.questionType = questionType;
+		this.creationDate = date;
 	}
-
-
+	
+	
+	public BasicQuestion(int questionId, String questionTitle, String questionText, QuestionType questionType,
+			Date creationDate, User createdByInstructor) {
+		super();
+		this.questionId = questionId;
+		this.questionTitle = questionTitle;
+		this.questionText = questionText;
+		this.questionType = questionType;
+		this.creationDate = creationDate;
+		this.createdByInstructor = createdByInstructor;
+	}
 
 	public String getQuestionTitle() {
 		return questionTitle;
@@ -45,6 +73,7 @@ public class BasicQuestion {
 	public void setQuestionType(QuestionType questionType) {
 		this.questionType = questionType;
 	}
+	
 
 	public Date getCreationDate() {
 		return creationDate;
@@ -65,6 +94,18 @@ public class BasicQuestion {
 	public void setCreatedByInstructor(User createdByInstructor) {
 		this.createdByInstructor = createdByInstructor;
 	}
+
+	public int getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
+	
+
+	
+	
 	
 	
 	

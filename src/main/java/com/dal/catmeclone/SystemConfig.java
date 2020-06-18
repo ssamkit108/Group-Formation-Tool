@@ -46,6 +46,7 @@ import com.dal.catmeclone.questionmanagement.QuestionManagementService;
 import com.dal.catmeclone.questionmanagement.QuestionManagementServiceImpl;
 
 
+
 /*
  * This is a singleton, we will learn about these when we learn design patterns.
  * 
@@ -83,7 +84,6 @@ public class SystemConfig
 	private AuthenticationSuccessHandler authenticationSuccessHandler;
 	private Environment env;
 	private PropertiesConfigUtil propertiesConfig;
-	
 	
 	
 	
@@ -404,15 +404,7 @@ public class SystemConfig
 	public void setQuestionManagementService(QuestionManagementService questionManagementService) {
 		this.questionManagementService = questionManagementService;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 }
