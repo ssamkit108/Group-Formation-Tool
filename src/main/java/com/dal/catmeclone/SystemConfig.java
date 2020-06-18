@@ -1,7 +1,6 @@
 package com.dal.catmeclone;
 
-
-import java.io.IOException;	
+import java.io.IOException;
 import java.util.Properties;
 
 import org.springframework.core.env.Environment;
@@ -47,7 +46,6 @@ import com.dal.catmeclone.encrypt.BCryptPasswordEncryptionImpl;
 import com.dal.catmeclone.notification.NotificationService;
 import com.dal.catmeclone.notification.NotificationServiceImpl;
 
-
 /*
  * This is a singleton, we will learn about these when we learn design patterns.
  * 
@@ -57,20 +55,19 @@ import com.dal.catmeclone.notification.NotificationServiceImpl;
  * dependency injection (for example classes that override or extend existing
  * library classes in the framework).
  */
-public class SystemConfig
-{
+public class SystemConfig {
 	private static SystemConfig uniqueInstance = null;
 	private Properties properties;
-	
-	private String resourceFilename ="application.properties";
-	
+
+	private String resourceFilename = "application.properties";
+
 	private AdminService adminService;
 	private CourseInstructorAssignmentDao courseInstructorAssignmentDao;
 	private CourseManagementDao courseManagementDao;
 	private Interface_AuthenticateUserDao authenticateUserDao;
 	private CourseService courseService;
 	private CourseEnrollmentService courseEnrollmentService;
-	private CoursesDao  courseDao;
+	private CoursesDao courseDao;
 	private CourseEnrollmentDao courseEnrollmentDao;
 	private DataBaseConnection databaseConnection;
 	private BCryptPasswordEncryption bcryptPasswordEncrption;
@@ -87,7 +84,7 @@ public class SystemConfig
 	private ValidationRulesDao validationRulesDao;
 	private PasswordRulesLoader passwordRules;
 	private ValidatePassword validatePassword;
-	
+
 	public SystemConfig() {
 		super();
 		this.adminService = new AdminServiceImpl();
@@ -109,326 +106,223 @@ public class SystemConfig
 		this.forgotPasswordDao = new ForgotPasswordDaoImpl();
 		this.userAuthentication = new UserAuthentication();
 		this.authenticationSuccessHandler = new SuccessHandler();
-		this.historyConstraintDao=new HistoryConstraintDaoImpl();
-		this.validationRulesDao=new ValidationRulesDaoImpl();
-		this.passwordRules=new PasswordRulesLoader();
-		this.validatePassword=new ValidatePassword();
+		this.historyConstraintDao = new HistoryConstraintDaoImpl();
+		this.validationRulesDao = new ValidationRulesDaoImpl();
+		this.passwordRules = new PasswordRulesLoader();
+		this.validatePassword = new ValidatePassword();
 	}
-
-	
 
 	public ValidatePassword getValidatePassword() {
 		return validatePassword;
 	}
 
-
-
 	public void setValidatePassword(ValidatePassword validatePassword) {
 		this.validatePassword = validatePassword;
 	}
-
-
 
 	public PasswordRulesLoader getPasswordRules() {
 		return passwordRules;
 	}
 
-
-
 	public void setPasswordRules(PasswordRulesLoader passwordRules) {
 		this.passwordRules = passwordRules;
 	}
-
-
 
 	public ValidationRulesDao getValidationRulesDao() {
 		return validationRulesDao;
 	}
 
-
-
 	public void setValidationRulesDao(ValidationRulesDao validationRulesDao) {
 		this.validationRulesDao = validationRulesDao;
 	}
 
-
-
 	// This is the way the rest of the application gets access to the System object.
-	public static SystemConfig instance()
-	{
+	public static SystemConfig instance() {
 		// Using lazy initialization, this is the one and only place that the System
 		// object will be instantiated.
-		if (null == uniqueInstance)
-		{
+		if (null == uniqueInstance) {
 			uniqueInstance = new SystemConfig();
 		}
 		return uniqueInstance;
 	}
-	
-	
-	public Properties initializProperties(PropertiesConfigUtil propertiesConfig)
-	{
+
+	public Properties initializProperties(PropertiesConfigUtil propertiesConfig) {
 		Properties property = null;
 		try {
-			property= propertiesConfig.loadProperties(resourceFilename);
+			property = propertiesConfig.loadProperties(resourceFilename);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return property;
 	}
 
-
-
 	public AdminService getAdminService() {
 		return adminService;
 	}
-
-
 
 	public void setAdminService(AdminService adminService) {
 		this.adminService = adminService;
 	}
 
-
-
 	public CourseInstructorAssignmentDao getCourseInstructorAssignmentDao() {
 		return courseInstructorAssignmentDao;
 	}
-
-
 
 	public void setCourseInstructorAssignmentDao(CourseInstructorAssignmentDao courseInstructorAssignmentDao) {
 		this.courseInstructorAssignmentDao = courseInstructorAssignmentDao;
 	}
 
-
-
 	public CourseManagementDao getCourseManagementDao() {
 		return courseManagementDao;
 	}
-
-
 
 	public void setCourseManagementDao(CourseManagementDao courseManagementDao) {
 		this.courseManagementDao = courseManagementDao;
 	}
 
-
-
 	public Interface_AuthenticateUserDao getAuthenticateUserDao() {
 		return authenticateUserDao;
 	}
-
-
 
 	public void setAuthenticateUserDao(Interface_AuthenticateUserDao authenticateUserDao) {
 		this.authenticateUserDao = authenticateUserDao;
 	}
 
-
-
 	public CourseService getCourseService() {
 		return courseService;
 	}
-
-
 
 	public void setCourseService(CourseService courseService) {
 		this.courseService = courseService;
 	}
 
-
-
 	public CourseEnrollmentService getCourseEnrollmentService() {
 		return courseEnrollmentService;
 	}
-
-
 
 	public void setCourseEnrollmentService(CourseEnrollmentService courseEnrollmentService) {
 		this.courseEnrollmentService = courseEnrollmentService;
 	}
 
-
-
 	public CoursesDao getCourseDao() {
 		return courseDao;
 	}
 
-
-
 	public void setCourseDao(CoursesDao courseDao) {
 		this.courseDao = courseDao;
 	}
-
-
 
 	public CourseEnrollmentDao getCourseEnrollmentDao() {
 		System.out.println(courseEnrollmentDao);
 		return courseEnrollmentDao;
 	}
 
-
-
 	public void setCourseEnrollmentDao(CourseEnrollmentDao courseEnrollmentDao) {
 		this.courseEnrollmentDao = courseEnrollmentDao;
 	}
-
-
 
 	public DataBaseConnection getDatabaseConnection() {
 		return databaseConnection;
 	}
 
-
-
 	public void setDatabaseConnection(DataBaseConnection databaseConnection) {
 		this.databaseConnection = databaseConnection;
 	}
-
-
 
 	public BCryptPasswordEncryption getBcryptPasswordEncrption() {
 		return bcryptPasswordEncrption;
 	}
 
-
-
 	public void setBcryptPasswordEncrption(BCryptPasswordEncryption bcryptPasswordEncrption) {
 		this.bcryptPasswordEncrption = bcryptPasswordEncrption;
 	}
-
-
 
 	public NotificationService getNotificationService() {
 		return notificationService;
 	}
 
-
-
 	public void setNotificationService(NotificationService notificationService) {
 		this.notificationService = notificationService;
 	}
-
-
 
 	public UserDao getUserDao() {
 		return userDao;
 	}
 
-
-
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-
-
 
 	public UserService getUserService() {
 		return userService;
 	}
 
-
-
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
-
-
 
 	public ForgotPasswordService getForgotPasswordService() {
 		return forgotPasswordService;
 	}
 
-
-
 	public void setForgotPasswordService(ForgotPasswordService forgotPasswordService) {
 		this.forgotPasswordService = forgotPasswordService;
 	}
-
-
 
 	public ForgotPasswordDao getForgotPasswordDao() {
 		return forgotPasswordDao;
 	}
 
-
-
 	public void setForgotPasswordDao(ForgotPasswordDao forgotPasswordDao) {
 		this.forgotPasswordDao = forgotPasswordDao;
 	}
-
-
 
 	public UserAuthentication getUserAuthentication() {
 		return userAuthentication;
 	}
 
-
-
 	public void setUserAuthentication(UserAuthentication userAuthentication) {
 		this.userAuthentication = userAuthentication;
 	}
-
-
 
 	public AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
 		return authenticationSuccessHandler;
 	}
 
-
-
 	public void setAuthenticationSuccessHandler(AuthenticationSuccessHandler authenticationSuccessHandler) {
 		this.authenticationSuccessHandler = authenticationSuccessHandler;
 	}
-
-
 
 	public Environment getEnv() {
 		return env;
 	}
 
-
-
 	public void setEnv(Environment env) {
 		this.env = env;
 	}
-
-
 
 	public PropertiesConfigUtil getPropertiesConfig() {
 		return propertiesConfig;
 	}
 
-
-
 	public void setPropertiesConfig(PropertiesConfigUtil propertiesConfig) {
 		this.propertiesConfig = propertiesConfig;
 	}
-
-
 
 	public HistoryContraintDao getHistoryConstraintDao() {
 		return historyConstraintDao;
 	}
 
-
-
 	public void setHistoryConstraintDao(HistoryContraintDao historyConstraintDao) {
 		this.historyConstraintDao = historyConstraintDao;
 	}
-
-
 
 	public Properties getProperties() {
 		return properties;
 	}
 
-
-
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
-	
+
 }
