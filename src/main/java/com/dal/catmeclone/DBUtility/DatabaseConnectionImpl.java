@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.dal.catmeclone.DBUtility;
 
 import java.sql.CallableStatement;
@@ -14,7 +11,6 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 public class DatabaseConnectionImpl implements DataBaseConnection {
 
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
-
 	private String user;
 	private String password;
 	private String database;

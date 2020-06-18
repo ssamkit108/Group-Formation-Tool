@@ -23,7 +23,6 @@ public class CourseDaoImpl implements CoursesDao {
 
 	@Override
 	public Course getCourse(int courseId) throws UserDefinedSQLException, CourseException {
-		// TODO Auto-generated method stub
 		Course course = null;
 		CallableStatement statement = null;
 		try {
@@ -32,7 +31,6 @@ public class CourseDaoImpl implements CoursesDao {
 			connection = DBUtil.connect();
 			logger.info("querying database to get the course");
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.getCourse") + "}");
-
 			statement.setInt(1, courseId);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
@@ -55,23 +53,23 @@ public class CourseDaoImpl implements CoursesDao {
 
 	@Override
 	public ArrayList<Course> getallcoursesbyuser(User user) throws UserDefinedSQLException {
-		ArrayList<Course> crclst = new ArrayList<Course>();
-		CallableStatement stored_pro = null;
+		ArrayList<Course> courseList = new ArrayList<Course>();
+		CallableStatement statement = null;
 		try {
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
-			stored_pro = connection.prepareCall("{call" + properties.getProperty("procedure.getCoursesForUser") + "}");
-			stored_pro.setString(1, user.getBannerId());
-			stored_pro.setString(1, user.getBannerId());
-			ResultSet result = stored_pro.executeQuery();
+			statement = connection.prepareCall("{call" + properties.getProperty("procedure.getCoursesForUser") + "}");
+			statement.setString(1, user.getBannerId());
+			statement.setString(1, user.getBannerId());
+			ResultSet result = statement.executeQuery();
 
-			Course c = null;
+			Course course = null;
 			while (result.next()) {
-				c = new Course();
-				c.setCourseID(result.getInt("courseid"));
-				c.setCourseName(result.getString("coursename"));
-				crclst.add(c);
+				course = new Course();
+				course.setCourseID(result.getInt("courseid"));
+				course.setCourseName(result.getString("coursename"));
+				courseList.add(course);
 			}
 		}
 
@@ -79,15 +77,15 @@ public class CourseDaoImpl implements CoursesDao {
 			throw new UserDefinedSQLException("Some error occured");
 		} finally {
 
-			DBUtil.terminateStatement(stored_pro);
+			DBUtil.terminateStatement(statement);
 			DBUtil.terminateConnection();
 		}
-		return crclst;
+		return courseList;
 	}
 
 	@Override
 	public ArrayList<Course> getallcourses() throws SQLException, UserDefinedSQLException {
-		ArrayList<Course> allcrclst = new ArrayList<Course>();
+		ArrayList<Course> courseList = new ArrayList<Course>();
 		CallableStatement statement = null;
 		try {
 			DBUtil = SystemConfig.instance().getDatabaseConnection();
@@ -97,12 +95,12 @@ public class CourseDaoImpl implements CoursesDao {
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.getAllCourse") + "}");
 
 			ResultSet result = statement.executeQuery();
-			Course c = null;
+			Course course = null;
 			while (result.next()) {
-				c = new Course();
-				c.setCourseID(result.getInt("courseid"));
-				c.setCourseName(result.getString("coursename"));
-				allcrclst.add(c);
+				course = new Course();
+				course.setCourseID(result.getInt("courseid"));
+				course.setCourseName(result.getString("coursename"));
+				courseList.add(course);
 			}
 		} catch (SQLException e) {
 			logger.error("Exception occured:" + e.getLocalizedMessage());
@@ -113,6 +111,6 @@ public class CourseDaoImpl implements CoursesDao {
 				DBUtil.terminateConnection();
 			}
 		}
-		return allcrclst;
+		return courseList;
 	}
 }

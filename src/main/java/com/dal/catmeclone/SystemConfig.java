@@ -27,8 +27,8 @@ import com.dal.catmeclone.admin.CourseInstructorAssignmentDao;
 import com.dal.catmeclone.admin.CourseInstructorAssignmentDaoImpl;
 import com.dal.catmeclone.admin.CourseManagementDao;
 import com.dal.catmeclone.admin.CourseManagementDaoImpl;
+import com.dal.catmeclone.authenticationandauthorization.AuthenticateUserDaoImpl;
 import com.dal.catmeclone.authenticationandauthorization.AuthenticateUserDao;
-import com.dal.catmeclone.authenticationandauthorization.Interface_AuthenticateUserDao;
 import com.dal.catmeclone.authenticationandauthorization.SuccessHandler;
 import com.dal.catmeclone.authenticationandauthorization.UserAuthentication;
 import com.dal.catmeclone.course.CourseDaoImpl;
@@ -49,16 +49,16 @@ import com.dal.catmeclone.questionmanagement.QuestionManagementService;
 import com.dal.catmeclone.questionmanagement.QuestionManagementServiceImpl;
 
 public class SystemConfig {
-	
+
 	private static SystemConfig uniqueInstance = null;
 	private Properties properties;
-
+	
 	private String resourceFilename = "application.properties";
-
+	
 	private AdminService adminService;
 	private CourseInstructorAssignmentDao courseInstructorAssignmentDao;
 	private CourseManagementDao courseManagementDao;
-	private Interface_AuthenticateUserDao authenticateUserDao;
+	private AuthenticateUserDao authenticateUserDao;
 	private CourseService courseService;
 	private CourseEnrollmentService courseEnrollmentService;
 	private CoursesDao courseDao;
@@ -86,7 +86,7 @@ public class SystemConfig {
 		this.adminService = new AdminServiceImpl();
 		this.courseInstructorAssignmentDao = new CourseInstructorAssignmentDaoImpl();
 		this.courseManagementDao = new CourseManagementDaoImpl();
-		this.authenticateUserDao = new AuthenticateUserDao();
+		this.authenticateUserDao = new AuthenticateUserDaoImpl();
 		this.courseService = new CourseServiceImpl();
 		this.courseEnrollmentService = new CourseEnrollmentServiceImpl();
 		this.courseDao = new CourseDaoImpl();
@@ -127,7 +127,9 @@ public class SystemConfig {
 	public Properties initializProperties(PropertiesConfigUtil propertiesConfig) {
 		Properties property = null;
 		try {
+
 			property = PropertiesConfigUtil.loadProperties(resourceFilename);
+
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -167,11 +169,11 @@ public class SystemConfig {
 		this.courseManagementDao = courseManagementDao;
 	}
 
-	public Interface_AuthenticateUserDao getAuthenticateUserDao() {
+	public AuthenticateUserDao getAuthenticateUserDao() {
 		return authenticateUserDao;
 	}
 
-	public void setAuthenticateUserDao(Interface_AuthenticateUserDao authenticateUserDao) {
+	public void setAuthenticateUserDao(AuthenticateUserDao authenticateUserDao) {
 		this.authenticateUserDao = authenticateUserDao;
 	}
 
