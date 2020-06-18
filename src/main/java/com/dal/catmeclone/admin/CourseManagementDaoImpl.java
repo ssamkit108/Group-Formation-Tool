@@ -55,14 +55,11 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 
 	@Override
 	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		// Connect to database
 		db = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = db.connect();
-		statement = connection
-				.prepareCall("{call " + properties.getProperty("procedure.DeleteCourse") + "}");
-
+		statement = connection.prepareCall("{call " + properties.getProperty("procedure.DeleteCourse") + "}");
 
 		try {
 			statement.setInt(1, courseID);
@@ -87,14 +84,11 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 
 	@Override
 	public boolean insertCourse(Course course) throws SQLException, UserDefinedSQLException {
-		// TODO Auto-generated method stub
-
 		// Connect to database
 		db = SystemConfig.instance().getDatabaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = db.connect();
-		statement = connection
-				.prepareCall("{call " + properties.getProperty("procedure.Createcourse") + "}");
+		statement = connection.prepareCall("{call " + properties.getProperty("procedure.Createcourse") + "}");
 		try {
 			statement.setInt(1, course.getCourseID());
 			statement.setString(2, course.getCourseName());
@@ -114,40 +108,6 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
-		boolean flag = true;
-		db = SystemConfig.instance().getDatabaseConnection();
-		Properties properties = SystemConfig.instance().getProperties();
-		connection = db.connect();
-		statement = connection
-				.prepareCall("{call " + properties.getProperty("procedure.checkInstructorAssignedForCourse") + "}");
-
-		try {
-			statement.setInt(1, course.getCourseID());
-			resultSet = statement.executeQuery();
-			if (resultSet.next() == false) {
-				flag = false;
-			}
-			logger.info("Executed check instructor query successfully");
-		} catch (Exception e) {
-
-			logger.error("Unable to execute query to check instructor assigned for course");
-			throw new UserDefinedSQLException("Unable to execute query to check instructor assigned for course");
-
-		} finally {
-			if (statement != null) {
-				statement.close();
-			}
-			if (connection != null) {
-				if (!connection.isClosed()) {
-					connection.close();
-				}
-			}
-		}
-		return flag;
 	}
 
 	@Override

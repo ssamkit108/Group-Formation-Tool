@@ -1,35 +1,29 @@
-package authenticationtest;
+package com.dal.catmeclone.authenticationTest;
 
-import java.util.ArrayList;
 
-import com.dal.catmeclone.authenticationandauthorization.Interface_AuthenticateUserDao;
-import com.dal.catmeclone.model.Course;
+import com.dal.catmeclone.authenticationandauthorization.AuthenticateUserDao;
+
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
 
-public class AuthenticationDaoMock implements Interface_AuthenticateUserDao{
+public class AuthenticationDaoMock implements AuthenticateUserDao {
 
 	private String bannerId;
 	private String password;
-	private int courseid;
-	private String courseName;
 	private int role_id;
 	private String role_tagged;
-	
+
 	public AuthenticationDaoMock() {
 		default_data();
 	}
-	
+
 	public void default_data() {
 		bannerId = "B00832190";
 		password = "password";
-		courseid = 123;
-		courseName = "Web";
 		role_id = 1;
 		role_tagged = "Student";
-		
-	}
 
+	}
 
 	@Override
 	public User authenticateUser(User user) {
@@ -38,11 +32,8 @@ public class AuthenticationDaoMock implements Interface_AuthenticateUserDao{
 		Role rl = new Role();
 		rl.setRoleId(role_id);
 		rl.setRoleName(role_tagged);
-		user.setUserRoles(rl);		
+		user.setUserRoles(rl);
 		return user;
 	}
 
-
-
-	
 }

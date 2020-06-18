@@ -2,10 +2,8 @@ package com.dal.catmeclone;
 
 import java.io.IOException;
 import java.util.Properties;
-
 import org.springframework.core.env.Environment;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.DBUtility.PropertiesConfigUtil;
@@ -29,8 +27,8 @@ import com.dal.catmeclone.admin.CourseInstructorAssignmentDao;
 import com.dal.catmeclone.admin.CourseInstructorAssignmentDaoImpl;
 import com.dal.catmeclone.admin.CourseManagementDao;
 import com.dal.catmeclone.admin.CourseManagementDaoImpl;
+import com.dal.catmeclone.authenticationandauthorization.AuthenticateUserDaoImpl;
 import com.dal.catmeclone.authenticationandauthorization.AuthenticateUserDao;
-import com.dal.catmeclone.authenticationandauthorization.Interface_AuthenticateUserDao;
 import com.dal.catmeclone.authenticationandauthorization.SuccessHandler;
 import com.dal.catmeclone.authenticationandauthorization.UserAuthentication;
 import com.dal.catmeclone.course.CourseDaoImpl;
@@ -45,26 +43,22 @@ import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryptionImpl;
 import com.dal.catmeclone.notification.NotificationService;
 import com.dal.catmeclone.notification.NotificationServiceImpl;
+import com.dal.catmeclone.questionmanagement.QuestionManagementDao;
+import com.dal.catmeclone.questionmanagement.QuestionManagementDaoImpl;
+import com.dal.catmeclone.questionmanagement.QuestionManagementService;
+import com.dal.catmeclone.questionmanagement.QuestionManagementServiceImpl;
 
-/*
- * This is a singleton, we will learn about these when we learn design patterns.
- * 
- * The single responsibility of this singleton is to store concrete classes
- * selected by the system for use in the rest of the system. This will allow
- * a form of dependency injection in places where we cannot use normal
- * dependency injection (for example classes that override or extend existing
- * library classes in the framework).
- */
 public class SystemConfig {
+
 	private static SystemConfig uniqueInstance = null;
 	private Properties properties;
-
+	
 	private String resourceFilename = "application.properties";
-
+	
 	private AdminService adminService;
 	private CourseInstructorAssignmentDao courseInstructorAssignmentDao;
 	private CourseManagementDao courseManagementDao;
-	private Interface_AuthenticateUserDao authenticateUserDao;
+	private AuthenticateUserDao authenticateUserDao;
 	private CourseService courseService;
 	private CourseEnrollmentService courseEnrollmentService;
 	private CoursesDao courseDao;
@@ -76,21 +70,23 @@ public class SystemConfig {
 	private UserService userService;
 	private ForgotPasswordService forgotPasswordService;
 	private ForgotPasswordDao forgotPasswordDao;
-	private UserAuthentication userAuthentication;
-	private AuthenticationSuccessHandler authenticationSuccessHandler;
+	private QuestionManagementDao questionManagementDao;
+	private QuestionManagementService questionManagementService;
 	private Environment env;
 	private PropertiesConfigUtil propertiesConfig;
+	private AuthenticationSuccessHandler authenticationSuccessHandler;
 	private HistoryContraintDao historyConstraintDao;
 	private ValidationRulesDao validationRulesDao;
 	private PasswordRulesLoader passwordRules;
 	private ValidatePassword validatePassword;
+	private UserAuthentication userAuthentication;
 
 	public SystemConfig() {
 		super();
 		this.adminService = new AdminServiceImpl();
 		this.courseInstructorAssignmentDao = new CourseInstructorAssignmentDaoImpl();
 		this.courseManagementDao = new CourseManagementDaoImpl();
-		this.authenticateUserDao = new AuthenticateUserDao();
+		this.authenticateUserDao = new AuthenticateUserDaoImpl();
 		this.courseService = new CourseServiceImpl();
 		this.courseEnrollmentService = new CourseEnrollmentServiceImpl();
 		this.courseDao = new CourseDaoImpl();
@@ -106,30 +102,12 @@ public class SystemConfig {
 		this.forgotPasswordDao = new ForgotPasswordDaoImpl();
 		this.userAuthentication = new UserAuthentication();
 		this.authenticationSuccessHandler = new SuccessHandler();
+		this.questionManagementService = new QuestionManagementServiceImpl();
+		this.questionManagementDao = new QuestionManagementDaoImpl();
 		this.historyConstraintDao = new HistoryConstraintDaoImpl();
 		this.validationRulesDao = new ValidationRulesDaoImpl();
 		this.passwordRules = new PasswordRulesLoader();
 		this.validatePassword = new ValidatePassword();
-	}
-
-	public ValidatePassword getValidatePassword() {
-		return validatePassword;
-	}
-
-	public void setValidatePassword(ValidatePassword validatePassword) {
-		this.validatePassword = validatePassword;
-	}
-
-	public PasswordRulesLoader getPasswordRules() {
-		return passwordRules;
-	}
-
-	public void setPasswordRules(PasswordRulesLoader passwordRules) {
-		this.passwordRules = passwordRules;
-	}
-
-	public ValidationRulesDao getValidationRulesDao() {
-		return validationRulesDao;
 	}
 
 	public void setValidationRulesDao(ValidationRulesDao validationRulesDao) {
@@ -149,11 +127,22 @@ public class SystemConfig {
 	public Properties initializProperties(PropertiesConfigUtil propertiesConfig) {
 		Properties property = null;
 		try {
-			property = propertiesConfig.loadProperties(resourceFilename);
+
+			property = PropertiesConfigUtil.loadProperties(resourceFilename);
+
 		} catch (IOException e) {
+
 			e.printStackTrace();
 		}
 		return property;
+	}
+
+	public Properties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
 	}
 
 	public AdminService getAdminService() {
@@ -180,11 +169,11 @@ public class SystemConfig {
 		this.courseManagementDao = courseManagementDao;
 	}
 
-	public Interface_AuthenticateUserDao getAuthenticateUserDao() {
+	public AuthenticateUserDao getAuthenticateUserDao() {
 		return authenticateUserDao;
 	}
 
-	public void setAuthenticateUserDao(Interface_AuthenticateUserDao authenticateUserDao) {
+	public void setAuthenticateUserDao(AuthenticateUserDao authenticateUserDao) {
 		this.authenticateUserDao = authenticateUserDao;
 	}
 
@@ -213,7 +202,6 @@ public class SystemConfig {
 	}
 
 	public CourseEnrollmentDao getCourseEnrollmentDao() {
-		System.out.println(courseEnrollmentDao);
 		return courseEnrollmentDao;
 	}
 
@@ -277,20 +265,20 @@ public class SystemConfig {
 		this.forgotPasswordDao = forgotPasswordDao;
 	}
 
-	public UserAuthentication getUserAuthentication() {
-		return userAuthentication;
+	public QuestionManagementDao getQuestionManagementDao() {
+		return questionManagementDao;
 	}
 
-	public void setUserAuthentication(UserAuthentication userAuthentication) {
-		this.userAuthentication = userAuthentication;
+	public void setQuestionManagementDao(QuestionManagementDao questionManagementDao) {
+		this.questionManagementDao = questionManagementDao;
 	}
 
-	public AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
-		return authenticationSuccessHandler;
+	public QuestionManagementService getQuestionManagementService() {
+		return questionManagementService;
 	}
 
-	public void setAuthenticationSuccessHandler(AuthenticationSuccessHandler authenticationSuccessHandler) {
-		this.authenticationSuccessHandler = authenticationSuccessHandler;
+	public void setQuestionManagementService(QuestionManagementService questionManagementService) {
+		this.questionManagementService = questionManagementService;
 	}
 
 	public Environment getEnv() {
@@ -309,6 +297,14 @@ public class SystemConfig {
 		this.propertiesConfig = propertiesConfig;
 	}
 
+	public AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
+		return authenticationSuccessHandler;
+	}
+
+	public void setAuthenticationSuccessHandler(AuthenticationSuccessHandler authenticationSuccessHandler) {
+		this.authenticationSuccessHandler = authenticationSuccessHandler;
+	}
+
 	public HistoryContraintDao getHistoryConstraintDao() {
 		return historyConstraintDao;
 	}
@@ -317,12 +313,32 @@ public class SystemConfig {
 		this.historyConstraintDao = historyConstraintDao;
 	}
 
-	public Properties getProperties() {
-		return properties;
+	public PasswordRulesLoader getPasswordRules() {
+		return passwordRules;
 	}
 
-	public void setProperties(Properties properties) {
-		this.properties = properties;
+	public void setPasswordRules(PasswordRulesLoader passwordRules) {
+		this.passwordRules = passwordRules;
+	}
+
+	public ValidatePassword getValidatePassword() {
+		return validatePassword;
+	}
+
+	public void setValidatePassword(ValidatePassword validatePassword) {
+		this.validatePassword = validatePassword;
+	}
+
+	public UserAuthentication getUserAuthentication() {
+		return userAuthentication;
+	}
+
+	public void setUserAuthentication(UserAuthentication userAuthentication) {
+		this.userAuthentication = userAuthentication;
+	}
+
+	public ValidationRulesDao getValidationRulesDao() {
+		return validationRulesDao;
 	}
 
 }

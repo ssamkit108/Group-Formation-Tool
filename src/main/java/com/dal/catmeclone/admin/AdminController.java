@@ -123,8 +123,6 @@ public class AdminController {
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
-
 		return "admin/adminEnrollInstructor";
 	}
-
 }
