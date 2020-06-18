@@ -295,47 +295,61 @@ public class QuestionManagementController {
 	}
 
 	/**
-	 * Controller Method to create multiple choice question
-	 * 
-	 * @param model
-	 * @return View
-	 */
-	@RequestMapping(value = "question/multiplechoice", method = RequestMethod.POST)
-	public String createMultipleChoiceQuestion(@ModelAttribute("question") MultipleChoiceQuestion multipleChoice,
-			Model model, RedirectAttributes attributes) {
+     * Controller Method to create multiple choice question  
+     * @param model
+     * @return View
+     */
+    @RequestMapping(value = "question/multiplechoice", method = RequestMethod.POST)
+    public String createMultipleChoiceQuestion(@ModelAttribute("question") MultipleChoiceQuestion multipleChoice,
+            Model model, RedirectAttributes attributes) {
 
-		LOGGER.info("creating " + multipleChoice.getQuestionType() + " question");
+        LOGGER.info("creating " + multipleChoice.getQuestionType() + " question");
 
-		// Getting QuestionManagementService Instance
-		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
+        if(multipleChoice.areAllOptionValid())
+        {
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-
-		boolean isQuestionCreated;
-		try {
-
-			multipleChoice.setCreatedByInstructor(new User(username));
-			multipleChoice.setCreationDate(new Date());
-			// Calling Service layer to create multiple choice question
-			LOGGER.info("Calling Service layer to create multiple choice question");
-			isQuestionCreated = questionManagementService.createMultipleChoiceQuestion(multipleChoice);
-			if (isQuestionCreated) {
-				// If question is created successfully, return to question manager home page
-				// with success message
-				attributes.addFlashAttribute("message", "Question Added Successfully");
-				return "redirect:/questionmanager";
-			} else {
-				// If question is not created, return to error page with generic error message
-				model.addAttribute("errormessage", "Some Error occured. Please Try Again");
-				return "/error";
-			}
-		} catch (UserDefinedSQLException e) {
-			// Handling Error occurred by throwing to Error view with user defined error
-			// message.
-			model.addAttribute("errormessage", "Some Error occured. Please try Again");
-			return "/error";
-		}
-	}
+            //Getting QuestionManagementService Instance
+            QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
+            
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+    
+            boolean isQuestionCreated;
+            try {
+    
+                multipleChoice.setCreatedByInstructor(new User(username));
+                multipleChoice.setCreationDate(new Date());
+                // Calling Service layer to create multiple choice question
+                LOGGER.info("Calling Service layer to create multiple choice question");
+                isQuestionCreated = questionManagementService.createMultipleChoiceQuestion(multipleChoice);
+                if (isQuestionCreated) {
+                    // If question is created successfully, return to question manager home page
+                    // with success message
+                    attributes.addFlashAttribute("message", "Question Added Successfully");
+                    return "redirect:/questionmanager";
+                } else {
+                    // If question is not created, return to error page with generic error message
+                    model.addAttribute("errormessage", "Some Error occured. Please Try Again");
+                    return "/error";
+                }
+            } catch (UserDefinedSQLException e) {
+                // Handling Error occurred by throwing to Error view with user defined error
+                // message.
+                model.addAttribute("errormessage", "Some Error occured. Please try Again");
+                return "/error";
+            }
+        }
+        else
+        {
+            MultipleChoiceQuestion question = new MultipleChoiceQuestion();
+            question.setQuestionTitle(question.getQuestionTitle());
+            question.setQuestionText(question.getQuestionText());
+            question.setQuestionType(question.getQuestionType());
+            
+            model.addAttribute("question", multipleChoice);
+            model.addAttribute("message", "All Options are invalid. Please check and try again");
+            return "questionmanager/multiplechoicequestion";
+        }
+    }
 
 }

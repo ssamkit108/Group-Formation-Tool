@@ -15,7 +15,7 @@ public class QuestionManagementServiceTest{
 
 	@Test
 	public void getAllQuestionsForUserWithQuestionsTest() {
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		User user = new User();
 		user.setBannerId("B00123456");
 		mock.getAllQuestionByUser(user);
@@ -24,7 +24,7 @@ public class QuestionManagementServiceTest{
 	
 	@Test
 	public void getAllQuestionsForUserWithNoQuestionsTest() {
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		User user = new User();
 		user.setBannerId("B00987654");
 		mock.getAllQuestionByUser(user);
@@ -33,7 +33,7 @@ public class QuestionManagementServiceTest{
 	
 	@Test
 	public void getSortedQuestionsByTitleTest() {
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		User user = new User();
 		user.setBannerId("B00123456");
 		mock.getAllQuestionByUser(user);
@@ -42,7 +42,7 @@ public class QuestionManagementServiceTest{
 	
 	@Test
 	public void getSortedQuestionsByDateTest() {
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		User user = new User();
 		user.setBannerId("B00123456");
 		mock.getAllQuestionByUser(user);
@@ -52,7 +52,7 @@ public class QuestionManagementServiceTest{
 	@Test
 	public void createNumericOrTextQuestion()
 	{
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		BasicQuestion numericQuestion = new BasicQuestion("Title_3", "Text_3", QuestionType.NUMERIC, new Date(), new User("B00123456"));
 		assertTrue(mock.createNumericOrTextQuestion(numericQuestion));
 	}
@@ -60,7 +60,7 @@ public class QuestionManagementServiceTest{
 	@Test
 	public void createMultipleChoiceQuestion() {
 		
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();
 		multipleChoiceQuestion.setQuestionTitle("TITLE_4");
 		multipleChoiceQuestion.setQuestionText("TEXT_4");
@@ -73,7 +73,7 @@ public class QuestionManagementServiceTest{
 	@Test
 	public void ifQuestionTitleandTextExistsTrueTest()
 	{
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		BasicQuestion Question1= new BasicQuestion(1,"Basic_Title_1", "Basic_Text_1", QuestionType.NUMERIC,new Date(), new User("B00123456"));
 		assertTrue(mock.isQuestionExistForUserWithTitleandText(Question1));
 	}
@@ -81,7 +81,7 @@ public class QuestionManagementServiceTest{
 	@Test
 	public void ifQuestionTitleExistsButTextDiffersTest()
 	{
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		BasicQuestion Question1= new BasicQuestion(1,"Basic_Title_1", "Basic_Text_NO", QuestionType.NUMERIC,new Date(), new User("B00123456"));
 		assertFalse(mock.isQuestionExistForUserWithTitleandText(Question1));
 	}
@@ -89,7 +89,7 @@ public class QuestionManagementServiceTest{
 	@Test
 	public void ifQuestionTitleTextExistsForDifferentUserTest()
 	{
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		BasicQuestion Question1= new BasicQuestion(1,"Basic_Title_1", "Basic_Text_1", QuestionType.NUMERIC,new Date(), new User("B00000000"));
 		assertFalse(mock.isQuestionExistForUserWithTitleandText(Question1));
 	}
@@ -97,20 +97,20 @@ public class QuestionManagementServiceTest{
 	@Test
 	public void ifQuestionTextExistsButTitleDiffersTest()
 	{
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		BasicQuestion Question1= new BasicQuestion(1,"Basic_Title_0", "Basic_Text_1", QuestionType.NUMERIC,new Date(), new User("B00123456"));
 		assertFalse(mock.isQuestionExistForUserWithTitleandText(Question1));
 	}
 	
 	public void deleteQuestionforIdExist()
 	{
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		assertFalse(mock.deleteQuestion(1));
 	}
 	
 	public void deleteQuestionforIdNotExisting()
 	{
-		QuestionManagementMock mock = new QuestionManagementMock();
+		QuestionManagementDaoMock mock = new QuestionManagementDaoMock();
 		assertFalse(mock.deleteQuestion(100));
 	}
 

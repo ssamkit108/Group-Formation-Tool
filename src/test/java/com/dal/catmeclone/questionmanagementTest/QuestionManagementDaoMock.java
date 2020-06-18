@@ -10,14 +10,14 @@ import com.dal.catmeclone.model.QuestionType;
 import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.questionmanagement.QuestionManagementDao;
 
-public class QuestionManagementMock implements QuestionManagementDao {
+public class QuestionManagementDaoMock implements QuestionManagementDao {
 
 	private ArrayList<BasicQuestion> basicQuestionDetailsList;
 	private ArrayList<MultipleChoiceQuestion> mulipleChoiceQuestionList;
 	
 	
 	
-	public QuestionManagementMock()
+	public QuestionManagementDaoMock()
 	{
 		this.basicQuestionDetailsList = new ArrayList<BasicQuestion>();
 		this.mulipleChoiceQuestionList = new ArrayList<MultipleChoiceQuestion>();
