@@ -3,7 +3,6 @@ package com.dal.catmeclone.course;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.UserProfile.UserService;
 import com.dal.catmeclone.exceptionhandler.FileRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
@@ -20,18 +20,15 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class CourseInstructorController {
 
-	@Autowired
 	CourseEnrollmentService courseenrollmentservice;
-	
-	@Autowired
-	com.dal.catmeclone.UserProfile.UserService userservice;
+	UserService userservice;
 
 	@PostMapping(value = "/uploadstudent", consumes = { "multipart/form-data" })
 	public String enrollStudents(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
-			 Model themodel, HttpSession session) {
-
+			Model themodel, HttpSession session) {
+		courseenrollmentservice = SystemConfig.instance().getCourseEnrollmentService();
 		Course course = (Course) session.getAttribute("course");
-		
+
 		if (file.isEmpty()) {
 			attributes.addFlashAttribute("message", "Please select a file to upload.");
 			return "redirect:/mycourse/" + course.getCourseID();
@@ -40,13 +37,12 @@ public class CourseInstructorController {
 		try {
 			courseenrollmentservice.enrollStudentForCourse(file, course);
 		} catch (FileRelatedException e) {
-			// TODO Auto-generated catch block
 			attributes.addFlashAttribute("message", e.getMessage());
 			return "redirect:/mycourse/" + course.getCourseID();
 		}
 		List<String> sucessmessages = courseenrollmentservice.getRecordsSuccessMessage();
 		List<String> erromessages = courseenrollmentservice.getRecordsFailureMessage();
-		
+
 		if (!sucessmessages.isEmpty()) {
 			if (!erromessages.isEmpty()) {
 				attributes.addFlashAttribute("message",
@@ -63,15 +59,13 @@ public class CourseInstructorController {
 					"Encountered error in the files. Please reverify the records and upload again");
 			attributes.addFlashAttribute("errormessages", erromessages);
 		}
-		
-
 		return "redirect:/mycourse/" + course.getCourseID();
 	}
 
 	@PostMapping(value = "/enrollTA")
 	public String enrollTA(@RequestParam String bannerid, RedirectAttributes attributes, Model themodel,
 			HttpSession session) {
-
+		courseenrollmentservice = SystemConfig.instance().getCourseEnrollmentService();
 		Course course = (Course) session.getAttribute("course");
 
 		if (courseenrollmentservice.enrollTAForCourse(new User(bannerid), course)) {
@@ -84,11 +78,11 @@ public class CourseInstructorController {
 
 		return "redirect:/mycourse/" + course.getCourseID();
 	}
-	
+
 	@GetMapping(value = "/findTA")
-	public String enrollStudents(@RequestParam(name = "searchTA") String bannerId, Model themodel, HttpSession session) {
-		Course cs = (Course) session.getAttribute("course");
-		System.out.println(cs.getCourseID());
+	public String enrollStudents(@RequestParam(name = "searchTA") String bannerId, Model themodel,
+			HttpSession session) {
+		userservice = SystemConfig.instance().getUserService();
 		List<User> listOfUser = new ArrayList<User>();
 		try {
 			listOfUser = userservice.findAllMatchingUser(bannerId);
@@ -100,14 +94,9 @@ public class CourseInstructorController {
 			}
 		} catch (UserDefinedSQLException e) {
 
-			themodel.addAttribute("errormessage","Some Error occured.Please try again later");
+			themodel.addAttribute("errormessage", "Some Error occured.Please try again later");
 			return "error";
 		}
 		return "CI-course";
 	}
-	
-	
-	
-	
-
 }
