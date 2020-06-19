@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.dal.catmeclone.course;
 
 import java.io.BufferedReader;
@@ -11,20 +8,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.UserProfile.UserDao;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
-import com.dal.catmeclone.exceptionhandler.DuplicateUserRelatedException;
+import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
 import com.dal.catmeclone.exceptionhandler.FileRelatedException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
@@ -32,35 +26,22 @@ import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.notification.NotificationService;
 
-/**
- * @author Mayank
- *
- */
-@Service
 public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CourseEnrollmentServiceImpl.class);
-	
+
 	public List<String> recordsSuccessMessage = new ArrayList<String>();
 	public List<String> recordsFailureMessage = new ArrayList<String>();
 
-	@Autowired
 	NotificationService notificationService;
 
-	@Autowired
 	UserDao userDB;
 
-	@Autowired
 	CourseEnrollmentDao courseEnrollDB;
-	
-	@Autowired
+
 	BCryptPasswordEncryption bcryptEncoder;
-	
-	@Value("${random}")
-    String ALPHA_NUMERIC_STRING;
-	
 
-
+	String ALPHA_NUMERIC_STRING;
 
 	private static final String email_regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
@@ -73,12 +54,11 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	}
 
 	/*
-	 * Function to iterate data obatined from loadDataFromCSV over the student list and make a call to enroll
-	 * student one by one.
+	 * Function to iterate data obatined from loadDataFromCSV over the student list
+	 * and make a call to enroll student one by one.
 	 */
 	@Override
 	public boolean enrollStudentForCourse(MultipartFile file, Course course) throws FileRelatedException {
-		// TODO Auto-generated method stub
 		recordsSuccessMessage = new ArrayList<String>();
 		recordsFailureMessage = new ArrayList<String>();
 		Set<User> usersToBeEnrolled = new HashSet<User>();
@@ -91,33 +71,32 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 				// call enrollStudent method to enroll student
 				enrollStudent(student, course);
 			} catch (UserDefinedSQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
 		return false;
 	}
 
 	/*
-	 * function to load and parse the data from given csv file into set of student objects.
+	 * function to load and parse the data from given csv file into set of student
+	 * objects.
 	 */
 	private Set<User> loadDataFromCSV(MultipartFile file) throws FileRelatedException {
 		Set<User> usersToBeEnrolled = new HashSet<User>();
-		BufferedReader br = null;
+		BufferedReader bufferReader = null;
 		try {
 
-			br = new BufferedReader(new InputStreamReader(file.getInputStream()));
-			String line = br.readLine();
+			bufferReader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+			String line = bufferReader.readLine();
 			int count = 1;
-			// reading the file line by line 
-			LOGGER.info("START: Parsing the Provided CSV File: "+file.getName());
-			while ((line = br.readLine()) != null) {
+			// reading the file line by line
+			LOGGER.info("START: Parsing the Provided CSV File: " + file.getName());
+			while ((line = bufferReader.readLine()) != null) {
 				// considering comma as separator for csv
 				String[] details = line.split(",");
 				if (4 == details.length) {
 					// validating if banner id field is null or empty
-					if ( null != details[0] && !details[0].isEmpty()) {
+					if (null != details[0] && !details[0].isEmpty()) {
 						// validating if email field is null or empty
 						if (null != details[3] && !details[3].isEmpty()) {
 							Pattern pattern = Pattern.compile(email_regex);
@@ -159,13 +138,18 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	 */
 	private void enrollStudent(User user, Course course) throws UserDefinedSQLException {
 
+		notificationService = SystemConfig.instance().getNotificationService();
+		userDB = SystemConfig.instance().getUserDao();
+		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
+		bcryptEncoder = SystemConfig.instance().getBcryptPasswordEncrption();
+
 		// Check if user exists with the given banner id or not
 		User u = userDB.findUserByBannerID(user.getBannerId());
 
 		if (null != u) {
-			
+
 			// Checking is user has already enrolled in the course
-			if (!courseEnrollDB.hasEnrolledInCourse(user.getBannerId(), course.getCourseID() )) {
+			if (!courseEnrollDB.hasEnrolledInCourse(user.getBannerId(), course.getCourseID())) {
 				Role role = new Role("Student");
 				courseEnrollDB.enrollUserForCourse(user, course, role);
 				LOGGER.info(
@@ -180,13 +164,14 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 		// If user is not existing. create a profile for user and enroll user in course
 		else {
 			String password = GeneratePassword();
+			String passwordtobesend = password;
 			user.setPassword(bcryptEncoder.encryptPassword(password));
 			bcryptEncoder.encryptPassword(password);
 			boolean isCreated = false;
 			try {
 				// Create User in System
 				isCreated = userDB.createUser(user);
-			} catch (DuplicateUserRelatedException e) {
+			} catch (DuplicateEntityException e) {
 				// Handle error for error thrown is another exist with same email id
 				recordsFailureMessage.add("User already exists with " + user.getEmail());
 			}
@@ -196,66 +181,62 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 				courseEnrollDB.enrollUserForCourse(user, course, role);
 				LOGGER.info(
 						"User with BannerId: " + user.getBannerId() + " enroll sucessfully as student to the course");
-				notificationService.sendNotificationToNewuser(user,password, course);
+				notificationService.sendNotificationToNewuser(user, passwordtobesend, course);
 				LOGGER.info("Notification email send to user");
 				recordsSuccessMessage.add("User with BannerId: " + user.getBannerId()
 						+ " created and enroll sucessfully as student to the course");
 			}
-
 		}
 	}
 
 	@Override
 	public boolean enrollTAForCourse(User Ta, Course course) {
-		// TODO Auto-generated method stub
 		Role role = new Role("TA");
+		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
 		boolean response = false;
 		try {
 			LOGGER.info("Calling Dao to enroll TA for the given course");
 			response = courseEnrollDB.enrollUserForCourse(Ta, course, role);
 
 		} catch (UserDefinedSQLException e) {
-			// TODO Auto-generated catch block
 			return false;
 		}
 		return response;
 	}
 
-
-	
 	@Override
 	public List<Course> getCourseEnrolledForUser(User user) throws UserDefinedSQLException {
-		
-		//calling Database access layer to get the list of user enrolled in course
+
+		// calling Database access layer to get the list of user enrolled in course
 		List<Course> listofCourses = new ArrayList<Course>();
+		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
+		System.out.println(courseEnrollDB.getClass());
 		LOGGER.info("calling Database access layer to get the list of user enrolled in course");
-		listofCourses= courseEnrollDB.getAllEnrolledCourse(user);
+		listofCourses = courseEnrollDB.getAllEnrolledCourse(user);
 		return listofCourses;
-		
 	}
 
 	@Override
 	public Role getUserRoleForCourse(User user, Course course) throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
-		Role role=null;
+		Role role = null;
+		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
 		role = courseEnrollDB.getUserRoleForCourse(user, course);
 		return role;
 	}
-	
-	public String GeneratePassword() {    
-        
-        StringBuilder builder = new StringBuilder();
-        builder.setLength(0);
 
- 
+	public String GeneratePassword() {
 
-        for(int i=0;i<8;i++)
-        {
-            int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
-            builder.append(ALPHA_NUMERIC_STRING.charAt(character));
-        }
-        String new_password= builder.toString();
-        return new_password;
-    }
+		Properties properties = SystemConfig.instance().getProperties();
+		ALPHA_NUMERIC_STRING = properties.getProperty("random");
+		StringBuilder builder = new StringBuilder();
+		builder.setLength(0);
+
+		for (int i = 0; i < 8; i++) {
+			int character = (int) (Math.random() * ALPHA_NUMERIC_STRING.length());
+			builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+		}
+		String new_password = builder.toString();
+		return new_password;
+	}
 
 }

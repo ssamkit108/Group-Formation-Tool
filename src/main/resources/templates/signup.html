@@ -16,7 +16,7 @@
 		
 		
 		<div th:if="${message}" class="validation-message alert alert-danger" role="alert">
-		    <h3 th:text="${message}"></h3>
+		    <h2 th:text="${message}"></h2>
 		    <br/>
 		</div>
 		
@@ -25,33 +25,33 @@
 			
 			<div class="form-group row">
 			<h4>Banner ID:</h4>
-			<input type="text" name="username" placeholder="Banner ID" maxlength="9" class="form-control" required />
+			<input th:field="${user.bannerId}"  type="text" name="username" placeholder="Banner ID" maxlength="9" class="form-control" required />
 			</div>
 		
 
 			<div class="form-group row">
 			<h4>Password:</h4>
-			<input type="password" name="password" placeholder="Enter Password"  class="form-control"  minlength="8"  required/>
+			<input type="password" name="password" th:field="${user.password}" placeholder="Enter Password"  class="form-control"  required/>
 			</div>
 			
 			<div class="form-group row">
 			<h4>Password (Confirmation):</h4>
-			 <input type="password" name="passwordConfirmation" placeholder="Re-enter your password" class="form-control"  minlength="8" required/>
+			 <input type="password" name="passwordConfirmation" placeholder="Re-enter your password" class="form-control" required/>
 			</div>
 			
 			<div class="form-group row">
 			<h4>First Name:</h4>
-			 <input type="text" name="firstName" placeholder="Enter your FirstName" class="form-control"  required/>
+			 <input type="text" name="firstName"th:field="${user.firstName}"  placeholder="Enter your FirstName" class="form-control"  required/>
 			</div>
 			
 			<div class="form-group row">
 			<h4>Last Name :</h4>
-			<input type="text" name="lastName" placeholder="Enter your LastName" class="form-control"  required/>
+			<input type="text" name="lastName" th:field="${user.lastName}" placeholder="Enter your LastName" class="form-control"  required/>
 			</div>
 			
 			<div class="form-group row">
 			<h4>Email:</h4>
-			<input type="email" name="email" placeholder="Enter your email address" class="form-control" required/>
+			<input type="email" name="email" th:field="${user.email}" placeholder="Enter your email address" class="form-control" required/>
 			</div>
 			
 			<div class="form-group row">
