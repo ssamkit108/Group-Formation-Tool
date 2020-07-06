@@ -9,6 +9,9 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 
 public class CourseMock implements CourseManagementDao {
+	
+    AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+
 
 	@Override
 	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException {

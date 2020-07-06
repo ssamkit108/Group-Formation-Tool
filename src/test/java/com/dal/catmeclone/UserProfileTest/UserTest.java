@@ -1,5 +1,7 @@
 package com.dal.catmeclone.UserProfileTest;
 
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.model.*;
 
 
@@ -11,11 +13,13 @@ import org.springframework.util.Assert;
 @SuppressWarnings("deprecation")
 public class UserTest
 {
+    AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+
 		
 	@Test
 	public void setBannerIDTest()
 	{
-		User u = new User();
+		User u = abstractFactory.createModelAbstractFactory().createUser();		
 		u.setBannerId("B00854796");
 		Assert.isTrue(u.getBannerId().equals("B00854796"));
 	}
@@ -23,7 +27,7 @@ public class UserTest
 	@Test
 	public void getBannerIDTest()
 	{
-		User u = new User();
+		User u = abstractFactory.createModelAbstractFactory().createUser();		
 		u.setBannerId("B00854796");
 		Assert.isTrue(u.getBannerId().equals("B00854796"));
 	}
@@ -31,7 +35,7 @@ public class UserTest
 	@Test
 	public void setFirstNameTest()
 	{
-		User u = new User();
+		User u = abstractFactory.createModelAbstractFactory().createUser();		
 		u.setFirstName("Bob");
 		Assert.isTrue(u.getFirstName().equals("Bob"));
 	}
@@ -39,7 +43,7 @@ public class UserTest
 	@Test
 	public void getFirstNameTest()
 	{
-		User u = new User();
+		User u = abstractFactory.createModelAbstractFactory().createUser();		
 		u.setFirstName("Bob");
 		Assert.isTrue(u.getFirstName().equals("Bob"));
 	}
@@ -47,7 +51,7 @@ public class UserTest
 	@Test
 	public void setLastNameTest()
 	{
-		User u = new User();
+		User u = abstractFactory.createModelAbstractFactory().createUser();		
 		u.setLastName("Mcallister");
 		Assert.isTrue(u.getLastName().equals("Mcallister"));
 	}
@@ -55,7 +59,7 @@ public class UserTest
 	@Test
 	public void getLastNameTest()
 	{
-		User u = new User();
+		User u = abstractFactory.createModelAbstractFactory().createUser();		
 		u.setLastName("Mcallister");
 		Assert.isTrue(u.getLastName().equals("Mcallister"));
 	}
@@ -63,7 +67,7 @@ public class UserTest
 	@Test
 	public void setEmailTest()
 	{
-		User u = new User();
+		User u = abstractFactory.createModelAbstractFactory().createUser();		
 		u.setEmail("bob@gmail.com");
 		Assert.isTrue(u.getEmail().equals("bob@gmail.com"));
 	}
@@ -71,7 +75,7 @@ public class UserTest
 	@Test
 	public void getEmailTest()
 	{
-		User u = new User();
+		User u = abstractFactory.createModelAbstractFactory().createUser();		
 		u.setEmail("rhawkey@dal.ca");
 		Assert.isTrue(u.getEmail().equals("rhawkey@dal.ca"));
 	}

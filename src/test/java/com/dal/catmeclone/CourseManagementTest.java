@@ -9,49 +9,54 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
+import com.dal.catmeclone.course.CourseAbstractFactory;
+import com.dal.catmeclone.course.CoursesDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 
 public class CourseManagementTest {
+    AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+
 
 	@SuppressWarnings("deprecation")
 	@Test
 	public void insertCourseTest() throws UserDefinedSQLException, SQLException {
-		Course u = new Course();
+		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
 		CourseMock mock = new CourseMock();
-		u.setCourseID(123);
-		u.setCourseName("sdc");
-		Assert.isTrue(mock.insertCourse(u));
+		c.setCourseID(123);
+		c.setCourseName("sdc");
+		Assert.isTrue(mock.insertCourse(c));
 	}
 
 	@SuppressWarnings("deprecation")
 	@Test
 	public void deleteCourseTest() throws UserDefinedSQLException, SQLException {
-		Course u = new Course();
+		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
 		CourseMock mock = new CourseMock();
-		u.setCourseID(123);
-		Assert.isTrue(mock.deleteCourse(u.getCourseID()));
+		c.setCourseID(123);
+		Assert.isTrue(mock.deleteCourse(c.getCourseID()));
 	};
 
 	@Test
 	public void getAllCoursesTest() throws UserDefinedSQLException, SQLException {
-		Course u = new Course();
+		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
 		CourseMock mock = new CourseMock();
-		u.setCourseID(123);
-		u.setCourseName("sdc");
-		List<Course> c = new ArrayList<Course>();
-		c.add(u);
-		assertEquals(mock.getAllCourses(), c);
+		c.setCourseID(123);
+		c.setCourseName("sdc");
+		List<Course> courses = new ArrayList<Course>();
+		courses.add(c);
+		assertEquals(mock.getAllCourses(), courses);
 	};
 
 	@SuppressWarnings("deprecation")
 	@Test
 	public void checkCourseExists() throws UserDefinedSQLException, SQLException {
-		Course u = new Course();
+		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
 		CourseMock mock = new CourseMock();
-		u.setCourseID(123);
-		u.setCourseName("sdc");
-		Assert.isTrue(mock.checkCourseExists(new Course(u.getCourseID(), u.getCourseName())));
+		c.setCourseID(123);
+		c.setCourseName("sdc");
+		Assert.isTrue(mock.checkCourseExists(new Course(c.getCourseID(), c.getCourseName())));
 	}
 
 }
