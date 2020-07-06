@@ -9,11 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 
 @SpringBootTest
 public class CourseDaoTest {
+    AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+
 
 	@Test
 	public void getCourseforValidCourseID() {
@@ -33,15 +37,23 @@ public class CourseDaoTest {
 	public void getCoursebyuser() {
 		String bannerid = "B00839818";
 		ArrayList<Course> courseList = new ArrayList<Course>();
-		courseList.add(new Course(101, "Advance topic in web"));
-		courseList.add(new Course(100,"c"));
-		User u = new User();
+		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
+		c.setCourseID(101);
+		c.setCourseName("Advance topic in web");
+		courseList.add(c);
+
+		Course c2 = abstractFactory.createModelAbstractFactory().crateCourse();
+		c2.setCourseID(100);
+		c2.setCourseName("sdc");
+		courseList.add(c2);
+		
+		User u = abstractFactory.createModelAbstractFactory().createUser();
 		u.setBannerId(bannerid);	
 		CourseDaoMock mock = new CourseDaoMock();
 		assertTrue(courseList.size()== mock.getallcoursesbyuser(u).size());
 		
 		bannerid = "B00123456";
-		u = new User();
+		u = abstractFactory.createModelAbstractFactory().createUser();
 		u.setBannerId(bannerid);
 		assertTrue(mock.getallcoursesbyuser(u) == null);
 		
@@ -50,8 +62,16 @@ public class CourseDaoTest {
 	@Test
 	public void getallcourses() {
 		ArrayList<Course> courseList = new ArrayList<Course>();
-		courseList.add(new Course(101, "Advance topic in web"));
-		courseList.add(new Course(100,"Advance Topic in SDC"));
+		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
+		c.setCourseID(101);
+		c.setCourseName("Advance topic in web");
+		courseList.add(c);
+
+		Course c2 = abstractFactory.createModelAbstractFactory().crateCourse();
+		c2.setCourseID(100);
+		c2.setCourseName("Advance Topic in SDC");
+		courseList.add(c2);
+
 		CourseDaoMock mock = new CourseDaoMock();
 		assertTrue(courseList.size()== mock.getallcourses().size());
 		
@@ -61,7 +81,7 @@ public class CourseDaoTest {
 	public void getcourse() {
 		int courseid = 100;
 		String coursename = "Advance Topic in SDC";
-		Course c = new Course();
+		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
 		c.setCourseID(courseid);
 		c.setCourseName(coursename);
 		CourseDaoMock mock = new CourseDaoMock();
