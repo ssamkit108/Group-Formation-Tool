@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.BasicQuestion;
@@ -13,6 +15,8 @@ import com.dal.catmeclone.model.User;
 
 public class QuestionManagementServiceImpl implements QuestionManagementService {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	QuestionManagementAbstractFactory questionManagementAbstractFactory=abstractFactory.createQuestionManagerAbstractFactory();
 	private Logger LOGGER = Logger.getLogger(QuestionManagementServiceImpl.class.getName());
 	QuestionManagementDao questionManagementDao = null;
 
@@ -22,7 +26,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	@Override
 	public List<BasicQuestion> getAllQuestionByUser(User user) throws UserDefinedSQLException {
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+		questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
 
 		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
 		// Calling Dao layer to perform interaction wwith DB to fetch list of question
@@ -36,7 +40,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	@Override
 	public List<BasicQuestion> getSortedQuestionsByTitle(User user) throws UserDefinedSQLException {
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+		questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
 
 		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
 		// Calling Dao layer to perform interaction wwith DB to fetch list of question
@@ -57,7 +61,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	@Override
 	public List<BasicQuestion> getSortedQuestionsByDate(User user) throws UserDefinedSQLException {
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+		questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
 
 		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
 		// Calling Dao layer to perform interaction wwith DB to fetch list of question
@@ -77,7 +81,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	@Override
 	public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoice) throws UserDefinedSQLException {
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+		questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
 
 		multipleChoice.filterOptions();
 		boolean isQuestionCreated = questionManagementDao.createMultipleChoiceQuestion(multipleChoice);
@@ -87,7 +91,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	@Override
 	public boolean createNumericOrTextQuestion(BasicQuestion basicQuestion) throws UserDefinedSQLException {
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+		questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
 
 		boolean isQuestionCreated = questionManagementDao.createNumericOrTextQuestion(basicQuestion);
 		return isQuestionCreated;
@@ -96,7 +100,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	@Override
 	public boolean ifQuestionTitleandTextExists(BasicQuestion basicQuestion) throws UserDefinedSQLException {
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+		questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
 
 		boolean isQuestionExists = questionManagementDao.isQuestionExistForUserWithTitleandText(basicQuestion);
 		return isQuestionExists;
@@ -105,7 +109,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
 	@Override
 	public boolean deleteQuestion(int questionId) throws UserDefinedSQLException {
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+		questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
 
 		boolean isQuestionDeleted = questionManagementDao.deleteQuestion(questionId);
 		return isQuestionDeleted;

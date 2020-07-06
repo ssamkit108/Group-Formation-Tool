@@ -3,6 +3,8 @@ package com.dal.catmeclone.questionmanagement;
 import java.util.Date;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+
+import com.dal.catmeclone.AbstractFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,7 +30,8 @@ import com.dal.catmeclone.model.User;
 public class QuestionManagementController {
 
 	private Logger LOGGER = Logger.getLogger(QuestionManagementController.class.getName());
-
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	QuestionManagementAbstractFactory questionManagementAbstractFactory=abstractFactory.createQuestionManagerAbstractFactory();
 	private static final String AJAX_HEADER_NAME = "X-Requested-With";
 	private static final String AJAX_HEADER_VALUE = "XMLHttpRequest";
 
@@ -42,7 +45,7 @@ public class QuestionManagementController {
 	public String viewQuestionTitlePage(Model model) {
 
 		// Getting QuestionManagementService Instance
-		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
+		QuestionManagementService questionManagementService = questionManagementAbstractFactory.createQuestionManagementService();
 
 		// getting Logged in user from authentication object
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -60,32 +63,19 @@ public class QuestionManagementController {
 		return "questionmanager/questionmanagerhome";
 	}
 
-	/*
-	 * @RequestMapping(value= "", method=RequestMethod.POST,
-	 * params="action=sortbytitle") public String
-	 * viewQuestionSortedByTitle(@ModelAttribute ArrayList<BasicQuestion>
-	 * listOfquestion, Model model) { System.out.println(listOfquestion.toString());
-	 * Authentication authentication =
-	 * SecurityContextHolder.getContext().getAuthentication(); String username =
-	 * authentication.getName(); try { model.addAttribute("questionList",
-	 * quest.getSortedQuestionsByTitle(new User(username))); } catch (SQLException |
-	 * UserDefinedSQLException e) {
-	 * model.addAttribute("errormessage",e.getLocalizedMessage()); return "error"; }
-	 * return "questionmanager/questionmanagerhome"; }
-	 */
 
 	/**
 	 * Controller Method to display question Home page with all question title
 	 * sorted by title
 	 * 
-	 * @param model
+	 * @param
 	 * @return View
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST, params = "action=sortbytitle")
 	public String viewQuestionSortedByTitleDB(@ModelAttribute BasicQuestion q, Model model) {
 
 		// Getting QuestionManagementService Instance
-		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
+		QuestionManagementService questionManagementService = questionManagementAbstractFactory.createQuestionManagementService();
 
 		// getting Logged in user from authentication object
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -107,14 +97,14 @@ public class QuestionManagementController {
 	 * Controller Method to display question Home page with all question title
 	 * sorted by date
 	 * 
-	 * @param model
+	 * @param
 	 * @return View
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST, params = "action=sortbydate")
 	public String viewQuestionSortedByDate(@ModelAttribute BasicQuestion q, Model m) {
 
 		// Getting QuestionManagementService Instance
-		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
+		QuestionManagementService questionManagementService = questionManagementAbstractFactory.createQuestionManagementService();
 
 		// getting Logged in user from authentication object
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -134,14 +124,14 @@ public class QuestionManagementController {
 	/**
 	 * Controller Method to delete question by given question Id
 	 * 
-	 * @param model
+	 * @param
 	 * @return View
 	 */
 	@PostMapping(value = "/delete")
 	public String removeQuestion(@RequestParam(name = "question") int questionId, Model m) {
 
 		// Getting QuestionManagementService Instance
-		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
+		QuestionManagementService questionManagementService = questionManagementAbstractFactory.createQuestionManagementService();
 
 		try {
 			LOGGER.info("Making a call to delete Question");
@@ -185,7 +175,7 @@ public class QuestionManagementController {
 		LOGGER.info("Formulating questions based on selected question type");
 
 		// Getting QuestionManagementService Instance
-		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
+		QuestionManagementService questionManagementService = questionManagementAbstractFactory.createQuestionManagementService();
 
 		// getting Logged in user from authentication object
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -266,7 +256,7 @@ public class QuestionManagementController {
 		LOGGER.info("Creating " + basicQuestion.getQuestionType() + " question");
 
 		// Getting QuestionManagementService Instance
-		QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
+		QuestionManagementService questionManagementService = questionManagementAbstractFactory.createQuestionManagementService();
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
@@ -309,7 +299,7 @@ public class QuestionManagementController {
         {
 
             //Getting QuestionManagementService Instance
-            QuestionManagementService questionManagementService = SystemConfig.instance().getQuestionManagementService();
+            QuestionManagementService questionManagementService = questionManagementAbstractFactory.createQuestionManagementService();
             
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();

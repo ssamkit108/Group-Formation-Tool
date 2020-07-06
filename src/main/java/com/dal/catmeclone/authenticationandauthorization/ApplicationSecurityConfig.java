@@ -1,5 +1,6 @@
 package com.dal.catmeclone.authenticationandauthorization;
 
+import com.dal.catmeclone.AbstractFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,8 @@ import com.dal.catmeclone.SystemConfig;
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	AuthenticationAbstractFactory authenticationAbstractFactory= abstractFactory.createAuthenticationAbstractFactory();
 	UserAuthentication authenticationManager;
 	AuthenticationSuccessHandler successHandler;
 
@@ -29,13 +32,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	public AuthenticationSuccessHandler authSuccessHandler() {
-		successHandler = SystemConfig.instance().getAuthenticationSuccessHandler();
+		successHandler = authenticationAbstractFactory.createSuccessHandler();
 		return successHandler;
 	}
 
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
-		authenticationManager = SystemConfig.instance().getUserAuthentication();
+		authenticationManager = authenticationAbstractFactory.createUserAuthentication();
 		return authenticationManager;
 	}
 

@@ -12,7 +12,7 @@ public class NotificatiobServiceTest {
 	NotificationServiceMock notificationservice = new NotificationServiceMock();
 
 	@Test
-	void sendNotificationToNewuserTest() {
+	public void sendNotificationToNewuserTest() {
 		User u = new User();
 		u.setBannerId("B00852232");
 		u.setFirstName("Mayank");
@@ -27,11 +27,11 @@ public class NotificatiobServiceTest {
 
 		notificationservice.sendNotificationToNewuser(u, "Password", c);
 
-		Assert.assertTrue(notificationservice.success.equals("sent"));
+		Assert.assertTrue(notificationservice.success.equals("Sent"));
 	}
 
 	@Test
-	void sendNotificationForPasswordTest() {
+	public void sendNotificationForPasswordTest() {
 		User u = new User();
 		u.setBannerId("B00852232");
 		u.setFirstName("Mayank");
@@ -44,6 +44,6 @@ public class NotificatiobServiceTest {
 
 		notificationservice.sendNotificationForPassword(Bannerid, password, sendto);
 
-		Assert.assertTrue(notificationservice.success.equals("sent"));
+		Assert.assertTrue(notificationservice.success.equals("Sent"));
 	}
 }

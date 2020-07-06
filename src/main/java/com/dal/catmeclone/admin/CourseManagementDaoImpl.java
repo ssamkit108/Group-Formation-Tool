@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import org.slf4j.*;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
@@ -15,6 +17,9 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 
 public class CourseManagementDaoImpl implements CourseManagementDao {
+
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
 
 	DataBaseConnection DBUtil;
 	final Logger LOGGER = LoggerFactory.getLogger(CourseManagementDaoImpl.class);
@@ -26,7 +31,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException {
 		listOfCourses = new ArrayList<Course>();
-		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = DBUtil.connect();
 		try {
@@ -51,7 +56,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
 		// Connect to database
-		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = DBUtil.connect();
 		statement = connection.prepareCall("{call " + properties.getProperty("procedure.DeleteCourse") + "}");
@@ -80,7 +85,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public boolean insertCourse(Course course) throws SQLException, UserDefinedSQLException {
 		// Connect to database
-		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = DBUtil.connect();
 		statement = connection.prepareCall("{call " + properties.getProperty("procedure.Createcourse") + "}");
@@ -108,7 +113,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
 		boolean flag = true;
-		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = DBUtil.connect();
 		statement = connection

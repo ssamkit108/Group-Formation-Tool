@@ -2,6 +2,8 @@ package com.dal.catmeclone.authenticationandauthorization;
 
 import java.sql.*;
 import java.util.Properties;
+
+import com.dal.catmeclone.AbstractFactory;
 import org.springframework.stereotype.Component;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.*;
@@ -11,6 +13,9 @@ import com.dal.catmeclone.model.User;
 
 @Component
 public class AuthenticateUserDaoImpl implements AuthenticateUserDao {
+
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
 
 	private CallableStatement statement;
 	private Connection connection;
@@ -22,7 +27,7 @@ public class AuthenticateUserDaoImpl implements AuthenticateUserDao {
 		Properties property = SystemConfig.instance().getProperties();
 		String authenticateUser = property.getProperty("procedure.authenticateUser");
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + authenticateUser + "}");
 

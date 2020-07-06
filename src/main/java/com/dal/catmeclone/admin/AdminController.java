@@ -1,6 +1,8 @@
 package com.dal.catmeclone.admin;
 
 import java.sql.SQLException;
+
+import com.dal.catmeclone.AbstractFactory;
 import org.apache.logging.log4j.message.Message;
 import org.slf4j.*;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,9 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class AdminController {
 
-	AdminService adminService = SystemConfig.instance().getAdminService();
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	AdminAbstractFactory adminAbstractFactory=abstractFactory.createAdminAbstractFactory();
+	AdminService adminService = adminAbstractFactory.createAdminService();
 
 	final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 

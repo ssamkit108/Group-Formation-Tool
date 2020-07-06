@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,10 @@ import com.dal.catmeclone.SystemConfig;
 
 @Service
 public class PasswordRulesLoader {
+
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
+	ValidationAbstractFactory validationAbstractFactory=abstractFactory.createValidationAbstractFactory();
 
 	final Logger LOGGER = LoggerFactory.getLogger(PasswordRulesLoader.class);
 
@@ -28,17 +35,17 @@ public class PasswordRulesLoader {
 	}
 
 	private void PrepareListMap() {
-		HashMapofRules.put("MaximumLength", new MaximumLength());
-		HashMapofRules.put("MinimumLength", new MinimumLength());
-		HashMapofRules.put("MinimumLower", new MinimumLower());
-		HashMapofRules.put("MinimumUpper", new MinimumUpper());
-		HashMapofRules.put("MinimumSpecial", new MinimumSpecial());
-		HashMapofRules.put("SetNotAllow", new SetNotAllow());
-		HashMapofRules.put("HistoryConstraint", new HistoryConstraint());
+		HashMapofRules.put("MaximumLength", validationAbstractFactory.createMaximumLength());
+		HashMapofRules.put("MinimumLength", validationAbstractFactory.createMinimumLength());
+		HashMapofRules.put("MinimumLower", validationAbstractFactory.createMinimumLower());
+		HashMapofRules.put("MinimumUpper", validationAbstractFactory.createMinimumUpper());
+		HashMapofRules.put("MinimumSpecial",validationAbstractFactory.createMinimumSpecial());
+		HashMapofRules.put("SetNotAllow", validationAbstractFactory.createSetNotAllow());
+		HashMapofRules.put("HistoryConstraint", validationAbstractFactory.createHistoryConstraint());
 	}
 
 	public void CreateActiveRulesList() {
-		ValidationDAO = SystemConfig.instance().getValidationRulesDao();
+		ValidationDAO = validationAbstractFactory.createValidationRulesDao();
 		ListofRules.clear();
 		List<String> rules = ValidationDAO.getRulesFromConfig();
 		for (String rule : rules) {

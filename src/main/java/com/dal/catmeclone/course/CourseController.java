@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+
+import com.dal.catmeclone.AbstractFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,8 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class CourseController {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	CourseAbstractFactory courseAbstractFactory=abstractFactory.createCourseAbstractFactory();
 	CourseService courseService;
 	CourseEnrollmentService courseEnrollmentService;
 
@@ -30,8 +34,8 @@ public class CourseController {
 	public String showCoursePage(ModelMap model, @PathVariable(name = "courseid") Integer courseid,
 			RedirectAttributes attributes, HttpSession session) {
 
-		courseService = SystemConfig.instance().getCourseService();
-		courseEnrollmentService = SystemConfig.instance().getCourseEnrollmentService();
+		courseService = courseAbstractFactory.createCourseService();
+		courseEnrollmentService = courseAbstractFactory.createCourseEnrollmentService();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String responsepage = "";
@@ -80,7 +84,7 @@ public class CourseController {
 
 	@GetMapping("/allcourses")
 	public ModelAndView AllCourses(Model model) {
-		courseService = SystemConfig.instance().getCourseService();
+		courseService = courseAbstractFactory.createCourseService();
 		ModelAndView modelview = null;
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth.isAuthenticated()) {
@@ -111,8 +115,8 @@ public class CourseController {
 	@GetMapping("/courses")
 	public ModelAndView Courses(Model model, HttpSession session) {
 
-		courseService = SystemConfig.instance().getCourseService();
-		courseEnrollmentService = SystemConfig.instance().getCourseEnrollmentService();
+		courseService = courseAbstractFactory.createCourseService();
+		courseEnrollmentService = courseAbstractFactory.createCourseEnrollmentService();
 		// Interface_AuthenticateUserDao validate = new AuthenticateUserDao();
 		ModelAndView modelview = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

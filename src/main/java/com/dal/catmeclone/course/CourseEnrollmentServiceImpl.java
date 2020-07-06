@@ -12,6 +12,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.UserProfile.UserProfileAbstractFactory;
+import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
+import com.dal.catmeclone.notification.NotificationAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +33,11 @@ import com.dal.catmeclone.notification.NotificationService;
 
 public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	CourseAbstractFactory courseAbstractFactory=abstractFactory.createCourseAbstractFactory();
+	NotificationAbstractFactory notificationAbstractFactory=abstractFactory.createNotificationAbstractFactory();
+	UserProfileAbstractFactory userProfileAbstractFactory=abstractFactory.createUserProfileAbstractFactory();
+	EncryptAbstractFactory encryptAbstractFactory=abstractFactory.createEncryptAbstractFactory();
 	private static final Logger LOGGER = LoggerFactory.getLogger(CourseEnrollmentServiceImpl.class);
 
 	public List<String> recordsSuccessMessage = new ArrayList<String>();
@@ -138,10 +148,10 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	 */
 	private void enrollStudent(User user, Course course) throws UserDefinedSQLException {
 
-		notificationService = SystemConfig.instance().getNotificationService();
-		userDB = SystemConfig.instance().getUserDao();
-		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
-		bcryptEncoder = SystemConfig.instance().getBcryptPasswordEncrption();
+		notificationService = notificationAbstractFactory.createNotificationService();
+		userDB = userProfileAbstractFactory.createUserDao();
+		courseEnrollDB = courseAbstractFactory.createCourseEnrollmentDao();
+		bcryptEncoder = encryptAbstractFactory.createBCryptPasswordEncryption();
 
 		// Check if user exists with the given banner id or not
 		User u = userDB.findUserByBannerID(user.getBannerId());
@@ -192,7 +202,7 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	@Override
 	public boolean enrollTAForCourse(User Ta, Course course) {
 		Role role = new Role("TA");
-		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
+		courseEnrollDB = courseAbstractFactory.createCourseEnrollmentDao();
 		boolean response = false;
 		try {
 			LOGGER.info("Calling Dao to enroll TA for the given course");
@@ -209,7 +219,7 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 
 		// calling Database access layer to get the list of user enrolled in course
 		List<Course> listofCourses = new ArrayList<Course>();
-		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
+		courseEnrollDB = courseAbstractFactory.createCourseEnrollmentDao();
 		System.out.println(courseEnrollDB.getClass());
 		LOGGER.info("calling Database access layer to get the list of user enrolled in course");
 		listofCourses = courseEnrollDB.getAllEnrolledCourse(user);
@@ -219,7 +229,7 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	@Override
 	public Role getUserRoleForCourse(User user, Course course) throws UserDefinedSQLException {
 		Role role = null;
-		courseEnrollDB = SystemConfig.instance().getCourseEnrollmentDao();
+		courseEnrollDB = courseAbstractFactory.createCourseEnrollmentDao();
 		role = courseEnrollDB.getUserRoleForCourse(user, course);
 		return role;
 	}
