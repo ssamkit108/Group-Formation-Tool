@@ -2,6 +2,9 @@ package com.dal.catmeclone.UserProfile;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.Validation.ValidationAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -13,6 +16,10 @@ import com.dal.catmeclone.model.User;
 
 public class UserServiceImpl implements UserService {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	UserProfileAbstractFactory userProfileAbstractFactory=abstractFactory.createUserProfileAbstractFactory();
+	ValidationAbstractFactory validationAbstractFactory=abstractFactory.createValidationAbstractFactory();
+
 	final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	ValidatePassword validatepassword;
 	UserDao userDb;
@@ -20,8 +27,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean Create(User u) throws Exception {
-		userDb = SystemConfig.instance().getUserDao();
-		validatepassword = SystemConfig.instance().getValidatePassword();
+		userDb = userProfileAbstractFactory.createUserDao();
+		validatepassword = validationAbstractFactory.createValidatePassword();
 		try {
 			validatepassword.validatepassword(u);
 			logger.info("Accessing DAO layer to create user to given banner id" + u.getBannerId());
@@ -45,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException {
-		userDb = SystemConfig.instance().getUserDao();
+		userDb = userProfileAbstractFactory.createUserDao();
 		List<User> listOfUser = new ArrayList<User>();
 		logger.info("Accessing DAO layer to get matching list of user to given banner id");
 		listOfUser = userDb.findAllMatchingUser(bannerId);

@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.UserProfile.UserProfileAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,10 @@ import com.dal.catmeclone.model.User;
 
 public class AdminServiceImpl implements AdminService {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	AdminAbstractFactory adminAbstractFactory=abstractFactory.createAdminAbstractFactory();
+	UserProfileAbstractFactory userProfileAbstractFactory=abstractFactory.createUserProfileAbstractFactory();
+
 	private CourseInstructorAssignmentDao courseInstructor;
 	private CourseManagementDao courseManagement;
 	private UserDao userDao;
@@ -25,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role)
 			throws SQLException, UserDefinedSQLException {
 		boolean result = false;
-		courseInstructor = SystemConfig.instance().getCourseInstructorAssignmentDao();
+		courseInstructor = adminAbstractFactory.createCourseInstructorAssignmentDao();
 		result = courseInstructor.enrollInstructorForCourse(Instructor, course, role);
 
 		return result;
@@ -34,7 +40,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<User> getAllUsers() throws SQLException, UserDefinedSQLException {
 		List<User> listOfUsers = new ArrayList<User>();
-		userDao = SystemConfig.instance().getUserDao();
+		userDao = userProfileAbstractFactory.createUserDao();
 		listOfUsers = userDao.getAllUsers();
 
 		return listOfUsers;
@@ -43,7 +49,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException {
 		List<Course> listOfCourses = new ArrayList<Course>();
-		courseManagement = SystemConfig.instance().getCourseManagementDao();
+		courseManagement = adminAbstractFactory.createCourseManagementDao();
 		listOfCourses = courseManagement.getAllCourses();
 
 		return listOfCourses;
@@ -52,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
 		boolean result = false;
-		courseManagement = SystemConfig.instance().getCourseManagementDao();
+		courseManagement = adminAbstractFactory.createCourseManagementDao();
 		result = courseManagement.deleteCourse(courseID);
 
 		return result;
@@ -61,7 +67,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public boolean insertCourse(Course course) throws UserDefinedSQLException, SQLException {
 		boolean result = false;
-		courseManagement = SystemConfig.instance().getCourseManagementDao();
+		courseManagement = adminAbstractFactory.createCourseManagementDao();
 		result = courseManagement.insertCourse(course);
 
 		return result;
@@ -70,7 +76,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
 		boolean result = false;
-		courseInstructor = SystemConfig.instance().getCourseInstructorAssignmentDao();
+		courseInstructor = adminAbstractFactory.createCourseInstructorAssignmentDao();
 		result = courseInstructor.checkInstructorForCourse(course);
 
 		return result;
@@ -79,7 +85,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
 		boolean result = false;
-		courseManagement = SystemConfig.instance().getCourseManagementDao();
+		courseManagement = adminAbstractFactory.createCourseManagementDao();
 		result = courseManagement.checkCourseExists(course);
 
 		return result;

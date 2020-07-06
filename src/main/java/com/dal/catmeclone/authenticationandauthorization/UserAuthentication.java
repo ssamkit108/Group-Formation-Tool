@@ -2,6 +2,9 @@ package com.dal.catmeclone.authenticationandauthorization;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +21,9 @@ import com.dal.catmeclone.model.User;
 @Component
 public class UserAuthentication implements AuthenticationManager {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	AuthenticationAbstractFactory authenticationAbstractFactory= abstractFactory.createAuthenticationAbstractFactory();
+	EncryptAbstractFactory encryptAbstractFactory= abstractFactory.createEncryptAbstractFactory();
 	private AuthenticateUserDao validate;
 	private BCryptPasswordEncryption passwordencoder;
 
@@ -26,8 +32,8 @@ public class UserAuthentication implements AuthenticationManager {
 
 		String bannerId = authentication.getPrincipal().toString();
 		String password = authentication.getCredentials().toString();
-		validate = SystemConfig.instance().getAuthenticateUserDao();
-		passwordencoder = SystemConfig.instance().getBcryptPasswordEncrption();
+		validate = authenticationAbstractFactory.createAuthenticateUserDao();
+		passwordencoder = encryptAbstractFactory.createBCryptPasswordEncryption();
 		User flag = null;
 		List<GrantedAuthority> authorize = new ArrayList<GrantedAuthority>();
 		User user = new User();

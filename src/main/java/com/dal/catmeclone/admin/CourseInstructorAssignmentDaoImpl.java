@@ -5,6 +5,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
+import com.dal.catmeclone.UserProfile.UserProfileAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -16,14 +20,18 @@ import com.dal.catmeclone.model.User;
 
 public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssignmentDao {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
+
 	DataBaseConnection DBUtil;
 	final Logger LOGGER = LoggerFactory.getLogger(CourseInstructorAssignmentDaoImpl.class);
 	private Connection connection;
 	private CallableStatement statement;
 
+
 	@Override
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role) throws UserDefinedSQLException {
-		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		connection = DBUtil.connect();
 		Properties properties = SystemConfig.instance().getProperties();
 		try {
@@ -51,7 +59,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 	@Override
 	public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
 		boolean flag = true;
-		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = DBUtil.connect();
 		statement = connection

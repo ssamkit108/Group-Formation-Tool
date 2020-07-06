@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -14,6 +17,9 @@ import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 
 public class ValidationRulesDaoImpl implements ValidationRulesDao {
+
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
 
 	final Logger LOGGER = LoggerFactory.getLogger(ValidationRulesDaoImpl.class);
 	private DataBaseConnection DBUtil;
@@ -26,7 +32,7 @@ public class ValidationRulesDaoImpl implements ValidationRulesDao {
 	private void loadRulesFromDB() {
 		try {
 			rules = new ArrayList<String>();
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.fetchPasswordRules") + "}");
@@ -63,7 +69,7 @@ public class ValidationRulesDaoImpl implements ValidationRulesDao {
 	public String getRulesValueFromConfig(String ruleName) {
 		String ruleValue = "";
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.fetchRuleValue") + "}");

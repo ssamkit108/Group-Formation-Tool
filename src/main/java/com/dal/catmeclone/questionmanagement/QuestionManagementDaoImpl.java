@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
@@ -21,7 +24,8 @@ import com.dal.catmeclone.model.User;
 public class QuestionManagementDaoImpl implements QuestionManagementDao {
 
 	Logger LOGGER = Logger.getLogger(QuestionManagementDaoImpl.class.getName());
-
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
 	private DataBaseConnection DBUtil;
 	private Connection connection;
 
@@ -34,7 +38,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 	@Override
 	public boolean isQuestionExistForUserWithTitleandText(BasicQuestion basicQuestion) throws UserDefinedSQLException {
 
-		DataBaseConnection DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DataBaseConnection DBUtil =dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		CallableStatement statement = null;
 		ResultSet result = null;
@@ -81,7 +85,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 	@Override
 	public boolean createNumericOrTextQuestion(BasicQuestion textOrNumericQuestion) throws UserDefinedSQLException {
 
-		DataBaseConnection DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DataBaseConnection DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		CallableStatement statement = null;
 
@@ -128,7 +132,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 	public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoiceQuestion)
 			throws UserDefinedSQLException {
 
-		DataBaseConnection DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DataBaseConnection DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		CallableStatement questionCreateStatement = null, optionCreateStatement = null;
 
@@ -222,7 +226,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 	@Override
 	public List<BasicQuestion> getAllQuestionByUser(User u) throws UserDefinedSQLException {
 
-		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
 		CallableStatement statement = null;
@@ -284,7 +288,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 	@Override
 	public boolean deleteQuestion(int questionId) throws UserDefinedSQLException {
 
-		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		CallableStatement statement = null;
 		try {
 			// Connect to database
