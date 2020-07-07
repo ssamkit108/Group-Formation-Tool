@@ -2,7 +2,7 @@ package com.dal.catmeclone.model;
 public class SurveyQuestion {
 
     private int surveyQuestionId;
-    private BasicQuestion questionDetail;
+    private MultipleChoiceQuestion questionDetail;
     private String algorithmLogicType;
     private int logicConstraintValue;
 
@@ -19,7 +19,7 @@ public class SurveyQuestion {
      * @param algorithmLogicType
      * @param logicConstraintValue
      */
-    public SurveyQuestion(int surveyQuestionId, BasicQuestion questionDetail, String algorithmLogicType,
+    public SurveyQuestion(int surveyQuestionId, MultipleChoiceQuestion questionDetail, String algorithmLogicType,
                           int logicConstraintValue) {
         super();
         this.surveyQuestionId = surveyQuestionId;
@@ -33,7 +33,7 @@ public class SurveyQuestion {
      * @param algorithmLogicType
      * @param logicConstraintValue
      */
-    public SurveyQuestion(BasicQuestion questionDetail, String algorithmLogicType, int logicConstraintValue) {
+    public SurveyQuestion(MultipleChoiceQuestion questionDetail, String algorithmLogicType, int logicConstraintValue) {
         super();
         this.questionDetail = questionDetail;
         this.algorithmLogicType = algorithmLogicType;
@@ -48,11 +48,11 @@ public class SurveyQuestion {
         this.surveyQuestionId = surveyQuestionId;
     }
 
-    public BasicQuestion getQuestionDetail() {
+    public MultipleChoiceQuestion getQuestionDetail() {
         return questionDetail;
     }
 
-    public void setQuestionDetail(BasicQuestion questionDetail) {
+    public void setQuestionDetail(MultipleChoiceQuestion questionDetail) {
         this.questionDetail = questionDetail;
     }
 
