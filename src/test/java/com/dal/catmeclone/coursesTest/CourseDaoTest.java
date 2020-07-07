@@ -10,9 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.course.CoursesDao;
 import com.dal.catmeclone.exceptionhandler.CourseException;
@@ -38,7 +36,7 @@ public class CourseDaoTest {
 		CoursesDao mock = abstractFactoryTest.createCourseAbstractFactory().createCoursesDao();
 		Assert.isNull(mock.getCourse(courseid), "Passed: Course Does not Exist with given course id");
 	}
-	
+
 	@Test
 	public void getCoursebyuser() throws UserDefinedSQLException {
 		String bannerid = "B00839818";
@@ -52,20 +50,20 @@ public class CourseDaoTest {
 		c2.setCourseID(100);
 		c2.setCourseName("sdc");
 		courseList.add(c2);
-		
+
 		User u = new User();
 		u.setBannerId(bannerid);
-		
+
 		CoursesDao mock = abstractFactoryTest.createCourseAbstractFactory().createCoursesDao();
 		assertTrue(courseList.size()== mock.getallcoursesbyuser(u).size());
-		
+
 		bannerid = "B00123456";
 		u = new User();
 		u.setBannerId(bannerid);
 		assertTrue(mock.getallcoursesbyuser(u) == null);
-		
+
 	}
-	
+
 	@Test
 	public void getallcourses() throws SQLException, UserDefinedSQLException {
 		ArrayList<Course> courseList = new ArrayList<Course>();
@@ -81,9 +79,9 @@ public class CourseDaoTest {
 
 		CoursesDao mock = abstractFactoryTest.createCourseAbstractFactory().createCoursesDao();
 		assertTrue(courseList.size()== mock.getallcourses().size());
-		
+
 	}
-	
+
 	@Test
 	public void getcourse() throws UserDefinedSQLException, CourseException {
 		int courseid = 100;

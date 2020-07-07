@@ -1,13 +1,11 @@
 package com.dal.catmeclone.authenticationTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.authenticationandauthorization.AuthenticateUserDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;

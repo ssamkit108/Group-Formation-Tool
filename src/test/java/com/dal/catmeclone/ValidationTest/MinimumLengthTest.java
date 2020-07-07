@@ -1,25 +1,21 @@
 package com.dal.catmeclone.ValidationTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactory;
-import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.Validation.MinimumLength;
+import com.dal.catmeclone.AbstractFactoryTest;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.Validation.ValidationPolicy;
 import com.dal.catmeclone.model.User;
 
 public class MinimumLengthTest {
-    AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
-	ValidationPolicy CheckMinimumLength = abstractFactory.createValidationAbstractFactory().createMinimumLength();
+	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	ValidationPolicy CheckMinimumLength = abstractFactoryTest.createValidationAbstractFactory().createMinimumLength();
 
 
 	@Test
 	public void TestMinimumLength() throws Exception {
-		User u = abstractFactory.createModelAbstractFactory().createUser();
+		User u = new User();
 		u.setPassword("Hello");
 		CheckMinimumLength.setValue("1");
 		Assert.isTrue(CheckMinimumLength.isValid(u));
