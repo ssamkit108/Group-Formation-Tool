@@ -30,4 +30,24 @@ public class ModelAbstractFactoryImpl implements ModelAbstractFactory{
     public User createUser() {
         return new User();
     }
+
+    @Override
+    public Survey createSurvey() {
+        return new Survey();
+    }
+
+    @Override
+    public SurveyQuestion createSurveyQuestion() {
+        return new SurveyQuestion();
+    }
+
+    @Override
+    public SurveyQuestionResponse createSurveyQuestionResponse() {
+        return new SurveyQuestionResponse();
+    }
+
+    @Override
+    public UserSurveyResponse createUserSurveyResponse() {
+        return new UserSurveyResponse();
+    }
 }

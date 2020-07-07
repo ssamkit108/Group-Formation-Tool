@@ -98,13 +98,15 @@ h1 {
 							<!-- <div th:each="option : ${question.optionList}"> -->
 							<!-- <div class="row" th:id =${itemStat.index}> -->
 							<div class="col-lg-6">
-								<label for="displaytext-1">Display Text:</label> <input
+								<label for="displaytext-1">Display Text:</label>
+								<input
 									type="text" class="form-control" id="optiontext"
 									name="optiontext" placeholder="Enter Option Display text"
 									th:field="*{optionList[__${itemStat.index}__].optionText}">
 							</div>
 							<div class="col-lg-6">
-								<label for="stored-1">Stored As:</label> <input type="number"
+								<label for="stored-1">Stored As:</label>
+								<input type="number"
 									class="form-control optionvalue" id="optionvalue"
 									name="optionvalue" min=0 placeholder="stored as"
 									th:field="*{optionList[__${itemStat.index}__].optionValue}"
