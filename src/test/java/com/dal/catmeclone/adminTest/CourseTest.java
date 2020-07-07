@@ -4,17 +4,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
 import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.AbstractFactoryTest;
 import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.model.Course;
 
 @SuppressWarnings("deprecation")
 public class CourseTest {
 
-    AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
 
 	@Test
 	public void setCourseNameTest() {
-		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
+		Course c = new Course();
 
 		c.setCourseName("sdc");
 		Assert.isTrue(c.getCourseName().equals("sdc"));
@@ -22,21 +24,21 @@ public class CourseTest {
 	
 	@Test
 	public void getCourseNameTest() {
-		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
+		Course c = new Course();
 		c.setCourseName("sdc");
 		Assert.isTrue(c.getCourseName().equals("sdc"));
 	}
 	
 	@Test
 	public void setCourseIDTest() {
-		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
+		Course c = new Course();
 		c.setCourseID(5408);
 		Assert.isTrue(c.getCourseID() == 5408);
 	}
 	
 	@Test
 	public void getCourseIDTest() {
-		Course c = abstractFactory.createModelAbstractFactory().crateCourse();
+		Course c = new Course();
 		c.setCourseID(5408);
 		Assert.isTrue(c.getCourseID() == 5408);
 	}

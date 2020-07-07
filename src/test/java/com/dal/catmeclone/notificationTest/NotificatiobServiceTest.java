@@ -4,22 +4,22 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.dal.catmeclone.AbstractFactory;
-import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.AbstractFactoryTest;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
 
 @SpringBootTest
 public class NotificatiobServiceTest {
 	
-    AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
 
 
-	NotificationServiceMock notificationservice = new NotificationServiceMock();
+	NotificationServiceMock notificationservice = abstractFactoryTest.createNotificationAbstractFactory().createNotificationService();
 
 	@Test
 	public void sendNotificationToNewuserTest() {
-		User u = abstractFactory.createModelAbstractFactory().createUser();		
+		User u = new User();		
 
 		u.setBannerId("B00852232");
 		u.setFirstName("Mayank");
@@ -27,7 +27,7 @@ public class NotificatiobServiceTest {
 
 		u.setPassword("Password");
 		u.setEmail("mayank@gmail.com");
-		Course  c = abstractFactory.createModelAbstractFactory().crateCourse();		
+		Course  c = new Course();		
 
 		c.setCourseID(5409);
 		c.setCourseName("Cloud Computing");
@@ -39,7 +39,7 @@ public class NotificatiobServiceTest {
 
 	@Test
 	public void sendNotificationForPasswordTest() {
-		User u = abstractFactory.createModelAbstractFactory().createUser();		
+		User u = new User();		
 		u.setBannerId("B00852232");
 		u.setFirstName("Mayank");
 		u.setLastName("Patel");
