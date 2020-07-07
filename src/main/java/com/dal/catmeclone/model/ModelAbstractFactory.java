@@ -7,4 +7,8 @@ public interface ModelAbstractFactory {
     public Option createOption();
     public Role createRole();
     public User createUser();
+    public Survey createSurvey();
+    public SurveyQuestion createSurveyQuestion();
+    public SurveyQuestionResponse createSurveyQuestionResponse();
+    public UserSurveyResponse createUserSurveyResponse();
 }

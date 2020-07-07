@@ -23,8 +23,14 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 			<h2 th:utext="${session.course.courseID} "></h2>
 		
 			<h2 th:utext="${session.course.courseName}"></h2>
-		
+			<div class="col-lg-6 justify-content-center">
+				<a th:href="@{'/responsepage/' + ${session.course.courseID}}" class="btn btn-primary">
+					Fill Survey
+				</a>
+			</div>
 		</div>
+
+
 	
 </div>
 </body>
