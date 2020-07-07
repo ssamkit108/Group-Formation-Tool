@@ -3,9 +3,7 @@ package com.dal.catmeclone.adminTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.model.Course;
 

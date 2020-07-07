@@ -1,6 +1,7 @@
 package com.dal.catmeclone;
 
 import com.dal.catmeclone.UserProfileTest.UserProfileAbstractFactoryTest;
+import com.dal.catmeclone.ValidationTest.ValidationAbstractFactoryTest;
 import com.dal.catmeclone.adminTest.AdminAbstractFactoryTest;
 import com.dal.catmeclone.authenticationTest.AuthenticationAbstractFactoryTest;
 import com.dal.catmeclone.coursesTest.CourseAbstractFactoryTest;
@@ -14,4 +15,6 @@ public interface AbstractFactoryTest {
     public NotificationAbstractFactoryTest createNotificationAbstractFactory();
     public QuestionManagementAbstractFactoryTest createQuestionManagerAbstractFactory();
     public UserProfileAbstractFactoryTest createUserProfileAbstractFactory();
+    public ValidationAbstractFactoryTest createValidationAbstractFactory();
+
 }

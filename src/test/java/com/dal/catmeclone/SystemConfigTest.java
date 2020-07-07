@@ -1,6 +1,4 @@
 package com.dal.catmeclone;
-import com.dal.catmeclone.AbstractFactoryImpl;
-import com.dal.catmeclone.SystemConfig;
 
 public class SystemConfigTest {
 
