@@ -55,30 +55,24 @@ public class ResponseDaoImpl implements ResponseDao {
             for(Map.Entry<Integer,Integer> entry:survey_question.entrySet()) {
                 SurveyQuestionResponse surveyQuestionResponse=modelAbstractFactory.createSurveyQuestionResponse();
                 SurveyQuestion surveyQuestion=modelAbstractFactory.createSurveyQuestion();
-
                 surveyQuestion.setSurveyQuestionId(entry.getKey());
                 statement = connection.prepareCall("{call " + properties.getProperty("procedure.fetch_basicquestion") + "}");
                 statement.setInt(1, entry.getValue());
                 rs = statement.executeQuery();
 
                 while (rs.next()) {
-                    BasicQuestion basicQuestion=modelAbstractFactory.createBasicQuestion();
-                    basicQuestion.setQuestionId(rs.getInt(1));
-                    basicQuestion.setQuestionTitle(rs.getString(2));
-                    basicQuestion.setQuestionText(rs.getString(3));
-                    basicQuestion.setQuestionType(QuestionType.valueOf(rs.getString(4)));
+                    MultipleChoiceQuestion multipleChoiceQuestion=modelAbstractFactory.createMultipleChoiceQuestion();
+                    multipleChoiceQuestion.setQuestionId(rs.getInt(1));
+                    multipleChoiceQuestion.setQuestionTitle(rs.getString(2));
+                    multipleChoiceQuestion.setQuestionText(rs.getString(3));
+                    multipleChoiceQuestion.setQuestionType(QuestionType.valueOf(rs.getString(4)));
 
-                    if(basicQuestion.getQuestionType() == QuestionType.NUMERIC
-                            || basicQuestion.getQuestionType() == QuestionType.FREETEXT){
-                        surveyQuestion.setQuestionDetail(basicQuestion);
+                    if(multipleChoiceQuestion.getQuestionType() == QuestionType.NUMERIC
+                            || multipleChoiceQuestion.getQuestionType() == QuestionType.FREETEXT){
+                        surveyQuestion.setQuestionDetail(multipleChoiceQuestion);
                     }
                     else{
                         List<Option> optionList=new ArrayList<Option>();
-                        MultipleChoiceQuestion multipleChoiceQuestion=modelAbstractFactory.createMultipleChoiceQuestion();
-                        multipleChoiceQuestion.setQuestionId(basicQuestion.getQuestionId());
-                        multipleChoiceQuestion.setQuestionTitle(basicQuestion.getQuestionTitle());
-                        multipleChoiceQuestion.setQuestionText(basicQuestion.getQuestionText());
-                        multipleChoiceQuestion.setQuestionType(basicQuestion.getQuestionType());
 
                         statement_options = connection.prepareCall("{call " + properties.getProperty("procedure.fetch_multiplechoice") + "}");
                         statement_options.setInt(1, entry.getValue());

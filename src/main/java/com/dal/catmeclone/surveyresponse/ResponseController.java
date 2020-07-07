@@ -25,6 +25,7 @@ public class ResponseController {
     SurveyResponseAbstractFactory surveyResponseAbstractFactory=abstractFactory.createSurveyResponseAbstractFactory();
     ModelAbstractFactory modelAbstractFactory=abstractFactory.createModelAbstractFactory();
 
+
     @GetMapping(value = "/responsepage/{courseid}")
     public String viewResponsePage(Model model,@PathVariable(name = "courseid") Integer courseid) {
         ResponseService responseService=surveyResponseAbstractFactory.createResponseService();
