@@ -10,9 +10,11 @@ import com.dal.catmeclone.model.User;
 
 public class CourseInstructorAssignmentMock implements CourseInstructorAssignmentDao {
 
+    
 	@Override
 	public boolean enrollInstructorForCourse(User Instructor, Course course, Role role)
 			throws SQLException, UserDefinedSQLException {
+		
 		return true;
 	}
 
