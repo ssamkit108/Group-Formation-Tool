@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
 import com.dal.catmeclone.model.*;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.*;
@@ -15,6 +18,10 @@ import org.slf4j.LoggerFactory;
 
 public class UserDaoImpl implements UserDao {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	EncryptAbstractFactory encryptAbstractFactory=abstractFactory.createEncryptAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
+
 	private DataBaseConnection DBUtil;
 	private BCryptPasswordEncryption passwordencoder;
 	private CallableStatement statement;
@@ -25,8 +32,8 @@ public class UserDaoImpl implements UserDao {
 	public boolean createUser(User student) throws UserDefinedSQLException, DuplicateEntityException {
 		try {
 			// Establishing Database connection
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
-			passwordencoder = SystemConfig.instance().getBcryptPasswordEncrption();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+			passwordencoder = encryptAbstractFactory.createBCryptPasswordEncryption();
 
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
@@ -75,7 +82,7 @@ public class UserDaoImpl implements UserDao {
 		User user = null;
 		try {
 			// Establishing Database connection
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			CallableStatement statement;
@@ -112,7 +119,7 @@ public class UserDaoImpl implements UserDao {
 		List<User> listOfUser = new ArrayList<User>();
 		try {
 			// Establishing Database connection
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			CallableStatement statement = connection
@@ -150,7 +157,7 @@ public class UserDaoImpl implements UserDao {
 		List<User> c;
 		ResultSet rs;
 		c = new ArrayList<User>();
-		DBUtil = SystemConfig.instance().getDatabaseConnection();
+		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 		Properties properties = SystemConfig.instance().getProperties();
 		connection = DBUtil.connect();
 		try {

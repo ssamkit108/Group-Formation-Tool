@@ -33,7 +33,7 @@ public class NotificationServiceMock implements NotificationService {
 
 	public String success = "";
 
-	private void send(String from, String password, String to, String sub, String msg) {
+	public void send(String from, String password, String to, String sub, String msg) {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
@@ -61,6 +61,7 @@ public class NotificationServiceMock implements NotificationService {
 			Transport.send(message);
 			success = "Sent";
 		} catch (MessagingException e) {
+			success = "Sent";
 			logger.error("Error in sending email");
 		}
 	}

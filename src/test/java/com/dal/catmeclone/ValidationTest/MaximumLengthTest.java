@@ -1,23 +1,22 @@
 package com.dal.catmeclone.ValidationTest;
 
-import java.sql.SQLException;
-
 import org.junit.jupiter	.api.Test;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.Validation.MaximumLength;
+import com.dal.catmeclone.AbstractFactoryTest;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.Validation.ValidationPolicy;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
 
 
 public class MaximumLengthTest {
-	ValidationPolicy CheckMaximumLength =new MaximumLength();
+	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	ValidationPolicy CheckMaximumLength = abstractFactoryTest.createValidationAbstractFactory().createMaximumLength();
+
 	
 	@Test
 	public void TestMaximumLength() throws Exception {
-		User u=new User();
-		
+		User u = new User();		
 		u.setPassword("Hello");
 		CheckMaximumLength.setValue("6");
 		Assert.isTrue(CheckMaximumLength.isValid(u));

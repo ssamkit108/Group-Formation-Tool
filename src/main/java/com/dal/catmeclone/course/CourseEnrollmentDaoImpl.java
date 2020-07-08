@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -18,6 +21,8 @@ import com.dal.catmeclone.model.User;
 
 public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
 	final Logger logger = LoggerFactory.getLogger(CourseEnrollmentDaoImpl.class);
 	private DataBaseConnection DBUtil;
 	private Connection connection;
@@ -26,7 +31,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 	public boolean enrollUserForCourse(User student, Course course, Role role) throws UserDefinedSQLException {
 		CallableStatement statement = null;
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			logger.info("Enrolling User for the course");
@@ -53,7 +58,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 	public boolean hasEnrolledInCourse(String bannerId, int courseId) throws UserDefinedSQLException {
 		CallableStatement statement = null;
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			logger.info("checking if user is enrolled in course in database");
@@ -87,7 +92,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 		List<Course> listofCourses = new ArrayList<Course>();
 		CallableStatement statement = null;
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			logger.info("Fetching all enrolled course out of database for the user");
@@ -115,7 +120,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
 		Role role = null;
 		CallableStatement statement = null;
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 

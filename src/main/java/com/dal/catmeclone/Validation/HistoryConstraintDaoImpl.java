@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -14,7 +17,10 @@ import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
 
-public class HistoryConstraintDaoImpl implements HistoryContraintDao {
+public class HistoryConstraintDaoImpl implements HistoryConstraintDao {
+
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
 
 	final Logger LOGGER = LoggerFactory.getLogger(HistoryConstraintDaoImpl.class);
 	private DataBaseConnection DBUtil;
@@ -28,7 +34,7 @@ public class HistoryConstraintDaoImpl implements HistoryContraintDao {
 	public List<String> fetchPasswordList(User u, int limit) throws UserDefinedSQLException, SQLException {
 		try {
 			PasswordList = new ArrayList<String>();
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.get_pwd_history") + "}");

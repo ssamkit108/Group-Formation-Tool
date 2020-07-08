@@ -1,6 +1,8 @@
 package com.dal.catmeclone.UserProfile;
 
 import java.sql.SQLException;
+
+import com.dal.catmeclone.AbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,9 @@ import com.dal.catmeclone.model.User;
 
 @Controller
 public class SignupController {
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	UserProfileAbstractFactory userProfileAbstractFactory=abstractFactory.createUserProfileAbstractFactory();
+
 	private UserService userservice;
 	final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
@@ -32,7 +37,7 @@ public class SignupController {
 			@RequestParam(name = "passwordConfirmation") String passwordConfirm, RedirectAttributes redirectAttributes)
 			throws SQLException, ValidationException, UserDefinedSQLException {
 		boolean success = false;
-		userservice = SystemConfig.instance().getUserService();
+		userservice = userProfileAbstractFactory.createUserService();
 
 		try {
 			ModelAndView m;

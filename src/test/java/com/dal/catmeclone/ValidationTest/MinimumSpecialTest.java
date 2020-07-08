@@ -1,21 +1,22 @@
 package com.dal.catmeclone.ValidationTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.Validation.MinimumSpecial;
+import com.dal.catmeclone.AbstractFactoryTest;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.Validation.ValidationPolicy;
 import com.dal.catmeclone.model.User;
 
 class MinimumSpecialTest {
 
-	ValidationPolicy checkspecial=new MinimumSpecial();
+	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	ValidationPolicy checkspecial = abstractFactoryTest.createValidationAbstractFactory().createMinimumSpecial();
+
+
 	@Test
 	void TestMinimumSpecial() throws Exception {
-
-		User u=new User();
+		User u = new User();
 		u.setPassword("Samkit@108");
 		checkspecial.setValue("2");
 		Assert.isTrue(!checkspecial.isValid(u));

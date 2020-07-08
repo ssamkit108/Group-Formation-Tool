@@ -1,6 +1,10 @@
 package com.dal.catmeclone.UserProfile;
 
 import java.sql.SQLException;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
+import com.dal.catmeclone.Validation.ValidationAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -11,6 +15,10 @@ import java.util.UUID;
 
 public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	UserProfileAbstractFactory userProfileAbstractFactory=abstractFactory.createUserProfileAbstractFactory();
+	ValidationAbstractFactory validationAbstractFactory=abstractFactory.createValidationAbstractFactory();
+
 	final Logger LOGGER = LoggerFactory.getLogger(ForgotPasswordServiceImpl.class);
 
 	ForgotPasswordDao forgotpasswordDb;
@@ -18,7 +26,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
 	public void Resetlink(String username) throws Exception {
 		try {
-			forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
+			forgotpasswordDb = userProfileAbstractFactory.createForgotPasswordDao();
 			if (forgotpasswordDb.checkexist(username)) {
 				LOGGER.info("Banner Id:" + username + " validated in successfully.");
 				String token = GenerateToken();
@@ -41,7 +49,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 	@Override
 	public String validatetoken(String confirmationToken) throws Exception {
 		try {
-			forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
+			forgotpasswordDb = userProfileAbstractFactory.createForgotPasswordDao();
 			String bannerid = forgotpasswordDb.checktokenexist(confirmationToken);
 			if (!bannerid.isEmpty() && bannerid != null) {
 				return bannerid;
@@ -59,8 +67,8 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 			User u = new User();
 			u.setBannerId(username);
 			u.setPassword(password);
-			validatepassword = SystemConfig.instance().getValidatePassword();
-			forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
+			validatepassword = validationAbstractFactory.createValidatePassword();
+			forgotpasswordDb = userProfileAbstractFactory.createForgotPasswordDao();
 			validatepassword.validatepassword(u);
 			forgotpasswordDb.SetNewPassword(username, password);
 		} catch (ValidationException e) {

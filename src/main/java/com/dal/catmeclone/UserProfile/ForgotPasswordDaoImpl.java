@@ -5,10 +5,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
+import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
+import com.dal.catmeclone.notification.NotificationAbstractFactory;
 import com.dal.catmeclone.notification.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +21,11 @@ import org.slf4j.LoggerFactory;
 public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 
 	private DataBaseConnection DBUtil;
-
-	final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
+	EncryptAbstractFactory encryptAbstractFactory=abstractFactory.createEncryptAbstractFactory();
+	NotificationAbstractFactory notificationAbstractFactory=abstractFactory.createNotificationAbstractFactory();
+	final Logger LOGGER = LoggerFactory.getLogger(ForgotPasswordDaoImpl.class);
 
 	private CallableStatement statement;
 	private Connection connection;
@@ -29,7 +37,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 
 	public boolean checkexist(String bannerid) throws Exception {
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.finduserBybannerId") + "}");
@@ -57,8 +65,8 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 	@Override
 	public void UpdateToken(String BannerId, String token) throws Exception {
 		try {
-			notificationService = SystemConfig.instance().getNotificationService();
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			notificationService = notificationAbstractFactory.createNotificationService();
+			DBUtil =dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.Updatetoken") + " }");
@@ -93,8 +101,8 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 	@Override
 	public void SetNewPassword(String BannerId, String password) throws Exception {
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
-			passwordencoder = SystemConfig.instance().getBcryptPasswordEncrption();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+			passwordencoder = encryptAbstractFactory.createBCryptPasswordEncryption();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.UpdatePassword") + "}");
@@ -126,7 +134,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 	// This method will check that token is already in the database or not
 	public String checktokenexist(String token) throws Exception {
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call " + properties.getProperty("procedure.findByResetToken") + "}");

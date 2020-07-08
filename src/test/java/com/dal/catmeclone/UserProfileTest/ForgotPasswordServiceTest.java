@@ -1,21 +1,26 @@
 package com.dal.catmeclone.UserProfileTest;
 
-import java.util.UUID;	
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
+import com.dal.catmeclone.AbstractFactoryTest;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.notificationTest.NotificationServiceMock;
 
 @SpringBootTest
 @SuppressWarnings("deprecation")
 class ForgotPasswordServiceTest {
+	
+	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+
 
 	@Test
 	void validatetoken() {
-		User u=new User();
+		User u = new User();
 		u.setBannerId("B00852212");
 		u.setToken("$10$P2FBvrlVJaS1/aEHzfKmtuojZollAx/F1g0DnvO7QvNv7/AUyihDu");
 		
@@ -25,16 +30,16 @@ class ForgotPasswordServiceTest {
 	@Test
 	void ResetlinkTest() { 
     String token= UUID.randomUUID().toString();
-    NotificationServiceMock notificationservice= new NotificationServiceMock();
+    NotificationServiceMock notificationservice = abstractFactoryTest.createNotificationAbstractFactory().createNotificationService();
 	notificationservice.sendNotificationForPassword("B00852292",token,"ssamkit108@gmail.com");
 	Assert.isTrue(notificationservice.success.equals("Sent"));
 	}
 				
 	@Test
 	void ValidateUserTest() {	
-		UserValidateMock check=new UserValidateMock();
+		UserValidateMock check=abstractFactoryTest.createUserProfileAbstractFactory().createUserValidateMock();
+		User u = new User();
 
-		User u=new User();
 		u.setBannerId("");
 		Assert.isTrue(!check.validate(u));
 		u=new User();
