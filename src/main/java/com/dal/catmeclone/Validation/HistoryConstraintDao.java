@@ -5,6 +5,6 @@ import java.util.List;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
 
-public interface HistoryContraintDao {
+public interface HistoryConstraintDao {
 	public List<String> fetchPasswordList(User u, int limit) throws UserDefinedSQLException, SQLException;
 }

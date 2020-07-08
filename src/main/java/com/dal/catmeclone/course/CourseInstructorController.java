@@ -3,6 +3,9 @@ package com.dal.catmeclone.course;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.UserProfile.UserProfileAbstractFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +23,16 @@ import com.dal.catmeclone.model.User;
 @Controller
 public class CourseInstructorController {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	CourseAbstractFactory courseAbstractFactory= abstractFactory.createCourseAbstractFactory();
+	UserProfileAbstractFactory userProfileAbstractFactory=abstractFactory.createUserProfileAbstractFactory();
 	CourseEnrollmentService courseenrollmentservice;
 	UserService userservice;
 
 	@PostMapping(value = "/uploadstudent", consumes = { "multipart/form-data" })
 	public String enrollStudents(@RequestParam("file") MultipartFile file, RedirectAttributes attributes,
 			Model themodel, HttpSession session) {
-		courseenrollmentservice = SystemConfig.instance().getCourseEnrollmentService();
+		courseenrollmentservice = courseAbstractFactory.createCourseEnrollmentService();
 		Course course = (Course) session.getAttribute("course");
 
 		if (file.isEmpty()) {
@@ -65,7 +71,7 @@ public class CourseInstructorController {
 	@PostMapping(value = "/enrollTA")
 	public String enrollTA(@RequestParam String bannerid, RedirectAttributes attributes, Model themodel,
 			HttpSession session) {
-		courseenrollmentservice = SystemConfig.instance().getCourseEnrollmentService();
+		courseenrollmentservice = courseAbstractFactory.createCourseEnrollmentService();
 		Course course = (Course) session.getAttribute("course");
 
 		if (courseenrollmentservice.enrollTAForCourse(new User(bannerid), course)) {
@@ -82,7 +88,7 @@ public class CourseInstructorController {
 	@GetMapping(value = "/findTA")
 	public String enrollStudents(@RequestParam(name = "searchTA") String bannerId, Model themodel,
 			HttpSession session) {
-		userservice = SystemConfig.instance().getUserService();
+		userservice =userProfileAbstractFactory.createUserService();
 		List<User> listOfUser = new ArrayList<User>();
 		try {
 			listOfUser = userservice.findAllMatchingUser(bannerId);

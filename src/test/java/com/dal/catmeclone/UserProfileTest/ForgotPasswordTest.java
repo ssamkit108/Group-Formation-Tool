@@ -5,16 +5,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
+import com.dal.catmeclone.AbstractFactoryTest;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.model.User;
 
 @SpringBootTest
 @SuppressWarnings("deprecation")
 class ForgotPasswordTest {
 	
-	UserDaoMock dbservice=new UserDaoMock();
+	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+
+	
+	UserDaoMock dbservice= abstractFactoryTest.createUserProfileAbstractFactory().createUserDaoMock();
 	@Test
 	void checkexistTest() {
-		User u=new User();
+		User u = new User();		
 		u.setBannerId("B00642283");
 		Assert.isTrue(dbservice.findUserByBannerID(u.getBannerId()));
 	}
@@ -30,7 +35,7 @@ class ForgotPasswordTest {
 	
 	@Test
 	void SetNewPassword() {
-		User u=new User();
+		User u = new User();		
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
 		u.setFirstName("Bob");
@@ -46,7 +51,7 @@ class ForgotPasswordTest {
 	
 	@Test
 	void checktokenExist() {
-		User u=new User();
+		User u = new User();		
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
 		u.setFirstName("Bob");

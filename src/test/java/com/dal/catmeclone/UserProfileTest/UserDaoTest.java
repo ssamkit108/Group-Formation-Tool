@@ -9,16 +9,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
+import com.dal.catmeclone.AbstractFactoryTest;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.model.*;
 
 @SpringBootTest
 public class UserDaoTest {
+	
+	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	UserDaoMock mock = abstractFactoryTest.createUserProfileAbstractFactory().createUserDaoMock();
+
 
 	@SuppressWarnings("deprecation")
 	@Test
 	public void CreateUserTest() {
-		User u = new User();
-		UserDaoMock mock = new UserDaoMock();
+		User u = new User();		
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
 		u.setFirstName("Bob");
@@ -29,8 +34,7 @@ public class UserDaoTest {
 
 	@Test
 	public void GetAllUsersTest() {
-		User u = new User();
-		UserDaoMock mock = new UserDaoMock();
+		User u = new User();		
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
 		u.setFirstName("Bob");

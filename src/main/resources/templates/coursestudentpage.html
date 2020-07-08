@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet"
@@ -10,22 +10,35 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <title>Course-Student</title>
 </head>
 <body>
-<div th:replace="header :: header"></div>
-<div class="bodycontainer">
+	<div th:replace="header :: header"></div>
+	<div class="bodycontainer">
 
-	<h1 style="margin-top:-10px;" ><span th:utext="${session.course.courseID}"></span> - <span th:utext="${session.course.courseName}"></span></h1> 
+		<h1 style="margin-top: -10px;">
+			<span th:utext="${session.course.courseID}"></span> - <span
+				th:utext="${session.course.courseName}"></span>
+		</h1>
 		<hr>
-		<h5  class="usernameheader" style="float:left; color:black">Hello <span sec:authentication="name"></span> (<span th:utext="${session.role}"></span>)</h5>
-	
-		
-		<div class="coursedisplay" >
-		
+		<h5 class="usernameheader" style="float: left; color: black">
+			Hello <span sec:authentication="name"></span> (<span
+				th:utext="${session.role}"></span>)
+		</h5>
+
+
+		<div class="coursedisplay">
+
 			<h2 th:utext="${session.course.courseID} "></h2>
-		
+
 			<h2 th:utext="${session.course.courseName}"></h2>
-		
+			<div>
+				<a th:href="@{'/responsepage/' + ${session.course.courseID}}">
+					<button type="submit" class="btn btn-primary">Go To Course
+						Survey</button>
+				</a>
+			</div>
 		</div>
-	
-</div>
+
+
+
+	</div>
 </body>
 </html>

@@ -1,6 +1,8 @@
 package com.dal.catmeclone.UserProfile;
 
 import java.sql.SQLException;
+
+import com.dal.catmeclone.AbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import com.dal.catmeclone.exceptionhandler.ValidationException;
 
 @Controller
 public class ForgotPasswordController {
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	UserProfileAbstractFactory userProfileAbstractFactory=abstractFactory.createUserProfileAbstractFactory();
 	ForgotPasswordService forgotpasswordservice;
 	final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
 
@@ -31,7 +35,7 @@ public class ForgotPasswordController {
 	public ModelAndView processForgotpassword(@RequestParam(name = "username") String bannerID)
 			throws SQLException, UserDefinedSQLException {
 		try {
-			forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
+			forgotpasswordservice = userProfileAbstractFactory.createForgotPasswordService();
 			forgotpasswordservice.Resetlink(bannerID);
 			ModelAndView m;
 			m = new ModelAndView("forgotpassword");
@@ -48,7 +52,7 @@ public class ForgotPasswordController {
 	@RequestMapping(value = "/reset", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token") String confirmationToken) {
 		try {
-			forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
+			forgotpasswordservice = userProfileAbstractFactory.createForgotPasswordService();
 			String bannerId = forgotpasswordservice.validatetoken(confirmationToken);
 			ModelAndView m;
 			if (!bannerId.isEmpty() && !bannerId.equals(null)) {
@@ -74,7 +78,7 @@ public class ForgotPasswordController {
 			@RequestParam("bannerid") String BannerID, @RequestParam("confirmPassword") String confirmPassword,
 			RedirectAttributes redirectAttributes) throws Exception {
 		try {
-			forgotpasswordservice = SystemConfig.instance().getForgotPasswordService();
+			forgotpasswordservice = userProfileAbstractFactory.createForgotPasswordService();
 			ModelAndView m;
 
 			if (password.equals(confirmPassword)) {

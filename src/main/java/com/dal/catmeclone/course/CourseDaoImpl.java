@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -17,6 +20,9 @@ import com.dal.catmeclone.model.User;
 
 public class CourseDaoImpl implements CoursesDao {
 
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
+
 	final Logger logger = LoggerFactory.getLogger(CourseDaoImpl.class);
 	private DataBaseConnection DBUtil;
 	private Connection connection;
@@ -26,7 +32,7 @@ public class CourseDaoImpl implements CoursesDao {
 		Course course = null;
 		CallableStatement statement = null;
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			logger.info("querying database to get the course");
@@ -56,7 +62,7 @@ public class CourseDaoImpl implements CoursesDao {
 		ArrayList<Course> courseList = new ArrayList<Course>();
 		CallableStatement statement = null;
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			statement = connection.prepareCall("{call" + properties.getProperty("procedure.getCoursesForUser") + "}");
@@ -88,7 +94,7 @@ public class CourseDaoImpl implements CoursesDao {
 		ArrayList<Course> courseList = new ArrayList<Course>();
 		CallableStatement statement = null;
 		try {
-			DBUtil = SystemConfig.instance().getDatabaseConnection();
+			DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 			Properties properties = SystemConfig.instance().getProperties();
 			connection = DBUtil.connect();
 			logger.info("querying database to get all the course");

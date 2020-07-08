@@ -2,6 +2,10 @@ package com.dal.catmeclone.Validation;
 
 import java.sql.SQLException;
 import java.util.List;
+
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
+import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.dal.catmeclone.SystemConfig;
@@ -12,7 +16,11 @@ import com.dal.catmeclone.model.User;
 public class HistoryConstraint implements ValidationPolicy {
 
 	final Logger LOGGER = LoggerFactory.getLogger(HistoryConstraint.class);
-	HistoryContraintDao historyConstraintDao;
+	AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+	DBUtilityAbstractFactory dbUtilityAbstractFactory=abstractFactory.createDBUtilityAbstractFactory();
+	ValidationAbstractFactory validationAbstractFactory=abstractFactory.createValidationAbstractFactory();
+	EncryptAbstractFactory encryptAbstractFactory=abstractFactory.createEncryptAbstractFactory();
+	HistoryConstraintDao  historyConstraintDao;
 	private BCryptPasswordEncryption passwordencoder;
 	private String ruleValue;
 	private List<String> passwordlist;
@@ -25,8 +33,8 @@ public class HistoryConstraint implements ValidationPolicy {
 		try {
 			boolean result = false;
 			int limit = Integer.parseInt(ruleValue);
-			historyConstraintDao = SystemConfig.instance().getHistoryConstraintDao();
-			passwordencoder = SystemConfig.instance().getBcryptPasswordEncrption();
+			historyConstraintDao = validationAbstractFactory.createHistoryConstraintDao();
+			passwordencoder = encryptAbstractFactory.createBCryptPasswordEncryption();
 			passwordlist = historyConstraintDao.fetchPasswordList(user, limit);
 			for (String password : passwordlist) {
 				result = passwordencoder.matches(user.getPassword(), password);
