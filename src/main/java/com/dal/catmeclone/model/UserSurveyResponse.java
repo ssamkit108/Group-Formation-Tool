@@ -1,6 +1,6 @@
 package com.dal.catmeclone.model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,7 +9,7 @@ public class UserSurveyResponse {
 
     private User user;
     private Survey survey;
-    private Set<SurveyQuestionResponse> surveyResponse;
+    public List<SurveyQuestionResponse> surveyResponse;
     private Date responseDate;
     private Boolean submitted;
 
@@ -18,7 +18,7 @@ public class UserSurveyResponse {
         super();
     }
 
-    public UserSurveyResponse(User user, Survey survey, Set<SurveyQuestionResponse> surveyResponse, Date responseDate,
+    public UserSurveyResponse(User user, Survey survey, List<SurveyQuestionResponse> surveyResponse, Date responseDate,
                               Boolean submitted) {
         super();
         this.user = user;
@@ -49,12 +49,12 @@ public class UserSurveyResponse {
     }
 
 
-    public Set<SurveyQuestionResponse> getSurveyResponse() {
+    public List<SurveyQuestionResponse> getSurveyResponse() {
         return surveyResponse;
     }
 
 
-    public void setSurveyResponse(Set<SurveyQuestionResponse> surveyResponse) {
+    public void setSurveyResponse(List<SurveyQuestionResponse> surveyResponse) {
         this.surveyResponse = surveyResponse;
     }
 

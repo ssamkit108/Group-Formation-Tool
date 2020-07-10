@@ -22,8 +22,10 @@
 			Hello <span sec:authentication="name"></span> (<span
 				th:utext="${session.role}"></span>)
 		</h5>
-
-
+		<br><br>
+		<div th:if="${errormessage ne null}" class="alert alert-danger alert-dismissible">
+			<strong>Sorry! </strong> <span th:text='${errormessage}'></span>
+		</div>
 		<div class="coursedisplay">
 
 			<h2 th:utext="${session.course.courseID} "></h2>
