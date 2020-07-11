@@ -18,12 +18,6 @@ public class BasicQuestion {
 		super();
 	}
 
-	public BasicQuestion(String questionTitle, String questionText) {
-		super();
-		this.questionTitle = questionTitle;
-		this.questionText = questionText;
-	}
-	
 	
 
 	/**
@@ -37,7 +31,15 @@ public class BasicQuestion {
 		this.questionId = questionId;
 		this.questionTitle = questionTitle;
 		this.questionText = questionText;
-		this.questionType = QuestionType.valueOf(questionType);
+		this.questionType = Enum.valueOf(QuestionType.class, questionType);
+	}
+
+
+
+	public BasicQuestion(String questionTitle, String questionText) {
+		super();
+		this.questionTitle = questionTitle;
+		this.questionText = questionText;
 	}
 
 	/**
@@ -47,7 +49,7 @@ public class BasicQuestion {
 	 * @param creationDate
 	 * @param createdByInstructor
 	 */
-	public BasicQuestion(String questionTitle, String questionText, QuestionType questionType, Date creationDate,
+	public BasicQuestion(String questionTitle, String questionText, QuestionType questionType, Date creationDate, 
 			User createdByInstructor) {
 		super();
 		this.questionTitle = questionTitle;
@@ -56,6 +58,7 @@ public class BasicQuestion {
 		this.creationDate = creationDate;
 		this.createdByInstructor = createdByInstructor;
 	}
+
 
 	/**
 	 * @param questionId
@@ -89,6 +92,7 @@ public class BasicQuestion {
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
 	}
+
 
 	/**
 	 * @return the questionTitle
@@ -160,7 +164,16 @@ public class BasicQuestion {
 		this.createdByInstructor = createdByInstructor;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + questionId;
+		return result;
+	}
 
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -171,10 +184,25 @@ public class BasicQuestion {
 			return false;
 		BasicQuestion other = (BasicQuestion) obj;
 		if (questionId != other.questionId)
-		{
 			return false;
-		}
 		return true;
 	}
+
+
+
+	public boolean isQuestionTitleValid() {
+		if (null != this.questionTitle && !this.questionTitle.trim().isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+
+	
+
+	
+	
 
 }

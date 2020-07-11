@@ -96,8 +96,22 @@ public class CourseAdminSurveyController {
 			questions.add(new SurveyQuestion(newQuestionForSurvey));
 			survey.setSurveyQuestions(questions);
 		} else {
-			LOGGER.info("Adding Question: " +questionId+ " to Survey "+survey.getSurveyId());
-			survey.getSurveyQuestions().add(new SurveyQuestion(newQuestionForSurvey));
+			boolean addFlag=true;
+			for(SurveyQuestion surveyQuestions: survey.getSurveyQuestions() )
+			{
+				if(surveyQuestions.getQuestionDetail().getQuestionId()==questionId)
+				{
+					LOGGER.info("Cann't add Question: " +questionId+ " to Survey "+survey.getSurveyId());
+					model.addAttribute("addmessage", "Can not add Question. Question is already added in survey");
+					addFlag=false;
+					break;
+				}
+			}
+			if(addFlag)
+			{
+				LOGGER.info("Adding Question: " +questionId+ " to Survey "+survey.getSurveyId());
+				survey.getSurveyQuestions().add(new SurveyQuestion(newQuestionForSurvey));
+			}
 		}
 		if (AJAX_HEADER_VALUE.equals(request.getHeader(AJAX_HEADER_NAME))) {
 			model.addAttribute("survey", survey);

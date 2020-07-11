@@ -54,6 +54,7 @@ public class CourseAdminSurveyServiceImpl implements CourseAdminSurveyService {
 			LOGGER.info("Segregating the survey questions which has to be update and which needs to be removed");
 			// Identifying and segregating the survey questions which has to be update and which needs to be removed.
 			listOfExistingSurveyQuestion.removeAll(survey.getSurveyQuestions());
+			System.out.println(listOfQuestionsToBeRemoved.toString());
 			LOGGER.info("Calling DAO to update survey details into database");
 			courseAdminSurveyDao.updateSurveyDetails(survey, listOfQuestionsToBeRemoved);
 		}

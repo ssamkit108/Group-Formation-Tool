@@ -103,6 +103,25 @@ public class SurveyQuestion {
 	}
 
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		SurveyQuestion other = (SurveyQuestion) obj;
+		if (surveyQuestionId != other.surveyQuestionId) {
+			return false;
+		}
+		return true;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "SurveyQuestion [surveyQuestionId=" + surveyQuestionId + ", questionDetail=" + questionDetail

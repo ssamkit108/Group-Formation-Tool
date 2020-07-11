@@ -11,6 +11,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-moz-font-feature-settings: "liga" on;
+	color: black;
 }
 
 a {
@@ -19,6 +20,10 @@ a {
 }
 p {
 	padding-top: 2px;
+}
+
+form{
+	display: content;
 }
 
 .boxes {
@@ -41,8 +46,10 @@ p {
     margin-left: 10px;
     margin-top: 30px;
     margin-bottom: auto;
-	background-color: #a0e9ed;
+    border: double;
+	
 }
+
 
 .column2 {
     float: left;
@@ -51,7 +58,16 @@ p {
     margin-left: 10px;
     margin-top: 30px;
     margin-bottom: auto;
-	background-color: #a0e9ed;
+    border: double;
+
+}
+
+.divscroll{
+	display: -webkit-inline-flex;
+	display: flex;
+	flex-wrap: wrap;
+	overflow: auto;
+	height: 589px;
 }
 
 .headerul{
@@ -59,7 +75,7 @@ p {
   margin: 0;
   padding: 2;
   overflow: hidden;
-  background-color: #a1edcc;
+  
 }
 
 .headerli{
@@ -95,7 +111,7 @@ p {
 }
 
 .card {
-	background-color: blanchedalmond;
+	background-color: #cafbfb;
 	border-radius: 0.25rem;
 	box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.50);
 	display: -webkit-box;
@@ -126,7 +142,7 @@ p {
 .card_text {
 	-webkit-box-flex: 1;
 	flex: 1 1 auto;
-	font-size: 1.25rem;
+	font-size: 1.75rem;
 	line-height: 1.5;
 	margin-bottom: 0.25rem;
 	color: black;
@@ -168,9 +184,18 @@ p {
 	
 }
 
+.coursedisplay
+{
+	text-align: center;
+    margin-top: 10%;
+    text-shadow: blanchedalmond;
+    color: darkblue;
+}
+
 .headercontainer{ 
-	background-color: darkcyan;
-    border-color: black;
+	background-color: #337ab7;
+    border-color: #2e6da4;
+    margin-top:1px;
 }
 
 .headerlink{ 
@@ -184,5 +209,88 @@ p {
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 80px;
+    margin-top: 70px;
+    
+}
+
+
+.logoutbutton{
+	background-color: #337ab7;
+    color: white;
+}
+
+.usernameheader
+{
+	float: left;
+    color: black;
+   
+    margin-bottom: -10px;
+}
+
+.normal
+{
+	font-weight: normal;
+}
+
+.italic
+{
+	font-weight: normal;
+	font-style: italic;
+	font-size: 1.25rem;
+}
+
+.borderless td, .borderless th {
+    border: none;
+    border-top: none;
+}
+.thead-dark th{
+	background-color: #337ab7;
+	color: white;
+	align-content: center;
+	align-items: center;
+}
+
+#surveyform
+{
+	display: contents;
+}
+
+hr{
+	margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.container-fluid{
+	padding-right: 0px;
+    padding-left: 0px;
+}
+
+label{
+	margin-top: auto;
+}
+
+.publishcard {
+	background-color: #ffffff;
+	border-color:#2e6da4;
+	border-radius: 0.25rem;
+	box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.50);
+	display: -webkit-box;
+	display: block;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	flex-direction: column;
+	overflow: hidden;
+	width: -webkit-fill-available;
+	padding: 5px;
+	margin-bottom: 2px
+}
+
+.publishcard .card_title
+{
+	color: #000000;
+}
+
+.publishcard .card_text
+{
+	color: #400040;
 }

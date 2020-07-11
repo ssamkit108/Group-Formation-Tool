@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -306,6 +307,10 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 			statement.execute();
 
 			LOGGER.info("Question with Id :" + questionId + "Deleted successfully from the database");
+		} catch (SQLIntegrityConstraintViolationException e) {
+			// Handling Exception and Throwing User Defined Customized Exception
+			LOGGER.warning("Error occured" + e.getLocalizedMessage());
+			throw new UserDefinedSQLException("Question is already used in any survey. Remove the Question from surevy before deleting it");
 		} catch (SQLException e) {
 			// Handling Exception and Throwing User Defined Customized Exception
 			LOGGER.warning("Error occured" + e.getLocalizedMessage());
