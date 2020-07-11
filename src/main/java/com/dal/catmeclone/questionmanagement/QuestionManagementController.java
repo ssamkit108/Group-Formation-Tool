@@ -42,7 +42,7 @@ public class QuestionManagementController {
 	 * @return View
 	 */
 	@GetMapping(value = "")
-	public String viewQuestionTitlePage(Model model) {
+	public String viewQuestionTitlePage(Model model, RedirectAttributes attributes) {
 
 		// Getting QuestionManagementService Instance
 		QuestionManagementService questionManagementService = questionManagementAbstractFactory.createQuestionManagementService();
@@ -55,8 +55,7 @@ public class QuestionManagementController {
 			LOGGER.info("Fetching the list of questions for Displaying on View");
 			model.addAttribute("questionList", questionManagementService.getAllQuestionByUser(new User(username)));
 		} catch (UserDefinedSQLException e) {
-			// Handling Error occurred by throwing to Error view with user defined error
-			// message.
+			// Handling Error occurred by throwing to Error view with user defined error message.
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
@@ -128,7 +127,7 @@ public class QuestionManagementController {
 	 * @return View
 	 */
 	@PostMapping(value = "/delete")
-	public String removeQuestion(@RequestParam(name = "question") int questionId, Model m) {
+	public String removeQuestion(@RequestParam(name = "question") int questionId, Model m,RedirectAttributes attributes) {
 
 		// Getting QuestionManagementService Instance
 		QuestionManagementService questionManagementService = questionManagementAbstractFactory.createQuestionManagementService();
@@ -136,11 +135,11 @@ public class QuestionManagementController {
 		try {
 			LOGGER.info("Making a call to delete Question");
 			questionManagementService.deleteQuestion(questionId);
+			attributes.addFlashAttribute("message", "Question Deleted Successfully");
 		} catch (UserDefinedSQLException e) {
-			// Handling Error occurred by throwing to Error view with user defined error
-			// message.
-			m.addAttribute("errormessage", e.getLocalizedMessage());
-			return "error";
+			// Handling Error occurred by throwing to Error view with user defined error message.
+			attributes.addFlashAttribute("errormessage", e.getMessage());
+			return "redirect:/questionmanager";
 		}
 		return "redirect:/questionmanager";
 	}
@@ -184,8 +183,7 @@ public class QuestionManagementController {
 
 		try {
 			/*
-			 * Checking if any question already exists in database by given question title,
-			 * Question Text and by the logged in user
+			 * Checking if any question already exists in database by given question title, Question Text and by the logged in user
 			 */
 			boolean ifQuestionExist = questionManagementService.ifQuestionTitleandTextExists(basicQuestion);
 
