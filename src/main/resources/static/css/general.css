@@ -41,8 +41,7 @@ p {
     margin-left: 10px;
     margin-top: 30px;
     margin-bottom: auto;
-    border: double;
-	
+	background-color: #a0e9ed;
 }
 
 .column2 {
@@ -52,8 +51,7 @@ p {
     margin-left: 10px;
     margin-top: 30px;
     margin-bottom: auto;
-    border: double;
-
+	background-color: #a0e9ed;
 }
 
 .headerul{
@@ -61,7 +59,7 @@ p {
   margin: 0;
   padding: 2;
   overflow: hidden;
-  
+  background-color: #a1edcc;
 }
 
 .headerli{
@@ -170,18 +168,9 @@ p {
 	
 }
 
-.coursedisplay
-{
-	text-align: center;
-    margin-top: 10%;
-    text-shadow: blanchedalmond;
-    color: darkblue;
-}
-
 .headercontainer{ 
-	background-color: #337ab7;
-    border-color: #2e6da4;
-    margin-top:1px;
+	background-color: darkcyan;
+    border-color: black;
 }
 
 .headerlink{ 
@@ -195,20 +184,5 @@ p {
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 70px;
-    
-}
-
-
-.logoutbutton{
-	background-color: #337ab7;
-    color: white;
-}
-
-.usernameheader
-{
-	float: left;
-    color: black;
-    margin-top: -10px;
-    margin-bottom: -10px;
+    margin-top: 80px;
 }

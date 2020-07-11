@@ -23,6 +23,22 @@ public class BasicQuestion {
 		this.questionTitle = questionTitle;
 		this.questionText = questionText;
 	}
+	
+	
+
+	/**
+	 * @param questionId
+	 * @param questionTitle
+	 * @param questionText
+	 * @param questionType
+	 */
+	public BasicQuestion(int questionId, String questionTitle, String questionText, String questionType) {
+		super();
+		this.questionId = questionId;
+		this.questionTitle = questionTitle;
+		this.questionText = questionText;
+		this.questionType = QuestionType.valueOf(questionType);
+	}
 
 	/**
 	 * @param questionTitle
@@ -144,18 +160,6 @@ public class BasicQuestion {
 		this.createdByInstructor = createdByInstructor;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((createdByInstructor == null) ? 0 : createdByInstructor.hashCode());
-		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
-		result = prime * result + questionId;
-		result = prime * result + ((questionText == null) ? 0 : questionText.hashCode());
-		result = prime * result + ((questionTitle == null) ? 0 : questionTitle.hashCode());
-		result = prime * result + ((questionType == null) ? 0 : questionType.hashCode());
-		return result;
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -166,30 +170,10 @@ public class BasicQuestion {
 		if (getClass() != obj.getClass())
 			return false;
 		BasicQuestion other = (BasicQuestion) obj;
-		if (createdByInstructor == null) {
-			if (other.createdByInstructor != null)
-				return false;
-		} else if (!createdByInstructor.equals(other.createdByInstructor))
-			return false;
-		if (creationDate == null) {
-			if (other.creationDate != null)
-				return false;
-		} else if (!creationDate.equals(other.creationDate))
-			return false;
 		if (questionId != other.questionId)
+		{
 			return false;
-		if (questionText == null) {
-			if (other.questionText != null)
-				return false;
-		} else if (!questionText.equals(other.questionText))
-			return false;
-		if (questionTitle == null) {
-			if (other.questionTitle != null)
-				return false;
-		} else if (!questionTitle.equals(other.questionTitle))
-			return false;
-		if (questionType != other.questionType)
-			return false;
+		}
 		return true;
 	}
 
