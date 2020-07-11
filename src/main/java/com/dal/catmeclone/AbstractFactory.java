@@ -10,6 +10,7 @@ import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
 import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.notification.NotificationAbstractFactory;
 import com.dal.catmeclone.questionmanagement.QuestionManagementAbstractFactory;
+import com.dal.catmeclone.surveycreation.SurveyCreationAbstractFactory;
 import com.dal.catmeclone.surveyresponse.SurveyResponseAbstractFactory;
 
 public interface AbstractFactory {
@@ -24,4 +25,5 @@ public interface AbstractFactory {
     public UserProfileAbstractFactory createUserProfileAbstractFactory();
     public ValidationAbstractFactory createValidationAbstractFactory();
     public SurveyResponseAbstractFactory createSurveyResponseAbstractFactory();
+    public SurveyCreationAbstractFactory createSurveyCreationAbstractFactory();
 }

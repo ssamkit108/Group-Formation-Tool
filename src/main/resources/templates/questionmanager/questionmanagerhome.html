@@ -7,6 +7,12 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/general.css">
 <script type="text/javascript" src="/js/courseci-message.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <title>QuestionManager</title>
 <style>
 h1 {
@@ -21,7 +27,7 @@ h1 {
 	<br>
 	<section>
 		<div class="container">
-			<div class="row" style="margin-top: 40px">
+			<div class="row" style="margin-top: 20px">
 				<h1>Question Manager Page</h1>
 			</div>
 			<hr>
@@ -30,11 +36,30 @@ h1 {
 				<section>
 					<div class="container" style="margin-bottom: 25px">
 
-						<h4>
-							<span th:text="${message}" th:if="${message ne null}"
-								style="color: darkblue;"></span>
-						</h4>
-
+						
+						<div th:if="${errormessage ne null}"
+							class="row alert alert-danger alert-dismissible">
+			
+							<div class="col-lg-8">
+								<strong>Error! </strong> <span th:text='${errormessage}'></span>
+							</div>
+							<div style="float: right;">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close"
+									style="float: right;">&times;</a>
+							</div>
+						</div>
+						<div th:if="${message ne null}"
+							class="row alert alert-success alert-dismissible">
+			
+							<div class="col-lg-8">
+								<strong>Success! </strong> <span th:text='${message}'></span>
+							</div>
+							<div style="float: right;">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close"
+									style="float: right;">&times;</a>
+							</div>
+						</div>
+						
 
 						<div class="row">
 
