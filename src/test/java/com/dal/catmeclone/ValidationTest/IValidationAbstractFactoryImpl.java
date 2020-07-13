@@ -13,7 +13,7 @@ import com.dal.catmeclone.Validation.ValidationPolicy;
 import com.dal.catmeclone.Validation.ValidationRulesDao;
 import com.dal.catmeclone.Validation.ValidationRulesDaoImpl;
 
-public class ValidationAbstractFactoryImpl implements ValidationAbstractFactoryTest {
+public class IValidationAbstractFactoryImpl implements IValidationAbstractFactory {
 
 	@Override
 	public HistoryConstraintMock createHistoryConstraintMock() {

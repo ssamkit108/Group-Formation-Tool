@@ -5,7 +5,7 @@ import com.dal.catmeclone.Validation.ValidatePassword;
 import com.dal.catmeclone.Validation.ValidationPolicy;
 import com.dal.catmeclone.Validation.ValidationRulesDao;
 
-public interface ValidationAbstractFactoryTest {
+public interface IValidationAbstractFactory {
 	public HistoryConstraintMock createHistoryConstraintMock();
     public PasswordRulesLoader createPasswordRulesLoader();
     public ValidatePassword createValidatePassword();

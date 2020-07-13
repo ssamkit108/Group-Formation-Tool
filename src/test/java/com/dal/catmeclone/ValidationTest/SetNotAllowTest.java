@@ -3,20 +3,22 @@ package com.dal.catmeclone.ValidationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.Validation.ValidationPolicy;
 import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 
 class SetNotAllowTest {
 	
-	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
 
 	ValidationPolicy checknotallow= abstractFactoryTest.createValidationAbstractFactory().createSetNotAllow();
-	
+	IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+
 	@Test
 	void TestSetNotAllow() throws Exception {
-		User u = new User();
+		User u = modelfact.createUser();
 		u.setPassword("Sam");
 		checknotallow.setValue("abc");
 		Assert.isTrue(!checknotallow.isValid(u));

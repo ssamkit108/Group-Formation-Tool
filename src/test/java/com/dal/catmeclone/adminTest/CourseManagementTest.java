@@ -9,20 +9,22 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.admin.CourseManagementDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
+import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 
 public class CourseManagementTest {
 
-	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+	IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
 	@SuppressWarnings("deprecation")
 	@Test
 	public void insertCourseTest() throws UserDefinedSQLException, SQLException {
-		Course c = new Course();
+		Course c = modelfact.createCourse();
 		CourseManagementDao mock= abstractFactoryTest.createAdminAbstractFactory().createCourseManagementDao();
 		c.setCourseID(123);
 		c.setCourseName("sdc");
@@ -32,7 +34,7 @@ public class CourseManagementTest {
 	@SuppressWarnings("deprecation")
 	@Test
 	public void deleteCourseTest() throws UserDefinedSQLException, SQLException{
-		Course c = new Course();
+		Course c = modelfact.createCourse();
 		CourseManagementDao mock= abstractFactoryTest.createAdminAbstractFactory().createCourseManagementDao();
 		c.setCourseID(123);
 		Assert.isTrue(mock.deleteCourse(c.getCourseID()));
@@ -40,7 +42,7 @@ public class CourseManagementTest {
 	
 	@Test
 	public void getAllCoursesTest() throws UserDefinedSQLException, SQLException{
-		Course c = new Course();
+		Course c = modelfact.createCourse();
 		CourseManagementDao mock= abstractFactoryTest.createAdminAbstractFactory().createCourseManagementDao();
 		c.setCourseID(123);
 		c.setCourseName("sdc");
@@ -53,7 +55,7 @@ public class CourseManagementTest {
 	@SuppressWarnings("deprecation")
 	@Test
 	public void checkCourseExists() throws UserDefinedSQLException, SQLException{
-		Course c = new Course();
+		Course c = modelfact.createCourse();
 		CourseManagementDao mock= abstractFactoryTest.createAdminAbstractFactory().createCourseManagementDao();
 		c.setCourseID(123);
 		c.setCourseName("sdc");

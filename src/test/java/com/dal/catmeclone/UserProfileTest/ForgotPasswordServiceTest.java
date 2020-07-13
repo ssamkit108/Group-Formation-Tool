@@ -6,21 +6,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 import com.dal.catmeclone.notificationTest.NotificationServiceMock;
 
 @SpringBootTest
 @SuppressWarnings("deprecation")
 class ForgotPasswordServiceTest {
 	
-	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+	IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
 
 	@Test
 	void validatetoken() {
-		User u = new User();
+		User u = modelfact.createUser();
 		u.setBannerId("B00852212");
 		u.setToken("$10$P2FBvrlVJaS1/aEHzfKmtuojZollAx/F1g0DnvO7QvNv7/AUyihDu");
 		
@@ -38,11 +40,11 @@ class ForgotPasswordServiceTest {
 	@Test
 	void ValidateUserTest() {	
 		UserValidateMock check=abstractFactoryTest.createUserProfileAbstractFactory().createUserValidateMock();
-		User u = new User();
+		User u = modelfact.createUser();
 
 		u.setBannerId("");
 		Assert.isTrue(!check.validate(u));
-		u=new User();
+		u=modelfact.createUser();
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
 		u.setFirstName("Bob");
