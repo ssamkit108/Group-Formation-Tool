@@ -21,6 +21,8 @@ import com.dal.catmeclone.notification.NotificationAbstractFactory;
 import com.dal.catmeclone.notification.NotificationAbstractFactoryImpl;
 import com.dal.catmeclone.questionmanagement.QuestionManagementAbstractFactory;
 import com.dal.catmeclone.questionmanagement.QuestionManagementAbstractFactoryImpl;
+import com.dal.catmeclone.surveycreation.SurveyCreationAbstractFactory;
+import com.dal.catmeclone.surveycreation.SurveyCreationAbstractFactoryImpl;
 import com.dal.catmeclone.surveyresponse.SurveyResponseAbstractFactory;
 import com.dal.catmeclone.surveyresponse.SurveyResponseAbstractFactoryImpl;
 
@@ -79,4 +81,9 @@ public class AbstractFactoryImpl implements AbstractFactory {
     public SurveyResponseAbstractFactory createSurveyResponseAbstractFactory() {
         return new SurveyResponseAbstractFactoryImpl();
     }
+
+	@Override
+	public SurveyCreationAbstractFactory createSurveyCreationAbstractFactory() {
+		return new SurveyCreationAbstractFactoryImpl();
+	}
 }

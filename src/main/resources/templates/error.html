@@ -10,7 +10,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 </head>
 <body>
 	<h1 style="margin-top:-10px;" >Error occured</h1>
-	<h4 th:utext="@{errormessage}"></h4> 
+	<h4 th:text="${errormessage}"></h4> 
 		<hr>
 </body>
 </html>

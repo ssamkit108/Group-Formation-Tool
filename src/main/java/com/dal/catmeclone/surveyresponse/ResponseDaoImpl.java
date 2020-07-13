@@ -22,19 +22,19 @@ public class ResponseDaoImpl implements ResponseDao {
     ModelAbstractFactory modelAbstractFactory=abstractFactory.createModelAbstractFactory();
     Properties properties = SystemConfig.instance().getProperties();
 
-    private DataBaseConnection DBUtil;
+    private DataBaseConnection databaseUtil;
     private Connection connection;
     ResultSet rs;
     ResultSet rs_options;
 
     public List<SurveyQuestionResponse> getAllQuestion(int courseid) throws Exception {
-        DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+        databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         List<SurveyQuestionResponse> listOfQuestions=new ArrayList<SurveyQuestionResponse>();
         CallableStatement statement = null;
         CallableStatement statement_options = null;
         Map<Integer,Integer> survey_question=new TreeMap<Integer, Integer>();
         try {
-            connection = DBUtil.connect();
+            connection = databaseUtil.connect();
             LOGGER.info("Retrieving from database");
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.fetch_surveryquestions") + "}");
             statement.setInt(1,courseid);
@@ -95,21 +95,21 @@ public class ResponseDaoImpl implements ResponseDao {
             throw new Exception(e.getLocalizedMessage());
         }finally {
             if (null != statement) {
-                DBUtil.terminateStatement(statement);
+                databaseUtil.terminateStatement(statement);
             }
             if(null != statement_options){
-                DBUtil.terminateStatement(statement_options);
+                databaseUtil.terminateStatement(statement_options);
             }
-            DBUtil.terminateConnection();
+            databaseUtil.terminateConnection();
         }
 
     }
 
     public Boolean checkPublished(int courseid) throws Exception{
-        DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+        databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         CallableStatement statement = null;
         try {
-            connection = DBUtil.connect();
+            connection = databaseUtil.connect();
             LOGGER.info("Retrieving survey is published or not");
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.check_published") + "}");
             statement.setInt(1, courseid);
@@ -134,17 +134,17 @@ public class ResponseDaoImpl implements ResponseDao {
             throw new Exception(e.getLocalizedMessage());
         }finally {
             if (null != statement) {
-                DBUtil.terminateStatement(statement);
+                databaseUtil.terminateStatement(statement);
             }
-            DBUtil.terminateConnection();
+            databaseUtil.terminateConnection();
         }
     }
 
     public Boolean checkSubmitted(String bannerid,int courseid) throws Exception{
-        DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+        databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         CallableStatement statement = null;
         try {
-            connection = DBUtil.connect();
+            connection = databaseUtil.connect();
             LOGGER.info("Retrieving survey is submitted or not");
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.check_submitted") + "}");
             statement.setString(1,bannerid);
@@ -166,17 +166,17 @@ public class ResponseDaoImpl implements ResponseDao {
             throw new Exception(e.getLocalizedMessage());
         }finally {
             if (null != statement) {
-                DBUtil.terminateStatement(statement);
+                databaseUtil.terminateStatement(statement);
             }
-            DBUtil.terminateConnection();
+            databaseUtil.terminateConnection();
         }
     }
     @Override
     public void createResponseId(int surveyQuestionId, String bannerId, Date responseDate, boolean submitted,int courseid) throws Exception {
-        DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+        databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         CallableStatement statement = null;
         try {
-            connection = DBUtil.connect();
+            connection = databaseUtil.connect();
             LOGGER.info("Querying to create response id for the survey question in the database.");
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.createresponseid") + "}");
             statement.setInt(1, surveyQuestionId);
@@ -194,18 +194,18 @@ public class ResponseDaoImpl implements ResponseDao {
             throw new Exception(e.getLocalizedMessage());
         } finally {
             if (null != statement) {
-                DBUtil.terminateStatement(statement);
+                databaseUtil.terminateStatement(statement);
             }
-            DBUtil.terminateConnection();
+            databaseUtil.terminateConnection();
         }
     }
 
     @Override
     public void insertResponse(int surveyQuestionId, String bannerId, List<Object> responses) throws Exception {
-        DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+        databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         CallableStatement statement = null;
         try {
-            connection = DBUtil.connect();
+            connection = databaseUtil.connect();
             LOGGER.info("Storing responses to the database.");
             for(Object response:responses){
                 statement = connection.prepareCall("{call " + properties.getProperty("procedure.insertresponse") + "}");
@@ -223,9 +223,9 @@ public class ResponseDaoImpl implements ResponseDao {
             throw new Exception(e.getLocalizedMessage());
         } finally {
             if (null != statement) {
-                DBUtil.terminateStatement(statement);
+                databaseUtil.terminateStatement(statement);
             }
-            DBUtil.terminateConnection();
+            databaseUtil.terminateConnection();
         }
     }
 }
