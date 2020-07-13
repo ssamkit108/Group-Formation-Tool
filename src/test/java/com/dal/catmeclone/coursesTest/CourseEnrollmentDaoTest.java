@@ -5,18 +5,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.course.CourseEnrollmentDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 
 @SpringBootTest
 public class CourseEnrollmentDaoTest {
 
-	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+	IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
 	CourseEnrollmentDao mock;
 
@@ -29,30 +31,29 @@ public class CourseEnrollmentDaoTest {
 	public void enrollUserForCourseNonExisting() throws UserDefinedSQLException {
 
 
-		Course course = new Course();
+		Course course = modelfact.createCourse();
 		course.setCourseID(100);
 		course.setCourseName("CourseA");
 		
-		User student = new User();
+		User student = modelfact.createUser();
 		student.setBannerId("B00000007");
 		
-		Role role = new Role();
+		Role role = modelfact.createRole();
 		role.setRoleName("Student");
-		// CourseEnrollmentDaoMock mock=new CourseEnrollmentDaoMock();
 		Assert.isTrue(mock.enrollUserForCourse(student, course, role), "Passed: User Enrolled Successfully");
 	}
 
 	@Test
 	public void enrollUserForCourseExisting() throws UserDefinedSQLException {
 
-		Course course = new Course();
+		Course course = modelfact.createCourse();
 		course.setCourseID(100);
 		course.setCourseName("CourseA");
 		
-		User student = new User();
+		User student = modelfact.createUser();
 		student.setBannerId("B00000001");
 		
-		Role role = new Role();
+		Role role = modelfact.createRole();
 		role.setRoleName("Student");
 
 		Assert.isTrue(mock.enrollUserForCourse(student, course, role), "Passed: User already exist");
@@ -70,23 +71,23 @@ public class CourseEnrollmentDaoTest {
 
 	@Test
 	public void getAllEnrolledCourse() throws UserDefinedSQLException {
-		User user = new User();
+		User user = modelfact.createUser();
 		user.setBannerId("B00000001");
 		Assert.notEmpty(mock.getAllEnrolledCourse(user), "Passed: User have enrolled courses");
 	}
 
 	@Test
 	public void getAllEnrolledCourseNoCourseEnrolled() throws UserDefinedSQLException {
-		User user = new User();
+		User user = modelfact.createUser();
 		user.setBannerId("B00000001");		
 		Assert.isTrue(mock.getAllEnrolledCourse(user).size() != 0, "Passed: User don't any have enrolled courses");
 	}
 
 	@Test
 	public void getUserRoleForCourse() throws UserDefinedSQLException {
-		User user = new User();
+		User user = modelfact.createUser();
 		user.setBannerId("B00000001");
-		Course course = new Course();
+		Course course = modelfact.createCourse();
 		course.setCourseID(100);
 		course.setCourseName("CourseA");
 		Assert.notNull(mock.getUserRoleForCourse(user, course), "Passed: User have a role tagged to the course");
@@ -94,9 +95,9 @@ public class CourseEnrollmentDaoTest {
 
 	@Test
 	public void getUserRoleForCourseUserNotEnrolledInCourse() throws UserDefinedSQLException {
-		User user = new User();
+		User user = modelfact.createUser();
 		user.setBannerId("B00000009");
-		Course course = new Course();
+		Course course = modelfact.createCourse();
 		course.setCourseID(100);
 		course.setCourseName("CourseA");
 		Assert.isNull(mock.getUserRoleForCourse(user, course), "Passed: User don't have any role tagged to the course");

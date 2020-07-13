@@ -9,14 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 
 @SpringBootTest
 class UserServiceTest {
 	
-	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+	IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
 
 	@SuppressWarnings("deprecation")
@@ -24,10 +26,10 @@ class UserServiceTest {
 	void CreateTest() {
 		UserValidateMock check = abstractFactoryTest.createUserProfileAbstractFactory().createUserValidateMock();
 		UserDaoMock DbMock = abstractFactoryTest.createUserProfileAbstractFactory().createUserDaoMock();
-		User u = new User();		
+		User u = modelfact.createUser();		
 		u.setBannerId("");
 		Assert.isTrue(!check.validate(u));
-		u = new User();		
+		u = modelfact.createUser();		
 		u.setBannerId("B00825292");
 		u.setEmail("bob123@gmail.com");
 		u.setFirstName("Bob");
@@ -39,7 +41,7 @@ class UserServiceTest {
 
 	@Test
 	public void GetAllUsersTest() {
-		User u = new User();		
+		User u = modelfact.createUser();		
 		UserDaoMock Dbmock = abstractFactoryTest.createUserProfileAbstractFactory().createUserDaoMock();
 
 		u.setBannerId("B00825292");

@@ -3,7 +3,7 @@ package com.dal.catmeclone.coursesTest;
 import com.dal.catmeclone.course.CourseEnrollmentDao;
 import com.dal.catmeclone.course.CoursesDao;
 
-public class CourseAbstractFactoryImpl implements CourseAbstractFactoryTest{
+public class ICourseAbstractFactoryImpl implements ICourseAbstractFactory{
 
 	@Override
 	public CoursesDao createCoursesDao() {

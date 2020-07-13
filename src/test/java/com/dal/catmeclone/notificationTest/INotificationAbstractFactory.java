@@ -1,6 +1,6 @@
 package com.dal.catmeclone.notificationTest;
 
 
-public interface NotificationAbstractFactoryTest {
+public interface INotificationAbstractFactory {
 	public NotificationServiceMock createNotificationService();
 }

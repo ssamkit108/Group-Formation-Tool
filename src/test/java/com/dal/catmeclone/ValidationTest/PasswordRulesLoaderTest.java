@@ -6,13 +6,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.Validation.PasswordRulesLoader;
 
 public class PasswordRulesLoaderTest {
 
-	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
 	PasswordRulesLoader passwordrules=abstractFactoryTest.createValidationAbstractFactory().createPasswordRulesLoader();
 	@Test
 	public void TestgetValidationRulesList() {
