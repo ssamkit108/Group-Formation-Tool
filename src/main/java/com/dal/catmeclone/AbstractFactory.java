@@ -4,6 +4,7 @@ import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.UserProfile.UserProfileAbstractFactory;
 import com.dal.catmeclone.Validation.ValidationAbstractFactory;
 import com.dal.catmeclone.admin.AdminAbstractFactory;
+import com.dal.catmeclone.algorithm.AlgorithmAbstractFactory;
 import com.dal.catmeclone.authenticationandauthorization.AuthenticationAbstractFactory;
 import com.dal.catmeclone.course.CourseAbstractFactory;
 import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
@@ -26,4 +27,5 @@ public interface AbstractFactory {
     public ValidationAbstractFactory createValidationAbstractFactory();
     public SurveyResponseAbstractFactory createSurveyResponseAbstractFactory();
     public SurveyCreationAbstractFactory createSurveyCreationAbstractFactory();
+    public AlgorithmAbstractFactory createAlgorithmAbstractFactory();
 }
