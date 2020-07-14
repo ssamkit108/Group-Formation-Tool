@@ -3,20 +3,22 @@ package com.dal.catmeclone.ValidationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 
 public class HistoryConstraintTest {
 	
 	
-	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
 	HistoryConstraintMock HistoryConstraintMock = abstractFactoryTest.createValidationAbstractFactory().createHistoryConstraintMock();
+	IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
 
 	@Test
 	public void TestHistoryConstraint() throws Exception {
-		User u = new User();	
+		User u = modelfact.createUser();	
 		//Valid
 		u.setPassword("Hello");
 		HistoryConstraintMock.setValue("3");

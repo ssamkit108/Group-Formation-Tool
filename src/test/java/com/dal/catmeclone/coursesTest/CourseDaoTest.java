@@ -10,17 +10,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.course.CoursesDao;
 import com.dal.catmeclone.exceptionhandler.CourseException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 
 @SpringBootTest
 public class CourseDaoTest {
-	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+	IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
 
 	@Test
@@ -41,24 +43,24 @@ public class CourseDaoTest {
 	public void getCoursebyuser() throws UserDefinedSQLException {
 		String bannerid = "B00839818";
 		ArrayList<Course> courseList = new ArrayList<Course>();
-		Course c = new Course();
+		Course c = modelfact.createCourse();
 		c.setCourseID(101);
 		c.setCourseName("Advance topic in web");
 		courseList.add(c);
 
-		Course c2 = new Course();
+		Course c2 = modelfact.createCourse();
 		c2.setCourseID(100);
 		c2.setCourseName("sdc");
 		courseList.add(c2);
 
-		User u = new User();
+		User u = modelfact.createUser();
 		u.setBannerId(bannerid);
 
 		CoursesDao mock = abstractFactoryTest.createCourseAbstractFactory().createCoursesDao();
 		assertTrue(courseList.size()== mock.getallcoursesbyuser(u).size());
 
 		bannerid = "B00123456";
-		u = new User();
+		u = modelfact.createUser();
 		u.setBannerId(bannerid);
 		assertTrue(mock.getallcoursesbyuser(u) == null);
 
@@ -67,12 +69,12 @@ public class CourseDaoTest {
 	@Test
 	public void getallcourses() throws SQLException, UserDefinedSQLException {
 		ArrayList<Course> courseList = new ArrayList<Course>();
-		Course c = new Course();
+		Course c = modelfact.createCourse();
 		c.setCourseID(101);
 		c.setCourseName("Advance topic in web");
 		courseList.add(c);
 
-		Course c2 = new Course();
+		Course c2 = modelfact.createCourse();
 		c2.setCourseID(100);
 		c2.setCourseName("Advance Topic in SDC");
 		courseList.add(c2);
@@ -86,7 +88,7 @@ public class CourseDaoTest {
 	public void getcourse() throws UserDefinedSQLException, CourseException {
 		int courseid = 100;
 		String coursename = "Advance Topic in SDC";
-		Course c = new Course();
+		Course c = modelfact.createCourse();
 		c.setCourseID(courseid);
 		c.setCourseName(coursename);
 		CoursesDao mock = abstractFactoryTest.createCourseAbstractFactory().createCoursesDao();

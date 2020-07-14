@@ -1,7 +1,7 @@
 package com.dal.catmeclone.notificationTest;
 
 
-public class NotificationAbstractFactoryImpl implements NotificationAbstractFactoryTest {
+public class INotificationAbstractFactoryImpl implements INotificationAbstractFactory {
 
 	@Override
 	public NotificationServiceMock createNotificationService() {

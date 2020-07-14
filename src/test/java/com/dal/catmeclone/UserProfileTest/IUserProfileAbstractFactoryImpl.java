@@ -2,7 +2,7 @@ package com.dal.catmeclone.UserProfileTest;
 
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 
-public class UserProfileAbstractFactoryImpl implements UserProfileAbstractFactoryTest{
+public class IUserProfileAbstractFactoryImpl implements IUserProfileAbstractFactory{
 
 	@Override
 	public BCryptPasswordEncryption createBCryptPasswordEncryption() {

@@ -1,22 +1,35 @@
 package com.dal.catmeclone.coursesTest;
 
 import java.util.ArrayList;
+
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.course.CoursesDao;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 
 public class CourseDaoMock implements CoursesDao {
 
 	int courseid;
 	String courseName;
 	ArrayList<Course> courseList = new ArrayList<Course>();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+	IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+
 
 	public CourseDaoMock() {
 		super();
 		this.courseid = 100;
 		this.courseName = "Advance Topic in SDC";
-		courseList.add(new Course(courseid, courseName));
-		courseList.add(new Course(101, "Advance topic in web"));
+		Course crc = modelfact.createCourse();
+		crc.setCourseID(courseid);
+		crc.setCourseName(courseName);
+		courseList.add(crc);
+		Course crc2 = modelfact.createCourse();
+		crc2.setCourseID(101);
+		crc2.setCourseName("Advance topic in web");
+		courseList.add(crc2);
 
 	}
 
@@ -24,7 +37,12 @@ public class CourseDaoMock implements CoursesDao {
 	public Course getCourse(int courseId) {
 
 		if (courseId == this.courseid)
-			return new Course(courseid, courseName);
+		{
+			Course crc = modelfact.createCourse();
+			crc.setCourseID(courseid);
+			crc.setCourseName(courseName);
+			return crc;
+		}
 		else
 			return null;
 	}

@@ -16,14 +16,14 @@ build:
   script:
     - mvn install
   tags:
-    - dalfcs_gitlab_docker_ci
+    - dalfcs_docker_kvm
 
 test:
   stage: test
   script:
     - mvn test
   tags:
-    - dalfcs_gitlab_docker_ci
+    - dalfcs_docker_kvm
     
 deploy-dev:
   stage: deploy
@@ -33,7 +33,7 @@ deploy-dev:
   only:
     - development
   tags:
-    - dalfcs_gitlab_docker_ci
+    - dalfcs_docker_kvm
 
 deploy-prod:
   stage: deploy
@@ -43,5 +43,5 @@ deploy-prod:
   only:
     - master
   tags:
-    - dalfcs_gitlab_docker_ci
+    - dalfcs_docker_kvm
       

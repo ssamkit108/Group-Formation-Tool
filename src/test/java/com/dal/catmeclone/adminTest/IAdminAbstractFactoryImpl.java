@@ -3,7 +3,7 @@ package com.dal.catmeclone.adminTest;
 import com.dal.catmeclone.admin.CourseInstructorAssignmentDao;
 import com.dal.catmeclone.admin.CourseManagementDao;
 
-public class AdminAbstractFactoryImpl implements AdminAbstractFactoryTest{
+public class IAdminAbstractFactoryImpl implements IAdminAbstractFactory{
 
 	@Override
 	public CourseInstructorAssignmentDao createCourseInstructorAssignmentDao() {
