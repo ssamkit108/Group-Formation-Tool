@@ -5,25 +5,27 @@ import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
-import com.dal.catmeclone.AbstractFactoryTest;
-import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.IAbstractFactory;
+import com.dal.catmeclone.SystemConfigT;
 import com.dal.catmeclone.admin.CourseInstructorAssignmentDao;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 
 public class CourseInstructorAssignmentTest {
-	AbstractFactoryTest abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+	IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
 	@SuppressWarnings("deprecation")
 	@Test
 	public void insertCourseTest() throws UserDefinedSQLException, SQLException {
-		Course c = new Course();
+		Course c = modelfact.createCourse();
 		c.setCourseID(123);
-		User u = new User();
+		User u = modelfact.createUser();
 		u.setBannerId("B00833211");
-		Role r = new Role();
+		Role r = modelfact.createRole();
 		r.setRoleName("Instructor");
 
 		CourseInstructorAssignmentDao mock = abstractFactoryTest.createAdminAbstractFactory()
@@ -34,7 +36,7 @@ public class CourseInstructorAssignmentTest {
 	@SuppressWarnings("deprecation")
 	@Test
 	public void checkInstructorForCourseTest() throws UserDefinedSQLException, SQLException {
-		Course c = new Course();
+		Course c = modelfact.createCourse();
 		CourseInstructorAssignmentDao mock = abstractFactoryTest.createAdminAbstractFactory()
 				.createCourseInstructorAssignmentDao();
 		c.setCourseID(123);
