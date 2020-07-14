@@ -16,7 +16,7 @@ build:
   script:
     - mvn install
   tags:
-    - dalfcs_gitlab_docker_ci
+    - dalfcs_docker_kvm
 
 test:
   stage: test
