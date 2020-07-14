@@ -9,6 +9,8 @@ import com.dal.catmeclone.Validation.ValidationAbstractFactory;
 import com.dal.catmeclone.Validation.ValidationAbstractFactoryImpl;
 import com.dal.catmeclone.admin.AdminAbstractFacoryImpl;
 import com.dal.catmeclone.admin.AdminAbstractFactory;
+import com.dal.catmeclone.algorithm.AlgorithmAbstractFactory;
+import com.dal.catmeclone.algorithm.AlgorithmAbstractFactoryImpl;
 import com.dal.catmeclone.authenticationandauthorization.AuthenticationAbstractFactory;
 import com.dal.catmeclone.authenticationandauthorization.AuthenticationAbstractFactoryImpl;
 import com.dal.catmeclone.course.CourseAbstractFactory;
@@ -86,4 +88,10 @@ public class AbstractFactoryImpl implements AbstractFactory {
 	public SurveyCreationAbstractFactory createSurveyCreationAbstractFactory() {
 		return new SurveyCreationAbstractFactoryImpl();
 	}
+	
+	@Override
+	public AlgorithmAbstractFactory createAlgorithmAbstractFactory() {
+	     return new AlgorithmAbstractFactoryImpl();
+	}
+
 }

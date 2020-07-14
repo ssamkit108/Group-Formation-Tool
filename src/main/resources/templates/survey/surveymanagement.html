@@ -393,8 +393,15 @@ h1 {
 			</div>
 		</div>
 		<div th:if="${survey.publishedStatus eq true}" class="container">
+			<div class="row">
+			<div class="col-lg-8 justify-content-center">
 			<h3>Published Questions in Survey</h3>
 			<hr style="margin-top: 5px;">
+			</div>
+			<div class="col-lg-4 justify-content-center" >
+				<a th:href="@{/algorithm}" class="btn btn-primary"> Form Groups </a>
+			</div>
+			</div>
 			<th:block th:each="question : ${survey.surveyQuestions}">
 				<div class="publishcard" style="margin-top: 10px; padding: 10px;">
 
