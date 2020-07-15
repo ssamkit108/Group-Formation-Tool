@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface ResponseService {
     List<SurveyQuestionResponse> getAllQuestion(int courseid) throws Exception;
-    void setAllresponses(UserSurveyResponse userSurveyResponse) throws  Exception;
+
+    void setAllresponses(UserSurveyResponse userSurveyResponse) throws Exception;
+
     Boolean checkPublished(int courseid) throws Exception;
+
     Boolean checkSubmitted(String bannerid, int courseid) throws Exception;
-    }
+}

@@ -1,67 +1,73 @@
 <!-- Referred from : https://getbootstrap.com/docs/4.1/components/forms/
  -->
-<!DOCTYPE html> 
-<html xmlns:th="http://www.thymeleaf.org">  
-<head>  
-	<title>Signup page</title>
-	<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet" />
-</head>  
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Signup page</title>
+    <link
+            href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            rel="stylesheet"/>
+</head>
 <body>
 <div class="middle-box text-center loginscreen animated fadeInDown">
-	<div class="container">
-		<h1>SignUp Form</h1>
-		<br/>
-		
-		
-		<div th:if="${message}" class="validation-message alert alert-danger" role="alert">
-		    <h2 th:text="${message}"></h2>
-		    <br/>
-		</div>
-		
-		
-		<form autocomplete="off" class="m-t col-md-4 col-md-offset-4" th:action="@{/signup}" method="post">
-			
-			<div class="form-group row">
-			<h4>Banner ID:</h4>
-			<input th:field="${user.bannerId}"  type="text" name="username" placeholder="Banner ID" maxlength="9" class="form-control" required />
-			</div>
-		
+    <div class="container">
+        <h1>SignUp Form</h1>
+        <br/>
 
-			<div class="form-group row">
-			<h4>Password:</h4>
-			<input type="password" name="password" th:field="${user.password}" placeholder="Enter Password"  class="form-control"  required/>
-			</div>
-			
-			<div class="form-group row">
-			<h4>Password (Confirmation):</h4>
-			 <input type="password" name="passwordConfirmation" placeholder="Re-enter your password" class="form-control" required/>
-			</div>
-			
-			<div class="form-group row">
-			<h4>First Name:</h4>
-			 <input type="text" name="firstName"th:field="${user.firstName}"  placeholder="Enter your FirstName" class="form-control"  required/>
-			</div>
-			
-			<div class="form-group row">
-			<h4>Last Name :</h4>
-			<input type="text" name="lastName" th:field="${user.lastName}" placeholder="Enter your LastName" class="form-control"  required/>
-			</div>
-			
-			<div class="form-group row">
-			<h4>Email:</h4>
-			<input type="email" name="email" th:field="${user.email}" placeholder="Enter your email address" class="form-control" required/>
-			</div>
-			
-			<div class="form-group row">
-			<p><input type="submit" class="btn btn-primary" value="Sign Up" required/>
-			<input type="reset" class="btn btn-secondary" value="Reset" /></p>
-			</div> 
-			<a th:href="@{/login}" >Click here to log in!</a>
-		</form>
-		<br/>
-	</div>
+
+        <div class="validation-message alert alert-danger" role="alert" th:if="${message}">
+            <h2 th:text="${message}"></h2>
+            <br/>
+        </div>
+
+
+        <form autocomplete="off" class="m-t col-md-4 col-md-offset-4" method="post" th:action="@{/signup}">
+
+            <div class="form-group row">
+                <h4>Banner ID:</h4>
+                <input class="form-control" maxlength="9" name="username" placeholder="Banner ID" required
+                       th:field="${user.bannerId}" type="text"/>
+            </div>
+
+
+            <div class="form-group row">
+                <h4>Password:</h4>
+                <input class="form-control" name="password" placeholder="Enter Password" required
+                       th:field="${user.password}" type="password"/>
+            </div>
+
+            <div class="form-group row">
+                <h4>Password (Confirmation):</h4>
+                <input class="form-control" name="passwordConfirmation" placeholder="Re-enter your password"
+                       required type="password"/>
+            </div>
+
+            <div class="form-group row">
+                <h4>First Name:</h4>
+                <input class="form-control" name="firstName" placeholder="Enter your FirstName" required
+                       th:field="${user.firstName}" type="text"/>
+            </div>
+
+            <div class="form-group row">
+                <h4>Last Name :</h4>
+                <input class="form-control" name="lastName" placeholder="Enter your LastName" required
+                       th:field="${user.lastName}" type="text"/>
+            </div>
+
+            <div class="form-group row">
+                <h4>Email:</h4>
+                <input class="form-control" name="email" placeholder="Enter your email address" required
+                       th:field="${user.email}" type="email"/>
+            </div>
+
+            <div class="form-group row">
+                <p><input class="btn btn-primary" required type="submit" value="Sign Up"/>
+                    <input class="btn btn-secondary" type="reset" value="Reset"/></p>
+            </div>
+            <a th:href="@{/login}">Click here to log in!</a>
+        </form>
+        <br/>
+    </div>
 </div>
-</body>  
+</body>
 </html>

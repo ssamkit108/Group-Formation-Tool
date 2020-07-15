@@ -1,30 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Access Denied</title>
+    <title>Access Denied</title>
 </head>
 
 <body>
 
-	<h2>Access Denied - You are not authorized to access this
-		resource.</h2>
+<h2>Access Denied - You are not authorized to access this
+    resource.</h2>
 
-	<div sec:authorize="isAuthenticated()">
+<div sec:authorize="isAuthenticated()">
 
-		<div
-			sec:authorize="hasAuthority('admin')">
+    <div
+            sec:authorize="hasAuthority('admin')">
 
-			<a th:href="@{/admin/adminDashboard}">
-			Back to Home Page</a>
-		</div>
-		<div sec:authorize="hasAuthority('user')">
+        <a th:href="@{/admin/adminDashboard}">
+            Back to Home Page</a>
+    </div>
+    <div sec:authorize="hasAuthority('user')">
 
-			<br> <a th:href="@{/}">Back to Home Page</a>
-		</div>
-	</div>
-
+        <br> <a th:href="@{/}">Back to Home Page</a>
+    </div>
+</div>
 
 
 </body>

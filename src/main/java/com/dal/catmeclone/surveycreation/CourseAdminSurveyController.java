@@ -79,6 +79,11 @@ public class CourseAdminSurveyController {
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
+		catch (Exception e1) {
+			// Handling Error occurred by throwing to Error view with user defined error message.
+			model.addAttribute("errormessage", "Some error occured. Please try again later");
+			return "error";
+		}
 		return "survey/surveymanagement";
 	}
 
@@ -226,8 +231,8 @@ public class CourseAdminSurveyController {
 		HashMap<String, List<User>> grp_info = null;
 		try {
 			grp_info = courseAdminSurveyService.retrievegroupinfo(course.getCourseID());
-		} catch (UserDefinedSQLException e1) {
-			e1.printStackTrace();
+		} catch (UserDefinedSQLException e) {
+			e.printStackTrace();
 		}
 
 		if (grp_info.isEmpty()) {
