@@ -5,96 +5,96 @@ import java.io.PrintWriter;
 
 public class DuplicateEntityException extends Exception {
 
-	private static final long serialVersionUID = 8461874431183399030L;
+    private static final long serialVersionUID = 8461874431183399030L;
 
-	public DuplicateEntityException(String arg0) {
-		super(arg0);
+    public DuplicateEntityException(String arg0) {
+        super(arg0);
 
-	}
+    }
 
-	@Override
-	public synchronized Throwable fillInStackTrace() {
+    @Override
+    public synchronized Throwable fillInStackTrace() {
 
-		return super.fillInStackTrace();
-	}
+        return super.fillInStackTrace();
+    }
 
-	@Override
-	public synchronized Throwable getCause() {
+    @Override
+    public synchronized Throwable getCause() {
 
-		return super.getCause();
-	}
+        return super.getCause();
+    }
 
-	@Override
-	public String getLocalizedMessage() {
+    @Override
+    public String getLocalizedMessage() {
 
-		return super.getLocalizedMessage();
-	}
+        return super.getLocalizedMessage();
+    }
 
-	@Override
-	public String getMessage() {
+    @Override
+    public String getMessage() {
 
-		return super.getMessage();
-	}
+        return super.getMessage();
+    }
 
-	@Override
-	public StackTraceElement[] getStackTrace() {
+    @Override
+    public StackTraceElement[] getStackTrace() {
 
-		return super.getStackTrace();
-	}
+        return super.getStackTrace();
+    }
 
-	@Override
-	public synchronized Throwable initCause(Throwable cause) {
+    @Override
+    public void setStackTrace(StackTraceElement[] stackTrace) {
 
-		return super.initCause(cause);
-	}
+        super.setStackTrace(stackTrace);
+    }
 
-	@Override
-	public void printStackTrace() {
+    @Override
+    public synchronized Throwable initCause(Throwable cause) {
 
-		super.printStackTrace();
-	}
+        return super.initCause(cause);
+    }
 
-	@Override
-	public void printStackTrace(PrintStream s) {
+    @Override
+    public void printStackTrace() {
 
-		super.printStackTrace(s);
-	}
+        super.printStackTrace();
+    }
 
-	@Override
-	public void printStackTrace(PrintWriter s) {
+    @Override
+    public void printStackTrace(PrintStream s) {
 
-		super.printStackTrace(s);
-	}
+        super.printStackTrace(s);
+    }
 
-	@Override
-	public void setStackTrace(StackTraceElement[] stackTrace) {
+    @Override
+    public void printStackTrace(PrintWriter s) {
 
-		super.setStackTrace(stackTrace);
-	}
+        super.printStackTrace(s);
+    }
 
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
 
-		return super.toString();
-	}
+        return super.toString();
+    }
 
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
 
-		return super.clone();
-	}
+        return super.clone();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
 
-		return super.equals(obj);
-	}
+        return super.equals(obj);
+    }
 
-	
-	@Override
-	public int hashCode() {
 
-		return super.hashCode();
-	}
+    @Override
+    public int hashCode() {
+
+        return super.hashCode();
+    }
 
 }

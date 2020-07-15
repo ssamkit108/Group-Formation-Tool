@@ -364,23 +364,6 @@ h1 {
 											onclick="remove(this)"></button>
 									</div>
 								</div>
-								<div>
-									<label class="my-1 mr-2" for="group size">Weightage: </label> <select
-										style="width: 200px;" class="custom-select change"
-										th:value="${question.weightage}"
-										th:field="*{surveyQuestions[__${itemStat.index}__].weightage}">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
-										<option value="7">7</option>
-										<option value="8">8</option>
-										<option value="9">9</option>
-										<option value="10">10</option>
-									</select>
-								</div>
 
 							</div>
 						</th:block>
@@ -392,13 +375,52 @@ h1 {
 				</div>
 			</div>
 		</div>
-		<form th:action="@{/survey/groupinfo}" method="post" id="responseform"
-					th:object="${survey}" style="display: contents">
-		<div th:if="${survey.publishedStatus eq true}" class="container">
-			<input type = "submit" class= "btn btn-success" value = "Group Data" th:formaction="@{/survey/groupinfo(courseid=${survey.course.courseID})}">
 		
-			<h3>Published Questions in Survey</h3>
-			<hr style="margin-top: 5px;">
+		<div th:if="${survey.publishedStatus eq true}" class="container">
+		
+			<div id="message">
+				<div th:if="${errormessage ne null}" id="errordiv"
+					class="row alert alert-danger alert-dismissible">
+
+					<div class="col-lg-8">
+						<strong>Error! </strong> <span th:text='${errormessage}'></span>
+					</div>
+					<div style="float: right;">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close"
+							style="float: right;">&times;</a>
+					</div>
+				</div>
+				<div th:if="${message ne null}"
+					class="row alert alert-success alert-dismissible">
+
+					<div class="col-lg-8">
+						<strong>Success! </strong> <span th:text='${message}'></span>
+					</div>
+					<div style="float: right;">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close"
+							style="float: right;">&times;</a>
+					</div>
+				</div>
+			</div>
+		
+			<form th:action="@{/survey/groupinfo}" method="post" id="responseform"
+					th:object="${survey}" style="display: contents">
+					
+			
+			
+			<div class="row">
+				<div class="col-lg-6 justify-content-center">
+					<h3>Published Questions in Survey</h3>
+					<hr style="margin-top: 5px;">
+				</div>
+				<div class="col-lg-3 justify-content-center" >
+					<a th:href="@{/algorithm}" class="btn btn-primary"> Form Groups </a>
+				</div>
+				<div class="col-lg-3 justify-content-center" th:if="${survey.groupFormed eq true}">
+					<input type = "submit" class= "btn btn-success" value = "Display Groups" th:formaction="@{/survey/groupinfo(courseid=${survey.course.courseID})}">
+				</div>
+			</div>
+
 			<th:block th:each="question : ${survey.surveyQuestions}">
 				<div class="publishcard" style="margin-top: 10px; padding: 10px;">
 
@@ -449,8 +471,9 @@ h1 {
 					</div>
 				</div>
 			</th:block>
+			</form>
 		</div>
-		</form>
+	
 	</div>
 </body>
 </html>

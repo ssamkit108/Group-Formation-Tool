@@ -5,6 +5,7 @@ import com.dal.catmeclone.course.CoursesDao;
 
 public interface ICourseAbstractFactory {
 
-	public CoursesDao createCoursesDao();
-	public CourseEnrollmentDao createCourseEnrollmentDao();
+    public CoursesDao createCoursesDao();
+
+    public CourseEnrollmentDao createCourseEnrollmentDao();
 }

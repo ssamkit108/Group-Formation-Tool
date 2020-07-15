@@ -19,6 +19,7 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.BasicQuestion;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.ModelAbstractFactory;
+import com.dal.catmeclone.model.QuestionType;
 import com.dal.catmeclone.model.Survey;
 import com.dal.catmeclone.model.SurveyQuestion;
 import com.dal.catmeclone.model.User;
@@ -63,6 +64,7 @@ public class CourseAdminSurveyDaoImpl implements CourseAdminSurveyDao {
 				survey.setSurveyId(surveyResultSet.getInt(1));
 				survey.setPublishedStatus(surveyResultSet.getBoolean(2));
 				survey.setGroupSize(surveyResultSet.getInt(3));
+				survey.setGroupFormed(surveyResultSet.getBoolean(4));
 
 				survey.setCourse(course);
 
@@ -83,8 +85,7 @@ public class CourseAdminSurveyDaoImpl implements CourseAdminSurveyDao {
 							surveyQuestionResultSet.getString(3), surveyQuestionResultSet.getString(4),
 							surveyQuestionResultSet.getString(5));
 					SurveyQuestion surveyQuestion = new SurveyQuestion(surveyQuestionResultSet.getInt(1), question,
-							surveyQuestionResultSet.getString(6), surveyQuestionResultSet.getInt(7),
-							surveyQuestionResultSet.getInt(8));
+							surveyQuestionResultSet.getString(6), surveyQuestionResultSet.getInt(7));
 					listofSurveyQuestions.add(surveyQuestion);
 				}
 				survey.setSurveyQuestions(listofSurveyQuestions);
@@ -190,16 +191,15 @@ public class CourseAdminSurveyDaoImpl implements CourseAdminSurveyDao {
 			surveyQuestionCreateStatement.setString(3, question.getAlgorithmLogicType());
 			surveyQuestionCreateStatement.setString(4, question.getQuestionDetail().getQuestionType().toString());
 			surveyQuestionCreateStatement.setInt(5, question.getLogicConstraintValue());
-			surveyQuestionCreateStatement.setInt(6, question.getWeightage());
 
 			// Registering the output parameter
-			surveyQuestionCreateStatement.registerOutParameter(7, Types.INTEGER);
+			surveyQuestionCreateStatement.registerOutParameter(6, Types.INTEGER);
 
 			LOGGER.info("Calling Store procedure to execute query and create question");
 			surveyQuestionCreateStatement.execute();
 
 			// getting the output parameter from create procedure
-			int surveyquestionId = surveyQuestionCreateStatement.getInt(7);
+			int surveyquestionId = surveyQuestionCreateStatement.getInt(6);
 
 			LOGGER.info("Survey Question:" + surveyquestionId + " saved in the database successfully.");
 
@@ -229,7 +229,7 @@ public class CourseAdminSurveyDaoImpl implements CourseAdminSurveyDao {
 			surveyQuestionUpdateStatement.setString(2, question.getQuestionDetail().getQuestionType().toString());
 			surveyQuestionUpdateStatement.setInt(3, question.getLogicConstraintValue());
 			surveyQuestionUpdateStatement.setInt(4, question.getSurveyQuestionId());
-			surveyQuestionUpdateStatement.setInt(5, question.getWeightage());
+		
 
 			LOGGER.info("Calling Store procedure to execute query and create question");
 			surveyQuestionUpdateStatement.execute();
@@ -429,34 +429,51 @@ public class CourseAdminSurveyDaoImpl implements CourseAdminSurveyDao {
 	@Override
 	public HashMap<String, List<Object>> fetchresponse(int courseid, String bannerid) throws UserDefinedSQLException {
 		DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
-		CallableStatement QuestionResponse = null;
+		CallableStatement questionResponse = null;
+		CallableStatement getOptionStatement= null;
 		HashMap<String,List<Object>> response = new HashMap<>();
 
 		try {
 			LOGGER.info("Retrieving from database");
 			connection = databaseUtil.connect();
 
-			QuestionResponse = connection
+			questionResponse = connection
 					.prepareCall("{call " + properties.getProperty("procedure.fetch_survey_responses") + "}");
-			QuestionResponse.setInt(1, courseid);
-			QuestionResponse.setString(2, bannerid);
+			questionResponse.setInt(1, courseid);
+			questionResponse.setString(2, bannerid);
 
 			LOGGER.info("Querying Database to fetch responses given by a student");
-			ResultSet queresponse = QuestionResponse.executeQuery();
+			ResultSet responseResultSet = questionResponse.executeQuery();
 			
-			while (queresponse.next()) {
+			while (responseResultSet.next()) {
 				
-				if (response != null && response.containsKey(queresponse.getString("questionText"))) {
-					List<Object> answers = response.get(queresponse.getString("questionText"));
-					answers.add(queresponse.getString("answer"));
-					
+				List<Object> answers=null;
+				if (response != null && response.containsKey(responseResultSet.getString("questionText"))) {
+					answers = response.get(responseResultSet.getString("questionText"));
+				
 				}
 				else {
-					List<Object> answers = new ArrayList<>();
-					answers.add(queresponse.getString("answer"));
-					response.put(queresponse.getString("questionText"), answers);
+					answers = new ArrayList<>();
+					response.put(responseResultSet.getString("questionText"), answers);
 				}
 				
+				if(responseResultSet.getString("questionType").equals("MULTIPLECHOICEONE")||responseResultSet.getString("questionType").equals("MULTIPLECHOICEMANY"))
+				{
+					getOptionStatement= connection
+							.prepareCall("{call " + properties.getProperty("procedure.getTextForOptionValues") + "}");
+					getOptionStatement.setInt(1, responseResultSet.getInt("questionId"));
+					getOptionStatement.setInt(2, Integer.parseInt(responseResultSet.getString("answer")));
+					
+					ResultSet optionResultSet = getOptionStatement.executeQuery();
+					if(optionResultSet.next())
+					{
+						answers.add(optionResultSet.getString("option_text"));
+					}
+				}
+				else
+				{
+					answers.add(responseResultSet.getString("answer"));
+				}
 			}
 			
 			LOGGER.info("Question Response:" + bannerid + " fetched data from database successfully.");
@@ -465,8 +482,8 @@ public class CourseAdminSurveyDaoImpl implements CourseAdminSurveyDao {
 			LOGGER.warning("Error Encountered:" + e.getLocalizedMessage());
 			throw new UserDefinedSQLException("Error Encountered:" + e.getLocalizedMessage());
 		} finally {
-			if (null != QuestionResponse) {
-				databaseUtil.terminateStatement(QuestionResponse);
+			if (null != questionResponse) {
+				databaseUtil.terminateStatement(questionResponse);
 			}
 		}
 		return response;

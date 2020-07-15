@@ -2,14 +2,12 @@ package com.dal.catmeclone.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class UserSurveyResponse {
 
+    public List<SurveyQuestionResponse> surveyResponse;
     private User user;
     private Survey survey;
-    public List<SurveyQuestionResponse> surveyResponse;
     private Date responseDate;
     private Boolean submitted;
 
