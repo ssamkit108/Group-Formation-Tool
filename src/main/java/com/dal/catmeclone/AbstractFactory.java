@@ -16,16 +16,28 @@ import com.dal.catmeclone.surveyresponse.SurveyResponseAbstractFactory;
 
 public interface AbstractFactory {
     public AdminAbstractFactory createAdminAbstractFactory();
+
     public CourseAbstractFactory createCourseAbstractFactory();
+
     public AuthenticationAbstractFactory createAuthenticationAbstractFactory();
+
     public DBUtilityAbstractFactory createDBUtilityAbstractFactory();
+
     public EncryptAbstractFactory createEncryptAbstractFactory();
+
     public ModelAbstractFactory createModelAbstractFactory();
+
     public NotificationAbstractFactory createNotificationAbstractFactory();
+
     public QuestionManagementAbstractFactory createQuestionManagerAbstractFactory();
+
     public UserProfileAbstractFactory createUserProfileAbstractFactory();
+
     public ValidationAbstractFactory createValidationAbstractFactory();
+
     public SurveyResponseAbstractFactory createSurveyResponseAbstractFactory();
+
     public SurveyCreationAbstractFactory createSurveyCreationAbstractFactory();
+
     public AlgorithmAbstractFactory createAlgorithmAbstractFactory();
 }

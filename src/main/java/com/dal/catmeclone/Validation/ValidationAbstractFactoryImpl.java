@@ -1,6 +1,6 @@
 package com.dal.catmeclone.Validation;
 
-public class ValidationAbstractFactoryImpl implements ValidationAbstractFactory{
+public class ValidationAbstractFactoryImpl implements ValidationAbstractFactory {
     @Override
     public PasswordRulesLoader createPasswordRulesLoader() {
         return new PasswordRulesLoader();

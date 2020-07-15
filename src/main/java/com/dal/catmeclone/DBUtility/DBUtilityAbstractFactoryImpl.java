@@ -1,6 +1,6 @@
 package com.dal.catmeclone.DBUtility;
 
-public class DBUtilityAbstractFactoryImpl implements DBUtilityAbstractFactory{
+public class DBUtilityAbstractFactoryImpl implements DBUtilityAbstractFactory {
     @Override
     public DataBaseConnection createDataBaseConnection() {
         return new DatabaseConnectionImpl();

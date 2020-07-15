@@ -12,13 +12,21 @@ import com.dal.catmeclone.surveyresponseTest.ISurveyResponseAbstractFactory;
 
 public interface IAbstractFactory {
     public IAdminAbstractFactory createAdminAbstractFactory();
+
     public ICourseAbstractFactory createCourseAbstractFactory();
+
     public IAuthenticationAbstractFactory createAuthenticationAbstractFactory();
+
     public INotificationAbstractFactory createNotificationAbstractFactory();
+
     public IQuestionManagementAbstractFactory createQuestionManagerAbstractFactory();
+
     public IUserProfileAbstractFactory createUserProfileAbstractFactory();
+
     public IValidationAbstractFactory createValidationAbstractFactory();
+
     public ISurveyResponseAbstractFactory createSurveyResponseAbstractFactory();
+
     public IModelAbstractFactory createModelAbstractFactory();
 
 

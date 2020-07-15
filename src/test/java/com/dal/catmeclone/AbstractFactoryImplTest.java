@@ -1,9 +1,5 @@
 package com.dal.catmeclone;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
-
 import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.UserProfile.UserProfileAbstractFactory;
 import com.dal.catmeclone.Validation.ValidationAbstractFactory;
@@ -14,14 +10,17 @@ import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
 import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.notification.NotificationAbstractFactory;
 import com.dal.catmeclone.questionmanagement.QuestionManagementAbstractFactory;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AbstractFactoryImplTest {
 
-    AbstractFactory abstractFactory=SystemConfig.instance().getAbstractFactory();
+    AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
 
     @Test
     void createAdminAbstractFactory() {
-        assertTrue(abstractFactory.createAdminAbstractFactory() instanceof  AdminAbstractFactory);
+        assertTrue(abstractFactory.createAdminAbstractFactory() instanceof AdminAbstractFactory);
     }
 
     @Test
@@ -31,12 +30,12 @@ class AbstractFactoryImplTest {
 
     @Test
     void createAuthenticationAbstractFactory() {
-        assertTrue(abstractFactory.createAuthenticationAbstractFactory() instanceof  AuthenticationAbstractFactory);
+        assertTrue(abstractFactory.createAuthenticationAbstractFactory() instanceof AuthenticationAbstractFactory);
     }
 
     @Test
     void createDBUtilityAbstractFactory() {
-        assertTrue(abstractFactory.createDBUtilityAbstractFactory() instanceof  DBUtilityAbstractFactory);
+        assertTrue(abstractFactory.createDBUtilityAbstractFactory() instanceof DBUtilityAbstractFactory);
     }
 
     @Test
@@ -46,7 +45,7 @@ class AbstractFactoryImplTest {
 
     @Test
     void createModelAbstractFactory() {
-        assertTrue(abstractFactory.createModelAbstractFactory() instanceof  ModelAbstractFactory);
+        assertTrue(abstractFactory.createModelAbstractFactory() instanceof ModelAbstractFactory);
     }
 
     @Test
@@ -61,7 +60,7 @@ class AbstractFactoryImplTest {
 
     @Test
     void createUserProfileAbstractFactory() {
-        assertTrue(abstractFactory.createUserProfileAbstractFactory() instanceof  UserProfileAbstractFactory);
+        assertTrue(abstractFactory.createUserProfileAbstractFactory() instanceof UserProfileAbstractFactory);
     }
 
     @Test
