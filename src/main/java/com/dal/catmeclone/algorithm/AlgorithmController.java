@@ -34,9 +34,11 @@ public class AlgorithmController {
             model.addAttribute("courseID",course.getCourseID());
             if(result){
                 logger.info("Groups created successfully.");
+                attributes.addFlashAttribute("message", "Groups created successfully.");
             }
             else{
-                logger.info("Groups not created successfully.");
+            	attributes.addFlashAttribute("errormessage", "Error occured !! Could not form groups.");
+                logger.info(" Could not form groups.");
             }
         } catch (UserDefinedSQLException e) {
             logger.warning(e.getLocalizedMessage());
@@ -47,6 +49,6 @@ public class AlgorithmController {
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }
-        return "survey/groupdata";
+        return "redirect:/survey/manage";
     }
 }
