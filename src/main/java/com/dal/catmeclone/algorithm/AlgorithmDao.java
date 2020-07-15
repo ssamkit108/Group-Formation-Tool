@@ -1,16 +1,19 @@
 package com.dal.catmeclone.algorithm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.model.SurveyQuestion;
+import com.dal.catmeclone.model.SurveyQuestionResponse;
 
 public interface AlgorithmDao {
-    List<String> getAllStudents(int courseid) throws UserDefinedSQLException;
+    public List<String> getAllStudents(int courseid) throws UserDefinedSQLException;
     
-    List<String> getAllResponsesOfAStudent(String bannerid, int courseid) throws UserDefinedSQLException;
+    public List<SurveyQuestionResponse> getAllResponsesOfAStudent(String bannerid, List<SurveyQuestion> listOfSurveyQuestions) throws UserDefinedSQLException;
 
-    List<String> getSurveyCriteria(int courseid) throws UserDefinedSQLException;
+    public List<SurveyQuestion> getSurveyQuestionsForCourse(int courseid) throws UserDefinedSQLException;
 
-    int getGroupSizeForCourse(int courseid) throws UserDefinedSQLException;
+    public int getGroupSizeForCourse(int courseidd) throws UserDefinedSQLException;
 
 }
