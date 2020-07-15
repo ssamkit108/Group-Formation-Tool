@@ -1,6 +1,6 @@
 package com.dal.catmeclone.model;
 
-public class ModelAbstractFactoryImpl implements ModelAbstractFactory{
+public class ModelAbstractFactoryImpl implements ModelAbstractFactory {
     @Override
     public Course crateCourse() {
         return new Course();

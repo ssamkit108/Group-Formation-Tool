@@ -1,53 +1,55 @@
 @charset "ISO-8859-1";
 
 body {
-	color: #999999;
-	font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-style: normal;
-	font-weight: 400;
-	letter-spacing: 0;
-	padding: 1rem;
-	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	-moz-font-feature-settings: "liga" on;
-	color: black;
+    color: #999999;
+    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+    padding: 1rem;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -moz-font-feature-settings: "liga" on;
+    color: black;
 }
 
 a {
-	text-decoration: none;
-	width: -webkit-fill-available;
-}
-p {
-	padding-top: 2px;
+    text-decoration: none;
+    width: -webkit-fill-available;
 }
 
-form{
-	display: content;
+p {
+    padding-top: 2px;
+}
+
+form {
+    display: content;
 }
 
 .boxes {
-	content: "";
-	display: table;
-	display: contents;
-	clear: both;
+    content: "";
+    display: table;
+    display: contents;
+    clear: both;
 }
+
 .cidiv {
-	float: left;
-	height: 470px;
-	width: 23%;
-	padding: 0 10px;
+    float: left;
+    height: 470px;
+    width: 23%;
+    padding: 0 10px;
 }
 
 .column1 {
-	float: left;
+    float: left;
     width: 48%;
     margin-right: 2px;
     margin-left: 10px;
     margin-top: 30px;
     margin-bottom: auto;
     border: double;
-	
+
 }
 
 
@@ -62,237 +64,230 @@ form{
 
 }
 
-.divscroll{
-	display: -webkit-inline-flex;
-	display: flex;
-	flex-wrap: wrap;
-	overflow: auto;
-	height: 589px;
+.divscroll {
+    display: -webkit-inline-flex;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    height: 589px;
 }
 
-.headerul{
-  list-style-type: none;
-  margin: 0;
-  padding: 2;
-  overflow: hidden;
-  
+.headerul {
+    list-style-type: none;
+    margin: 0;
+    padding: 2;
+    overflow: hidden;
+
 }
 
-.headerli{
-  float: left;
+.headerli {
+    float: left;
 }
 
 .cards {
-	display: -webkit-inline-flex;
-	display: flex;
-	flex-wrap: wrap;
-	list-style: none;
-	margin: 40px 0px 0px 0px;
-	padding: 5px;
+    display: -webkit-inline-flex;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 40px 0px 0px 0px;
+    padding: 5px;
 }
 
 .cards__item {
-	display: -webkit-box;
-	display: flex;
-	padding: 20px;
+    display: -webkit-box;
+    display: flex;
+    padding: 20px;
 }
 
-@media ( min-width : 40rem) {
-	.cards__item {
-		width: 50%;
-	}
+@media ( min-width: 40rem) {
+    .cards__item {
+        width: 50%;
+    }
 }
 
-@media ( min-width : 56rem) {
-	.cards__item {
-		width: 20%;
-		align-text: center;
-	}
+@media ( min-width: 56rem) {
+    .cards__item {
+        width: 20%;
+        align-text: center;
+    }
 }
 
 .card {
-	background-color: #cafbfb;
-	border-radius: 0.25rem;
-	box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.50);
-	display: -webkit-box;
-	display: block;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	flex-direction: column;
-	overflow: hidden;
-	width: -webkit-fill-available;
-	padding: 5px;
-	margin-bottom: 2px
+    background-color: #cafbfb;
+    border-radius: 0.25rem;
+    box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.50);
+    display: -webkit-box;
+    display: block;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    overflow: hidden;
+    width: -webkit-fill-available;
+    padding: 5px;
+    margin-bottom: 2px
 }
 
 .card_title {
-	/* color: #05224d; */
-	color: teal;
-	cursor: pointer;
-	font-size: 2.000rem;
-	letter-spacing: 2px;
-	text-transform: uppercase;
-	float: right;
-	margin: 0.5px;
-	width: fit-content;
-	font-weight: 600;
-	font-family: cursive;
+    /* color: #05224d; */
+    color: teal;
+    cursor: pointer;
+    font-size: 2.000rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    float: right;
+    margin: 0.5px;
+    width: fit-content;
+    font-weight: 600;
+    font-family: cursive;
 }
 
 .card_text {
-	-webkit-box-flex: 1;
-	flex: 1 1 auto;
-	font-size: 1.75rem;
-	line-height: 1.5;
-	margin-bottom: 0.25rem;
-	color: black;
-	margin-top: 0.5px;
-	margin: 0.5px;
-	margin-top: 2px;
-	margin-right: 0.5px;
-	margin-bottom: 0.5px;
-	margin-left: 0.5px;
-	font-family: sans-serif;
-	font-weight: 600;
-	width: fit-content;
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    font-size: 1.75rem;
+    line-height: 1.5;
+    margin-bottom: 0.25rem;
+    color: black;
+    margin-top: 0.5px;
+    margin: 0.5px;
+    margin-top: 2px;
+    margin-right: 0.5px;
+    margin-bottom: 0.5px;
+    margin-left: 0.5px;
+    font-family: sans-serif;
+    font-weight: 600;
+    width: fit-content;
 }
 
 .collapsible {
-	background-color: #777;
-	color: white;
-	cursor: pointer;
-	padding: 18px;
-	width: 100%;
-	border: none;
-	text-align: left;
-	outline: none;
-	font-size: 15px;
-	margin:1px;
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    margin: 1px;
 }
 
 .active, .collapsible:hover {
-	background-color: #555;
+    background-color: #555;
 }
 
 .content {
-	padding: 0 18px;
+    padding: 0 18px;
     display: none;
     overflow: auto;
     margin-top: 2px;
     background-color: azure;
     height: 120px;
-	
+
 }
 
-.coursedisplay
-{
-	text-align: center;
+.coursedisplay {
+    text-align: center;
     margin-top: 10%;
     text-shadow: blanchedalmond;
     color: darkblue;
 }
 
-.headercontainer{ 
-	background-color: #337ab7;
+.headercontainer {
+    background-color: #337ab7;
     border-color: #2e6da4;
-    margin-top:1px;
+    margin-top: 1px;
 }
 
-.headerlink{ 
-	
-   color:white;
+.headerlink {
+
+    color: white;
 }
 
-.bodycontainer
-{
-	padding-right: 15px;
+.bodycontainer {
+    padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
     margin-top: 70px;
-    
+
 }
 
 
-.logoutbutton{
-	background-color: #337ab7;
+.logoutbutton {
+    background-color: #337ab7;
     color: white;
 }
 
-.usernameheader
-{
-	float: left;
+.usernameheader {
+    float: left;
     color: black;
-   
+
     margin-bottom: -10px;
 }
 
-.normal
-{
-	font-weight: normal;
+.normal {
+    font-weight: normal;
 }
 
-.italic
-{
-	font-weight: normal;
-	font-style: italic;
-	font-size: 1.25rem;
+.italic {
+    font-weight: normal;
+    font-style: italic;
+    font-size: 1.25rem;
 }
 
 .borderless td, .borderless th {
     border: none;
     border-top: none;
 }
-.thead-dark th{
-	background-color: #337ab7;
-	color: white;
-	align-content: center;
-	align-items: center;
+
+.thead-dark th {
+    background-color: #337ab7;
+    color: white;
+    align-content: center;
+    align-items: center;
 }
 
-#surveyform
-{
-	display: contents;
+#surveyform {
+    display: contents;
 }
 
-hr{
-	margin-top: 2px;
+hr {
+    margin-top: 2px;
     margin-bottom: 2px;
 }
 
-.container-fluid{
-	padding-right: 0px;
+.container-fluid {
+    padding-right: 0px;
     padding-left: 0px;
 }
 
-label{
-	margin-top: auto;
+label {
+    margin-top: auto;
 }
 
 .publishcard {
-	background-color: #ffffff;
-	border-color:#2e6da4;
-	border-radius: 0.25rem;
-	box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.50);
-	display: -webkit-box;
-	display: block;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	flex-direction: column;
-	overflow: hidden;
-	width: -webkit-fill-available;
-	padding: 5px;
-	margin-bottom: 2px
+    background-color: #ffffff;
+    border-color: #2e6da4;
+    border-radius: 0.25rem;
+    box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.50);
+    display: -webkit-box;
+    display: block;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    overflow: hidden;
+    width: -webkit-fill-available;
+    padding: 5px;
+    margin-bottom: 2px
 }
 
-.publishcard .card_title
-{
-	color: #000000;
+.publishcard .card_title {
+    color: #000000;
 }
 
-.publishcard .card_text
-{
-	color: #400040;
+.publishcard .card_text {
+    color: #400040;
 }
 
 .nogroupdisplay

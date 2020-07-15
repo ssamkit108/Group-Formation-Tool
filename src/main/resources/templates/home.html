@@ -1,53 +1,46 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:th="https://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="https://www.thymeleaf.org">
 
- 
 
 <head>
-<meta charset="ISO-8859-1">
-<title>Home</title>
-<link
-    href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    rel="stylesheet" />
+    <meta charset="ISO-8859-1">
+    <title>Home</title>
+    <link
+            href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            rel="stylesheet"/>
 
- 
 
-<link rel="stylesheet" type="text/css" href="/css/general.css">
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div th:replace="header :: header"></div>
-    <div class="bodycontainer">
-        
-        <div style ="float:right">
-            <div sec:authorize="isAuthenticated()">
-                <div th:inline="text" class="float-left">
-                    <b>you have logged with the user:
-                        [[${#httpServletRequest.remoteUser}]]</b>
-                </div>
-                <br>
+<div th:replace="header :: header"></div>
+<div class="bodycontainer">
+
+    <div style="float:right">
+        <div sec:authorize="isAuthenticated()">
+            <div class="float-left" th:inline="text">
+                <b>you have logged with the user:
+                    [[${#httpServletRequest.remoteUser}]]</b>
             </div>
-        </div>
-        <div class="middle-box text-center ">
-
- 
-
             <br>
-            <div class="d-inline-flex p-2">
-                <h1>Welcome to Group 12 Tool. </h1>
-                <p>Managing all your courses
-                    </p>
-            </div>
-
- 
-
- 
-
         </div>
     </div>
+    <div class="middle-box text-center ">
 
- 
+
+        <br>
+        <div class="d-inline-flex p-2">
+            <h1>Welcome to Group 12 Tool. </h1>
+            <p>Managing all your courses
+            </p>
+        </div>
+
+
+    </div>
+</div>
+
 
 </body>
 </html>

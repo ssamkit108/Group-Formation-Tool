@@ -5,96 +5,95 @@ import java.io.PrintWriter;
 
 public class FileRelatedException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public FileRelatedException(String arg0) {
-		super(arg0);
-	}
+    public FileRelatedException(String arg0) {
+        super(arg0);
+    }
 
-	@Override
-	public synchronized Throwable fillInStackTrace() {
+    @Override
+    public synchronized Throwable fillInStackTrace() {
 
-		return super.fillInStackTrace();
-	}
+        return super.fillInStackTrace();
+    }
 
-	@Override
-	public synchronized Throwable getCause() {
+    @Override
+    public synchronized Throwable getCause() {
 
-		return super.getCause();
-	}
+        return super.getCause();
+    }
 
-	@Override
-	public String getLocalizedMessage() {
+    @Override
+    public String getLocalizedMessage() {
 
-		return super.getLocalizedMessage();
-	}
+        return super.getLocalizedMessage();
+    }
 
-	@Override
-	public String getMessage() {
+    @Override
+    public String getMessage() {
 
-		return super.getMessage();
-	}
+        return super.getMessage();
+    }
 
-	@Override
-	public StackTraceElement[] getStackTrace() {
+    @Override
+    public StackTraceElement[] getStackTrace() {
 
-		return super.getStackTrace();
-	}
+        return super.getStackTrace();
+    }
 
-	@Override
-	public synchronized Throwable initCause(Throwable arg0) {
+    @Override
+    public void setStackTrace(StackTraceElement[] arg0) {
 
-		return super.initCause(arg0);
-	}
+        super.setStackTrace(arg0);
+    }
 
-	@Override
-	public void printStackTrace() {
+    @Override
+    public synchronized Throwable initCause(Throwable arg0) {
 
-		super.printStackTrace();
-	}
+        return super.initCause(arg0);
+    }
 
-	@Override
-	public void printStackTrace(PrintStream arg0) {
+    @Override
+    public void printStackTrace() {
 
-		super.printStackTrace(arg0);
-	}
+        super.printStackTrace();
+    }
 
-	@Override
-	public void printStackTrace(PrintWriter arg0) {
+    @Override
+    public void printStackTrace(PrintStream arg0) {
 
-		super.printStackTrace(arg0);
-	}
+        super.printStackTrace(arg0);
+    }
 
-	@Override
-	public void setStackTrace(StackTraceElement[] arg0) {
+    @Override
+    public void printStackTrace(PrintWriter arg0) {
 
-		super.setStackTrace(arg0);
-	}
+        super.printStackTrace(arg0);
+    }
 
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
 
-		return super.toString();
-	}
+        return super.toString();
+    }
 
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
 
-		return super.clone();
-	}
+        return super.clone();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
 
-		return super.equals(obj);
-	}
+        return super.equals(obj);
+    }
 
-	
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		return super.hashCode();
-	}
+        return super.hashCode();
+    }
 
 }

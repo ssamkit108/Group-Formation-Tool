@@ -1,45 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+>
 <head>
- 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
- 	<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet" />
- 	<link rel="stylesheet" type="text/css" href="/css/general.css">
-<title>Admin DashBoard</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link
+            href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            rel="stylesheet"/>
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
+    <title>Admin DashBoard</title>
 </head>
 <body>
-	<div th:replace="admin/adminheader :: header"></div>
-	<div class="bodycontainer">
+<div th:replace="admin/adminheader :: header"></div>
+<div class="bodycontainer">
     <table>
-    	<thead>
-        	<tr>
-            	<th> Course ID: </th>
-            	<th> Course Name: </th>
-        	</tr>
-    	</thead>
-      <tbody>
-    	<tr th:if="${courses.empty}">
-            <td colspan="2"> No Courses Available </td>
+        <thead>
+        <tr>
+            <th> Course ID:</th>
+            <th> Course Name:</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${courses.empty}">
+            <td colspan="2"> No Courses Available</td>
         </tr>
         <tr th:each="c : ${courses}">
             <td><span th:text="${c.courseID}"> ID </span></td>
             <td><span th:text="${c.courseName}"> Name </span></td>
             <td>
-            <form action="#" th:action="@{/admin/adminDashboard}" th:object="${adminDashboard}" method=post>
-            <input type="hidden" th:value="${c.courseID}" name="courseID"/><button type="submit" name="action" value="remove">Remove</button>
-            <input type="hidden" th:value="${c.courseID}" name="courseID"/><button type="submit" name="action" value="assign">Assign Instructor</button>
-            </form>
+                <form action="#" method=post th:action="@{/admin/adminDashboard}" th:object="${adminDashboard}">
+                    <input name="courseID" th:value="${c.courseID}" type="hidden"/>
+                    <button name="action" type="submit" value="remove">Remove</button>
+                    <input name="courseID" th:value="${c.courseID}" type="hidden"/>
+                    <button name="action" type="submit" value="assign">Assign Instructor</button>
+                </form>
             </td>
         </tr>
-      </tbody>
-	</table>
-        <a href="/admin/courseCreationForm">Add Course</a>
-        
-     </div>
-     <div style="font-size: large; font-family: sans-serif">
- 	<p style="color: #ff0000; background-color: #ffffff" th:if="${instructorassigned}" th:text="${instructorassigned}">No error</p>
- 	</div>
+        </tbody>
+    </table>
+    <a href="/admin/courseCreationForm">Add Course</a>
+
+</div>
+<div style="font-size: large; font-family: sans-serif">
+    <p style="color: #ff0000; background-color: #ffffff" th:if="${instructorassigned}" th:text="${instructorassigned}">
+        No error</p>
+</div>
 </body>
 </html>

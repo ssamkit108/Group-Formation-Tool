@@ -231,8 +231,8 @@ public class CourseAdminSurveyController {
 		HashMap<String, List<User>> grp_info = null;
 		try {
 			grp_info = courseAdminSurveyService.retrievegroupinfo(course.getCourseID());
-		} catch (UserDefinedSQLException e1) {
-			e1.printStackTrace();
+		} catch (UserDefinedSQLException e) {
+			e.printStackTrace();
 		}
 
 		if (grp_info.isEmpty()) {
