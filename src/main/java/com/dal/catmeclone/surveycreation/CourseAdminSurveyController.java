@@ -1,11 +1,14 @@
 package com.dal.catmeclone.surveycreation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
@@ -43,7 +47,7 @@ public class CourseAdminSurveyController {
 	private static final String AJAX_HEADER_NAME = "X-Requested-With";
 	private static final String AJAX_HEADER_VALUE = "XMLHttpRequest";
 
-	
+
 	@GetMapping("/manage")
 	private String displaySurveyManagementPage(Model model, HttpSession session) {
 
@@ -67,7 +71,7 @@ public class CourseAdminSurveyController {
 				model.addAttribute("question", new BasicQuestion());
 				model.addAttribute("unsavedchanges", false);
 			}
-			
+
 			model.addAttribute("survey", survey);
 
 		} catch (UserDefinedSQLException e) {
@@ -212,11 +216,64 @@ public class CourseAdminSurveyController {
 			}
 			return "redirect:/survey/manage";
 		} catch (UserDefinedSQLException e) {
-		
+
 			attributes.addFlashAttribute("errormessage", "Some Error occurred. Couldn't save survey.");
 			return "redirect:/survey/manage";
 		}
 
+	}
+
+	@PostMapping("/groupinfo")
+	private String fetchgroupinfo(@RequestParam int courseid,Model model,RedirectAttributes attributes) {
+		CourseAdminSurveyService courseAdminSurveyService = surveyCreationAbstractFactory.createSurveyCreationService();
+		Course course = modelAbstractFactory.crateCourse();
+		course.setCourseID(courseid);
+		HashMap<String, List<User>> grp_info = null;
+		try {
+			grp_info = courseAdminSurveyService.retrievegroupinfo(course.getCourseID());
+		} catch (UserDefinedSQLException e1) {
+			e1.printStackTrace();
+		}
+
+		if (grp_info.isEmpty()) {
+			attributes.addFlashAttribute("errormessage", "Groups not yet formed for the course");
+			model.addAttribute("nogroupsformed", "Groups are not yet formed");
+			model.addAttribute("courseID",courseid);
+			return "survey/groupdata";
+		}
+		else {
+			LOGGER.info("Calling Services to fetch group details");
+			model.addAttribute("groups",grp_info);
+			model.addAttribute("courseID",courseid);
+			attributes.addFlashAttribute("message", "Fetched group data Successfully.");
+			return "survey/groupdata";
+		}
+	}
+	
+	@PostMapping("/viewresponse")
+	private String fetchresponse(@RequestParam int courseid,@RequestParam String bannerId, Model model,RedirectAttributes attributes) {
+		CourseAdminSurveyService courseAdminSurveyService = surveyCreationAbstractFactory.createSurveyCreationService();
+		Course course = modelAbstractFactory.crateCourse();
+		course.setCourseID(courseid);
+		HashMap<String,List<Object>> response = new HashMap<>();
+
+		try {
+			response = courseAdminSurveyService.fetchresponse(courseid, bannerId);
+		} catch (UserDefinedSQLException e1) {
+			e1.printStackTrace();
+		}
+
+		if (response.isEmpty()) {
+			attributes.addFlashAttribute("errormessage", "Responses not given by the student");
+			model.addAttribute("noresponsefound", "Response is not submitted");
+			return "survey/responsedata";
+		}
+		else {
+			LOGGER.info("Calling Services to fetch group details");
+			model.addAttribute("responses", response);
+			attributes.addFlashAttribute("message", "Fetched group data Successfully.");
+			return "survey/responsedata";
+		}
 	}
 
 }

@@ -47,7 +47,7 @@ public class ResponseController {
                 userSurveyResponse.setSurvey(survey);
                 userSurveyResponse.setSurveyResponse(responseService.getAllQuestion(courseid));
                 model.addAttribute("surveyQuestions", userSurveyResponse);
-                return "fillsurvey";
+                return "survey/fillsurvey";
             }
             else{
                 LOGGER.warning("survey is not published.");
