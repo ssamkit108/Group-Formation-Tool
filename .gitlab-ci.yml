@@ -1,16 +1,16 @@
 image: java:8-jdk
 stages:
- - build
- - test
- - deploy
+  - build
+  - test
+  - deploy
 
 before_script:
-    - wget https://mirrors.estointernet.in/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
-    - tar -xvf apache-maven-3.6.3-bin.tar.gz
-    - M2_HOME='./apache-maven-3.6.3'
-    - PATH="$M2_HOME/bin:$PATH"
-    - export PATH
-    
+  - wget https://mirrors.estointernet.in/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+  - tar -xvf apache-maven-3.6.3-bin.tar.gz
+  - M2_HOME='./apache-maven-3.6.3'
+  - PATH="$M2_HOME/bin:$PATH"
+  - export PATH
+
 build:
   stage: build
   script:
@@ -24,7 +24,7 @@ test:
     - mvn test
   tags:
     - dalfcs_docker_kvm
-    
+
 deploy-dev:
   stage: deploy
   script:

@@ -55,7 +55,7 @@
                         </div>
 
                         <div th:if="${surveyquestion.surveyQuestion.questionDetail.questionType.toString() == 'FREETEXT'}">
-                            <textarea  th:field="*{surveyResponse[__${i.index}__].response}" maxlength="500" required/>
+                            <textarea  th:field="*{surveyResponse[__${i.index}__].response}" maxlength="500" required></textarea>
                         </div>
 
                         <div th:if="${surveyquestion.surveyQuestion.questionDetail.questionType.toString() == 'MULTIPLECHOICEONE'}">
@@ -63,7 +63,7 @@
                                 <tbody>
                                 <tr th:each="option:${surveyquestion.surveyQuestion.questionDetail.optionList}">
                                     <td><input type="radio"
-                                               th:value="${option.optionText}"
+                                               th:value="${option.optionValue}"
                                                 th:field="*{surveyResponse[__${i.index}__].response}"
                                                 th:text="${option.optionText}" required></td>
                                 </tr>
@@ -78,7 +78,7 @@
                                 <tbody>
                                 <tr th:each="option:${surveyquestion.surveyQuestion.questionDetail.optionList}">
                                     <td><input type="checkbox"
-                                               th:value="${option.optionText}"
+                                               th:value="${option.optionValue}"
                                                th:field="*{surveyResponse[__${i.index}__].response}"
                                                th:text="${option.optionText}"></td>
                                 </tr>

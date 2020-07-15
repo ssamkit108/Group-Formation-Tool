@@ -14,12 +14,22 @@
 <body>
 	<div th:replace="header :: header"></div>
 	<div class="bodycontainer">
-		<h1 style="margin-top: -10px;">Categorized Groups</h1>
-		<hr>
-		<h5 class="usernameheader"
-			style="float: left; color: black; margin-bottom: 40px;">
-			Hello <span sec:authentication="name"></span>
-		</h5>
+		
+		<div class="row">
+			<div class="col-lg-8">
+				<h1 style="text-align: left;">Categorized Groups</h1>
+
+			</div>
+			<div class="col-lg-4">
+				<h5 class="usernameheader"
+					style="float: right; color: black; margin-top: 30px;">
+					Hello <span sec:authentication="name"></span> (<span
+						th:utext="${session.role}"></span>)
+				</h5>
+			</div>
+		</div>
+		<hr style="margin-top: 2px">
+		<div class="row" th:if="${groups ne null}">
 		<form th:action="@{/survey/groupinfo}" method="post" id="responseform"
 			th:object="${survey}" style="display: contents">
 			<div style="margin-top: 10px"
@@ -65,8 +75,9 @@
 				</table>
 			</div>
 		</form>
-		<div th:if="nogroupsformed ne null">
-			<div class="table-responsive">
+		</div>
+		<div class="row" th:if="nogroupsformed ne null">
+			<div class="table-responsive nogroupdisplay">
 				<br>
 				<h4 th:text=${nogroupsformed}></h4>
 			</div>
