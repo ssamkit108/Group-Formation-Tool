@@ -1,6 +1,7 @@
 package com.dal.catmeclone.surveycreation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,6 +12,8 @@ import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.Survey;
 import com.dal.catmeclone.model.SurveyQuestion;
+import com.dal.catmeclone.model.SurveyQuestionResponse;
+import com.dal.catmeclone.model.User;
 
 public class CourseAdminSurveyServiceImpl implements CourseAdminSurveyService {
 
@@ -67,6 +70,20 @@ public class CourseAdminSurveyServiceImpl implements CourseAdminSurveyService {
 		CourseAdminSurveyDao courseAdminSurveyDao = surveyCreationAbstractFactory.createSurveyCreationDao();
 		// Calling DAO method to publish the survey
 		return courseAdminSurveyDao.publishSurvey(surveyId);
+	}
+
+	@Override
+	public HashMap<String, List<User>> retrievegroupinfo(int courseid) throws UserDefinedSQLException {
+		CourseAdminSurveyDao courseAdminSurveyDao = surveyCreationAbstractFactory.createSurveyCreationDao();
+		HashMap<String, List<User>> grp_data = courseAdminSurveyDao.retrievegroupinfo(courseid);
+		return grp_data;
+	}
+
+	@Override
+	public HashMap<String, List<Object>> fetchresponse(int courseid, String bannerid) throws UserDefinedSQLException {
+		CourseAdminSurveyDao courseAdminSurveyDao = surveyCreationAbstractFactory.createSurveyCreationDao();
+		HashMap<String, List<Object>> response = courseAdminSurveyDao.fetchresponse(courseid, bannerid);
+		return response;
 	}
 
 }

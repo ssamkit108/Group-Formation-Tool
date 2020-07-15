@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
+
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
@@ -19,6 +21,7 @@ import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.Survey;
 import com.dal.catmeclone.model.SurveyQuestion;
+import com.dal.catmeclone.model.User;
 
 
 public class CourseAdminSurveyDaoImpl implements CourseAdminSurveyDao {
@@ -306,7 +309,6 @@ public class CourseAdminSurveyDaoImpl implements CourseAdminSurveyDao {
 	@Override
 	public boolean updateSurveyDetails(Survey survey, List<SurveyQuestion> surveyQuestionsToBeRemoved)
 			throws UserDefinedSQLException {
-		// TODO Auto-generated method stub
 		DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 
 		try {
@@ -369,6 +371,106 @@ public class CourseAdminSurveyDaoImpl implements CourseAdminSurveyDao {
 		}
 
 		return true;
+	}
+
+	@Override
+	public HashMap<String, List<User>> retrievegroupinfo(int courseid) throws UserDefinedSQLException {
+		DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+		CallableStatement GroupinfoResp = null;
+		HashMap<String, List<User>> grp_data = new HashMap<>();
+
+
+		try {
+			LOGGER.info("Retrieving from database");
+			connection = databaseUtil.connect();
+
+			GroupinfoResp = connection
+					.prepareCall("{call " + properties.getProperty("procedure.display_groups") + "}");
+			GroupinfoResp.setInt(1, courseid);
+
+			LOGGER.info("Querying Database to fetch groups formed for the course");
+			ResultSet groupinforesult = GroupinfoResp.executeQuery();
+			while (groupinforesult.next()) {
+				User usr = abstractFactory.createModelAbstractFactory().createUser();
+				usr.setBannerId(groupinforesult.getString("bannerid"));
+				usr.setFirstName(groupinforesult.getString("firstname"));
+				usr.setLastName(groupinforesult.getString("lastname"));
+				usr.setEmail(groupinforesult.getString("email"));
+				
+				String group_name = groupinforesult.getString("group_name");
+				
+				if (grp_data != null && grp_data.containsKey(group_name)) {
+					List<User> users = grp_data.get(group_name);
+					users.add(usr);
+					
+				}
+				else {
+					List<User> usrdata = new ArrayList<>();
+					usrdata.add(usr);
+					grp_data.put(group_name, usrdata);
+				}
+				
+			}
+			
+			LOGGER.info("Group Info:" + courseid + " fetched data from database successfully.");
+
+		} catch (SQLException e) {
+			LOGGER.warning("Error Encountered:" + e.getLocalizedMessage());
+			throw new UserDefinedSQLException("Error Encountered:" + e.getLocalizedMessage());
+		} finally {
+			if (null != GroupinfoResp) {
+				databaseUtil.terminateStatement(GroupinfoResp);
+			}
+		}
+	
+		return grp_data;
+	}
+
+	@Override
+	public HashMap<String, List<Object>> fetchresponse(int courseid, String bannerid) throws UserDefinedSQLException {
+		DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+		CallableStatement QuestionResponse = null;
+		HashMap<String,List<Object>> response = new HashMap<>();
+
+		try {
+			LOGGER.info("Retrieving from database");
+			connection = databaseUtil.connect();
+
+			QuestionResponse = connection
+					.prepareCall("{call " + properties.getProperty("procedure.fetch_survey_responses") + "}");
+			QuestionResponse.setInt(1, courseid);
+			QuestionResponse.setString(2, bannerid);
+
+			LOGGER.info("Querying Database to fetch responses given by a student");
+			ResultSet queresponse = QuestionResponse.executeQuery();
+			
+			while (queresponse.next()) {
+				
+				if (response != null && response.containsKey(queresponse.getString("questionText"))) {
+					List<Object> answers = response.get(queresponse.getString("questionText"));
+					answers.add(queresponse.getString("answer"));
+					
+				}
+				else {
+					List<Object> answers = new ArrayList<>();
+					answers.add(queresponse.getString("answer"));
+					response.put(queresponse.getString("questionText"), answers);
+				}
+				
+			}
+			
+			LOGGER.info("Question Response:" + bannerid + " fetched data from database successfully.");
+
+		} catch (SQLException e) {
+			LOGGER.warning("Error Encountered:" + e.getLocalizedMessage());
+			throw new UserDefinedSQLException("Error Encountered:" + e.getLocalizedMessage());
+		} finally {
+			if (null != QuestionResponse) {
+				databaseUtil.terminateStatement(QuestionResponse);
+			}
+		}
+		return response;
+
 	}
 
 }

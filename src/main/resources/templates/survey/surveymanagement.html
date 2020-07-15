@@ -392,7 +392,11 @@ h1 {
 				</div>
 			</div>
 		</div>
+		<form th:action="@{/survey/groupinfo}" method="post" id="responseform"
+					th:object="${survey}" style="display: contents">
 		<div th:if="${survey.publishedStatus eq true}" class="container">
+			<input type = "submit" class= "btn btn-success" value = "Group Data" th:formaction="@{/survey/groupinfo(courseid=${survey.course.courseID})}">
+		
 			<h3>Published Questions in Survey</h3>
 			<hr style="margin-top: 5px;">
 			<th:block th:each="question : ${survey.surveyQuestions}">
@@ -446,6 +450,7 @@ h1 {
 				</div>
 			</th:block>
 		</div>
+		</form>
 	</div>
 </body>
 </html>
