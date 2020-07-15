@@ -12,6 +12,7 @@ public class Survey {
     private List<SurveyQuestion> surveyQuestions;
     private boolean publishedStatus;
     private int groupSize;
+    private boolean groupFormed;
 
     public Survey() {
         super();
@@ -89,7 +90,15 @@ public class Survey {
         this.groupSize = groupSize;
     }
 
-    @Override
+    public boolean isGroupFormed() {
+		return groupFormed;
+	}
+
+	public void setGroupFormed(boolean groupFormed) {
+		this.groupFormed = groupFormed;
+	}
+
+	@Override
     public String toString() {
         return "Survey [surveyId=" + surveyId + ", course=" + course + ", surveyQuestions=" + surveyQuestions
                 + ", publishedStatus=" + publishedStatus + ", groupSize=" + groupSize + "]";

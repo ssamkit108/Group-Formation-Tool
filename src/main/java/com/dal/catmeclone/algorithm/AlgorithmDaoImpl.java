@@ -171,6 +171,47 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
         return groupSize;
     }
 
+    @Override
+    public boolean updateGroupsFormed(List<List<String>> groups, int courseId)
+            throws UserDefinedSQLException {
+        DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
+        CallableStatement setGroupFormedFlagStatement = null;
+        List<String> currentGroup;
+
+        try {
+            connection = databaseUtil.connect();
+            connection.setAutoCommit(false);
+
+            deleteGroups(courseId);
+
+            for(int i=0;i<groups.size();i++) {
+                currentGroup = new ArrayList<String>();
+                currentGroup = groups.get(i);
+                for(int j=0;j<currentGroup.size();j++) {
+                    insertUserIntoGroup(currentGroup.get(j), courseId, Integer.toString(i+1));
+                }
+            }
+        
+            setGroupFormedFlagStatement = connection
+                    .prepareCall("{call " + properties.getProperty("procedure.setGroupFormedFlagforSurvey") + "}");
+
+            setGroupFormedFlagStatement.setInt(1, courseId);
+            setGroupFormedFlagStatement.setBoolean(2, true);
+            
+            setGroupFormedFlagStatement.execute();
+            logger.info("Group Formed for the course and flag set successfully in database for the survey");
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            logger.warning("Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedSQLException("Error Encountered:" + e.getLocalizedMessage());
+        } finally {
+            databaseUtil.terminateConnection();
+        }
+        return true;
+    }
+    
     public void deleteGroups(int courseId) throws UserDefinedSQLException{
         DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         CallableStatement deleteGroupsStatement = null;
@@ -220,35 +261,5 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
                 databaseUtil.terminateStatement(insertUserStatement);
             }
         }
-    }
-
-    @Override
-    public boolean updateGroupsFormed(List<List<String>> groups, int courseId)
-            throws UserDefinedSQLException {
-        DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
-        List<String> currentGroup;
-
-        try {
-            connection = databaseUtil.connect();
-            connection.setAutoCommit(false);
-
-            deleteGroups(courseId);
-
-            for(int i=0;i<groups.size();i++) {
-                currentGroup = new ArrayList<String>();
-                currentGroup = groups.get(i);
-                for(int j=0;j<currentGroup.size();j++) {
-                    insertUserIntoGroup(currentGroup.get(j), courseId, Integer.toString(i+1));
-                }
-            }
-            connection.commit();
-
-        } catch (SQLException e) {
-            logger.warning("Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("Error Encountered:" + e.getLocalizedMessage());
-        } finally {
-            databaseUtil.terminateConnection();
-        }
-        return true;
     }
 }

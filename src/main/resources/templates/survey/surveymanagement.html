@@ -377,8 +377,36 @@ h1 {
 		</div>
 		
 		<div th:if="${survey.publishedStatus eq true}" class="container">
+		
+			<div id="message">
+				<div th:if="${errormessage ne null}" id="errordiv"
+					class="row alert alert-danger alert-dismissible">
+
+					<div class="col-lg-8">
+						<strong>Error! </strong> <span th:text='${errormessage}'></span>
+					</div>
+					<div style="float: right;">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close"
+							style="float: right;">&times;</a>
+					</div>
+				</div>
+				<div th:if="${message ne null}"
+					class="row alert alert-success alert-dismissible">
+
+					<div class="col-lg-8">
+						<strong>Success! </strong> <span th:text='${message}'></span>
+					</div>
+					<div style="float: right;">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close"
+							style="float: right;">&times;</a>
+					</div>
+				</div>
+			</div>
+		
 			<form th:action="@{/survey/groupinfo}" method="post" id="responseform"
 					th:object="${survey}" style="display: contents">
+					
+			
 			
 			<div class="row">
 				<div class="col-lg-6 justify-content-center">
@@ -388,8 +416,8 @@ h1 {
 				<div class="col-lg-3 justify-content-center" >
 					<a th:href="@{/algorithm}" class="btn btn-primary"> Form Groups </a>
 				</div>
-				<div class="col-lg-3 justify-content-center" >
-					<input type = "submit" class= "btn btn-success" value = "Group Data" th:formaction="@{/survey/groupinfo(courseid=${survey.course.courseID})}">
+				<div class="col-lg-3 justify-content-center" th:if="${survey.groupFormed eq true}">
+					<input type = "submit" class= "btn btn-success" value = "Display Groups" th:formaction="@{/survey/groupinfo(courseid=${survey.course.courseID})}">
 				</div>
 			</div>
 
