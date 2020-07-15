@@ -1,27 +1,25 @@
 package com.dal.catmeclone;
 
+import com.dal.catmeclone.DBUtility.PropertiesConfigUtil;
+import org.springframework.core.env.Environment;
+
 import java.io.IOException;
 import java.util.Properties;
-import org.springframework.core.env.Environment;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import com.dal.catmeclone.DBUtility.DataBaseConnection;
-import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
-import com.dal.catmeclone.DBUtility.PropertiesConfigUtil;
 
 public class SystemConfig {
 
-	private static SystemConfig uniqueInstance = null;
+    private static SystemConfig uniqueInstance = null;
 
-	private String resourceFilename = "application.properties";
+    private String resourceFilename = "application.properties";
 
     private Properties properties;
-	private Environment env;
-	private PropertiesConfigUtil propertiesConfig;
+    private Environment env;
+    private PropertiesConfigUtil propertiesConfig;
     private AbstractFactory abstractFactory;
 
     public SystemConfig() {
         super();
-        this.abstractFactory=new AbstractFactoryImpl();
+        this.abstractFactory = new AbstractFactoryImpl();
         this.properties = initializProperties(propertiesConfig);
     }
 
@@ -35,6 +33,14 @@ public class SystemConfig {
         return uniqueInstance;
     }
 
+    public static SystemConfig getUniqueInstance() {
+        return uniqueInstance;
+    }
+
+    public static void setUniqueInstance(SystemConfig uniqueInstance) {
+        SystemConfig.uniqueInstance = uniqueInstance;
+    }
+
     public Properties initializProperties(PropertiesConfigUtil propertiesConfig) {
         Properties property = null;
         try {
@@ -46,14 +52,6 @@ public class SystemConfig {
             e.printStackTrace();
         }
         return property;
-    }
-
-    public static SystemConfig getUniqueInstance() {
-        return uniqueInstance;
-    }
-
-    public static void setUniqueInstance(SystemConfig uniqueInstance) {
-        SystemConfig.uniqueInstance = uniqueInstance;
     }
 
     public String getResourceFilename() {
@@ -89,13 +87,13 @@ public class SystemConfig {
     }
 
 
-	public Properties getProperties() {
-		return properties;
-	}
+    public Properties getProperties() {
+        return properties;
+    }
 
-	public void setProperties(Properties properties) {
-		this.properties = properties;
-	}
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
 
 }

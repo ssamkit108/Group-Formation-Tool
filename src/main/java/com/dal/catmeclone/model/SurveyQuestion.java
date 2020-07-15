@@ -13,12 +13,10 @@ public class SurveyQuestion {
 	private BasicQuestion questionDetail;
 	private String algorithmLogicType;
 	private int logicConstraintValue;
-	private int weightage;
 
 	public SurveyQuestion() {
 		super();
 	}
-	
 	
 
 	/**
@@ -40,13 +38,12 @@ public class SurveyQuestion {
 	 * @param logicConstraintValue
 	 */
 	public SurveyQuestion(int surveyQuestionId, BasicQuestion questionDetail, String algorithmLogicType,
-			int logicConstraintValue, int weightage) {
+			int logicConstraintValue) {
 		super();
 		this.surveyQuestionId = surveyQuestionId;
 		this.questionDetail = questionDetail;
 		this.algorithmLogicType = algorithmLogicType;
 		this.logicConstraintValue = logicConstraintValue;
-		this.weightage= weightage;
 	}
 
 	/**
@@ -54,13 +51,15 @@ public class SurveyQuestion {
 	 * @param algorithmLogicType
 	 * @param logicConstraintValue
 	 */
-	public SurveyQuestion(BasicQuestion questionDetail, String algorithmLogicType, int logicConstraintValue, int weightage) {
+	public SurveyQuestion(BasicQuestion questionDetail, String algorithmLogicType, int logicConstraintValue) {
 		super();
 		this.questionDetail = questionDetail;
 		this.algorithmLogicType = algorithmLogicType;
 		this.logicConstraintValue = logicConstraintValue;
-		this.weightage= weightage;
+
 	}
+	
+
 
 	public int getSurveyQuestionId() {
 		return surveyQuestionId;
@@ -94,13 +93,7 @@ public class SurveyQuestion {
 		this.logicConstraintValue = logicConstraintValue;
 	}
 	
-	public int getWeightage() {
-		return weightage;
-	}
 
-	public void setWeightage(int weightage) {
-		this.weightage = weightage;
-	}
 
 
 

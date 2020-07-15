@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+>
 <head>
- 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
- 	<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet" />
- 	<link rel="stylesheet" type="text/css" href="/css/general.css">
-<style>
-body {text-align: center;}
-</style>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link
+            href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            rel="stylesheet"/>
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="admin/adminheader :: header"></div>
-	<div class="bodycontainer">
-	<h1>Course already exists</h1>
-	<a href="/admin/adminDashboard">Return to dashboard</a>
-	</div>
+<div class="bodycontainer">
+    <h1>Course already exists</h1>
+    <a href="/admin/adminDashboard">Return to dashboard</a>
+</div>
 </body>
 </html>

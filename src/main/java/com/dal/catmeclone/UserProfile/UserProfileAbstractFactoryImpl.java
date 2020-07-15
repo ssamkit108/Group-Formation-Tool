@@ -1,6 +1,6 @@
 package com.dal.catmeclone.UserProfile;
 
-public class UserProfileAbstractFactoryImpl implements UserProfileAbstractFactory{
+public class UserProfileAbstractFactoryImpl implements UserProfileAbstractFactory {
     @Override
     public UserService createUserService() {
         return new UserServiceImpl();
