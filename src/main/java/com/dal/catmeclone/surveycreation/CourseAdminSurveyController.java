@@ -75,6 +75,11 @@ public class CourseAdminSurveyController {
 			model.addAttribute("errormessage", e.getLocalizedMessage());
 			return "error";
 		}
+		catch (Exception e1) {
+			// Handling Error occurred by throwing to Error view with user defined error message.
+			model.addAttribute("errormessage", "Some error occured. Please try again later");
+			return "error";
+		}
 		return "survey/surveymanagement";
 	}
 

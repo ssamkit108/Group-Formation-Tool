@@ -5,6 +5,10 @@ import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.model.BasicQuestion;
+import com.dal.catmeclone.model.QuestionType;
+import com.dal.catmeclone.model.SurveyQuestion;
+import com.dal.catmeclone.model.SurveyQuestionResponse;
 import com.dal.catmeclone.surveyresponse.ResponseDaoImpl;
 
 import java.sql.CallableStatement;
@@ -18,7 +22,7 @@ import java.util.logging.Logger;
 
 public class AlgorithmDaoImpl implements AlgorithmDao {
 
-	Logger LOGGER = Logger.getLogger(ResponseDaoImpl.class.getName());
+	Logger LOGGER = Logger.getLogger(AlgorithmDaoImpl.class.getName());
 
 	AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
 	DBUtilityAbstractFactory dbUtilityAbstractFactory = abstractFactory.createDBUtilityAbstractFactory();
@@ -26,7 +30,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 
 	private DataBaseConnection DBUtil;
 	private Connection connection;
-	ResultSet rs;
+	ResultSet resultSet;
 
 	// Should Refine this functions to another class
 	@Override
@@ -43,10 +47,10 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 					.prepareCall("{call " + properties.getProperty("procedure.getAllStudentsFromSurvey") + "}");
 			statement.setInt(1, courseid);
 			LOGGER.info("Querying Database to fetch list of question for the survey");
-			rs = statement.executeQuery();
+			resultSet = statement.executeQuery();
 
-			while (rs.next()) {
-				surveySubmittedStudents.add(rs.getString("bannerid"));
+			while (resultSet.next()) {
+				surveySubmittedStudents.add(resultSet.getString("bannerid"));
 			}
 
 		} catch (SQLException e) {
@@ -63,26 +67,39 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 	}
 
 	@Override
-	public List<String> getAllResponsesOfAStudent(String bannerid, int courseid) throws UserDefinedSQLException {
+	public List<SurveyQuestionResponse> getAllResponsesOfAStudent(String bannerid, List<SurveyQuestion> listOfSurveyQuestions) throws UserDefinedSQLException {
 
 		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
-		List<String> responseList = new ArrayList<String>();
+		List<SurveyQuestionResponse> userresponse = new ArrayList<SurveyQuestionResponse>();
+	
 
 		CallableStatement statement = null;
 		try {
 			connection = DBUtil.connect();
 			LOGGER.info("Retrieving from database");
 			statement = connection
-					.prepareCall("{call " + properties.getProperty("procedure.getAllResponsesOfAStudent") + "}");
-			statement.setString(1, bannerid);
-			statement.setInt(2, courseid);
-			LOGGER.info("Querying Database to fetch list of question for the survey");
-			rs = statement.executeQuery();
-
-			while (rs.next()) {
-				responseList.add(rs.getString("Answer"));
+					.prepareCall("{call " + properties.getProperty("procedure.getResponsesOfAStudentForQuestion") + "}");
+			for(SurveyQuestion surveyQuestion: listOfSurveyQuestions)
+			{
+				statement.setString(1, bannerid);
+				statement.setInt(2, surveyQuestion.getSurveyQuestionId());
+				LOGGER.info("Querying Database to fetch list of response for certain survey question");
+				resultSet = statement.executeQuery();
+				ArrayList<Object> responsesForQuestion = new ArrayList<Object>();
+				if(surveyQuestion.getQuestionDetail().getQuestionType()==QuestionType.FREETEXT) {
+					if (resultSet.next()) {
+						responsesForQuestion.add(resultSet.getString(1));
+					}
+				}
+				else {
+					while (resultSet.next()) {
+						responsesForQuestion.add(resultSet.getInt(1));
+					}
+				}
+				
+				SurveyQuestionResponse response = new SurveyQuestionResponse(surveyQuestion, responsesForQuestion);
+				userresponse.add(response);
 			}
-
 		} catch (SQLException e) {
 			// Handling Exception and Throwing Customized Exception
 			LOGGER.warning("Error Encountered:" + e.getLocalizedMessage());
@@ -93,26 +110,29 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 			}
 			DBUtil.terminateConnection();
 		}
-		return responseList;
+		return userresponse;
 	}
 
 	@Override
-	public List<String> getSurveyCriteria(int courseid) throws UserDefinedSQLException {
+	public List<SurveyQuestion> getSurveyQuestionsForCourse(int courseid) throws UserDefinedSQLException {
 		DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
-		List<String> responseCriteria = new ArrayList<String>();
+		List<SurveyQuestion> listOfsurveyQuestion = new ArrayList<SurveyQuestion>();
 
 		CallableStatement statement = null;
 		try {
 			connection = DBUtil.connect();
 			LOGGER.info("Retrieving from database");
 			statement = connection
-					.prepareCall("{call " + properties.getProperty("procedure.getSurveyQuestionsCriteria") + "}");
+					.prepareCall("{call " + properties.getProperty("procedure.getSurveyQuestionsForCourseId") + "}");
 			statement.setInt(1, courseid);
 			LOGGER.info("Querying Database to fetch list of question for the survey");
-			rs = statement.executeQuery();
+			resultSet = statement.executeQuery();
 
-			while (rs.next()) {
-				responseCriteria.add(rs.getString("algorithmType"));
+			while (resultSet.next()) {
+				BasicQuestion questionDetail = new BasicQuestion(resultSet.getInt(4), QuestionType.valueOf(resultSet.getString(5)));
+				SurveyQuestion surveyQuestion = new SurveyQuestion(questionDetail, resultSet.getString(2), resultSet.getInt(3));
+				surveyQuestion.setSurveyQuestionId(resultSet.getInt(1));
+				listOfsurveyQuestion.add(surveyQuestion);
 			}
 
 		} catch (SQLException e) {
@@ -125,7 +145,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 			}
 			DBUtil.terminateConnection();
 		}
-		return responseCriteria;
+		return listOfsurveyQuestion;
 	}
 
 	@Override
@@ -143,9 +163,9 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 			statement.setInt(1, courseid);
 			LOGGER.info("Querying Database to fetch list of question for the survey");
 
-			rs = statement.executeQuery();
-			rs.next();
-			groupSize = rs.getInt(1);
+			resultSet = statement.executeQuery();
+			resultSet.next();
+			groupSize = resultSet.getInt(1);
 
 		} catch (SQLException e) {
 			// Handling Exception and Throwing Customized Exception

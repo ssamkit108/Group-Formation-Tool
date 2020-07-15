@@ -61,6 +61,18 @@ public class SurveyQuestion {
 		this.logicConstraintValue = logicConstraintValue;
 		this.weightage= weightage;
 	}
+	
+	/**
+	 * @param questionDetail
+	 * @param algorithmLogicType
+	 * @param logicConstraintValue
+	 */
+	public SurveyQuestion(BasicQuestion questionDetail, String algorithmLogicType, int logicConstraintValue) {
+		super();
+		this.questionDetail = questionDetail;
+		this.algorithmLogicType = algorithmLogicType;
+		this.logicConstraintValue = logicConstraintValue;
+	}
 
 	public int getSurveyQuestionId() {
 		return surveyQuestionId;

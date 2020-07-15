@@ -78,6 +78,16 @@ public class BasicQuestion {
 		this.creationDate = creationDate;
 		this.createdByInstructor = createdByInstructor;
 	}
+	
+	
+
+	public BasicQuestion(int questionId, QuestionType questionType) {
+		super();
+		this.questionId = questionId;
+		this.questionType = questionType;
+	}
+
+
 
 	/**
 	 * @return the questionId
