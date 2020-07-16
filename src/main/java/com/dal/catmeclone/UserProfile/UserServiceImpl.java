@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     Boolean flag = false;
 
     @Override
-    public boolean createUser(User user) throws ValidationException, DuplicateEntityException, SQLException, UserDefinedSQLException {
+    public boolean createUser(User user) throws ValidationException, DuplicateEntityException, SQLException, UserDefinedSQLException,Exception {
         userDao = userProfileAbstractFactory.createUserDao();
         validatePassword = validationAbstractFactory.createValidatePassword();
         validatePassword.validatepassword(user);

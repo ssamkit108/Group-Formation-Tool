@@ -22,7 +22,7 @@ public class CourseManagementTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void insertCourseTest() throws UserDefinedSQLException, SQLException {
+    public void insertCourseTest() throws UserDefinedSQLException, SQLException,Exception {
         Course c = modelfact.createCourse();
         CourseManagementDao mock = abstractFactoryTest.createAdminAbstractFactory().createCourseManagementDao();
         c.setCourseID(123);
@@ -32,7 +32,7 @@ public class CourseManagementTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void deleteCourseTest() throws UserDefinedSQLException, SQLException {
+    public void deleteCourseTest() throws UserDefinedSQLException, SQLException,Exception {
         Course c = modelfact.createCourse();
         CourseManagementDao mock = abstractFactoryTest.createAdminAbstractFactory().createCourseManagementDao();
         c.setCourseID(123);
@@ -42,7 +42,7 @@ public class CourseManagementTest {
     ;
 
     @Test
-    public void getAllCoursesTest() throws UserDefinedSQLException, SQLException {
+    public void getAllCoursesTest() throws UserDefinedSQLException, SQLException ,Exception{
         Course c = modelfact.createCourse();
         CourseManagementDao mock = abstractFactoryTest.createAdminAbstractFactory().createCourseManagementDao();
         c.setCourseID(123);
@@ -57,7 +57,7 @@ public class CourseManagementTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void checkCourseExists() throws UserDefinedSQLException, SQLException {
+    public void checkCourseExists() throws UserDefinedSQLException, SQLException,Exception {
         Course c = modelfact.createCourse();
         CourseManagementDao mock = abstractFactoryTest.createAdminAbstractFactory().createCourseManagementDao();
         c.setCourseID(123);
