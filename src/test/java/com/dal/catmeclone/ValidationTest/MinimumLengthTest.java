@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 public class MinimumLengthTest {
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     ValidationPolicy CheckMinimumLength = abstractFactoryTest.createValidationAbstractFactory().createMinimumLength();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
 
     @Test
     public void TestMinimumLength() throws Exception {
-        User u = modelfact.createUser();
+        User u = modelAbstractFactory.createUser();
         u.setPassword("Hello");
         CheckMinimumLength.setValue("1");
         Assert.assertTrue(CheckMinimumLength.isValid(u));

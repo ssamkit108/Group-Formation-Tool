@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class UserDaoImpl implements UserDao {
 
-    private final Logger LOGGER = Logger.getLogger(SignupController.class.getName());
+    private final Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     EncryptAbstractFactory encryptAbstractFactory = abstractFactory.createEncryptAbstractFactory();
     DBUtilityAbstractFactory dbUtilityAbstractFactory = abstractFactory.createDBUtilityAbstractFactory();
@@ -158,7 +158,7 @@ public class UserDaoImpl implements UserDao {
             LOGGER.warning("SQL error generated while getting all the users.");
             throw new UserDefinedException(e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Unable to execute query to get all courses");
+            LOGGER.severe("Unable to execute query to get all courses");
             throw new Exception(e.getLocalizedMessage());
         } finally {
             if (null != statement) {

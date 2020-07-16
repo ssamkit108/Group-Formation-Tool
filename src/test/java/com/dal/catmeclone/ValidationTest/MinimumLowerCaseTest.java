@@ -13,11 +13,11 @@ class MinimumLowerCaseTest {
 
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     ValidationPolicy checklower = abstractFactoryTest.createValidationAbstractFactory().createMinimumLower();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
 
     @Test
     public void TestMinimumUpper() throws Exception {
-        User u = modelfact.createUser();
+        User u = modelAbstractFactory.createUser();
         u.setPassword("SaMkit");
         checklower.setValue("2");
         Assert.assertTrue(checklower.isValid(u));

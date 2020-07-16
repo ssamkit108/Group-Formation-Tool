@@ -12,11 +12,11 @@ class SetNotAllowTest {
 
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     ValidationPolicy checknotallow = abstractFactoryTest.createValidationAbstractFactory().createSetNotAllow();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
 
     @Test
     void TestSetNotAllow() throws Exception {
-        User u = modelfact.createUser();
+        User u = modelAbstractFactory.createUser();
         u.setPassword("Sam");
         checknotallow.setValue("abc");
         Assert.assertTrue(!checknotallow.isValid(u));

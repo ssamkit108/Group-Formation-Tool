@@ -42,9 +42,13 @@
                 </div>
             </div>
             <br/>
+
             <div class="validation-message alert alert-danger"
-                 role="alert" th:if="${param.error}">Banner
-                ID/Password is not valid.
+                 role="alert" th:if="${param.error}">
+                 Banner ID/Password is not valid.
+                <h1 th:text="${error}">
+
+                </h1>
             </div>
 
             <div class="validation-message alert alert-danger"

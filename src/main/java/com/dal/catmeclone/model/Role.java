@@ -10,48 +10,29 @@ public class Role {
         super();
     }
 
-    /**
-     * @param roleName
-     */
     public Role(String roleName) {
         super();
         this.roleName = roleName;
     }
 
-    /**
-     * @param roleId
-     * @param roleName
-     */
     public Role(int roleId, String roleName) {
         super();
         this.roleId = roleId;
         this.roleName = roleName;
     }
 
-    /**
-     * @return the roleId
-     */
     public int getRoleId() {
         return roleId;
     }
 
-    /**
-     * @param roleId the roleId to set
-     */
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
 
-    /**
-     * @return the roleName
-     */
     public String getRoleName() {
         return roleName;
     }
 
-    /**
-     * @param roleName the roleName to set
-     */
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }

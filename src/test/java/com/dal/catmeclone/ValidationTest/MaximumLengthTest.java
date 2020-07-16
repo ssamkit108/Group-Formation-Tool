@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 public class MaximumLengthTest {
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     ValidationPolicy CheckMaximumLength = abstractFactoryTest.createValidationAbstractFactory().createMaximumLength();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
 
     @Test
     public void TestMaximumLength() throws Exception {
-        User u = modelfact.createUser();
+        User u = modelAbstractFactory.createUser();
         u.setPassword("Hello");
         CheckMaximumLength.setValue("6");
         Assert.assertTrue(CheckMaximumLength.isValid(u));

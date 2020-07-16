@@ -44,7 +44,7 @@ public class ForgotPasswordController {
             modelAndView.addObject("message", e.getLocalizedMessage());
             return modelAndView;
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             ModelAndView modelAndView = new ModelAndView("forgotpassword");
             modelAndView.addObject("message", e.getLocalizedMessage());
             return modelAndView;
@@ -69,7 +69,7 @@ public class ForgotPasswordController {
         } catch (Exception e) {
             ModelAndView modelAndView1;
             modelAndView1 = new ModelAndView("forgotpassword");
-            LOGGER.warning(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             modelAndView1.addObject("message", e.getLocalizedMessage());
             return modelAndView1;
         }
@@ -103,6 +103,7 @@ public class ForgotPasswordController {
             modelAndView.addObject("message", e.getMessage());
             return modelAndView;
         } catch (Exception e) {
+            LOGGER.severe(e.getLocalizedMessage());
             ModelAndView modelAndView;
             modelAndView = new ModelAndView("ResetPassword");
             modelAndView.addObject("bannerid", BannerID);

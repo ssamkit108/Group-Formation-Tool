@@ -4,19 +4,16 @@ public class SurveyDisplayGroupAbstractFactoryImpl implements SurveyDisplayGroup
 
 	@Override
 	public SurveyDisplayGroupService createSurveyDisplayGroupService() {
-		// TODO Auto-generated method stub
 		return new SurveyDisplayGroupServiceImpl();
 	}
 
 	@Override
 	public SurveyDisplayGroupService createSurveyDisplayGroupService(SurveyDisplayGroupDao surveyDisplayGroupDao) {
-		// TODO Auto-generated method stub
-		return new SurveyDisplayGroupServiceImpl();
+		return new SurveyDisplayGroupServiceImpl(surveyDisplayGroupDao);
 	}
 
 	@Override
 	public SurveyDisplayGroupDao createSurveyDisplayGroupDao() {
-		// TODO Auto-generated method stub
 		return new SurveyDisplayGroupDaoImpl();
 	}
 

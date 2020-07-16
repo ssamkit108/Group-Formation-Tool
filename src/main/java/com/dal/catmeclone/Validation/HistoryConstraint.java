@@ -52,7 +52,7 @@ public class HistoryConstraint implements ValidationPolicy {
             LOGGER.warning("Error in loading Password History. ");
             throw new NumberFormatException(e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Error in loading Password History. ");
+            LOGGER.severe("Error in loading Password History. ");
             throw new Exception(e.getLocalizedMessage());
         }
     }

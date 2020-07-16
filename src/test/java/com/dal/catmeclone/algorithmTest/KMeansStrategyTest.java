@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 public class KMeansStrategyTest {
 
 	AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
     final AlgorithmDao algorithmDaoImpl;
     KMeansStrategy kmeansStrategy;
     
@@ -33,7 +33,7 @@ public class KMeansStrategyTest {
     
     @Test
     public void formatGroupsForCourseTest() throws Exception{
-    	Course course = modelfact.createCourse();
+    	Course course = modelAbstractFactory.createCourse();
         course.setCourseID(123);
         List<List<String>> groups = new ArrayList<>();
         List<String> firstGroup = new ArrayList<String>();

@@ -39,7 +39,7 @@ public class ResponseServiceImpl implements ResponseService {
             LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
             throw new UserDefinedException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
+            LOGGER.severe("Generic error encountered" + e.getLocalizedMessage());
             throw new Exception("Generic error encountered" + e.getLocalizedMessage());
         }
     }
@@ -52,7 +52,7 @@ public class ResponseServiceImpl implements ResponseService {
             LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
             throw new UserDefinedException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
+            LOGGER.severe("Generic error encountered" + e.getLocalizedMessage());
             throw new Exception("Generic error encountered" + e.getLocalizedMessage());
         }
     }
@@ -66,7 +66,7 @@ public class ResponseServiceImpl implements ResponseService {
             LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
             throw new UserDefinedException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
+            LOGGER.severe("Generic error encountered" + e.getLocalizedMessage());
             throw new Exception("Generic error encountered" + e.getLocalizedMessage());
         }
     }
@@ -85,7 +85,7 @@ public class ResponseServiceImpl implements ResponseService {
             LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
             throw new UserDefinedException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
+            LOGGER.severe("Generic error encountered" + e.getLocalizedMessage());
             throw new Exception("Generic error encountered" + e.getLocalizedMessage());
         }
 

@@ -61,21 +61,22 @@ public class SignupController {
                 return modelAndView;
             }
         } catch (DuplicateEntityException e) {
-            ModelAndView m = new ModelAndView("signup");
-            m.addObject("message", e.getMessage());
-            return m;
+            ModelAndView modelAndView = new ModelAndView("signup");
+            modelAndView.addObject("message", e.getMessage());
+            return modelAndView;
         } catch (UserDefinedException e) {
-            ModelAndView m = new ModelAndView("signup");
-            m.addObject("message", e.getMessage());
-            return m;
+            ModelAndView modelAndView = new ModelAndView("signup");
+            modelAndView.addObject("message", e.getMessage());
+            return modelAndView;
         } catch (ValidationException e) {
-            ModelAndView m = new ModelAndView("signup");
-            m.addObject("message", e.getMessage());
-            return m;
+            ModelAndView modelAndView = new ModelAndView("signup");
+            modelAndView.addObject("message", e.getMessage());
+            return modelAndView;
         } catch (Exception e) {
-            ModelAndView m = new ModelAndView("signup");
-            m.addObject("message", e.getLocalizedMessage());
-            return m;
+            LOGGER.severe(e.getLocalizedMessage());
+            ModelAndView modelAndView = new ModelAndView("signup");
+            modelAndView.addObject("message", e.getLocalizedMessage());
+            return modelAndView;
         }
     }
 }

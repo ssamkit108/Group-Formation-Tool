@@ -12,12 +12,21 @@ import com.dal.catmeclone.surveycreation.CourseAdminSurveyController;
 
 public class SurveyDisplayGroupServiceImpl implements SurveyDisplayGroupService {
 
-	private Logger LOGGER = Logger.getLogger(CourseAdminSurveyController.class.getName());
+	private Logger LOGGER = Logger.getLogger(SurveyDisplayGroupServiceImpl.class.getName());
 	
 	private AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
 	private SurveyDisplayGroupAbstractFactory surveyDisplayGroupAbstractFactory = abstractFactory.createSurveyDisplayGroupAbstractFactory();
 	private SurveyDisplayGroupDao surveyDisplayGroupDao = surveyDisplayGroupAbstractFactory.createSurveyDisplayGroupDao();
-	 
+
+	public SurveyDisplayGroupServiceImpl() {
+		super();
+	}
+
+	public SurveyDisplayGroupServiceImpl(SurveyDisplayGroupDao surveyDisplayGroupDao) {
+		super();
+		this.surveyDisplayGroupDao = surveyDisplayGroupDao;
+	}
+
 	@Override
 	public HashMap<String, List<User>> retrievegroupinfo(int courseid) throws UserDefinedException {
 		LOGGER.info("Retrieving Details for all the groups in database");

@@ -34,7 +34,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
 	public void resetlink(String username) throws SQLException, Exception {
        
-        if (forgotPasswordDao.checkexist(username)) {
+        if (forgotPasswordDao.checkExist(username)) {
             LOGGER.info("Banner Id:" + username + " validated in successfully.");
             String token = generateToken();
             forgotPasswordDao.updateToken(username, token);
@@ -52,7 +52,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     @Override
     public String validateToken(String confirmationToken) throws SQLException, Exception {
         
-        String bannerid = forgotPasswordDao.checktokenexist(confirmationToken);
+        String bannerid = forgotPasswordDao.checkTokenExist(confirmationToken);
         if (!bannerid.isEmpty() && bannerid != null) {
             return bannerid;
         } else {
