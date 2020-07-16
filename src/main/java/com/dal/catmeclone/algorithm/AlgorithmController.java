@@ -2,7 +2,7 @@ package com.dal.catmeclone.algorithm;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.Course;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +38,7 @@ public class AlgorithmController {
                 attributes.addFlashAttribute("errormessage", "Error occured !! Could not form groups.");
                 LOGGER.info(" Could not form groups.");
             }
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning(e.getLocalizedMessage());
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";

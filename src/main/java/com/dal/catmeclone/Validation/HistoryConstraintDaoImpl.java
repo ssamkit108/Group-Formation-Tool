@@ -4,7 +4,7 @@ import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.User;
 
 import java.sql.CallableStatement;
@@ -28,7 +28,7 @@ public class HistoryConstraintDaoImpl implements HistoryConstraintDao {
     private List<String> PasswordList;
 
     @Override
-    public List<String> fetchPasswordList(User u, int limit) throws UserDefinedSQLException, SQLException {
+    public List<String> fetchPasswordList(User u, int limit) throws UserDefinedException, SQLException {
         try {
             PasswordList = new ArrayList<String>();
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
@@ -43,9 +43,9 @@ public class HistoryConstraintDaoImpl implements HistoryConstraintDao {
                 PasswordList.add(resultSet.getString("password"));
             }
             return PasswordList;
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("Error in loading Password History. ");
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            throw new UserDefinedException(e.getLocalizedMessage());
         } catch (SQLException e) {
             LOGGER.warning("Error in loading Password History. ");
             throw new SQLException(e.getLocalizedMessage());
@@ -56,9 +56,9 @@ public class HistoryConstraintDaoImpl implements HistoryConstraintDao {
                 if (connection != null) {
                     DBUtil.terminateConnection();
                 }
-            } catch (UserDefinedSQLException e) {
+            } catch (UserDefinedException e) {
                 LOGGER.warning("Error in loading Password History. ");
-                throw new UserDefinedSQLException(e.getLocalizedMessage());
+                throw new UserDefinedException(e.getLocalizedMessage());
             }
 
         }

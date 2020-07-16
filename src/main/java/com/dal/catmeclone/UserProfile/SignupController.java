@@ -3,7 +3,7 @@ package com.dal.catmeclone.UserProfile;
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.exceptionhandler.ValidationException;
 import com.dal.catmeclone.model.User;
 import org.springframework.stereotype.Controller;
@@ -36,14 +36,15 @@ public class SignupController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ModelAndView processSignup(ModelMap model, User user,
                                       @RequestParam(name = "passwordConfirmation") String passwordConfirm, RedirectAttributes redirectAttributes)
-            throws SQLException, ValidationException, UserDefinedSQLException {
+            throws SQLException, ValidationException, UserDefinedException {
         boolean success = false;
         userservice = userProfileAbstractFactory.createUserService();
 
         try {
             ModelAndView modelAndView;
-
+            
             if (user.getPassword().equals(passwordConfirm)) {
+            	LOGGER.info("Accessing Resource to create user account");
                 success = userservice.createUser(user);
                 if (success) {
                     modelAndView = new ModelAndView("login");
@@ -63,7 +64,7 @@ public class SignupController {
             ModelAndView m = new ModelAndView("signup");
             m.addObject("message", e.getMessage());
             return m;
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             ModelAndView m = new ModelAndView("signup");
             m.addObject("message", e.getMessage());
             return m;

@@ -2,16 +2,19 @@ package com.dal.catmeclone.surveycreation;
 
 public class SurveyCreationAbstractFactoryImpl implements SurveyCreationAbstractFactory {
 
-    @Override
-    public CourseAdminSurveyService createSurveyCreationService() {
+	@Override
+	public CourseAdminSurveyDao createCourseAdminSurveyDao() {
+		return new CourseAdminSurveyDaoImpl();
+	}
 
-        return new CourseAdminSurveyServiceImpl();
-    }
+	@Override
+	public CourseAdminSurveyService createCourseAdminSurveyService() {
+		return new CourseAdminSurveyServiceImpl();
+	}
 
-    @Override
-    public CourseAdminSurveyDao createSurveyCreationDao() {
-
-        return new CourseAdminSurveyDaoImpl();
-    }
+	@Override
+	public CourseAdminSurveyService createCourseAdminSurveyService(CourseAdminSurveyDao courseAdminSurveyDao) {
+		return new CourseAdminSurveyServiceImpl(courseAdminSurveyDao);
+	}
 
 }

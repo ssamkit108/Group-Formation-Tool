@@ -1,53 +1,49 @@
 package com.dal.catmeclone.coursesTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.course.CoursesDao;
 import com.dal.catmeclone.model.Course;
+import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.User;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
-
 import java.util.ArrayList;
 
 public class CourseDaoMock implements CoursesDao {
 
-    int courseid;
-    String courseName;
     ArrayList<Course> courseList = new ArrayList<Course>();
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
 
     public CourseDaoMock() {
         super();
-        this.courseid = 100;
-        this.courseName = "Advance Topic in SDC";
-        Course crc = modelfact.createCourse();
-        crc.setCourseID(courseid);
-        crc.setCourseName(courseName);
-        courseList.add(crc);
-        Course crc2 = modelfact.createCourse();
-        crc2.setCourseID(101);
-        crc2.setCourseName("Advance topic in web");
-        courseList.add(crc2);
+        int courseid = 100;
+        String courseName = "Advance Topic in SDC";
+        Course course = modelfact.createCourse();
+        course.setCourseID(courseid);
+        course.setCourseName(courseName);
+        courseList.add(course);
+        Course course2 = modelfact.createCourse();
+        course2.setCourseID(101);
+        course2.setCourseName("Advance topic in web");
+        courseList.add(course2);
 
     }
 
     @Override
     public Course getCourse(int courseId) {
-
-        if (courseId == this.courseid) {
-            Course crc = modelfact.createCourse();
-            crc.setCourseID(courseid);
-            crc.setCourseName(courseName);
-            return crc;
-        } else
-            return null;
+    	for(Course course: courseList)
+    	{
+    		if(course.getCourseID()==courseId)
+    		{
+    			return course;
+    		}
+    	}
+       return null;
     }
 
     @Override
     public ArrayList<Course> getallcourses() {
-
         return courseList;
     }
 

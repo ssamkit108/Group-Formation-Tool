@@ -1,74 +1,73 @@
 package com.dal.catmeclone.UserProfileTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.User;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
 
 @SpringBootTest
-@SuppressWarnings("deprecation")
 public class UserTest {
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
 
     @Test
     public void setBannerIDTest() {
-        User u = modelfact.createUser();
-        u.setBannerId("B00854796");
-        Assert.isTrue(u.getBannerId().equals("B00854796"));
+        User user = modelfact.createUser();
+        user.setBannerId("B00854796");
+        Assert.assertTrue(user.getBannerId().equals("B00854796"));
     }
 
     @Test
     public void getBannerIDTest() {
-        User u = modelfact.createUser();
-        u.setBannerId("B00854796");
-        Assert.isTrue(u.getBannerId().equals("B00854796"));
+        User user = modelfact.createUser();
+        user.setBannerId("B00854796");
+        Assert.assertTrue(user.getBannerId().equals("B00854796"));
     }
 
     @Test
     public void setFirstNameTest() {
-        User u = modelfact.createUser();
-        u.setFirstName("Bob");
-        Assert.isTrue(u.getFirstName().equals("Bob"));
+        User user = modelfact.createUser();
+        user.setFirstName("Bob");
+        Assert.assertTrue(user.getFirstName().equals("Bob"));
     }
 
     @Test
     public void getFirstNameTest() {
-        User u = modelfact.createUser();
-        u.setFirstName("Bob");
-        Assert.isTrue(u.getFirstName().equals("Bob"));
+        User user = modelfact.createUser();
+        user.setFirstName("Bob");
+        Assert.assertTrue(user.getFirstName().equals("Bob"));
     }
 
     @Test
     public void setLastNameTest() {
-        User u = modelfact.createUser();
-        u.setLastName("Mcallister");
-        Assert.isTrue(u.getLastName().equals("Mcallister"));
+        User user = modelfact.createUser();
+        user.setLastName("Mcallister");
+        Assert.assertTrue(user.getLastName().equals("Mcallister"));
     }
 
     @Test
     public void getLastNameTest() {
-        User u = modelfact.createUser();
-        u.setLastName("Mcallister");
-        Assert.isTrue(u.getLastName().equals("Mcallister"));
+        User user = modelfact.createUser();
+        user.setLastName("Mcallister");
+        Assert.assertTrue(user.getLastName().equals("Mcallister"));
     }
 
     @Test
     public void setEmailTest() {
-        User u = modelfact.createUser();
-        u.setEmail("bob@gmail.com");
-        Assert.isTrue(u.getEmail().equals("bob@gmail.com"));
+        User user = modelfact.createUser();
+        user.setEmail("bob@gmail.com");
+        Assert.assertTrue(user.getEmail().equals("bob@gmail.com"));
     }
 
     @Test
     public void getEmailTest() {
-        User u = modelfact.createUser();
-        u.setEmail("rhawkey@dal.ca");
-        Assert.isTrue(u.getEmail().equals("rhawkey@dal.ca"));
+        User user = modelfact.createUser();
+        user.setEmail("rhawkey@dal.ca");
+        Assert.assertTrue(user.getEmail().equals("rhawkey@dal.ca"));
     }
 
 

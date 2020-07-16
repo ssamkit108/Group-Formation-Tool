@@ -4,7 +4,7 @@ import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.User;
 
 import java.sql.SQLException;
@@ -26,7 +26,7 @@ public class HistoryConstraint implements ValidationPolicy {
         this.ruleValue = ruleValue;
     }
 
-    public boolean isValid(User user) throws UserDefinedSQLException, SQLException, Exception, NumberFormatException {
+    public boolean isValid(User user) throws UserDefinedException, SQLException, Exception, NumberFormatException {
         try {
             boolean result = false;
             int limit = Integer.parseInt(ruleValue);
@@ -42,9 +42,9 @@ public class HistoryConstraint implements ValidationPolicy {
             }
             LOGGER.info("Does Password matched in the history. Result : " + result);
             return !result;
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("Error in loading Password History. ");
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            throw new UserDefinedException(e.getLocalizedMessage());
         } catch (SQLException e) {
             LOGGER.warning("Error in loading Password History. ");
             throw new SQLException(e.getLocalizedMessage());

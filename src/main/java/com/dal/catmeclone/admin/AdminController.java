@@ -2,7 +2,7 @@ package com.dal.catmeclone.admin;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.Role;
@@ -27,7 +27,7 @@ public class AdminController {
 
     @GetMapping("/admin/courseCreationForm")
     public String getCourseForm(Model model) {
-        model.addAttribute("courseCreationForm", modelAbstractFactory.crateCourse());
+        model.addAttribute("courseCreationForm", modelAbstractFactory.createCourse());
         return "admin/courseCreationForm";
     }
 
@@ -37,17 +37,17 @@ public class AdminController {
         try {
             if (adminService.checkCourseExists(course)) {
                 model.addAttribute("courseexists", "Course already exists");
-                model.addAttribute("courseCreationForm", modelAbstractFactory.crateCourse());
+                model.addAttribute("courseCreationForm", modelAbstractFactory.createCourse());
                 return "admin/courseCreationForm";
             }
-        } catch (SQLException | UserDefinedSQLException e) {
+        } catch (SQLException | UserDefinedException e) {
             LOGGER.warning("Some Sql exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }
         try {
             adminService.insertCourse(new Course(course.getCourseID(), course.getCourseName()));
-        } catch (SQLException | UserDefinedSQLException e) {
+        } catch (SQLException | UserDefinedException e) {
             LOGGER.warning("Some Sql exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
@@ -61,7 +61,7 @@ public class AdminController {
         model.addAttribute("adminDashboard", new Course());
         try {
             model.addAttribute("courses", adminService.getAllCourses());
-        } catch (SQLException | UserDefinedSQLException e) {
+        } catch (SQLException | UserDefinedException e) {
             LOGGER.warning("Some Sql exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
@@ -78,7 +78,7 @@ public class AdminController {
 
         try {
             adminService.deleteCourse(course.getCourseID());
-        } catch (SQLException | UserDefinedSQLException e) {
+        } catch (SQLException | UserDefinedException e) {
             LOGGER.warning("Some Sql exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
@@ -96,7 +96,7 @@ public class AdminController {
         model.addAttribute("assignCourse", new User());
         try {
             model.addAttribute("users", adminService.getAllUsers());
-        } catch (SQLException | UserDefinedSQLException e) {
+        } catch (SQLException | UserDefinedException e) {
             LOGGER.warning("Some Sql exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
@@ -108,7 +108,7 @@ public class AdminController {
                 model.addAttribute("courses", adminService.getAllCourses());
                 return "admin/adminDashboard";
             }
-        } catch (SQLException | UserDefinedSQLException e) {
+        } catch (SQLException | UserDefinedException e) {
             LOGGER.warning("Some Sql exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
@@ -121,7 +121,7 @@ public class AdminController {
 
         try {
             adminService.enrollInstructorForCourse(user, course, new Role("Instructor"));
-        } catch (SQLException | UserDefinedSQLException e) {
+        } catch (SQLException | UserDefinedException e) {
             LOGGER.warning("Some Sql exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";

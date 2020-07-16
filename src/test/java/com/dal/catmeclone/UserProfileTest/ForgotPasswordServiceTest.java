@@ -1,61 +1,60 @@
 package com.dal.catmeclone.UserProfileTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
-import com.dal.catmeclone.model.User;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
-import com.dal.catmeclone.notificationTest.NotificationServiceMock;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.UserProfile.ForgotPasswordDao;
+import com.dal.catmeclone.UserProfile.ForgotPasswordService;
+import com.dal.catmeclone.UserProfile.ForgotPasswordServiceImpl;
+import com.dal.catmeclone.model.ModelAbstractFactory;
+import com.dal.catmeclone.notification.NotificationService;
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
 @SpringBootTest
-@SuppressWarnings("deprecation")
 class ForgotPasswordServiceTest {
 
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+	AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	ModelAbstractFactory modelFactory = abstractFactoryTest.createModelAbstractFactory();
 
+	ForgotPasswordDao forgotPasswordDaoMock;
+	ForgotPasswordService forgotPasswordServiceImpl;
 
-    @Test
-    void validatetoken() {
-        User u = modelfact.createUser();
-        u.setBannerId("B00852212");
-        u.setToken("$10$P2FBvrlVJaS1/aEHzfKmtuojZollAx/F1g0DnvO7QvNv7/AUyihDu");
+	public ForgotPasswordServiceTest() {
+		forgotPasswordDaoMock = mock(ForgotPasswordDao.class);
+		forgotPasswordServiceImpl = mock(ForgotPasswordServiceImpl.class);
+	}
 
-        Assert.isTrue(u.gettoken().equals("$10$P2FBvrlVJaS1/aEHzfKmtuojZollAx/F1g0DnvO7QvNv7/AUyihDu"));
-    }
+	@BeforeEach
+	public void setup() {
+		forgotPasswordServiceImpl = abstractFactoryTest.createUserProfileAbstractFactory()
+				.createForgotPasswordService(forgotPasswordDaoMock);
+	}
 
-    @Test
-    void ResetlinkTest() {
-        String token = UUID.randomUUID().toString();
-        NotificationServiceMock notificationservice = abstractFactoryTest.createNotificationAbstractFactory().createNotificationService();
-        notificationservice.sendNotificationForPassword("B00852292", token, "ssamkit108@gmail.com");
-        Assert.isTrue(notificationservice.success.equals("Sent"));
-    }
+	@Test
+	public void validatetoken() throws Exception {
+		String token = "test";
+		when(forgotPasswordDaoMock.checktokenexist(token)).thenReturn("test");
+		assertEquals(forgotPasswordServiceImpl.validateToken(token), "test");
+	}
 
-    @Test
-    void ValidateUserTest() {
-        UserValidateMock check = abstractFactoryTest.createUserProfileAbstractFactory().createUserValidateMock();
-        User u = modelfact.createUser();
+	@Test
+	void ResetlinkTest() {
+		String token = UUID.randomUUID().toString();
+		NotificationService notificationservice = abstractFactoryTest.createNotificationAbstractFactory().createNotificationService();
+		notificationservice.sendNotificationForPassword("B00852292", token, "ssamkit108@gmail.com");
+		Assert.assertTrue(notificationservice.isStatus());
+	}
 
-        u.setBannerId("");
-        Assert.isTrue(!check.validate(u));
-        u = modelfact.createUser();
-        u.setBannerId("B00825292");
-        u.setEmail("bob123@gmail.com");
-        u.setFirstName("Bob");
-        u.setLastName("Shaw");
-        u.setPassword("12345");
-        Assert.isTrue(check.validate(u));
-    }
-
-    @Test
-    void GeneratePasswordTest() {
-        String token = UUID.randomUUID().toString();
-
-        Assert.isTrue(!token.equals("password"));
-    }
+	@Test
+	void GeneratePasswordTest() {
+		String token = UUID.randomUUID().toString();
+		Assert.assertTrue(!token.equals("password"));
+	}
 }

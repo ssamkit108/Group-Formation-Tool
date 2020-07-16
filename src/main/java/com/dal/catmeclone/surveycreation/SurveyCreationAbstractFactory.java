@@ -1,7 +1,8 @@
 package com.dal.catmeclone.surveycreation;
 
 public interface SurveyCreationAbstractFactory {
-    CourseAdminSurveyService createSurveyCreationService();
-
-    CourseAdminSurveyDao createSurveyCreationDao();
+   
+    CourseAdminSurveyService createCourseAdminSurveyService();
+    CourseAdminSurveyService createCourseAdminSurveyService(CourseAdminSurveyDao courseAdminSurveyDao);
+    CourseAdminSurveyDao createCourseAdminSurveyDao();
 }

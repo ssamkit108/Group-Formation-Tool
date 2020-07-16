@@ -4,9 +4,7 @@ import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.Validation.ValidatePassword;
 import com.dal.catmeclone.Validation.ValidationAbstractFactory;
-import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
-import com.dal.catmeclone.exceptionhandler.ValidationException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.User;
 
 import java.sql.SQLException;
@@ -23,10 +21,19 @@ public class UserServiceImpl implements UserService {
     ValidatePassword validatePassword;
     UserDao userDao;
     Boolean flag = false;
+    
+    public UserServiceImpl() {
+		super();
+		this.userDao = userProfileAbstractFactory.createUserDao();
+	}
+    
+	public UserServiceImpl(UserDao userDao) {
+		super();
+		this.userDao = userDao;
+	}
 
-    @Override
-    public boolean createUser(User user) throws ValidationException, DuplicateEntityException, SQLException, UserDefinedSQLException,Exception {
-        userDao = userProfileAbstractFactory.createUserDao();
+	@Override
+    public boolean createUser(User user) throws SQLException, Exception {
         validatePassword = validationAbstractFactory.createValidatePassword();
         validatePassword.validatepassword(user);
         LOGGER.info("Accessing DAO layer to create user to given banner id" + user.getBannerId());
@@ -35,8 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException {
-        userDao = userProfileAbstractFactory.createUserDao();
+    public List<User> findAllMatchingUser(String bannerId) throws UserDefinedException {
         List<User> listOfUser = new ArrayList<User>();
         LOGGER.info("Accessing DAO layer to get matching list of user to given banner id");
         listOfUser = userDao.findAllMatchingUser(bannerId);

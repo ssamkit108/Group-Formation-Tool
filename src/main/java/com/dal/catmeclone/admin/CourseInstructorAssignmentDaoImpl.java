@@ -4,7 +4,7 @@ import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
@@ -27,7 +27,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
 
 
     @Override
-    public boolean enrollInstructorForCourse(User Instructor, Course course, Role role) throws UserDefinedSQLException {
+    public boolean enrollInstructorForCourse(User Instructor, Course course, Role role) throws UserDefinedException {
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         connection = DBUtil.connect();
         Properties properties = SystemConfig.instance().getProperties();
@@ -41,7 +41,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
                     + "Instructor Enrolled successfully");
         } catch (SQLException e) {
             LOGGER.warning("Unable to execute query to check if course exists");
-            throw new UserDefinedSQLException("Unable to execute query to check if course exists" + e.getLocalizedMessage());
+            throw new UserDefinedException("Unable to execute query to check if course exists" + e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
             if (connection != null) {
@@ -52,7 +52,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
     }
 
     @Override
-    public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, Exception {
+    public boolean checkInstructorForCourse(Course course) throws UserDefinedException, Exception {
         boolean flag = true;
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         Properties properties = SystemConfig.instance().getProperties();
@@ -67,7 +67,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
             LOGGER.info("Executed check instructor query successfully");
         } catch (SQLException e) {
             LOGGER.warning("Unable to execute query to check instructor assigned for course");
-            throw new UserDefinedSQLException("Unable to execute query to check instructor assigned for course");
+            throw new UserDefinedException("Unable to execute query to check instructor assigned for course");
         } catch (Exception e) {
             LOGGER.warning("Generic Exception generated in " + CourseInstructorAssignmentDaoImpl.class);
             throw new Exception("Generic Exception generated in " + e.getLocalizedMessage());

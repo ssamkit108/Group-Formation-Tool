@@ -1,43 +1,59 @@
 package com.dal.catmeclone.UserProfileTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.UserProfile.UserDao;
+import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
+import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.User;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoMock {
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+public class UserDaoMock implements UserDao {
+	AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	ModelAbstractFactory modelFactory = abstractFactoryTest.createModelAbstractFactory();
+	List<User> userList;
 
+	public UserDaoMock() {
+		userList = new ArrayList<User>();
+		User user = modelFactory.createUser();
+		user.setBannerId("B00825292");
+		user.setFirstName("Bob");
+		user.setLastName("Shaw");
+		user.setPassword("12345");
+		user.setEmail("bob123@gmail.com");
+		userList.add(user);
+	}
 
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+	@Override
+	public List<User> findAllMatchingUser(String bannerId) {
+		
+		return userList;
+	}
 
-    public boolean createUser(User user) {
-        List<User> users = new ArrayList<User>();
-        users.add(user);
-        return true;
-    }
+	@Override
+	public User findUserByBannerID(String bannerId) {
+		User user = null;
+		for (User userFetched : userList) {
+			if (userFetched.getBannerId().equals(bannerId)) {
+				user = userFetched;
+			}
+		}
+		return user;
+	}
 
-    public boolean findUserByBannerID(String username) {
-        return true;
-    }
+	@Override
+	public boolean createUser(User student) throws UserDefinedException, DuplicateEntityException {
+		userList.add(student);
+		return true;
+	}
 
-    public boolean UpdatePassword(String username, String password) {
-        return true;
-    }
+	@Override
+	public List<User> getAllUsers() throws UserDefinedException, Exception {
 
-    public List<User> getAllUsers() {
-        List<User> l = new ArrayList<User>();
-        User u = modelfact.createUser();
-        u.setBannerId("B00825292");
-        u.setFirstName("Bob");
-        u.setLastName("Shaw");
-        u.setPassword("12345");
-        u.setEmail("bob123@gmail.com");
-        l.add(u);
-        return l;
-    }
+		return userList;
+	}
 
 }

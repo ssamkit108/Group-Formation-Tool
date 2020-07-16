@@ -1,33 +1,31 @@
 package com.dal.catmeclone.ValidationTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.Validation.ValidationPolicy;
+import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.User;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.springframework.util.Assert;
 
 class MinimumUpperCaseTest {
 
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     ValidationPolicy checkupper = abstractFactoryTest.createValidationAbstractFactory().createMinimumUpper();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
-
-    @SuppressWarnings("deprecation")
     @Test
     public void TestMinimumUpper() throws Exception {
         User u = modelfact.createUser();
         u.setPassword("SaMkit");
         checkupper.setValue("2");
-        Assert.isTrue(checkupper.isValid(u));
+        Assert.assertTrue(checkupper.isValid(u));
         u.setPassword("SaMkit");
         checkupper.setValue("3");
-        Assert.isTrue(!checkupper.isValid(u));
+        Assert.assertTrue(!checkupper.isValid(u));
         u.setPassword("SaMkit");
         checkupper.setValue("1");
-        Assert.isTrue(checkupper.isValid(u));
+        Assert.assertTrue(checkupper.isValid(u));
 
     }
 

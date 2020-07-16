@@ -15,6 +15,4 @@ public class PropertiesConfigUtil {
         inputStream.close();
         return configuration;
     }
-
-
 }

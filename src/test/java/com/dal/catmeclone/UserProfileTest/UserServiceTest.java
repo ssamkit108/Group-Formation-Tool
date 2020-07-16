@@ -1,55 +1,49 @@
 package com.dal.catmeclone.UserProfileTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.UserProfile.UserDao;
+import com.dal.catmeclone.UserProfile.UserProfileAbstractFactory;
+import com.dal.catmeclone.UserProfile.UserService;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
+import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.User;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.sql.SQLException;
 
 @SpringBootTest
 class UserServiceTest {
 
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    UserProfileAbstractFactory userProfileAbstractFactoryTestImpl = abstractFactoryTest.createUserProfileAbstractFactory();
 
+    
 
-    @SuppressWarnings("deprecation")
     @Test
-    void CreateTest() {
-        UserValidateMock check = abstractFactoryTest.createUserProfileAbstractFactory().createUserValidateMock();
-        UserDaoMock DbMock = abstractFactoryTest.createUserProfileAbstractFactory().createUserDaoMock();
-        User u = modelfact.createUser();
-        u.setBannerId("");
-        Assert.isTrue(!check.validate(u));
-        u = modelfact.createUser();
-        u.setBannerId("B00825292");
-        u.setEmail("bob123@gmail.com");
-        u.setFirstName("Bob");
-        u.setLastName("Shaw");
-        u.setPassword("12345");
-        Assert.isTrue(check.validate(u));
-        Assert.isTrue(DbMock.createUser(u));
+    public void GetAllUsersTest() throws UserDefinedException {
+       
+        UserDao userDaoMock = userProfileAbstractFactoryTestImpl.createUserDao();
+        UserService userService = userProfileAbstractFactoryTestImpl.createUserService(userDaoMock);
+        String bannerId="B00825292";
+
+        Assert.assertTrue(userService.findAllMatchingUser(bannerId).size()>0);
     }
-
+    
     @Test
-    public void GetAllUsersTest() {
-        User u = modelfact.createUser();
-        UserDaoMock Dbmock = abstractFactoryTest.createUserProfileAbstractFactory().createUserDaoMock();
-
-        u.setBannerId("B00825292");
-        u.setEmail("bob123@gmail.com");
-        u.setFirstName("Bob");
-        u.setLastName("Shaw");
-        u.setPassword("12345");
-        List<User> li = new ArrayList<User>();
-        li.add(u);
-        assertEquals(Dbmock.getAllUsers(), li);
+    public void createUserTest() throws SQLException, Exception  {
+    	UserDao userDaoMock = userProfileAbstractFactoryTestImpl.createUserDao();
+        UserService userService = userProfileAbstractFactoryTestImpl.createUserService(userDaoMock);
+        
+        User user = modelfact.createUser();
+        user.setBannerId("B00825292");
+        user.setEmail("bob123@gmail.com");
+        user.setFirstName("Bob");
+        user.setLastName("Shaw");
+        user.setPassword("12345");
+        
+        Assert.assertTrue(userDaoMock.createUser(user));
     }
 }

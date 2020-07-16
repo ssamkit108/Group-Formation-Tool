@@ -2,7 +2,7 @@ package com.dal.catmeclone.UserProfile;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.exceptionhandler.ValidationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +38,7 @@ public class ForgotPasswordController {
             modelAndView = new ModelAndView("forgotpassword");
             modelAndView.addObject("message", "Password is sent on your registred email address.");
             return modelAndView;
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning(e.getLocalizedMessage());
             ModelAndView modelAndView = new ModelAndView("forgotpassword");
             modelAndView.addObject("message", e.getLocalizedMessage());

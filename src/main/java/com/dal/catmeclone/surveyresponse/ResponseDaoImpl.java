@@ -4,7 +4,7 @@ import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.*;
 
 import java.sql.CallableStatement;
@@ -85,9 +85,9 @@ public class ResponseDaoImpl implements ResponseDao {
             }
             LOGGER.info("All the survey question fetched successfully");
             return listOfQuestions;
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("SQL exception generated while fetching questions of the survey " + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL exception generated while fetching questions of the survey " + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL exception generated while fetching questions of the survey " + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning("Generic exception generated while fetching questions of the survey " + e.getLocalizedMessage());
             throw new Exception("Generic exception generated while fetching questions of the survey " + e.getLocalizedMessage());
@@ -123,9 +123,9 @@ public class ResponseDaoImpl implements ResponseDao {
                 }
             }
             return false;
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("SQL exception generated while checking survey is published or not " + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL exception generated while checking survey is published or not " + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL exception generated while checking survey is published or not " + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning("Generic exception generated while checking survey is published or not " + e.getLocalizedMessage());
             throw new Exception("Generic exception generated while checking survey is published or not " + e.getLocalizedMessage());
@@ -154,9 +154,9 @@ public class ResponseDaoImpl implements ResponseDao {
             }
             LOGGER.info("Survey is submitted for the student:" + bannerid);
             return true;
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("SQL exception generated while checking survey is submitted or not " + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL exception generated while  checking survey is submitted or not" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL exception generated while  checking survey is submitted or not" + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning(e.getLocalizedMessage());
             throw new Exception(e.getLocalizedMessage());
@@ -183,9 +183,9 @@ public class ResponseDaoImpl implements ResponseDao {
             statement.setInt(5, courseid);
             LOGGER.info("Querying Database to create response id for the question");
             resultSet = statement.executeQuery();
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("SQL exception generated while creating response id for the survey question " + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL exception generated while creating response id for the survey question " + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL exception generated while creating response id for the survey question " + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning(e.getLocalizedMessage());
             throw new Exception(e.getLocalizedMessage());
@@ -212,9 +212,9 @@ public class ResponseDaoImpl implements ResponseDao {
                 resultSet = statement.executeQuery();
             }
             LOGGER.info("Successfully stored responses to the database.");
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("SQL Exception generated while storing the responses to the database.");
-            throw new UserDefinedSQLException("SQL Exception generated while storing the responses to the database.");
+            throw new UserDefinedException("SQL Exception generated while storing the responses to the database.");
         } catch (Exception e) {
             LOGGER.warning(e.getLocalizedMessage());
             throw new Exception(e.getLocalizedMessage());

@@ -1,48 +1,42 @@
 package com.dal.catmeclone.questionmanagementTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.model.ModelAbstractFactory;
+import com.dal.catmeclone.model.MultipleChoiceQuestion;
 import com.dal.catmeclone.model.Option;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.Assert.assertTrue;
 
 public class QuestionModelTest {
 
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
-    IQuestionManagementAbstractFactory quesmgmt = abstractFactoryTest.createQuestionManagerAbstractFactory();
-    QuestionModelMock questionMock;
-    private List<Option> optionList = new ArrayList<Option>();
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+    ModelAbstractFactory modelFactory = abstractFactoryTest.createModelAbstractFactory();
+    MultipleChoiceQuestion questionMock = modelFactory.createMultipleChoiceQuestion();
 
     @BeforeEach
     public void setup() {
-        Option opt1 = modelfact.createOption();
-        opt1.setOptionText("");
-        opt1.setOptionValue(1);
-        Option opt2 = modelfact.createOption();
-        opt2.setOptionText("text1");
-        opt2.setOptionValue(2);
-        Option opt3 = modelfact.createOption();
-        opt3.setOptionText("text2");
-        opt3.setOptionValue(3);
-        Option opt4 = modelfact.createOption();
-        opt4.setOptionText("");
-        opt4.setOptionValue(4);
-        Option opt5 = modelfact.createOption();
-        opt5.setOptionText("text4");
-        opt5.setOptionValue(5);
-        optionList.add(opt1);
-        optionList.add(opt2);
-        optionList.add(opt3);
-        optionList.add(opt4);
-        optionList.add(opt5);
-        questionMock = quesmgmt.createQuestionModelMock(optionList);
+    	List<Option> optionList = new ArrayList<Option>();
+        Option option1 = modelFactory.createOption("",1);
+        Option option2 = modelFactory.createOption("text1",2); 
+        Option option3 = modelFactory.createOption("text2",3);
+        Option option4 = modelFactory.createOption("text3",-1);
+        Option option5 = modelFactory.createOption("text4",5);
+        optionList.add(option1);
+        optionList.add(option2);
+        optionList.add(option3);
+        optionList.add(option4);
+        optionList.add(option5);
+        questionMock.setOptionList(optionList);
+    }
+    
+    @Test
+    public void allOptionValidFalse() {
+    	questionMock.getOptionList().add(modelFactory.createOption("",-1));
+        assertTrue(questionMock.areAllOptionValid());
     }
 
     @Test
@@ -53,24 +47,8 @@ public class QuestionModelTest {
 
     @Test
     public void allOptionValidTrue() {
+    	questionMock.filterOptions();
         assertTrue(questionMock.areAllOptionValid());
     }
 
-    @Test
-    public void allOptionNotValid() {
-        List<Option> optionList = new ArrayList<Option>();
-        Option opt1 = modelfact.createOption();
-        opt1.setOptionText("");
-        opt1.setOptionValue(-1);
-        Option opt2 = modelfact.createOption();
-        opt2.setOptionText("");
-        opt2.setOptionValue(-1);
-        Option opt3 = modelfact.createOption();
-        opt3.setOptionText("");
-        opt3.setOptionValue(-1);
-        optionList.add(opt1);
-        optionList.add(opt2);
-        optionList.add(opt3);
-        assertTrue(questionMock.areAllOptionValid());
-    }
 }

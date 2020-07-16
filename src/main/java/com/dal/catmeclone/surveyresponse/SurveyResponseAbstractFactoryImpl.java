@@ -8,4 +8,9 @@ public class SurveyResponseAbstractFactoryImpl implements SurveyResponseAbstract
     public ResponseDao createResponseDao() {
         return new ResponseDaoImpl();
     }
+
+	@Override
+	public ResponseService createResponseService(ResponseDao responseDao) {
+		return new ResponseServiceImpl(responseDao);
+	}
 }

@@ -1,17 +1,17 @@
 package com.dal.catmeclone.adminTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.model.Course;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
+import com.dal.catmeclone.model.ModelAbstractFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
 @SuppressWarnings("deprecation")
 public class CourseTest {
 
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
 
     @Test
     public void setCourseNameTest() {

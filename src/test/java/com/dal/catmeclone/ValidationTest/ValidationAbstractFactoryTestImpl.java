@@ -2,13 +2,9 @@ package com.dal.catmeclone.ValidationTest;
 
 import com.dal.catmeclone.Validation.*;
 
-public class IValidationAbstractFactoryImpl implements IValidationAbstractFactory {
+public class ValidationAbstractFactoryTestImpl implements ValidationAbstractFactory {
 
-    @Override
-    public HistoryConstraintMock createHistoryConstraintMock() {
-        // TODO Auto-generated method stub
-        return new HistoryConstraintMock();
-    }
+    
 
     @Override
     public PasswordRulesLoader createPasswordRulesLoader() {
@@ -69,5 +65,11 @@ public class IValidationAbstractFactoryImpl implements IValidationAbstractFactor
         // TODO Auto-generated method stub
         return new HistoryConstraint();
     }
+
+	@Override
+	public HistoryConstraintDao createHistoryConstraintDao() {
+		// TODO Auto-generated method stub
+		return new HistoryConstraintDaoImpl();
+	}
 
 }

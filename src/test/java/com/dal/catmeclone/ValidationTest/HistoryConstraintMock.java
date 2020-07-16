@@ -1,34 +1,24 @@
 package com.dal.catmeclone.ValidationTest;
 
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.Validation.HistoryConstraintDao;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryConstraintMock {
+public class HistoryConstraintMock implements HistoryConstraintDao {
 
-    private String ruleValue;
-    private List<String> passwordlist = new ArrayList<String>();
+	private List<String> passwordlist = new ArrayList<String>();
 
-    public HistoryConstraintMock() {
-        passwordlist.add("Password@123");
-        passwordlist.add("Password");
-        passwordlist.add("Password123");
-    }
-
-    public void setValue(String ruleValue) {
-        this.ruleValue = ruleValue;
-    }
-
-    public boolean isValid(User user) throws UserDefinedSQLException, SQLException {
-        boolean result = false;
-        result = !(passwordlist.contains(user.getPassword()));
-        return result;
-    }
-
-    public String getError() {
-        return "Password cannot be same as past " + this.ruleValue + " passwords";
-    }
+	public HistoryConstraintMock() {
+		passwordlist.add("Password@123");
+		passwordlist.add("Password");
+		passwordlist.add("Password123");
+	}
+	@Override
+	public List<String> fetchPasswordList(User u, int limit) throws UserDefinedException, SQLException {
+		return passwordlist.subList(0, limit-1);
+	}
 }

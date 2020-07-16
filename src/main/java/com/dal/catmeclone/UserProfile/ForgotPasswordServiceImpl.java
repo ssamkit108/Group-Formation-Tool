@@ -4,7 +4,7 @@ import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.Validation.ValidatePassword;
 import com.dal.catmeclone.Validation.ValidationAbstractFactory;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.exceptionhandler.ValidationException;
 import com.dal.catmeclone.model.User;
 
@@ -20,9 +20,20 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     ValidationAbstractFactory validationAbstractFactory = abstractFactory.createValidationAbstractFactory();
     ForgotPasswordDao forgotPasswordDao;
     ValidatePassword validatepassword;
+    
+    public ForgotPasswordServiceImpl() {
+		super();
+		this.forgotPasswordDao = userProfileAbstractFactory.createForgotPasswordDao();
+	}
+    
+    
+	public ForgotPasswordServiceImpl(ForgotPasswordDao forgotPasswordDao) {
+		super();
+		this.forgotPasswordDao = forgotPasswordDao;
+	}
 
-    public void resetlink(String username) throws SQLException, Exception {
-        forgotPasswordDao = userProfileAbstractFactory.createForgotPasswordDao();
+	public void resetlink(String username) throws SQLException, Exception {
+       
         if (forgotPasswordDao.checkexist(username)) {
             LOGGER.info("Banner Id:" + username + " validated in successfully.");
             String token = generateToken();
@@ -40,7 +51,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
     @Override
     public String validateToken(String confirmationToken) throws SQLException, Exception {
-        forgotPasswordDao = userProfileAbstractFactory.createForgotPasswordDao();
+        
         String bannerid = forgotPasswordDao.checktokenexist(confirmationToken);
         if (!bannerid.isEmpty() && bannerid != null) {
             return bannerid;
@@ -50,7 +61,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     }
 
     @Override
-    public void setNewPassword(String username, String password) throws UserDefinedSQLException, ValidationException, SQLException, Exception {
+    public void setNewPassword(String username, String password) throws UserDefinedException, ValidationException, SQLException, Exception {
         User user = new User();
         user.setBannerId(username);
         user.setPassword(password);
