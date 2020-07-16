@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
+    <script src="/js/courseci-message.js" type="text/javascript"></script>
+    <title>Course-Survey</title>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="bodycontainer">
+
+    <h1 style="margin-top: -10px;">
+        <span th:utext="${session.course.courseID}"></span> - <span
+            th:utext="${session.course.courseName}"></span>
+    </h1>
+    <hr>
+    <h5 class="usernameheader" style="float: left; color: black">
+        Hello <span sec:authentication="name"></span> (<span
+            th:utext="${session.role}"></span>)
+    </h5>
+    <br> <br>
+
+    <div class="alert alert-danger alert-dismissible" th:if="${errormessage ne null}">
+        <strong>Sorry! </strong> <span th:text='${errormessage}'></span>
+    </div>
+
+
+    <div th:if="${published eq null}">
+        <h2>Fill Survey</h2>
+        <form action="#" method="post" th:action="@{/responsepage/submit}" th:object="${surveyQuestions}">
+            <input th:field="*{user.bannerId}" th:value="${surveyQuestions.user.bannerId}" type="hidden">
+            <input th:field="*{survey.course.courseID}" th:value="${surveyQuestions.survey.course.courseID}"
+                   type="hidden">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Question</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="surveyquestion,i: *{surveyResponse}">
+                    <input th:field="*{surveyResponse[__${i.index}__].surveyQuestion.questionDetail.questionId}"
+                           th:value="${surveyquestion.surveyQuestion.questionDetail.questionId}"
+                           type="hidden">
+                    <input th:field="*{surveyResponse[__${i.index}__].surveyQuestion.surveyQuestionId}"
+                           th:value="${surveyquestion.surveyQuestion.surveyQuestionId}"
+                           type="hidden">
+
+                    <td th:text="${surveyquestion.surveyQuestion.questionDetail.questionText}"></td>
+                    <td>
+                        <div th:if="${surveyquestion.surveyQuestion.questionDetail.questionType.toString() == 'NUMERIC'}">
+                            <input required th:field="*{surveyResponse[__${i.index}__].response}" type="number">
+                        </div>
+
+                        <div th:if="${surveyquestion.surveyQuestion.questionDetail.questionType.toString() == 'FREETEXT'}">
+                            <textarea maxlength="500" required
+                                      th:field="*{surveyResponse[__${i.index}__].response}"></textarea>
+                        </div>
+
+                        <div th:if="${surveyquestion.surveyQuestion.questionDetail.questionType.toString() == 'MULTIPLECHOICEONE'}">
+                            <table>
+                                <tbody>
+                                <tr th:each="option:${surveyquestion.surveyQuestion.questionDetail.optionList}">
+                                    <td><input required
+                                               th:field="*{surveyResponse[__${i.index}__].response}"
+                                               th:text="${option.optionText}"
+                                               th:value="${option.optionValue}" type="radio"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div
+                                th:if="${surveyquestion.surveyQuestion.questionDetail.questionType.toString() == 'MULTIPLECHOICEMANY'}">
+                            <table>
+                                <tbody>
+                                <tr th:each="option:${surveyquestion.surveyQuestion.questionDetail.optionList}">
+                                    <td><input th:field="*{surveyResponse[__${i.index}__].response}"
+                                               th:text="${option.optionText}"
+                                               th:value="${option.optionValue}"
+                                               type="checkbox"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <button class="btn btn-primary" th:value="Save" type="submit">Submit</button>
+
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

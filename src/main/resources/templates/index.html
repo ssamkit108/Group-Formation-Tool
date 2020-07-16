@@ -1,43 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/css/general.css">
+    <meta charset="ISO-8859-1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
 
-<title>Home</title>
+    <title>Home</title>
 </head>
 <body>
 <div th:replace="header :: header"></div>
 <div class="bodycontainer">
-        
-        <div style ="float:left">
-            <div sec:authorize="isAuthenticated()">
-                <h5  class="usernameheader" style="float:left; color:black">Hello <span sec:authentication="name"></span></h5>
-                <br>
-            </div>
-        </div>
-        <div class="middle-box text-center ">
 
- 
-
+    <div style="float:left">
+        <div sec:authorize="isAuthenticated()">
+            <h5 class="usernameheader" style="float:left; color:black">Hello <span sec:authentication="name"></span>
+            </h5>
             <br>
-            <div class="d-inline-flex p-2">
-                <h1>Welcome to Adv SDC Group 12 Tool. </h1>
-                <p>managing all your courses
-                    </p>
-            </div>
-
- 
-
- 
-
         </div>
     </div>
+    <div class="middle-box text-center ">
 
- 
+
+        <br>
+        <div class="d-inline-flex p-2">
+            <h1>Welcome to Adv SDC Group 12 Tool. </h1>
+            <p>A Tool for managing all your courses
+            </p>
+        </div>
+
+
+    </div>
+</div>
+
 
 </body>
 </html>

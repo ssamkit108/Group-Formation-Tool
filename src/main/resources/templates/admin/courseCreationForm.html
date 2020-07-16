@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+>
 <head>
- 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
- 	<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet" />
- 	<link rel="stylesheet" type="text/css" href="/css/general.css">
-<title>Insert title here</title>
-<style>
-body {text-align: center;}
-</style>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link
+            href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            rel="stylesheet"/>
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
+    <title>Insert title here</title>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-	<div th:replace="admin/adminheader :: header"></div>
-	<div class="bodycontainer">
-	<h1>Course Creation Form</h1>
-	<form action="#" th:action="@{/admin/courseCreationForm}" th:object="${courseCreationForm}" method=post>
- 	    <p>Course Id: <input type="number" th:field="*{courseID}" min="1" required/></p>
-        <p>Course Name: <input type="text" th:field="*{courseName}" required/></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /> 
+<div th:replace="admin/adminheader :: header"></div>
+<div class="bodycontainer">
+    <h1>Course Creation Form</h1>
+    <form action="#" method=post th:action="@{/admin/courseCreationForm}" th:object="${courseCreationForm}">
+        <p>Course Id: <input min="1" required th:field="*{courseID}" type="number"/></p>
+        <p>Course Name: <input required th:field="*{courseName}" type="text"/></p>
+        <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/>
         </p>
- 	</form>
- 	</div>
- 	<div style="font-size: large; font-family: sans-serif">
- 	<p style="color: #ff0000; background-color: #ffffff" th:if="${courseexists}" th:text="${courseexists}">No error</p>
- 	</div>
+    </form>
+</div>
+<div style="font-size: large; font-family: sans-serif">
+    <p style="color: #ff0000; background-color: #ffffff" th:if="${courseexists}" th:text="${courseexists}">No error</p>
+</div>
 </body>
 </html>
