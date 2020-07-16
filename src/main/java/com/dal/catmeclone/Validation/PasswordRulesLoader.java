@@ -37,7 +37,7 @@ public class PasswordRulesLoader {
         HashMapofRules.put("HistoryConstraint", validationAbstractFactory.createHistoryConstraint());
     }
 
-    public void CreateActiveRulesList() {
+    public void CreateActiveRulesList() throws Exception {
         ValidationDAO = validationAbstractFactory.createValidationRulesDao();
         ListofRules.clear();
         List<String> rules = ValidationDAO.getRulesFromConfig();

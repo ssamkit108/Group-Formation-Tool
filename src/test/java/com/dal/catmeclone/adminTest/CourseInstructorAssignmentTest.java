@@ -34,7 +34,7 @@ public class CourseInstructorAssignmentTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void checkInstructorForCourseTest() throws UserDefinedSQLException, SQLException {
+    public void checkInstructorForCourseTest() throws UserDefinedSQLException, SQLException,Exception {
         Course c = modelfact.createCourse();
         CourseInstructorAssignmentDao mock = abstractFactoryTest.createAdminAbstractFactory()
                 .createCourseInstructorAssignmentDao();
