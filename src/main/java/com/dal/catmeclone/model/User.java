@@ -116,23 +116,30 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         User other = (User) obj;
         if (bannerId == null) {
-            if (other.bannerId != null)
+            if (other.bannerId != null) {
                 return false;
-        } else if (!bannerId.equals(other.bannerId))
+            }
+        } else if (!bannerId.equals(other.bannerId)) {
             return false;
+        }
         if (email == null) {
-            if (other.email != null)
+            if (other.email != null) {
                 return false;
-        } else if (!email.equals(other.email))
+            }
+        } else if (!email.equals(other.email)) {
             return false;
+        }
         return true;
     }
 }

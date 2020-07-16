@@ -8,18 +8,17 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssignmentDao {
 
-    final Logger LOGGER = LoggerFactory.getLogger(CourseInstructorAssignmentDaoImpl.class);
+    Logger LOGGER = Logger.getLogger(CourseInstructorAssignmentDaoImpl.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     DBUtilityAbstractFactory dbUtilityAbstractFactory = abstractFactory.createDBUtilityAbstractFactory();
     DataBaseConnection DBUtil;
@@ -40,11 +39,9 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
             statement.execute();
             LOGGER.info("Course:" + Instructor.getBannerId() + course.getCourseID() + role.getRoleName()
                     + "Instructor Enrolled successfully");
-
         } catch (SQLException e) {
-            LOGGER.error("Unable to execute query to check if course exists");
-            e.printStackTrace();
-            return false;
+            LOGGER.warning("Unable to execute query to check if course exists");
+            throw new UserDefinedSQLException("Unable to execute query to check if course exists" + e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
             if (connection != null) {
@@ -55,14 +52,12 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
     }
 
     @Override
-    public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException {
+    public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, Exception {
         boolean flag = true;
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         Properties properties = SystemConfig.instance().getProperties();
         connection = DBUtil.connect();
-        statement = connection
-                .prepareCall("{call " + properties.getProperty("procedure.checkInstructorAssignedForCourse") + "}");
-
+        statement = connection.prepareCall("{call " + properties.getProperty("procedure.checkInstructorAssignedForCourse") + "}");
         try {
             statement.setInt(1, course.getCourseID());
             ResultSet resultSet = statement.executeQuery();
@@ -70,10 +65,12 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
                 flag = false;
             }
             LOGGER.info("Executed check instructor query successfully");
-        } catch (Exception e) {
-            LOGGER.error("Unable to execute query to check instructor assigned for course");
+        } catch (SQLException e) {
+            LOGGER.warning("Unable to execute query to check instructor assigned for course");
             throw new UserDefinedSQLException("Unable to execute query to check instructor assigned for course");
-
+        } catch (Exception e) {
+            LOGGER.warning("Generic Exception generated in " + CourseInstructorAssignmentDaoImpl.class);
+            throw new Exception("Generic Exception generated in " + e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
             if (connection != null) {

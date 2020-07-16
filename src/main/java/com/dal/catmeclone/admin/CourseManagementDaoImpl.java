@@ -6,8 +6,6 @@ import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -16,10 +14,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class CourseManagementDaoImpl implements CourseManagementDao {
 
-    final Logger LOGGER = LoggerFactory.getLogger(CourseManagementDaoImpl.class);
+    java.util.logging.Logger LOGGER = Logger.getLogger(CourseManagementDaoImpl.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     DBUtilityAbstractFactory dbUtilityAbstractFactory = abstractFactory.createDBUtilityAbstractFactory();
     DataBaseConnection DBUtil;
@@ -42,8 +41,8 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
             }
             LOGGER.info("Retrieved successfully from the database");
         } catch (Exception e) {
-            LOGGER.error("Unable to execute query to get all courses");
-            throw new UserDefinedSQLException("Some Error occured in executig query");
+            LOGGER.warning("Unable to execute query to get all courses");
+            throw new UserDefinedSQLException("Some Error occurred in executing query");
         } finally {
             DBUtil.terminateStatement(statement);
             if (connection != null) {
@@ -54,37 +53,32 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
     }
 
     @Override
-    public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException {
-        // Connect to database
+    public boolean deleteCourse(int courseID) throws UserDefinedSQLException, Exception {
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         Properties properties = SystemConfig.instance().getProperties();
         connection = DBUtil.connect();
         statement = connection.prepareCall("{call " + properties.getProperty("procedure.DeleteCourse") + "}");
-
         try {
             statement.setInt(1, courseID);
             statement.execute();
             LOGGER.info("Course:" + courseID + "Deleted successfully from the database");
+        } catch (SQLException e) {
+            LOGGER.warning("SQL Exception generated: " + e.getLocalizedMessage());
+            throw new UserDefinedSQLException("SQL Exception generated: " + e.getLocalizedMessage());
         } catch (Exception e) {
-
-            LOGGER.error("Unable to execute query to delete course");
-            return false;
+            LOGGER.warning("Generic Exception generated: " + e.getLocalizedMessage());
+            throw new Exception("Generic Exception generated: " + e.getLocalizedMessage());
         } finally {
-            if (statement != null) {
-                statement.close();
-            }
+            DBUtil.terminateStatement(statement);
             if (connection != null) {
-                if (!connection.isClosed()) {
-                    connection.close();
-                }
+                DBUtil.terminateConnection();
             }
         }
         return true;
     }
 
     @Override
-    public boolean insertCourse(Course course) throws SQLException, UserDefinedSQLException {
-        // Connect to database
+    public boolean insertCourse(Course course) throws Exception, UserDefinedSQLException {
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         Properties properties = SystemConfig.instance().getProperties();
         connection = DBUtil.connect();
@@ -94,24 +88,23 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
             statement.setString(2, course.getCourseName());
             statement.execute();
             LOGGER.info("Course:" + course.getCourseID() + "Added successfully in the database");
+        } catch (SQLException e) {
+            LOGGER.warning("SQL Exception generated: " + e.getLocalizedMessage());
+            throw new UserDefinedSQLException("SQL Exception generated: " + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.error("Unable to execute query to insert course");
-            return false;
+            LOGGER.warning("Generic Exception generated: " + e.getLocalizedMessage());
+            throw new Exception("Generic Exception generated: " + e.getLocalizedMessage());
         } finally {
-            if (statement != null) {
-                statement.close();
-            }
+            DBUtil.terminateStatement(statement);
             if (connection != null) {
-                if (!connection.isClosed()) {
-                    connection.close();
-                }
+                DBUtil.terminateConnection();
             }
         }
         return true;
     }
 
     @Override
-    public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException {
+    public boolean checkCourseExists(Course course) throws UserDefinedSQLException, Exception {
         boolean flag = true;
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         Properties properties = SystemConfig.instance().getProperties();
@@ -126,10 +119,12 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
                 flag = false;
             }
             LOGGER.info("Executed check course query successfully");
+        } catch (SQLException e) {
+            LOGGER.warning("SQL Exception generated: " + e.getLocalizedMessage());
+            throw new UserDefinedSQLException("SQL Exception generated: " + e.getLocalizedMessage());
         } catch (Exception e) {
-
-            LOGGER.error("Unable to execute query to check if course exists");
-            throw new UserDefinedSQLException("Unable to execute query to check if course exists");
+            LOGGER.warning("Generic Exception generated: " + e.getLocalizedMessage());
+            throw new Exception("Generic Exception generated: " + e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
             if (connection != null) {

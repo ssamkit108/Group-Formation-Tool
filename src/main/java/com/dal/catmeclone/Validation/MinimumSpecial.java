@@ -1,12 +1,13 @@
 package com.dal.catmeclone.Validation;
 
 import com.dal.catmeclone.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
+
 
 public class MinimumSpecial implements ValidationPolicy {
 
-    final Logger LOGGER = LoggerFactory.getLogger(MinimumSpecial.class);
+    final Logger LOGGER = Logger.getLogger(MinimumSpecial.class.getName());
     String ruleValue = "";
 
     @Override
@@ -16,7 +17,6 @@ public class MinimumSpecial implements ValidationPolicy {
 
     @Override
     public boolean isValid(User user) {
-
         String password = user.getPassword();
         int count = 0;
         for (int i = 0; i < password.length(); i++) {
@@ -32,6 +32,5 @@ public class MinimumSpecial implements ValidationPolicy {
     @Override
     public String getError() {
         return "Password must contain at least " + this.ruleValue + " Special Characters.";
-
     }
 }

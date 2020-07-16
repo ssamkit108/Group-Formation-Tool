@@ -1,12 +1,13 @@
 package com.dal.catmeclone.Validation;
 
 import com.dal.catmeclone.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
+
 
 public class MaximumLength implements ValidationPolicy {
 
-    final Logger LOGGER = LoggerFactory.getLogger(MaximumLength.class);
+    final Logger LOGGER = Logger.getLogger(MaximumLength.class.getName());
     private String ruleValue;
 
     @Override

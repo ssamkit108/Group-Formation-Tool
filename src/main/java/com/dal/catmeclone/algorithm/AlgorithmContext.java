@@ -4,7 +4,6 @@ import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.Course;
-import org.springframework.security.core.parameters.P;
 
 
 public class AlgorithmContext {
@@ -17,13 +16,7 @@ public class AlgorithmContext {
         this.groupFormationStrategy = groupFormationStrategy;
     }
 
-    public Boolean executeStrategy(Course course) throws Exception {
-        try{
-            return groupFormationStrategy.formatGroupForCourse(course);
-        }catch (UserDefinedSQLException e){
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
-        }catch (Exception e){
-            throw new Exception(e.getLocalizedMessage());
-        }
+    public Boolean executeStrategy(Course course) throws UserDefinedSQLException, Exception {
+        return groupFormationStrategy.formatGroupForCourse(course);
     }
 }

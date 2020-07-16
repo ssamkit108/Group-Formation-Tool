@@ -3,7 +3,10 @@ package com.dal.catmeclone.surveyresponse;
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
-import com.dal.catmeclone.model.*;
+import com.dal.catmeclone.model.SurveyQuestion;
+import com.dal.catmeclone.model.SurveyQuestionResponse;
+import com.dal.catmeclone.model.User;
+import com.dal.catmeclone.model.UserSurveyResponse;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,7 +17,6 @@ public class ResponseServiceImpl implements ResponseService {
 
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     SurveyResponseAbstractFactory surveyResponseAbstractFactory = abstractFactory.createSurveyResponseAbstractFactory();
-    ModelAbstractFactory modelAbstractFactory = abstractFactory.createModelAbstractFactory();
 
     public List<SurveyQuestionResponse> getAllQuestion(int courseid) throws Exception {
         ResponseDao responseDao = surveyResponseAbstractFactory.createResponseDao();
@@ -23,11 +25,11 @@ public class ResponseServiceImpl implements ResponseService {
             listofquestion = responseDao.getAllQuestion(courseid);
             return listofquestion;
         } catch (UserDefinedSQLException e) {
-            LOGGER.warning(e.getLocalizedMessage());
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
+            throw new UserDefinedSQLException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
-            throw new Exception(e.getLocalizedMessage());
+            LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
+            throw new Exception("Generic error encountered" + e.getLocalizedMessage());
         }
     }
 
@@ -36,13 +38,12 @@ public class ResponseServiceImpl implements ResponseService {
             ResponseDao responseDao = surveyResponseAbstractFactory.createResponseDao();
             return responseDao.checkPublished(courseid);
         } catch (UserDefinedSQLException e) {
-            LOGGER.warning(e.getLocalizedMessage());
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
+            throw new UserDefinedSQLException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
-            throw new Exception(e.getLocalizedMessage());
+            LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
+            throw new Exception("Generic error encountered" + e.getLocalizedMessage());
         }
-
     }
 
     @Override
@@ -52,11 +53,11 @@ public class ResponseServiceImpl implements ResponseService {
             return responseDao.checkSubmitted(bannerid, courseid);
 
         } catch (UserDefinedSQLException e) {
-            LOGGER.warning(e.getLocalizedMessage());
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
+            throw new UserDefinedSQLException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
-            throw new Exception(e.getLocalizedMessage());
+            LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
+            throw new Exception("Generic error encountered" + e.getLocalizedMessage());
         }
     }
 
@@ -72,11 +73,11 @@ public class ResponseServiceImpl implements ResponseService {
                 responseDao.insertResponse(surveyQuestion.getSurveyQuestionId(), user.getBannerId(), questionResponse.getResponse());
             }
         } catch (UserDefinedSQLException e) {
-            LOGGER.warning(e.getLocalizedMessage());
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
+            throw new UserDefinedSQLException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
-            throw new Exception(e.getLocalizedMessage());
+            LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
+            throw new Exception("Generic error encountered" + e.getLocalizedMessage());
         }
 
     }

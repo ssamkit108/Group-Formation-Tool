@@ -79,7 +79,8 @@
                 <input class="form-control" id="question-title" name="question-title"
                        th:field="*{questionTitle}" type="hidden"
                        value="${questionTitle}"> <input class="form-control"
-                                                        id="question-text" name="question-text" th:field="*{questionText}"
+                                                        id="question-text" name="question-text"
+                                                        th:field="*{questionText}"
                                                         type="hidden" value="${questionText}"> <input
                     class="form-control" id="question-type" name="question-type"
                     th:field="*{questionType}" type="hidden"
@@ -95,14 +96,16 @@
                             <label for="displaytext-1">Display Text:</label>
                             <input
                                     class="form-control" id="optiontext" name="optiontext"
-                                    placeholder="Enter Option Display text" th:field="*{optionList[__${itemStat.index}__].optionText}"
+                                    placeholder="Enter Option Display text"
+                                    th:field="*{optionList[__${itemStat.index}__].optionText}"
                                     type="text">
                         </div>
                         <div class="col-lg-6">
                             <label for="stored-1">Stored As:</label>
                             <input class="form-control optionvalue"
                                    id="optionvalue" min=0
-                                   name="optionvalue" placeholder="stored as" th:field="*{optionList[__${itemStat.index}__].optionValue}"
+                                   name="optionvalue" placeholder="stored as"
+                                   th:field="*{optionList[__${itemStat.index}__].optionValue}"
                                    type="number"
                                    value="${option.optionValue}">
                         </div>

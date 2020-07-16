@@ -2,9 +2,6 @@ package com.dal.catmeclone.model;
 
 import java.util.List;
 
-/**
- * @author Mayank
- */
 public class Survey {
 
     private int surveyId;
@@ -18,14 +15,6 @@ public class Survey {
         super();
     }
 
-    /**
-     * @param surveyId
-     * @param course
-     * @param surveyQuestions
-     * @param publishedStatus
-     * @param groupSize
-     * @Constructor Parameterized Constructor to create Survey Object
-     */
     public Survey(int surveyId, Course course, List<SurveyQuestion> surveyQuestions, boolean publishedStatus,
                   int groupSize) {
         super();
@@ -36,12 +25,6 @@ public class Survey {
         this.groupSize = groupSize;
     }
 
-    /**
-     * @param course
-     * @param surveyQuestions
-     * @param publishedStatus
-     * @param groupSize
-     */
     public Survey(Course course, List<SurveyQuestion> surveyQuestions, boolean publishedStatus, int groupSize) {
         super();
         this.course = course;
@@ -91,14 +74,14 @@ public class Survey {
     }
 
     public boolean isGroupFormed() {
-		return groupFormed;
-	}
+        return groupFormed;
+    }
 
-	public void setGroupFormed(boolean groupFormed) {
-		this.groupFormed = groupFormed;
-	}
+    public void setGroupFormed(boolean groupFormed) {
+        this.groupFormed = groupFormed;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "Survey [surveyId=" + surveyId + ", course=" + course + ", surveyQuestions=" + surveyQuestions
                 + ", publishedStatus=" + publishedStatus + ", groupSize=" + groupSize + "]";

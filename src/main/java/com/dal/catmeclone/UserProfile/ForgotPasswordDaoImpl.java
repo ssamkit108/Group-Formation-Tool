@@ -8,18 +8,17 @@ import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
 import com.dal.catmeclone.notification.NotificationAbstractFactory;
 import com.dal.catmeclone.notification.NotificationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
 
-    final Logger LOGGER = LoggerFactory.getLogger(ForgotPasswordDaoImpl.class);
+    final Logger LOGGER = Logger.getLogger(ForgotPasswordDaoImpl.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     DBUtilityAbstractFactory dbUtilityAbstractFactory = abstractFactory.createDBUtilityAbstractFactory();
     EncryptAbstractFactory encryptAbstractFactory = abstractFactory.createEncryptAbstractFactory();
@@ -31,7 +30,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
     private Connection connection;
     private String sendto;
 
-    public boolean checkexist(String bannerid) throws Exception {
+    public boolean checkexist(String bannerid) throws SQLException, Exception {
         try {
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
             Properties properties = SystemConfig.instance().getProperties();
@@ -39,17 +38,20 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.finduserBybannerId") + "}");
 
             statement.setString(1, bannerid);
-            ResultSet rs = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
 
-            if (rs.next()) {
-                sendto = rs.getString("email");
+            if (resultSet.next()) {
+                sendto = resultSet.getString("email");
                 return true;
             } else {
                 return false;
             }
+        } catch (SQLException e) {
+            LOGGER.warning("SQL error occurred while checking user exist or not.");
+            throw new SQLException(e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.error("There is error about closing connection in the forgot password Dao.");
-            throw new Exception("There is error about closing connection in the forgot password Dao.");
+            LOGGER.warning(e.getLocalizedMessage());
+            throw new Exception(e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
             if (connection != null) {
@@ -59,7 +61,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
     }
 
     @Override
-    public void UpdateToken(String BannerId, String token) throws Exception {
+    public void updateToken(String BannerId, String token) throws SQLException, Exception {
         try {
             notificationService = notificationAbstractFactory.createNotificationService();
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
@@ -74,28 +76,22 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
             notificationService.sendNotificationForPassword(BannerId, appurl, sendto);
             LOGGER.info("The forgot password mail sent successfully");
         } catch (SQLException e) {
-            LOGGER.error("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
-            throw new Exception("There is SQL error in the forgot password Dao.");
+            LOGGER.warning("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
+            throw new SQLException("There is SQL error in the forgot password Dao.");
         } catch (Exception e) {
-            LOGGER.error(e.getLocalizedMessage());
+            LOGGER.warning(e.getLocalizedMessage());
             throw new Exception(e.getLocalizedMessage());
         } finally {
-            try {
-                DBUtil.terminateStatement(statement);
-                if (connection != null) {
-                    DBUtil.terminateConnection();
-                }
-            } catch (Exception e) {
-                LOGGER.error("There is error about closing connection in the forgot password Dao.");
-                LOGGER.error(e.getLocalizedMessage());
-                throw new Exception(e.getLocalizedMessage());
+            DBUtil.terminateStatement(statement);
+            if (connection != null) {
+                DBUtil.terminateConnection();
             }
-        }
 
+        }
     }
 
     @Override
-    public void SetNewPassword(String BannerId, String password) throws Exception {
+    public void setNewPassword(String BannerId, String password) throws SQLException, Exception {
         try {
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
             passwordencoder = encryptAbstractFactory.createBCryptPasswordEncryption();
@@ -106,57 +102,44 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
             statement.setString(2, passwordencoder.encryptPassword(password));
             statement.execute();
         } catch (SQLException e) {
-            LOGGER.error("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
-            throw new Exception("Sorry..Password could not able to reset. Try after sometime.");
+            LOGGER.warning("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
+            throw new SQLException("Sorry..Password could not able to reset. Try after sometime.");
         } catch (Exception e) {
-            LOGGER.error(e.getLocalizedMessage());
+            LOGGER.warning(e.getLocalizedMessage());
             throw new Exception(e.getLocalizedMessage());
         } finally {
-            try {
-                // Terminating the connection
-                DBUtil.terminateStatement(statement);
-                if (connection != null) {
-                    DBUtil.terminateConnection();
-                }
-            } catch (Exception e) {
-                LOGGER.error("There is error about closing connection in the forgot password Dao.");
-                LOGGER.error(e.getLocalizedMessage());
-                throw new Exception(e.getLocalizedMessage());
+            DBUtil.terminateStatement(statement);
+            if (connection != null) {
+                DBUtil.terminateConnection();
             }
         }
-
     }
 
-    // This method will check that token is already in the database or not
-    public String checktokenexist(String token) throws Exception {
+    public String checktokenexist(String token) throws SQLException, Exception {
         try {
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
             Properties properties = SystemConfig.instance().getProperties();
             connection = DBUtil.connect();
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.findByResetToken") + "}");
             statement.setString(1, token);
-            ResultSet rs = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
             String BannerID;
-            if (rs.next()) {
-                BannerID = rs.getString("bannerid");
+            if (resultSet.next()) {
+                BannerID = resultSet.getString("bannerid");
             } else {
-                BannerID = "";
+                BannerID = null;
             }
             return BannerID;
+        } catch (SQLException e) {
+            LOGGER.warning(e.getLocalizedMessage());
+            throw new SQLException(e.getLocalizedMessage());
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            LOGGER.warning(e.getLocalizedMessage());
+            throw new Exception(e.getLocalizedMessage());
         } finally {
-            try {
-                // Terminating the connection
-                DBUtil.terminateStatement(statement);
-                if (connection != null) {
-                    DBUtil.terminateConnection();
-                }
-            } catch (Exception e) {
-                LOGGER.error("There is error about closing connection in the forgot password Dao.");
-                LOGGER.error(e.getLocalizedMessage());
-                throw new Exception(e.getLocalizedMessage());
+            DBUtil.terminateStatement(statement);
+            if (connection != null) {
+                DBUtil.terminateConnection();
             }
         }
     }

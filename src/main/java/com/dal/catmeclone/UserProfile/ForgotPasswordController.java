@@ -1,12 +1,9 @@
 package com.dal.catmeclone.UserProfile;
 
 import com.dal.catmeclone.AbstractFactory;
-import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.exceptionhandler.ValidationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,35 +14,40 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.sql.SQLException;
+import java.util.logging.Logger;
 
 @Controller
 public class ForgotPasswordController {
-    final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+
+    private final Logger LOGGER = Logger.getLogger(ForgotPasswordController.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     UserProfileAbstractFactory userProfileAbstractFactory = abstractFactory.createUserProfileAbstractFactory();
     ForgotPasswordService forgotpasswordservice;
 
     @GetMapping("/forgotpassword")
-    public String displayforgotpassword(Model model) {
+    public String displayForgotPassword(Model model) {
         return "forgotpassword";
     }
 
     @RequestMapping(value = "/forgotpassword", method = RequestMethod.POST)
-    public ModelAndView processForgotpassword(@RequestParam(name = "username") String bannerID)
-            throws SQLException, UserDefinedSQLException {
+    public ModelAndView processForgotpassword(@RequestParam(name = "username") String bannerID) {
         try {
             forgotpasswordservice = userProfileAbstractFactory.createForgotPasswordService();
-            forgotpasswordservice.Resetlink(bannerID);
-            ModelAndView m;
-            m = new ModelAndView("forgotpassword");
-            m.addObject("message", "Password is sent on your registred email address.");
-            return m;
+            forgotpasswordservice.resetlink(bannerID);
+            ModelAndView modelAndView;
+            modelAndView = new ModelAndView("forgotpassword");
+            modelAndView.addObject("message", "Password is sent on your registred email address.");
+            return modelAndView;
+        } catch (UserDefinedSQLException e) {
+            LOGGER.warning(e.getLocalizedMessage());
+            ModelAndView modelAndView = new ModelAndView("forgotpassword");
+            modelAndView.addObject("message", e.getLocalizedMessage());
+            return modelAndView;
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            ModelAndView m = new ModelAndView("forgotpassword");
-            m.addObject("message", e.getMessage());
-            return m;
+            LOGGER.warning(e.getLocalizedMessage());
+            ModelAndView modelAndView = new ModelAndView("forgotpassword");
+            modelAndView.addObject("message", e.getLocalizedMessage());
+            return modelAndView;
         }
     }
 
@@ -53,23 +55,23 @@ public class ForgotPasswordController {
     public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token") String confirmationToken) {
         try {
             forgotpasswordservice = userProfileAbstractFactory.createForgotPasswordService();
-            String bannerId = forgotpasswordservice.validatetoken(confirmationToken);
-            ModelAndView m;
+            String bannerId = forgotpasswordservice.validateToken(confirmationToken);
+            ModelAndView modelAndView1;
             if (!bannerId.isEmpty() && !bannerId.equals(null)) {
-                m = new ModelAndView("ResetPassword");
-                m.addObject("bannerid", bannerId);
-                return m;
+                modelAndView1 = new ModelAndView("ResetPassword");
+                modelAndView1.addObject("bannerid", bannerId);
+                return modelAndView1;
             } else {
-                m = new ModelAndView("forgotpassword");
-                m.addObject("message", "The link is invalid or broken!");
-                return m;
+                modelAndView1 = new ModelAndView("forgotpassword");
+                modelAndView1.addObject("message", "The link is invalid or broken!");
+                return modelAndView1;
             }
         } catch (Exception e) {
-            ModelAndView m;
-            m = new ModelAndView("forgotpassword");
-            LOGGER.error(e.getLocalizedMessage());
-            m.addObject("message", e.getLocalizedMessage());
-            return m;
+            ModelAndView modelAndView1;
+            modelAndView1 = new ModelAndView("forgotpassword");
+            LOGGER.warning(e.getLocalizedMessage());
+            modelAndView1.addObject("message", e.getLocalizedMessage());
+            return modelAndView1;
         }
     }
 
@@ -79,33 +81,33 @@ public class ForgotPasswordController {
                                       RedirectAttributes redirectAttributes) throws Exception {
         try {
             forgotpasswordservice = userProfileAbstractFactory.createForgotPasswordService();
-            ModelAndView m;
+            ModelAndView modelAndView;
 
             if (password.equals(confirmPassword)) {
                 forgotpasswordservice.setNewPassword(BannerID, password);
 
                 LOGGER.info("Password for BannerID:" + BannerID + " has been changed Successfully");
-                m = new ModelAndView("login");
-                m.addObject("message", "Your password has been changed successfully");
-                return m;
+                modelAndView = new ModelAndView("login");
+                modelAndView.addObject("message", "Your password has been changed successfully");
+                return modelAndView;
             } else {
-                m = new ModelAndView("ResetPassword");
-                m.addObject("bannerid", BannerID);
-                m.addObject("message", "Please enter password and confirm password same.");
-                return m;
+                modelAndView = new ModelAndView("ResetPassword");
+                modelAndView.addObject("bannerid", BannerID);
+                modelAndView.addObject("message", "Please enter password and confirm password same.");
+                return modelAndView;
             }
 
         } catch (ValidationException e) {
-            ModelAndView m = new ModelAndView("ResetPassword");
-            m.addObject("bannerid", BannerID);
-            m.addObject("message", e.getMessage());
-            return m;
+            ModelAndView modelAndView = new ModelAndView("ResetPassword");
+            modelAndView.addObject("bannerid", BannerID);
+            modelAndView.addObject("message", e.getMessage());
+            return modelAndView;
         } catch (Exception e) {
-            ModelAndView m;
-            m = new ModelAndView("ResetPassword");
-            m.addObject("bannerid", BannerID);
-            m.addObject("message", e.getMessage());
-            return m;
+            ModelAndView modelAndView;
+            modelAndView = new ModelAndView("ResetPassword");
+            modelAndView.addObject("bannerid", BannerID);
+            modelAndView.addObject("message", e.getMessage());
+            return modelAndView;
         }
     }
 }

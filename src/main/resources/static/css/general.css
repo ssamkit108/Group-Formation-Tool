@@ -290,9 +290,8 @@ label {
     color: #400040;
 }
 
-.nogroupdisplay
-{
-	text-align: center;
+.nogroupdisplay {
+    text-align: center;
     margin-top: 10%;
     text-shadow: blanchedalmond;
     color: darkblue;

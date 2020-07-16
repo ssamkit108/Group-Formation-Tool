@@ -12,6 +12,6 @@ public interface CourseInstructorAssignmentDao {
     public boolean enrollInstructorForCourse(User Instructor, Course course, Role role)
             throws SQLException, UserDefinedSQLException;
 
-    public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException;
+    public boolean checkInstructorForCourse(Course course) throws UserDefinedSQLException, SQLException, Exception;
 
 }

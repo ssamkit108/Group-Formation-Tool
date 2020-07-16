@@ -1,88 +1,89 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="favicon.ico" />
-<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link rel="stylesheet" type="text/css" href="/css/general.css">
-<title>Grouped Data</title>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <link href="favicon.ico" rel="icon"/>
+    <link
+            href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            rel="stylesheet"/>
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
+    <title>Grouped Data</title>
 <body>
-	<div th:replace="header :: header"></div>
-	<div class="bodycontainer">
-		
-		<div class="row">
-			<div class="col-lg-8">
-				<h1 style="text-align: left;">Categorized Groups</h1>
+<div th:replace="header :: header"></div>
+<div class="bodycontainer">
 
-			</div>
-			<div class="col-lg-4">
-				<h5 class="usernameheader"
-					style="float: right; color: black; margin-top: 30px;">
-					Hello <span sec:authentication="name"></span> (<span
-						th:utext="${session.role}"></span>)
-				</h5>
-			</div>
-		</div>
-		<hr style="margin-top: 2px">
-		<div class="row" th:if="${groups ne null}">
-		<form th:action="@{/survey/groupinfo}" method="post" id="responseform"
-			th:object="${survey}" style="display: contents">
-			<div style="margin-top: 10px"
-				th:if="${groups ne null and !groups.empty}">
-				<table class="table table-bordered table-striped table-hover">
-					<thead class="thead-dark">
-						<tr>
-							<th>Group Number</th>
-							<th>Students Allocated</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="group_data : ${groups}">
-							<td th:text="${group_data.key}"></td>
-							<td>
-								<table class="table table-bordered table-striped table-hover">
-									<thead class="thead-dark">
-										<tr>
-											<th>Banner Id</th>
-											<th>Email</th>
-											<th>First Name</th>
-											<th>Last Name</th>
-											<th>Survey Responses</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr th:each="user : ${group_data.value}">
-											<td th:text="${user.bannerId}"></td>
-											<td th:text="${user.email}"></td>
-											<td th:text="${user.firstName}"></td>
-											<td th:text="${user.lastName}"></td>
-											<td><input type="submit" class="btn btn-primary"
-												value="View Survey Responses"
-												th:formaction="@{/survey/viewresponse(courseid=${courseID},bannerId=${user.bannerId})}">
-											</td>
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 style="text-align: left;">Categorized Groups</h1>
 
-										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</form>
-		</div>
-		<div class="row" th:if="nogroupsformed ne null">
-			<div class="table-responsive nogroupdisplay">
-				<br>
-				<h4 th:text=${nogroupsformed}></h4>
-			</div>
-		</div>
+        </div>
+        <div class="col-lg-4">
+            <h5 class="usernameheader"
+                style="float: right; color: black; margin-top: 30px;">
+                Hello <span sec:authentication="name"></span> (<span
+                    th:utext="${session.role}"></span>)
+            </h5>
+        </div>
+    </div>
+    <hr style="margin-top: 2px">
+    <div class="row" th:if="${groups ne null}">
+        <form id="responseform" method="post" style="display: contents"
+              th:action="@{/survey/groupinfo}" th:object="${survey}">
+            <div style="margin-top: 10px"
+                 th:if="${groups ne null and !groups.empty}">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Group Number</th>
+                        <th>Students Allocated</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="group_data : ${groups}">
+                        <td th:text="${group_data.key}"></td>
+                        <td>
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th>Banner Id</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Survey Responses</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="user : ${group_data.value}">
+                                    <td th:text="${user.bannerId}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text="${user.firstName}"></td>
+                                    <td th:text="${user.lastName}"></td>
+                                    <td><input class="btn btn-primary"
+                                               th:formaction="@{/survey/viewresponse(courseid=${courseID},bannerId=${user.bannerId})}"
+                                               type="submit"
+                                               value="View Survey Responses">
+                                    </td>
 
-	</div>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="row" th:if="nogroupsformed ne null">
+        <div class="table-responsive nogroupdisplay">
+            <br>
+            <h4 th:text=${nogroupsformed}></h4>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>
