@@ -2,7 +2,7 @@ package com.dal.catmeclone.surveyresponse;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +29,7 @@ public class ResponseController {
         UserSurveyResponse userSurveyResponse = modelAbstractFactory.createUserSurveyResponse();
         User user = modelAbstractFactory.createUser();
         Survey survey = modelAbstractFactory.createSurvey();
-        Course course = modelAbstractFactory.crateCourse();
+        Course course = modelAbstractFactory.createCourse();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         user.setBannerId(username);
@@ -53,7 +53,7 @@ public class ResponseController {
                 return "coursestudentpage";
             }
 
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning(e.getLocalizedMessage());
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
@@ -80,7 +80,7 @@ public class ResponseController {
             LOGGER.info("creating " + userSurveyResponse + " question");
             responseService.setAllresponses(userSurveyResponse);
             return "coursestudentpage";
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning(e.getLocalizedMessage());
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";

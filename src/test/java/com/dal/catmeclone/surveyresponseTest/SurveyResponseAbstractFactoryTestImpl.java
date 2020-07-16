@@ -5,7 +5,7 @@ import com.dal.catmeclone.surveyresponse.ResponseService;
 import com.dal.catmeclone.surveyresponse.ResponseServiceImpl;
 import com.dal.catmeclone.surveyresponse.SurveyResponseAbstractFactory;
 
-public class ISurveyResponseAbstractFactoryImpl implements ISurveyResponseAbstractFactory {
+public class SurveyResponseAbstractFactoryTestImpl implements SurveyResponseAbstractFactory {
 
     @Override
     public ResponseDao createResponseDao() {
@@ -16,5 +16,10 @@ public class ISurveyResponseAbstractFactoryImpl implements ISurveyResponseAbstra
     public ResponseService createResponseService() {
         return new ResponseServiceImpl();
     }
+
+	@Override
+	public ResponseService createResponseService(ResponseDao responseDao) {
+		return new ResponseServiceImpl(responseDao);
+	}
 
 }

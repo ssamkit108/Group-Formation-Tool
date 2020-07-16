@@ -4,7 +4,7 @@ import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.*;
 
 import java.sql.*;
@@ -22,7 +22,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
     private Connection connection;
 
     @Override
-    public boolean isQuestionExistForUserWithTitleandText(BasicQuestion basicQuestion) throws UserDefinedSQLException {
+    public boolean isQuestionExistForUserWithTitleandText(BasicQuestion basicQuestion) throws UserDefinedException {
 
         DataBaseConnection DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         Properties properties = SystemConfig.instance().getProperties();
@@ -45,7 +45,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
             }
         } catch (SQLException e) {
             LOGGER.warning("SQL Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL Error Encountered:" + e.getLocalizedMessage());
         } finally {
             if (null != statement) {
                 DBUtil.terminateStatement(statement);
@@ -56,7 +56,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
     }
 
     @Override
-    public boolean createNumericOrTextQuestion(BasicQuestion textOrNumericQuestion) throws UserDefinedSQLException {
+    public boolean createNumericOrTextQuestion(BasicQuestion textOrNumericQuestion) throws UserDefinedException {
 
         DataBaseConnection DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         Properties properties = SystemConfig.instance().getProperties();
@@ -77,7 +77,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 
         } catch (SQLException e) {
             LOGGER.warning(" SQL Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL Error Encountered:" + e.getLocalizedMessage());
         } finally {
             if (null != statement) {
                 DBUtil.terminateStatement(statement);
@@ -89,7 +89,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 
     @Override
     public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoiceQuestion)
-            throws UserDefinedSQLException {
+            throws UserDefinedException {
 
         DataBaseConnection DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         Properties properties = SystemConfig.instance().getProperties();
@@ -130,7 +130,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
 
         } catch (SQLException e) {
             LOGGER.warning("Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException("Error Encountered:" + e.getLocalizedMessage());
         } finally {
             if (questionCreateStatement != null) {
                 DBUtil.terminateStatement(questionCreateStatement);
@@ -144,7 +144,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
     }
 
     @Override
-    public List<BasicQuestion> getAllQuestionByUser(User u) throws UserDefinedSQLException {
+    public List<BasicQuestion> getAllQuestionByUser(User u) throws UserDefinedException {
 
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         Properties properties = SystemConfig.instance().getProperties();
@@ -169,7 +169,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
             }
         } catch (SQLException e) {
             LOGGER.warning("error occurred" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("Some Error occurred in executing query");
+            throw new UserDefinedException("Some Error occurred in executing query");
         } finally {
             if (null != statement) {
                 DBUtil.terminateStatement(statement);
@@ -180,7 +180,7 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
     }
 
     @Override
-    public boolean deleteQuestion(int questionId) throws UserDefinedSQLException {
+    public boolean deleteQuestion(int questionId) throws UserDefinedException {
 
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         CallableStatement statement = null;
@@ -193,10 +193,10 @@ public class QuestionManagementDaoImpl implements QuestionManagementDao {
             LOGGER.info("Question with Id :" + questionId + "Deleted successfully from the database");
         } catch (SQLIntegrityConstraintViolationException e) {
             LOGGER.warning("Error occured" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("Question is already used in any survey. Remove the Question from surevy before deleting it");
+            throw new UserDefinedException("Question is already used in any survey. Remove the Question from surevy before deleting it");
         } catch (SQLException e) {
             LOGGER.warning("Error occured" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL Error Occurred" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL Error Occurred" + e.getLocalizedMessage());
         } finally {
             if (null != statement) {
                 DBUtil.terminateStatement(statement);

@@ -1,10 +1,13 @@
 package com.dal.catmeclone.surveyresponseTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.model.*;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 import com.dal.catmeclone.surveyresponse.ResponseDao;
+import com.dal.catmeclone.surveyresponse.ResponseService;
+import com.dal.catmeclone.surveyresponse.SurveyResponseAbstractFactory;
+
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,109 +19,68 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ResponseServiceTest {
 
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
-    ResponseDao ResponseDao = abstractFactoryTest.createSurveyResponseAbstractFactory().createResponseDao();
-
-    int courseid;
-    String bannerid;
-    int surveyQuestionId;
-    Date responseDate;
-    boolean submitted;
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+    ModelAbstractFactory modelFactory = abstractFactoryTest.createModelAbstractFactory();
+    SurveyResponseAbstractFactory surveyResponseFactory=abstractFactoryTest.createSurveyResponseAbstractFactory();
+    ResponseDao responseDaoMock = surveyResponseFactory.createResponseDao();
 
 
-    ResponseServiceTest() {
-        this.bannerid = "B00832190";
-        this.courseid = 300;
-        this.surveyQuestionId = 12;
-        this.responseDate = new Date();
-        this.submitted = true;
+    @Test
+    void getAllSurveyQuestion() throws Exception {
+    	ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
+       
+        assertEquals(responseService.getAllQuestion(5709).size(),3);
     }
 
     @Test
-    void getAllQuestion() throws Exception {
-        List<SurveyQuestionResponse> surveyresp = new ArrayList<>();
-
-        BasicQuestion details = modelfact.createBasicQuestion();
-        details.setQuestionId(12);
-        details.setQuestionText("rate yourself in java?");
-        details.setQuestionTitle("java");
-        details.setQuestionType(QuestionType.NUMERIC);
-
-
-        SurveyQuestion ques = modelfact.createSurveyQuestion();
-        ques.setSurveyQuestionId(12);
-        ques.setQuestionDetail(details);
-
-        SurveyQuestionResponse resp = modelfact.createSurveyQuestionResponse();
-        resp.setSurveyQuestion(ques);
-        surveyresp.add(resp);
-
-        BasicQuestion details2 = modelfact.createBasicQuestion();
-        details.setQuestionId(13);
-        details.setQuestionText("rate yourself in python?");
-        details.setQuestionTitle("python");
-        details.setQuestionType(QuestionType.NUMERIC);
-
-
-        SurveyQuestion ques2 = modelfact.createSurveyQuestion();
-        ques.setSurveyQuestionId(13);
-        ques.setQuestionDetail(details2);
-
-        SurveyQuestionResponse resp2 = modelfact.createSurveyQuestionResponse();
-        resp.setSurveyQuestion(ques2);
-        surveyresp.add(resp2);
-
-        assertEquals(ResponseDao.getAllQuestion(courseid).size(), surveyresp.size());
-    }
-
-    @Test
-    void checkPublished() throws Exception {
-        assertTrue(ResponseDao.checkPublished(courseid));
-    }
-
-    @Test
-    void checkSubmitted() throws Exception {
-        assertTrue(ResponseDao.checkSubmitted(bannerid, courseid));
-    }
-
-    @Test
-    void setAllresponses() {
-        User usr = modelfact.createUser();
-        usr.setBannerId(bannerid);
-        Course crc = modelfact.createCourse();
-        crc.setCourseID(courseid);
-        BasicQuestion details = modelfact.createBasicQuestion();
+    void setAllresponses() throws Exception {
+    	Survey survey= modelFactory.createSurvey();
+    	survey.setSurveyId(1);
+        User user = modelFactory.createUser("B00839818");
+        Course course = modelFactory.createCourse(5709);
+        survey.setCourse(course);
+        BasicQuestion details = modelFactory.createBasicQuestion();
         details.setQuestionId(10);
         details.setQuestionText("rate yourself in java?");
         details.setQuestionTitle("java");
         details.setQuestionType(QuestionType.NUMERIC);
-
-
-        SurveyQuestion ques = modelfact.createSurveyQuestion();
-        ques.setSurveyQuestionId(surveyQuestionId);
-        ques.setQuestionDetail(details);
-        List<SurveyQuestion> lst = new ArrayList<>();
-        lst.add(ques);
-        Survey survey = modelfact.createSurvey();
-        survey.setSurveyQuestions(lst);
-        survey.setCourse(crc);
-        SurveyQuestionResponse resp = modelfact.createSurveyQuestionResponse();
-        resp.setSurveyQuestion(ques);
+        SurveyQuestion question = modelFactory.createSurveyQuestion(modelFactory.createBasicQuestion(1, "Test Question", "Question 1", "NUMERIC"));
+        question.setSurveyQuestionId(1);
         ArrayList<Object> response = new ArrayList<>();
         response.add(5);
-        resp.setResponse(response);
-        List<SurveyQuestionResponse> surveyresp = new ArrayList<>();
-        surveyresp.add(resp);
-        List<UserSurveyResponse> usrlst = new ArrayList<>();
-        UserSurveyResponse usrresp = modelfact.createUserSurveyResponse();
-        usrresp.setResponseDate(responseDate);
-        usrresp.setSubmitted(submitted);
-        usrresp.setUser(usr);
-        usrresp.setSurvey(survey);
-        usrresp.setSurveyResponse(surveyresp);
-        usrlst.add(usrresp);
-
-
+        SurveyQuestionResponse surveyQuestionResponse = modelFactory.createSurveyQuestionResponse(question, response);
+        List<SurveyQuestionResponse> surveyResponse = new ArrayList<>();
+        surveyResponse.add(surveyQuestionResponse);
+        UserSurveyResponse userSurveyResponse= modelFactory.createUserSurveyResponse();
+        userSurveyResponse.setResponseDate(new Date());
+        userSurveyResponse.setSubmitted(true);
+        userSurveyResponse.setUser(user);
+        userSurveyResponse.setSurvey(survey);
+        userSurveyResponse.setSurveyResponse(surveyResponse);
+        
+        ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
+        responseService.setAllresponses(userSurveyResponse);
+        
+        assertTrue(responseService.checkSubmitted(user.getBannerId(), course.getCourseID()));
+        
+    }
+    
+    @Test
+    void checkSubmittedYes() throws Exception {
+    	ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
+        assertTrue(responseService.checkSubmitted("B00839818", 5709));
+    }
+    
+    @Test
+    void checkSubmittedNo() throws Exception {
+    	ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
+        Assert.assertFalse(responseService.checkSubmitted("B00000000", 5709));
+    }
+    
+    @Test
+    void checkPublished() throws Exception {
+    	ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
+    	
+        Assert.assertFalse(responseService.checkPublished(5709));
     }
 }

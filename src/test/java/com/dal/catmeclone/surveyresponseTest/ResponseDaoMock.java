@@ -1,121 +1,100 @@
 package com.dal.catmeclone.surveyresponseTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.*;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 import com.dal.catmeclone.surveyresponse.ResponseDao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ResponseDaoMock implements ResponseDao {
 
-    int courseid;
-    String bannerId;
-    String responseDate;
-    boolean submitted;
-    int surveyQuestionId;
+	Survey survey;
+	private List<SurveyQuestion> surveyQuestionDetailsList;
+	private List<Survey> surveyList;
+	static Map<Integer, String> responses = new HashMap<>();
+	static int j, k = 0;
 
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+	AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+	ModelAbstractFactory modelFactory = abstractFactoryTest.createModelAbstractFactory();
 
-    ResponseDaoMock() {
-        super();
-        this.courseid = 300;
-        this.bannerId = "B00832190";
-        this.responseDate = "2020-07-12";
-        this.submitted = true;
-        this.surveyQuestionId = 12;
+	ResponseDaoMock() {
+		super();
+		this.survey = modelFactory.createSurvey();
+		surveyQuestionDetailsList = new ArrayList<SurveyQuestion>();
+		surveyList = new ArrayList<Survey>();
+		this.survey.setSurveyId(1);
+		this.survey.setCourse(modelFactory.createCourse(5709));
+		this.survey.setPublishedStatus(false);
+		this.survey.setGroupFormed(false);
+		this.survey.setGroupSize(4);
+		surveyQuestionDetailsList.add(modelFactory.createSurveyQuestion(1,
+				modelFactory.createBasicQuestion(1, "Test Question", "Question 1", "NUMERIC"), "Group Similar", 3));
+		surveyQuestionDetailsList.add(modelFactory.createSurveyQuestion(2,
+				modelFactory.createBasicQuestion(2, "Test Question", "Question 2", "FREETEXT"), "Group Similar", 0));
+		surveyQuestionDetailsList.add(modelFactory.createSurveyQuestion(3,
+				modelFactory.createBasicQuestion(3, "Test Question", "Question 3", "MULTIPLECHOICEMANY"),
+				"Group Disimilar", 0));
+		this.survey.setSurveyQuestions(surveyQuestionDetailsList);
+		surveyList.add(survey);
+		Survey publishedSurvey= modelFactory.createSurvey(2, modelFactory.createCourse(6000), null, true, 4);
+		surveyList.add(publishedSurvey);
+		
+		responses.put(100, "B00839818");
 
-    }
+	}
 
-    @Override
-    public List<SurveyQuestionResponse> getAllQuestion(int courseid) throws Exception {
-        List<SurveyQuestionResponse> surveyresp = new ArrayList<>();
+	@Override
+	public List<SurveyQuestionResponse> getAllQuestion(int courseid) throws Exception {
+		List<SurveyQuestionResponse> surveyQuestionResponses = new ArrayList<SurveyQuestionResponse>();
+		for (Survey survey : surveyList) {
+			if (survey.getCourse().getCourseID() == courseid) {
+				for (SurveyQuestion question : survey.getSurveyQuestions()) {
+					SurveyQuestionResponse questionResponse = modelFactory.createSurveyQuestionResponse(question,
+							new ArrayList<>());
+					surveyQuestionResponses.add(questionResponse);
+				}
+			}
+		}
+		return surveyQuestionResponses;
+	}
 
-        BasicQuestion details = modelfact.createBasicQuestion();
-        details.setQuestionId(12);
-        details.setQuestionText("rate yourself in java?");
-        details.setQuestionTitle("java");
-        details.setQuestionType(QuestionType.NUMERIC);
+	@Override
+	public void createResponseId(int surveyQuestionId, String bannerId, Date responseDate, boolean submitted,
+			int courseid) throws UserDefinedException, Exception {
+		responses.put(surveyQuestionId, bannerId);
+		j++;
+	}
 
+	@Override
+	public void insertResponse(int surveyQuestionId, String bannerId, List<Object> response)
+			throws UserDefinedException, Exception {
+		k = k + response.size();
+	}
 
-        SurveyQuestion ques = modelfact.createSurveyQuestion();
-        ques.setSurveyQuestionId(12);
-        ques.setQuestionDetail(details);
+	@Override
+	public Boolean checkPublished(int courseid) throws Exception {
+		for (Survey survey : surveyList) {
+			if (survey.getCourse().getCourseID() == courseid) {
+				if (survey.isPublishedStatus()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-        SurveyQuestionResponse resp = modelfact.createSurveyQuestionResponse();
-        resp.setSurveyQuestion(ques);
-        surveyresp.add(resp);
-
-        BasicQuestion details2 = modelfact.createBasicQuestion();
-        details.setQuestionId(13);
-        details.setQuestionText("rate yourself in python?");
-        details.setQuestionTitle("python");
-        details.setQuestionType(QuestionType.NUMERIC);
-
-
-        SurveyQuestion ques2 = modelfact.createSurveyQuestion();
-        ques.setSurveyQuestionId(surveyQuestionId);
-        ques.setQuestionDetail(details2);
-
-        SurveyQuestionResponse resp2 = modelfact.createSurveyQuestionResponse();
-        resp.setSurveyQuestion(ques2);
-        surveyresp.add(resp2);
-
-        return surveyresp;
-    }
-
-    @Override
-    public void createResponseId(int surveyQuestionId, String bannerId, Date responseDate, boolean submitted, int courseid) throws UserDefinedSQLException, Exception {
-        User usr = modelfact.createUser();
-        usr.setBannerId(bannerId);
-        Course crc = modelfact.createCourse();
-        crc.setCourseID(courseid);
-        SurveyQuestion surveyques = modelfact.createSurveyQuestion();
-        surveyques.setSurveyQuestionId(surveyQuestionId);
-        List<SurveyQuestion> lst = new ArrayList<>();
-        lst.add(surveyques);
-        Survey survey = modelfact.createSurvey();
-        survey.setSurveyQuestions(lst);
-        survey.setCourse(crc);
-        SurveyQuestionResponse surresp = modelfact.createSurveyQuestionResponse();
-        surresp.setSurveyQuestion(surveyques);
-        List<SurveyQuestionResponse> resplst = new ArrayList<>();
-        resplst.add(surresp);
-        UserSurveyResponse usrresp = modelfact.createUserSurveyResponse();
-        usrresp.setResponseDate(responseDate);
-        usrresp.setSubmitted(submitted);
-        usrresp.setUser(usr);
-        usrresp.setSurvey(survey);
-        usrresp.setSurveyResponse(resplst);
-
-    }
-
-    @Override
-    public void insertResponse(int surveyQuestionId, String bannerId, List<Object> response) throws UserDefinedSQLException, Exception {
-
-
-    }
-
-    @Override
-    public Boolean checkPublished(int courseid) throws Exception {
-        if (courseid == this.courseid) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public Boolean checkSubmitted(String bannerid, int courseid) throws Exception {
-        if ((courseid == this.courseid) && (bannerid == this.bannerId)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public Boolean checkSubmitted(String bannerid, int courseid) throws Exception {
+		if (responses.containsValue(bannerid)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

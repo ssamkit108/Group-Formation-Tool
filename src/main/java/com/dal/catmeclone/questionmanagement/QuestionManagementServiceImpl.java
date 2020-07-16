@@ -2,7 +2,7 @@ package com.dal.catmeclone.questionmanagement;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.BasicQuestion;
 import com.dal.catmeclone.model.MultipleChoiceQuestion;
 import com.dal.catmeclone.model.User;
@@ -15,24 +15,31 @@ import java.util.logging.Logger;
 
 public class QuestionManagementServiceImpl implements QuestionManagementService {
 
+	private static final Logger LOGGER = Logger.getLogger(QuestionManagementServiceImpl.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     QuestionManagementAbstractFactory questionManagementAbstractFactory = abstractFactory.createQuestionManagerAbstractFactory();
-    QuestionManagementDao questionManagementDao = null;
-    private Logger LOGGER = Logger.getLogger(QuestionManagementServiceImpl.class.getName());
+    QuestionManagementDao questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
+  
+    public QuestionManagementServiceImpl() {
+		super();
+	}
+    
+	public QuestionManagementServiceImpl(QuestionManagementDao questionManagementDao) {
+		super();
+		this.questionManagementDao = questionManagementDao;
+	}
+	
+	@Override
+    public List<BasicQuestion> getAllQuestionByUser(User user) throws UserDefinedException {
 
-    @Override
-    public List<BasicQuestion> getAllQuestionByUser(User user) throws UserDefinedSQLException {
-
-        questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
         List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
         listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
         return listOfQuestion;
     }
 
     @Override
-    public List<BasicQuestion> getSortedQuestionsByTitle(User user) throws UserDefinedSQLException {
+    public List<BasicQuestion> getSortedQuestionsByTitle(User user) throws UserDefinedException {
 
-        questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
         List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
         listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
         LOGGER.info("Sorting the Question based on Title");
@@ -45,9 +52,7 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
     }
 
     @Override
-    public List<BasicQuestion> getSortedQuestionsByDate(User user) throws UserDefinedSQLException {
-
-        questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
+    public List<BasicQuestion> getSortedQuestionsByDate(User user) throws UserDefinedException {
 
         List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
         listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
@@ -64,34 +69,30 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
     }
 
     @Override
-    public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoice) throws UserDefinedSQLException {
+    public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoice) throws UserDefinedException {
 
-        questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
         multipleChoice.filterOptions();
         boolean isQuestionCreated = questionManagementDao.createMultipleChoiceQuestion(multipleChoice);
         return isQuestionCreated;
     }
 
     @Override
-    public boolean createNumericOrTextQuestion(BasicQuestion basicQuestion) throws UserDefinedSQLException {
+    public boolean createNumericOrTextQuestion(BasicQuestion basicQuestion) throws UserDefinedException {
 
-        questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
         boolean isQuestionCreated = questionManagementDao.createNumericOrTextQuestion(basicQuestion);
         return isQuestionCreated;
     }
 
     @Override
-    public boolean ifQuestionTitleandTextExists(BasicQuestion basicQuestion) throws UserDefinedSQLException {
+    public boolean ifQuestionTitleandTextExists(BasicQuestion basicQuestion) throws UserDefinedException {
 
-        questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
         boolean isQuestionExists = questionManagementDao.isQuestionExistForUserWithTitleandText(basicQuestion);
         return isQuestionExists;
     }
 
     @Override
-    public boolean deleteQuestion(int questionId) throws UserDefinedSQLException {
+    public boolean deleteQuestion(int questionId) throws UserDefinedException {
 
-        questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
         boolean isQuestionDeleted = questionManagementDao.deleteQuestion(questionId);
         return isQuestionDeleted;
     }

@@ -2,7 +2,7 @@ package com.dal.catmeclone.questionmanagement;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +37,7 @@ public class QuestionManagementController {
         try {
             LOGGER.info("Fetching the list of questions for Displaying on View");
             model.addAttribute("questionList", questionManagementService.getAllQuestionByUser(new User(username)));
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }
@@ -55,7 +55,7 @@ public class QuestionManagementController {
         try {
             LOGGER.info("Fetching the list of questions sorted by title");
             model.addAttribute("questionList", questionManagementService.getSortedQuestionsByTitle(new User(username)));
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }
@@ -72,7 +72,7 @@ public class QuestionManagementController {
         try {
             LOGGER.info("Fetching the list of questions sorted by title");
             m.addAttribute("questionList", questionManagementService.getSortedQuestionsByDate(new User(username)));
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             m.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }
@@ -88,7 +88,7 @@ public class QuestionManagementController {
             LOGGER.info("Making a call to delete Question");
             questionManagementService.deleteQuestion(questionId);
             attributes.addFlashAttribute("message", "Question Deleted Successfully");
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             attributes.addFlashAttribute("errormessage", e.getMessage());
             return "redirect:/questionmanager";
         }
@@ -138,7 +138,7 @@ public class QuestionManagementController {
                 attributes.addFlashAttribute("message", "Question Exists with same Question Title and Question Text");
                 return "redirect:/questionmanager/question";
             }
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             model.addAttribute("errormessage", "Some Error occured. Please Try Again");
             return "/error";
         }
@@ -180,7 +180,7 @@ public class QuestionManagementController {
                 model.addAttribute("errormessage", "Some Error occured. Please Try Again");
                 return "/error";
             }
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             model.addAttribute("errormessage", "Some Error occured. Please Try Again");
             return "/error";
         }
@@ -213,7 +213,7 @@ public class QuestionManagementController {
                     model.addAttribute("errormessage", "Some Error occured. Please Try Again");
                     return "/error";
                 }
-            } catch (UserDefinedSQLException e) {
+            } catch (UserDefinedException e) {
                 model.addAttribute("errormessage", "Some Error occured. Please try Again");
                 return "/error";
             }

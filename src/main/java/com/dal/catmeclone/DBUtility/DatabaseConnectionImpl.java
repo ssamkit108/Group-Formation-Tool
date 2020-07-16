@@ -1,17 +1,15 @@
 package com.dal.catmeclone.DBUtility;
 
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class DatabaseConnectionImpl implements DataBaseConnection {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(DatabaseConnectionImpl.class.getName());
     private String user;
     private String password;
     private String database;
@@ -21,22 +19,27 @@ public class DatabaseConnectionImpl implements DataBaseConnection {
     private Connection databaseConnection;
 
     public DatabaseConnectionImpl() {
+
         user = System.getenv("spring.datasource.username");
         password = System.getenv("spring.datasource.password");
         database = System.getenv("spring.datasource.name");
         databaseurl = System.getenv("spring.datasource.url");
         connectionProperty = System.getenv("datasource.connection.properties");
+
     }
 
+    /**
+     * Method to Establish JDBC Connection to Database
+     */
     @Override
-    public Connection connect() throws UserDefinedSQLException {
+    public Connection connect() throws UserDefinedException {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            // Throwing user defined exception for incorrect driver
-            throw new UserDefinedSQLException(
-                    "SQL Connection Error : JDBC Driver not supported. Please verify Driver Details");
+        	LOGGER.warning("Resource Connection Error- Incorrect Driver details");
+            throw new UserDefinedException(
+                    "Resource Connection Error : Please try again later");
         }
 
         try {
@@ -45,42 +48,42 @@ public class DatabaseConnectionImpl implements DataBaseConnection {
             databaseConnection = DriverManager.getConnection(databaseConnectionURL, user, password);
 
         } catch (SQLException e) {
-            // Throwing user defined exception for incorrect driver
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+        	LOGGER.warning("Error occured while setting up the connection. "+e.getMessage() );
+        	throw new UserDefinedException("Resource connectivity error. Please try again later");
         }
-
-        LOGGER.info("Database connected Successfully");
         return databaseConnection;
     }
 
+    /**
+     * Method to Terminate JDBC Connection of Database
+     */
     @Override
-    public boolean terminateConnection() {
+    public boolean terminateConnection() throws UserDefinedException{
 
         try {
-            LOGGER.info("Closing Established Connection");
+        	
             // Check is database connection is already closed or not
             if (databaseConnection.isClosed() == false) {
                 databaseConnection.close();
             }
         } catch (SQLException e) {
-
-            // Logging the error
-            LOGGER.error(e.getMessage());
+        	// Logging the error
+        	LOGGER.warning("Error occured while terminating the connection. "+e.getMessage() );
+        	throw new UserDefinedException("Resource connectivity error. Please try again later");
 
         }
-        LOGGER.info("Connection Closed Successfully");
         return true;
 
     }
 
     @Override
-    public void terminateStatement(CallableStatement statement) throws UserDefinedSQLException {
+    public void terminateStatement(CallableStatement statement) throws UserDefinedException {
         if (statement != null) {
             try {
                 statement.close();
             } catch (SQLException e) {
-                LOGGER.error("Error Occured in Closing Statement");
-                throw new UserDefinedSQLException("Some Error Occured");
+                LOGGER.warning("Error Occured in Closing Statement "+e.getMessage());
+                throw new UserDefinedException("Some Error Occured");
             }
         }
     }

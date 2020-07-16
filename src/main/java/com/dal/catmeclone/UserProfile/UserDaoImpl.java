@@ -7,7 +7,7 @@ import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
 import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.User;
 
 import java.sql.*;
@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao {
     private Connection connection;
 
     @Override
-    public boolean createUser(User user) throws UserDefinedSQLException, DuplicateEntityException {
+    public boolean createUser(User user) throws UserDefinedException, DuplicateEntityException {
         try {
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
             passwordencoder = encryptAbstractFactory.createBCryptPasswordEncryption();
@@ -59,7 +59,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             LOGGER.warning("Error Encountered while creating user by bannerid: " + user.getBannerId());
             LOGGER.warning(e.getLocalizedMessage());
-            throw new UserDefinedSQLException(
+            throw new UserDefinedException(
                     "User with BannerID" + user.getBannerId() + " already Exist in our system.");
         } finally {
             DBUtil.terminateStatement(statement);
@@ -72,7 +72,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findUserByBannerID(String bannerId) throws UserDefinedSQLException {
+    public User findUserByBannerID(String bannerId) throws UserDefinedException {
         User user = null;
         try {
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
@@ -93,7 +93,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             LOGGER.warning("Error Encountered while finding user by bannerid: " + bannerId);
             LOGGER.warning(e.getLocalizedMessage());
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            throw new UserDefinedException(e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
             if (connection != null) {
@@ -104,7 +104,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException {
+    public List<User> findAllMatchingUser(String bannerId) throws UserDefinedException {
 
         List<User> listOfUser = new ArrayList<User>();
         try {
@@ -127,7 +127,7 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             LOGGER.warning("Error Encountered while finding user by bannerid: " + bannerId);
             LOGGER.warning(e.getLocalizedMessage());
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            throw new UserDefinedException(e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
             DBUtil.terminateStatement(statement);
@@ -139,7 +139,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAllUsers() throws UserDefinedSQLException, Exception {
+    public List<User> getAllUsers() throws UserDefinedException, Exception {
         List<User> userList;
         ResultSet resultSet;
         userList = new ArrayList<User>();
@@ -156,7 +156,7 @@ public class UserDaoImpl implements UserDao {
             LOGGER.info("Retrieved successfully from the database");
         } catch (SQLException e) {
             LOGGER.warning("SQL error generated while getting all the users.");
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            throw new UserDefinedException(e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning("Unable to execute query to get all courses");
             throw new Exception(e.getLocalizedMessage());

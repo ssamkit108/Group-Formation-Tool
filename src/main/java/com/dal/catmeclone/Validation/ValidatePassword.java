@@ -2,7 +2,6 @@ package com.dal.catmeclone.Validation;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.exceptionhandler.ValidationException;
 import com.dal.catmeclone.model.User;
 
@@ -17,7 +16,7 @@ public class ValidatePassword {
     ValidationAbstractFactory validationAbstractFactory = abstractFactory.createValidationAbstractFactory();
     private PasswordRulesLoader PasswordValidation;
 
-    public void validatepassword(User user) throws ValidationException, UserDefinedSQLException, SQLException, Exception {
+    public void validatepassword(User user) throws SQLException, Exception {
 
         PasswordValidation = validationAbstractFactory.createPasswordRulesLoader();
         PasswordValidation.CreateActiveRulesList();

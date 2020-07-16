@@ -4,7 +4,7 @@ import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.BasicQuestion;
 import com.dal.catmeclone.model.QuestionType;
 import com.dal.catmeclone.model.SurveyQuestion;
@@ -31,7 +31,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
     private Connection connection;
 
     @Override
-    public List<String> getAllStudents(int courseid) throws UserDefinedSQLException, Exception {
+    public List<String> getAllStudents(int courseid) throws UserDefinedException, Exception {
 
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         List<String> surveySubmittedStudents = new ArrayList<String>();
@@ -50,7 +50,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
             }
         } catch (SQLException e) {
             LOGGER.warning("SQL Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL Error Encountered:" + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning("Generic Error Encountered" + e.getLocalizedMessage());
             throw new Exception("Generic Error Encountered" + e.getLocalizedMessage());
@@ -64,7 +64,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
     }
 
     @Override
-    public List<SurveyQuestionResponse> getAllResponsesOfAStudent(String bannerid, List<SurveyQuestion> listOfSurveyQuestions) throws UserDefinedSQLException, Exception {
+    public List<SurveyQuestionResponse> getAllResponsesOfAStudent(String bannerid, List<SurveyQuestion> listOfSurveyQuestions) throws UserDefinedException, Exception {
 
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         List<SurveyQuestionResponse> userResponses = new ArrayList<SurveyQuestionResponse>();
@@ -94,7 +94,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
             }
         } catch (SQLException e) {
             LOGGER.warning(" SQL Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException(" SQL Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException(" SQL Error Encountered:" + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning(" Generic Error Encountered" + e.getLocalizedMessage());
             throw new Exception("Generic Error Encountered" + e.getLocalizedMessage());
@@ -108,7 +108,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
     }
 
     @Override
-    public List<SurveyQuestion> getSurveyQuestionsForCourse(int courseid) throws UserDefinedSQLException, Exception {
+    public List<SurveyQuestion> getSurveyQuestionsForCourse(int courseid) throws UserDefinedException, Exception {
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         List<SurveyQuestion> listOfsurveyQuestion = new ArrayList<SurveyQuestion>();
 
@@ -131,7 +131,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 
         } catch (SQLException e) {
             LOGGER.warning("SQL Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL Error Encountered:" + e.getLocalizedMessage());
         } finally {
             if (null != statement) {
                 DBUtil.terminateStatement(statement);
@@ -142,7 +142,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
     }
 
     @Override
-    public int getGroupSizeForCourse(int courseid) throws UserDefinedSQLException {
+    public int getGroupSizeForCourse(int courseid) throws UserDefinedException {
         DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
 
         int groupSize;
@@ -162,7 +162,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 
         } catch (SQLException e) {
             LOGGER.warning(" SQL Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL Error Encountered:" + e.getLocalizedMessage());
         } finally {
             if (null != statement) {
                 DBUtil.terminateStatement(statement);
@@ -174,7 +174,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 
     @Override
     public Boolean updateGroupsFormed(List<List<String>> groups, int courseId)
-            throws UserDefinedSQLException {
+            throws UserDefinedException {
         DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         CallableStatement statement = null;
         List<String> currentGroup;
@@ -206,14 +206,14 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 
         } catch (SQLException e) {
             LOGGER.warning("SQL Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL Error Encountered:" + e.getLocalizedMessage());
         } finally {
             databaseUtil.terminateConnection();
         }
         return true;
     }
 
-    public void deleteGroups(int courseId) throws UserDefinedSQLException {
+    public void deleteGroups(int courseId) throws UserDefinedException {
         DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         CallableStatement statement = null;
 
@@ -229,7 +229,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 
         } catch (SQLException e) {
             LOGGER.warning("SQL Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL Error Encountered:" + e.getLocalizedMessage());
         } finally {
             if (null != statement) {
                 databaseUtil.terminateStatement(statement);
@@ -237,7 +237,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
         }
     }
 
-    public void insertUserIntoGroup(String bannerid, int courseid, String groupname) throws UserDefinedSQLException {
+    public void insertUserIntoGroup(String bannerid, int courseid, String groupname) throws UserDefinedException {
         DataBaseConnection databaseUtil = dbUtilityAbstractFactory.createDataBaseConnection();
         CallableStatement statement = null;
 
@@ -253,7 +253,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
 
         } catch (SQLException e) {
             LOGGER.warning("SQL Error Encountered:" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL Error Encountered:" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL Error Encountered:" + e.getLocalizedMessage());
         } finally {
             if (null != statement) {
                 databaseUtil.terminateStatement(statement);

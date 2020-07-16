@@ -1,23 +1,20 @@
 package com.dal.catmeclone.questionmanagementTest;
 
-
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.model.BasicQuestion;
+import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.MultipleChoiceQuestion;
-import com.dal.catmeclone.model.QuestionType;
 import com.dal.catmeclone.model.User;
-import com.dal.catmeclone.modelTest.IModelAbstractFactory;
 import com.dal.catmeclone.questionmanagement.QuestionManagementDao;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class QuestionManagementDaoMock implements QuestionManagementDao {
 
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
-    IModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+    ModelAbstractFactory modelFactory = abstractFactoryTest.createModelAbstractFactory();
     private ArrayList<BasicQuestion> basicQuestionDetailsList;
     private ArrayList<MultipleChoiceQuestion> mulipleChoiceQuestionList;
 
@@ -25,23 +22,13 @@ public class QuestionManagementDaoMock implements QuestionManagementDao {
     public QuestionManagementDaoMock() {
         this.basicQuestionDetailsList = new ArrayList<BasicQuestion>();
         this.mulipleChoiceQuestionList = new ArrayList<MultipleChoiceQuestion>();
-        BasicQuestion basicQuestion1 = modelfact.createBasicQuestion();
-        basicQuestion1.setQuestionId(1);
-        basicQuestion1.setQuestionTitle("Basic_Title_1");
-        basicQuestion1.setQuestionText("Basic_Text_1");
-        basicQuestion1.setQuestionType(QuestionType.NUMERIC);
+        BasicQuestion basicQuestion1 = modelFactory.createBasicQuestion(1, "Basic_Title_1", "Basic_Text_1", "NUMERIC");
         basicQuestion1.setCreationDate(new Date());
-        User usr = modelfact.createUser();
-        usr.setBannerId("B00123456");
-        basicQuestion1.setCreatedByInstructor(usr);
-        BasicQuestion basicQuestion2 = modelfact.createBasicQuestion();
-        basicQuestion2.setQuestionId(2);
-        basicQuestion2.setQuestionTitle("XYZ_Title_2");
-        basicQuestion2.setQuestionText("XYZ_Text_2");
-        basicQuestion2.setQuestionType(QuestionType.FREETEXT);
+        User user1 = modelFactory.createUser("B00123456");
+        basicQuestion1.setCreatedByInstructor(user1);
+        BasicQuestion basicQuestion2 = modelFactory.createBasicQuestion(1, "XYZ_Title_2", "XYZ_Text_2", "FREETEXT");
         basicQuestion2.setCreationDate(new Date());
-        User usr2 = modelfact.createUser();
-        usr2.setBannerId("B00123456");
+        User usr2 = modelFactory.createUser("B00123456");
         basicQuestion2.setCreatedByInstructor(usr2);
         this.basicQuestionDetailsList.add(basicQuestion1);
         this.basicQuestionDetailsList.add(basicQuestion2);
@@ -100,12 +87,9 @@ public class QuestionManagementDaoMock implements QuestionManagementDao {
                 return true;
             }
         }
-
         //Id Not Found, returned false
         return false;
 
-
     }
-
 
 }

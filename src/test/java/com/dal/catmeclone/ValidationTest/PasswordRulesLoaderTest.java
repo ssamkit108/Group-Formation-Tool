@@ -1,7 +1,7 @@
 package com.dal.catmeclone.ValidationTest;
 
-import com.dal.catmeclone.IAbstractFactory;
-import com.dal.catmeclone.SystemConfigT;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.Validation.PasswordRulesLoader;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 public class PasswordRulesLoaderTest {
 
-    IAbstractFactory abstractFactoryTest = SystemConfigT.instance().getAbstractFactoryTest();
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     PasswordRulesLoader passwordrules = abstractFactoryTest.createValidationAbstractFactory().createPasswordRulesLoader();
 
     @Test

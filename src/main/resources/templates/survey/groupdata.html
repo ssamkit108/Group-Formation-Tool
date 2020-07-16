@@ -31,7 +31,7 @@
     <hr style="margin-top: 2px">
     <div class="row" th:if="${groups ne null}">
         <form id="responseform" method="post" style="display: contents"
-              th:action="@{/survey/groupinfo}" th:object="${survey}">
+              th:action="@{/survey/display/groupinfo}" th:object="${survey}">
             <div style="margin-top: 10px"
                  th:if="${groups ne null and !groups.empty}">
                 <table class="table table-bordered table-striped table-hover">
@@ -62,7 +62,7 @@
                                     <td th:text="${user.firstName}"></td>
                                     <td th:text="${user.lastName}"></td>
                                     <td><input class="btn btn-primary"
-                                               th:formaction="@{/survey/viewresponse(courseid=${courseID},bannerId=${user.bannerId})}"
+                                               th:formaction="@{/survey/display/viewresponse(courseid=${courseID},bannerId=${user.bannerId})}"
                                                type="submit"
                                                value="View Survey Responses">
                                     </td>

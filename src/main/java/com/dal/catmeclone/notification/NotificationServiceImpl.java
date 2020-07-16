@@ -27,13 +27,15 @@ public class NotificationServiceImpl implements NotificationService {
     private String subject;
 
     private String appurl;
+    
+    private boolean status =false;
 
     @Override
     public void sendNotificationToNewuser(User user, String password, Course course) {
 
         Properties property = SystemConfig.instance().getProperties();
         subject = property.getProperty("account.subject");
-        appurl = property.getProperty("app.url");
+        appurl = property.getProperty("appurl");
         String body = property.getProperty("accountcreation.email.body");
         body = body.replace("FIRSTNAME", user.getFirstName());
         body = body.replace("BANNERID", user.getBannerId());
@@ -41,8 +43,10 @@ public class NotificationServiceImpl implements NotificationService {
         body = body.replace("URL", appurl + "/login");
         body = body.replace("COURSE", String.valueOf(course.getCourseID()));
         send(user.getEmail(), subject, body);
+        status=true;
     }
 
+    @Override
     public void sendNotificationForPassword(String bannerId, String password, String sendto) {
 
         Properties property = SystemConfig.instance().getProperties();
@@ -58,6 +62,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         String subject = "Forgot password";
         send(sendto, subject, body);
+        status=true;
     }
 
     private void send(String to, String sub, String msg) {
@@ -93,4 +98,9 @@ public class NotificationServiceImpl implements NotificationService {
             logger.error("Error in sending email");
         }
     }
+
+	public boolean isStatus() {
+		return status;
+	}
+        
 }

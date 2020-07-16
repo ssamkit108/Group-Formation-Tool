@@ -2,8 +2,7 @@ package com.dal.catmeclone.course;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.CourseException;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
@@ -38,7 +37,7 @@ public class CourseController {
         courseEnrollmentService = courseAbstractFactory.createCourseEnrollmentService();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        String responsepage = "";
+        String responsepage = new String();
 
         try {
             Course course = courseService.getCourse(courseid);
@@ -46,9 +45,11 @@ public class CourseController {
                 Role role = courseEnrollmentService.getUserRoleForCourse(new User(username), course);
 
                 if (role == null) {
+                	
                     attributes.addAttribute("InvalidAccessMessage", "Course " + courseid
                             + "doesn't exist in system or access to course " + courseid + " is not provided for you");
                     responsepage = "redirect:/access-denied";
+                    
                 } else if (role.getRoleName().equals("Instructor")) {
 
                     session.setAttribute("role", "Instructor");
@@ -68,17 +69,10 @@ public class CourseController {
                     responsepage = "CI-course";
                 }
             }
-
-        } catch (UserDefinedSQLException e) {
-            attributes.addAttribute("InvalidAccessMessage", "Course " + courseid
-                    + "doesn't exist in system or access to course " + courseid + " is not provided");
+        } catch (UserDefinedException exception) {
+            attributes.addAttribute("InvalidAccessMessage",exception.getLocalizedMessage());
             return "redirect:/access-denied";
-        } catch (CourseException e1) {
-            attributes.addAttribute("InvalidAccessMessage " + courseid + "doesn't exist in system or access to course "
-                    + courseid + " is not provided");
-            responsepage = "redirect:/access-denied";
-        }
-
+        } 
         return responsepage;
     }
 
@@ -92,10 +86,9 @@ public class CourseController {
             try {
                 allcourses = courseService.getallcourses();
             } catch (SQLException e) {
-
                 modelview = new ModelAndView("error");
                 model.addAttribute("errormessage", "Some Error occured");
-            } catch (UserDefinedSQLException e) {
+            } catch (UserDefinedException e) {
                 modelview = new ModelAndView("error");
                 model.addAttribute("errormessage", "Some Error occured");
 
@@ -146,14 +139,14 @@ public class CourseController {
                 } catch (SQLException e) {
                     modelview = new ModelAndView("error");
                     model.addAttribute("errormessage", "Some Error occured");
-                } catch (UserDefinedSQLException e) {
+                } catch (UserDefinedException e) {
                     modelview = new ModelAndView("error");
                     model.addAttribute("errormessage", "Some Error occured");
                 }
 
             }
 
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             modelview = new ModelAndView("error");
             model.addAttribute("errormessage", "Some Error occured");
 

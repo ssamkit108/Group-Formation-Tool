@@ -2,7 +2,7 @@ package com.dal.catmeclone.surveyresponse;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.SurveyQuestion;
 import com.dal.catmeclone.model.SurveyQuestionResponse;
 import com.dal.catmeclone.model.User;
@@ -17,16 +17,27 @@ public class ResponseServiceImpl implements ResponseService {
 
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     SurveyResponseAbstractFactory surveyResponseAbstractFactory = abstractFactory.createSurveyResponseAbstractFactory();
-
-    public List<SurveyQuestionResponse> getAllQuestion(int courseid) throws Exception {
-        ResponseDao responseDao = surveyResponseAbstractFactory.createResponseDao();
+    ResponseDao responseDao;
+    
+    public ResponseServiceImpl() {
+		super();
+		responseDao = surveyResponseAbstractFactory.createResponseDao();
+	}
+    
+	public ResponseServiceImpl(ResponseDao responseDao) {
+		super();
+		this.responseDao = responseDao;
+	}
+	
+	public List<SurveyQuestionResponse> getAllQuestion(int courseid) throws Exception {
+        
         List<SurveyQuestionResponse> listofquestion;
         try {
             listofquestion = responseDao.getAllQuestion(courseid);
             return listofquestion;
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL error encountered" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
             throw new Exception("Generic error encountered" + e.getLocalizedMessage());
@@ -35,11 +46,11 @@ public class ResponseServiceImpl implements ResponseService {
 
     public Boolean checkPublished(int courseid) throws Exception {
         try {
-            ResponseDao responseDao = surveyResponseAbstractFactory.createResponseDao();
+    
             return responseDao.checkPublished(courseid);
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL error encountered" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
             throw new Exception("Generic error encountered" + e.getLocalizedMessage());
@@ -49,12 +60,11 @@ public class ResponseServiceImpl implements ResponseService {
     @Override
     public Boolean checkSubmitted(String bannerid, int courseid) throws Exception {
         try {
-            ResponseDao responseDao = surveyResponseAbstractFactory.createResponseDao();
             return responseDao.checkSubmitted(bannerid, courseid);
 
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL error encountered" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
             throw new Exception("Generic error encountered" + e.getLocalizedMessage());
@@ -63,7 +73,6 @@ public class ResponseServiceImpl implements ResponseService {
 
     public void setAllresponses(UserSurveyResponse userSurveyResponse) throws Exception {
         try {
-            ResponseDao responseDao = surveyResponseAbstractFactory.createResponseDao();
             User user = userSurveyResponse.getUser();
             List<SurveyQuestionResponse> surveyQuestionResponses = userSurveyResponse.getSurveyResponse();
             for (SurveyQuestionResponse questionResponse : surveyQuestionResponses) {
@@ -72,9 +81,9 @@ public class ResponseServiceImpl implements ResponseService {
                         , userSurveyResponse.getSurvey().getCourse().getCourseID());
                 responseDao.insertResponse(surveyQuestion.getSurveyQuestionId(), user.getBannerId(), questionResponse.getResponse());
             }
-        } catch (UserDefinedSQLException e) {
+        } catch (UserDefinedException e) {
             LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());
-            throw new UserDefinedSQLException("SQL error encountered" + e.getLocalizedMessage());
+            throw new UserDefinedException("SQL error encountered" + e.getLocalizedMessage());
         } catch (Exception e) {
             LOGGER.warning("Generic error encountered" + e.getLocalizedMessage());
             throw new Exception("Generic error encountered" + e.getLocalizedMessage());
