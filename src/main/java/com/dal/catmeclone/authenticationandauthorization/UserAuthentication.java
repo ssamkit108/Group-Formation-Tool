@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 @Component
 public class UserAuthentication implements AuthenticationManager {
 
-	private Logger LOGGER = Logger.getLogger(AuthenticationController.class.getName());
+	private Logger LOGGER = Logger.getLogger(UserAuthentication.class.getName());
 	AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
 	AuthenticationAbstractFactory authenticationAbstractFactory = abstractFactory.createAuthenticationAbstractFactory();
 	EncryptAbstractFactory encryptAbstractFactory = abstractFactory.createEncryptAbstractFactory();
@@ -60,6 +60,7 @@ public class UserAuthentication implements AuthenticationManager {
 			flag = authenticateUserDao.authenticateUser(user);
 		} catch  (UserDefinedException e) {
 			LOGGER.warning("Error Occured while authentication: "+e.getMessage());
+//			throw new UserDefinedException("DATABASE ERROR occurred. Please try after some time.");
 		}
 		
 		if (flag != null) {

@@ -30,7 +30,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
     private Connection connection;
     private String sendto;
 
-    public boolean checkexist(String bannerid) throws SQLException, Exception {
+    public boolean checkExist(String bannerid) throws SQLException, Exception {
         try {
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
             Properties properties = SystemConfig.instance().getProperties();
@@ -50,7 +50,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
             LOGGER.warning("SQL error occurred while checking user exist or not.");
             throw new SQLException(e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             throw new Exception(e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
@@ -79,7 +79,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
             LOGGER.warning("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
             throw new SQLException("There is SQL error in the forgot password Dao.");
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             throw new Exception(e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
@@ -105,7 +105,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
             LOGGER.warning("There is SQL error in the forgot password Dao." + e.getLocalizedMessage());
             throw new SQLException("Sorry..Password could not able to reset. Try after sometime.");
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             throw new Exception(e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
@@ -115,7 +115,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
         }
     }
 
-    public String checktokenexist(String token) throws SQLException, Exception {
+    public String checkTokenExist(String token) throws SQLException, Exception {
         try {
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
             Properties properties = SystemConfig.instance().getProperties();
@@ -134,7 +134,7 @@ public class ForgotPasswordDaoImpl implements ForgotPasswordDao {
             LOGGER.warning(e.getLocalizedMessage());
             throw new SQLException(e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             throw new Exception(e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);

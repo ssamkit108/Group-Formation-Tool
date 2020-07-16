@@ -12,11 +12,11 @@ class MinimumUpperCaseTest {
 
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     ValidationPolicy checkupper = abstractFactoryTest.createValidationAbstractFactory().createMinimumUpper();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
 
     @Test
     public void TestMinimumUpper() throws Exception {
-        User u = modelfact.createUser();
+        User u = modelAbstractFactory.createUser();
         u.setPassword("SaMkit");
         checkupper.setValue("2");
         Assert.assertTrue(checkupper.isValid(u));

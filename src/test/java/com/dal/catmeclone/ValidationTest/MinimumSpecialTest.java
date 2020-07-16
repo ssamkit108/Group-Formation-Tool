@@ -13,11 +13,11 @@ class MinimumSpecialTest {
 
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     ValidationPolicy checkspecial = abstractFactoryTest.createValidationAbstractFactory().createMinimumSpecial();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
 
     @Test
     void TestMinimumSpecial() throws Exception {
-        User u = modelfact.createUser();
+        User u = modelAbstractFactory.createUser();
         u.setPassword("Samkit@108");
         checkspecial.setValue("2");
         Assert.assertTrue(!checkspecial.isValid(u));

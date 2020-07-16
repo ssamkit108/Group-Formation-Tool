@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 public class AlgorithmAbstractFactoryImpl implements AlgorithmAbstractFactory {
 
-    Logger LOGGER = Logger.getLogger(AlgorithmDaoImpl.class.getName());
+    Logger LOGGER = Logger.getLogger(AlgorithmAbstractFactoryImpl.class.getName());
 
     @Override
     public AlgorithmDao createAlgorithmDao() {

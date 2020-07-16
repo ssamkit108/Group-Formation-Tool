@@ -40,7 +40,7 @@ class ForgotPasswordServiceTest {
 	@Test
 	public void validatetoken() throws Exception {
 		String token = "test";
-		when(forgotPasswordDaoMock.checktokenexist(token)).thenReturn("test");
+		when(forgotPasswordDaoMock.checkTokenExist(token)).thenReturn("test");
 		assertEquals(forgotPasswordServiceImpl.validateToken(token), "test");
 	}
 

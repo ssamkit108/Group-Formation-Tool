@@ -39,7 +39,6 @@ public class CourseAdminSurveyController {
 			.createQuestionManagerAbstractFactory();
 	ModelAbstractFactory modelAbstractFactory = abstractFactory.createModelAbstractFactory();
 
-	// AJAX Details to handle AJAX call
 	private static final String AJAX_HEADER_NAME = "X-Requested-With";
 	private static final String AJAX_HEADER_VALUE = "XMLHttpRequest";
 
@@ -81,13 +80,6 @@ public class CourseAdminSurveyController {
 		return "survey/surveymanagement";
 	}
 
-	/**
-	 * Controller Method called by AJAX/JQUERY to add new question to survey and
-	 * bind it to model attribute form data
-	 * 
-	 * @param model
-	 * @return View
-	 */
 	@PostMapping(params = "addQuestion", path = { "/manage" })
 	public String addQuestion(@ModelAttribute Survey survey, @RequestParam int questionId,
 			@RequestParam String questionTitle, @RequestParam String questionText, @RequestParam String questionType,
@@ -128,20 +120,12 @@ public class CourseAdminSurveyController {
 		}
 	}
 
-	/**
-	 * Controller Method called by AJAX/JQUERY to remove question from survey and
-	 * bind it to model attribute form data
-	 * 
-	 * @param model
-	 * @return View
-	 */
 	@PostMapping(params = "removeQuestion", path = { "/manage" })
 	public String removeQuestion(@ModelAttribute Survey survey, @RequestParam("removeQuestion") int questionId,
 			HttpServletRequest request, final BindingResult bindingResult, Model model) {
 
 		List<SurveyQuestion> listOfSurveyQuestion = survey.getSurveyQuestions();
 		Iterator<SurveyQuestion> surveyQuestionIterator = listOfSurveyQuestion.iterator();
-		// fetching current list of questions and remove question from the list of survey question
 		LOGGER.info("Adding Question: " + questionId + " to Survey " + survey.getSurveyId());
 		while (surveyQuestionIterator.hasNext()) {
 			SurveyQuestion surveyQuestion = surveyQuestionIterator.next();
@@ -154,20 +138,12 @@ public class CourseAdminSurveyController {
 			model.addAttribute("survey", survey);
 			model.addAttribute("question", modelAbstractFactory.createBasicQuestion());
 			model.addAttribute("unsavedchanges", true);
-			// If It is an Ajax request, render only #details fragment of the page.
 			return "survey/surveymanagement::#details";
 		} else {
-			// If It is a standard HTTP request, render whole page.
 			return "survey/surveymanagement";
 		}
 	}
 
-	/**
-	 * Controller Method to save and update the survey into database
-	 * 
-	 * @param Survey
-	 * @return View
-	 */
 	@PostMapping("/save")
 	private String saveSurvey(@ModelAttribute Survey survey, Model model, RedirectAttributes attributes) {
 
@@ -192,12 +168,6 @@ public class CourseAdminSurveyController {
 
 	}
 
-	/**
-	 * Controller Method to publish the survey
-	 * 
-	 * @param Survey
-	 * @return View
-	 */
 	@PostMapping("/publish")
 	private String publishSurvey(@RequestParam int surveyId, Model model, RedirectAttributes attributes) {
 
@@ -218,7 +188,5 @@ public class CourseAdminSurveyController {
 			attributes.addFlashAttribute("errormessage", "Some Error occurred. Couldn't Publish survey.");
 			return "redirect:/survey/manage";
 		}
-
 	}
-
 }

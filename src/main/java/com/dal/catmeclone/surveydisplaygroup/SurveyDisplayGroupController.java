@@ -21,7 +21,7 @@ import com.dal.catmeclone.surveycreation.CourseAdminSurveyController;
 @Controller
 public class SurveyDisplayGroupController {
 
-	private Logger LOGGER = Logger.getLogger(CourseAdminSurveyController.class.getName());
+	private Logger LOGGER = Logger.getLogger(SurveyDisplayGroupController.class.getName());
 	private AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
 	private SurveyDisplayGroupAbstractFactory surveyDisplayGroupAbstractFactory = abstractFactory.createSurveyDisplayGroupAbstractFactory();
 	private ModelAbstractFactory modelAbstractFactory = abstractFactory.createModelAbstractFactory();

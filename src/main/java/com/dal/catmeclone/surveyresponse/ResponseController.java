@@ -52,13 +52,12 @@ public class ResponseController {
                 model.addAttribute("errormessage", "Survey is not published yet.");
                 return "coursestudentpage";
             }
-
         } catch (UserDefinedException e) {
             LOGGER.warning(e.getLocalizedMessage());
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }
@@ -85,7 +84,7 @@ public class ResponseController {
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }

@@ -17,13 +17,11 @@ import java.sql.SQLException;
 class UserServiceTest {
 
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
     UserProfileAbstractFactory userProfileAbstractFactoryTestImpl = abstractFactoryTest.createUserProfileAbstractFactory();
 
-    
-
     @Test
-    public void GetAllUsersTest() throws UserDefinedException {
+    public void getAllUsersTest() throws UserDefinedException {
        
         UserDao userDaoMock = userProfileAbstractFactoryTestImpl.createUserDao();
         UserService userService = userProfileAbstractFactoryTestImpl.createUserService(userDaoMock);
@@ -37,7 +35,7 @@ class UserServiceTest {
     	UserDao userDaoMock = userProfileAbstractFactoryTestImpl.createUserDao();
         UserService userService = userProfileAbstractFactoryTestImpl.createUserService(userDaoMock);
         
-        User user = modelfact.createUser();
+        User user = modelAbstractFactory.createUser();
         user.setBannerId("B00825292");
         user.setEmail("bob123@gmail.com");
         user.setFirstName("Bob");

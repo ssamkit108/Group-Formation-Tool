@@ -12,18 +12,18 @@ public class CourseDaoMock implements CoursesDao {
 
     ArrayList<Course> courseList = new ArrayList<Course>();
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
 
 
     public CourseDaoMock() {
         super();
         int courseid = 100;
         String courseName = "Advance Topic in SDC";
-        Course course = modelfact.createCourse();
+        Course course = modelAbstractFactory.createCourse();
         course.setCourseID(courseid);
         course.setCourseName(courseName);
         courseList.add(course);
-        Course course2 = modelfact.createCourse();
+        Course course2 = modelAbstractFactory.createCourse();
         course2.setCourseID(101);
         course2.setCourseName("Advance topic in web");
         courseList.add(course2);

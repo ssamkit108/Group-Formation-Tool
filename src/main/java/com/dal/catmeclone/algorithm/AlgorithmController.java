@@ -43,7 +43,7 @@ public class AlgorithmController {
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         } catch (Exception e) {
-            LOGGER.warning(e.getLocalizedMessage());
+            LOGGER.severe(e.getLocalizedMessage());
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }

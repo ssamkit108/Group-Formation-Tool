@@ -65,12 +65,7 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	public List<String> getRecordsFailureMessage() {
 		return recordsFailureMessage;
 	}
-	
 
-	/*
-	 * Function to iterate data obatined from loadDataFromCSV over the student list
-	 * and make a call to enroll student one by one.
-	 */
 	@Override
 	public boolean enrollStudentForCourse(MultipartFile file, Course course)
 			throws FileRelatedException, UserDefinedException {
@@ -90,10 +85,6 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 		return true;
 	}
 
-	/*
-	 * function to load and parse the data from given csv file into set of student
-	 * objects.
-	 */
 	private Set<User> loadDataFromCSV(MultipartFile file) throws FileRelatedException {
 		Set<User> usersToBeEnrolled = new HashSet<User>();
 		BufferedReader bufferReader = null;
@@ -146,9 +137,6 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 		return usersToBeEnrolled;
 	}
 
-	/*
-	 * function to check if user exists and enroll or create user accordingly
-	 */
 	private void enrollStudent(User user, Course course) throws UserDefinedException {
 
 		notificationService = notificationAbstractFactory.createNotificationService();

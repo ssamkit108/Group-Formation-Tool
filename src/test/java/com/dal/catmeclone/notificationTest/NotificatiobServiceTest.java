@@ -8,6 +8,7 @@ import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.notification.NotificationService;
 
 import org.junit.Assert;
+
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,14 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class NotificatiobServiceTest {
 
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
-    ModelAbstractFactory modelfact = abstractFactoryTest.createModelAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
     
 
     NotificationService notificationservice = abstractFactoryTest.createNotificationAbstractFactory().createNotificationService();
 
     @Test
     public void sendNotificationToNewuserTest() {
-        User user = modelfact.createUser();
+        User user = modelAbstractFactory.createUser();
 
         user.setBannerId("B00852232");
         user.setFirstName("Mayank");
@@ -30,27 +31,27 @@ public class NotificatiobServiceTest {
 
         user.setPassword("Password");
         user.setEmail("mayank@gmail.com");
-        Course c = modelfact.createCourse();
+        Course course = modelAbstractFactory.createCourse();
 
-        c.setCourseID(5409);
-        c.setCourseName("Cloud Computing");
+        course.setCourseID(5409);
+        course.setCourseName("Cloud Computing");
 
-        notificationservice.sendNotificationToNewuser(user, "Password", c);
+        notificationservice.sendNotificationToNewuser(user, "Password", course);
 
         Assert.assertTrue(notificationservice.isStatus());
     }
 
     @Test
     public void sendNotificationForPasswordTest() {
-        User u = modelfact.createUser();
-        u.setBannerId("B00852232");
-        u.setFirstName("Mayank");
-        u.setLastName("Patel");
-        u.setPassword("Password");
-        u.setEmail("mayank@gmail.com");
-        String Bannerid = u.getBannerId();
-        String password = u.getPassword();
-        String sendto = u.getEmail();
+        User user = modelAbstractFactory.createUser();
+        user.setBannerId("B00852232");
+        user.setFirstName("Mayank");
+        user.setLastName("Patel");
+        user.setPassword("Password");
+        user.setEmail("mayank@gmail.com");
+        String Bannerid = user.getBannerId();
+        String password = user.getPassword();
+        String sendto = user.getEmail();
 
         notificationservice.sendNotificationForPassword(Bannerid, password, sendto);
 

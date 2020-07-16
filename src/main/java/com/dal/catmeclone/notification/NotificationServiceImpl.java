@@ -18,7 +18,7 @@ import java.util.Properties;
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-    final Logger logger = LoggerFactory.getLogger(NotificationServiceImpl.class);
+    final Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
     private String fromgmail;
 
@@ -95,7 +95,7 @@ public class NotificationServiceImpl implements NotificationService {
 
             Transport.send(message);
         } catch (MessagingException e) {
-            logger.error("Error in sending email");
+            LOGGER.error("Error in sending email");
         }
     }
 

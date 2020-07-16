@@ -41,7 +41,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
             }
             LOGGER.info("Retrieved successfully from the database");
         } catch (Exception e) {
-            LOGGER.warning("Unable to execute query to get all courses");
+            LOGGER.severe("Unable to execute query to get all courses");
             throw new UserDefinedException("Some Error occurred in executing query");
         } finally {
             DBUtil.terminateStatement(statement);
@@ -66,7 +66,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
             LOGGER.warning("SQL Exception generated: " + e.getLocalizedMessage());
             throw new UserDefinedException("SQL Exception generated: " + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Generic Exception generated: " + e.getLocalizedMessage());
+            LOGGER.severe("Generic Exception generated: " + e.getLocalizedMessage());
             throw new Exception("Generic Exception generated: " + e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
@@ -92,7 +92,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
             LOGGER.warning("SQL Exception generated: " + e.getLocalizedMessage());
             throw new UserDefinedException("SQL Exception generated: " + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Generic Exception generated: " + e.getLocalizedMessage());
+            LOGGER.severe("Generic Exception generated: " + e.getLocalizedMessage());
             throw new Exception("Generic Exception generated: " + e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);
@@ -123,7 +123,7 @@ public class CourseManagementDaoImpl implements CourseManagementDao {
             LOGGER.warning("SQL Exception generated: " + e.getLocalizedMessage());
             throw new UserDefinedException("SQL Exception generated: " + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Generic Exception generated: " + e.getLocalizedMessage());
+            LOGGER.severe("Generic Exception generated: " + e.getLocalizedMessage());
             throw new Exception("Generic Exception generated: " + e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);

@@ -66,7 +66,6 @@ public class QuestionManagementDaoMock implements QuestionManagementDao {
     @Override
     public List<BasicQuestion> getAllQuestionByUser(User user) {
 
-        //Returning the basic question DetailsList
         ArrayList<BasicQuestion> questionListForUser = new ArrayList<BasicQuestion>();
         for (BasicQuestion question : basicQuestionDetailsList) {
             if (question.getCreatedByInstructor().getBannerId().equalsIgnoreCase(user.getBannerId())) {
@@ -80,16 +79,12 @@ public class QuestionManagementDaoMock implements QuestionManagementDao {
     @Override
     public boolean deleteQuestion(int questionId) {
 
-        //since question id will be auto increment in database so it is basically acts as index for array list, with index starting from 1
         for (BasicQuestion question : basicQuestionDetailsList) {
             if (question.getQuestionId() == questionId) {
-                //Id Found, Id will be deleted and returned true
                 return true;
             }
         }
-        //Id Not Found, returned false
         return false;
-
     }
 
 }

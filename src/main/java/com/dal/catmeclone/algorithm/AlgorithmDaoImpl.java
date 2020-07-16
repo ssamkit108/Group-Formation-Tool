@@ -52,7 +52,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
             LOGGER.warning("SQL Error Encountered:" + e.getLocalizedMessage());
             throw new UserDefinedException("SQL Error Encountered:" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning("Generic Error Encountered" + e.getLocalizedMessage());
+            LOGGER.severe("Generic Error Encountered" + e.getLocalizedMessage());
             throw new Exception("Generic Error Encountered" + e.getLocalizedMessage());
         } finally {
             if (null != statement) {
@@ -96,7 +96,7 @@ public class AlgorithmDaoImpl implements AlgorithmDao {
             LOGGER.warning(" SQL Error Encountered:" + e.getLocalizedMessage());
             throw new UserDefinedException(" SQL Error Encountered:" + e.getLocalizedMessage());
         } catch (Exception e) {
-            LOGGER.warning(" Generic Error Encountered" + e.getLocalizedMessage());
+            LOGGER.severe(" Generic Error Encountered" + e.getLocalizedMessage());
             throw new Exception("Generic Error Encountered" + e.getLocalizedMessage());
         } finally {
             if (null != statement) {

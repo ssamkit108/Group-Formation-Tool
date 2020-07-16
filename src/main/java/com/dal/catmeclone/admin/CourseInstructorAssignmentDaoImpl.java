@@ -69,7 +69,7 @@ public class CourseInstructorAssignmentDaoImpl implements CourseInstructorAssign
             LOGGER.warning("Unable to execute query to check instructor assigned for course");
             throw new UserDefinedException("Unable to execute query to check instructor assigned for course");
         } catch (Exception e) {
-            LOGGER.warning("Generic Exception generated in " + CourseInstructorAssignmentDaoImpl.class);
+            LOGGER.severe("Generic Exception generated in " + CourseInstructorAssignmentDaoImpl.class);
             throw new Exception("Generic Exception generated in " + e.getLocalizedMessage());
         } finally {
             DBUtil.terminateStatement(statement);

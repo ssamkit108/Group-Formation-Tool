@@ -1,6 +1,3 @@
-/**
- * Java Script To show success and error message after student csv file is uploaded
- */
 
 window.onload = function () {
     var coll = document.getElementsByClassName("collapsible");

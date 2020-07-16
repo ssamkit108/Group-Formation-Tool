@@ -66,7 +66,7 @@ public class AdminController {
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         } catch (Exception e) {
-            LOGGER.warning("Some Generic exception caught in admin controller");
+            LOGGER.severe("Some Generic exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }
@@ -83,7 +83,7 @@ public class AdminController {
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         } catch (Exception e) {
-            LOGGER.warning("Some Generic exception caught in admin controller");
+            LOGGER.severe("Some Generic exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }
@@ -126,7 +126,7 @@ public class AdminController {
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         } catch (Exception e) {
-            LOGGER.warning("Some Generic exception caught in admin controller");
+            LOGGER.severe("Some Generic exception caught in admin controller");
             model.addAttribute("errormessage", e.getLocalizedMessage());
             return "error";
         }

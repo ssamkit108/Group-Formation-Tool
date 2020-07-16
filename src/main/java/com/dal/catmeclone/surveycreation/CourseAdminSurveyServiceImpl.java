@@ -36,7 +36,6 @@ public class CourseAdminSurveyServiceImpl implements CourseAdminSurveyService {
         Survey survey = courseAdminSurveyDao.getSurveyDetailsForCourse(course);
         if (survey == null) {
             LOGGER.info("No Survey Exists in database for the course");
-			/* If survey doesn't exist in database for the given course, create a dummy course to pass it controller, which pass it to view as new survey.*/
             survey = modelAbstractFactory.createSurvey(0, course, new ArrayList<SurveyQuestion>(), false, 2);
         }
         return survey;
