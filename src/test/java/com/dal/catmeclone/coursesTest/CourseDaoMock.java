@@ -6,6 +6,7 @@ import com.dal.catmeclone.course.CoursesDao;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.User;
+
 import java.util.ArrayList;
 
 public class CourseDaoMock implements CoursesDao {
@@ -32,14 +33,12 @@ public class CourseDaoMock implements CoursesDao {
 
     @Override
     public Course getCourse(int courseId) {
-    	for(Course course: courseList)
-    	{
-    		if(course.getCourseID()==courseId)
-    		{
-    			return course;
-    		}
-    	}
-       return null;
+        for (Course course : courseList) {
+            if (course.getCourseID() == courseId) {
+                return course;
+            }
+        }
+        return null;
     }
 
     @Override

@@ -42,9 +42,9 @@ public class SignupController {
 
         try {
             ModelAndView modelAndView;
-            
+
             if (user.getPassword().equals(passwordConfirm)) {
-            	LOGGER.info("Accessing Resource to create user account");
+                LOGGER.info("Accessing Resource to create user account");
                 success = userservice.createUser(user);
                 if (success) {
                     modelAndView = new ModelAndView("login");

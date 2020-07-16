@@ -5,7 +5,6 @@ import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.Validation.ValidationPolicy;
 import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.User;
-
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 

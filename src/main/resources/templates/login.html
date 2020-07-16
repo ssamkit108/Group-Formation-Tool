@@ -25,7 +25,7 @@
                 <div class="form-group input-group has-feedback">
 						<span class="input-group-addon"> 
 						<span class="glyphicon glyphicon-user"></span>
-						</span> <input class="form-control" name="username" placeholder="Banner ID"
+						</span> <input class="form-control" maxlength="9" name="username" placeholder="Banner ID"
                                        required type="text"/> <span
                         aria-hidden="true" class="glyphicon form-control-feedback"></span>
                 </div>
@@ -44,11 +44,7 @@
             <br/>
 
             <div class="validation-message alert alert-danger"
-                 role="alert" th:if="${param.error}">
-                 Banner ID/Password is not valid.
-                <h1 th:text="${error}">
-
-                </h1>
+                 role="alert" th:if="${param.error}" th:text="${param.error}">
             </div>
 
             <div class="validation-message alert alert-danger"

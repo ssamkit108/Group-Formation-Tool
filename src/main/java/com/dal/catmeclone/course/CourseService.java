@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public interface CourseService {
 
     public Course getCourse(int courseId) throws UserDefinedException;
+
     public ArrayList<Course> getallcourses() throws SQLException, UserDefinedException;
 
 }

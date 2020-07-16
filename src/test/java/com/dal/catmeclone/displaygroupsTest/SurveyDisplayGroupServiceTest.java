@@ -1,16 +1,5 @@
 package com.dal.catmeclone.displaygroupsTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfigTest;
 import com.dal.catmeclone.exceptionhandler.UserDefinedException;
@@ -19,6 +8,16 @@ import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.surveydisplaygroup.SurveyDisplayGroupDao;
 import com.dal.catmeclone.surveydisplaygroup.SurveyDisplayGroupService;
 import com.dal.catmeclone.surveydisplaygroup.SurveyDisplayGroupServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SurveyDisplayGroupServiceTest {
 
@@ -27,7 +26,8 @@ public class SurveyDisplayGroupServiceTest {
     ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
     SurveyDisplayGroupDao surveyDisplayGroupDao;
     SurveyDisplayGroupService surveyDisplayGroupServiceImpl;
-    SurveyDisplayGroupServiceTest(){
+
+    SurveyDisplayGroupServiceTest() {
         surveyDisplayGroupDao = mock(SurveyDisplayGroupDao.class);
         surveyDisplayGroupServiceImpl = mock(SurveyDisplayGroupServiceImpl.class);
     }
@@ -61,25 +61,25 @@ public class SurveyDisplayGroupServiceTest {
         u3.setLastName("asdfg");
         List<User> lst2 = new ArrayList<>();
         lst2.add(u3);
-        info.put("9",lst2);
+        info.put("9", lst2);
         int courseid = 300;
         when(surveyDisplayGroupDao.retrievegroupinfo(courseid)).thenReturn(info);
-        assertEquals(surveyDisplayGroupServiceImpl.retrievegroupinfo(courseid).size(),info.size());
+        assertEquals(surveyDisplayGroupServiceImpl.retrievegroupinfo(courseid).size(), info.size());
 
     }
 
     @Test
     void fetchresponseTest() throws UserDefinedException {
         HashMap<String, List<Object>> resp = new HashMap<>();
-        List<Object>  ans = new ArrayList<>();
+        List<Object> ans = new ArrayList<>();
         ans.add(3);
         resp.put("Rate yourself in java?", ans);
-        List<Object>  ans2 = new ArrayList<>();
+        List<Object> ans2 = new ArrayList<>();
         ans2.add("Angular");
         resp.put("Which frontend framework are you comfortable?", ans2);
         int courseid = 300;
         String bannerid = "B00123456";
         when(surveyDisplayGroupDao.fetchresponse(courseid, bannerid)).thenReturn(resp);
-        assertEquals(surveyDisplayGroupServiceImpl.fetchresponse(courseid, bannerid).size(),resp.size());
+        assertEquals(surveyDisplayGroupServiceImpl.fetchresponse(courseid, bannerid).size(), resp.size());
     }
 }

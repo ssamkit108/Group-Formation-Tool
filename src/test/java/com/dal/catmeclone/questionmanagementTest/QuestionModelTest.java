@@ -7,8 +7,10 @@ import com.dal.catmeclone.model.MultipleChoiceQuestion;
 import com.dal.catmeclone.model.Option;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 
 public class QuestionModelTest {
@@ -19,12 +21,12 @@ public class QuestionModelTest {
 
     @BeforeEach
     public void setup() {
-    	List<Option> optionList = new ArrayList<Option>();
-        Option option1 = modelFactory.createOption("",1);
-        Option option2 = modelFactory.createOption("text1",2); 
-        Option option3 = modelFactory.createOption("text2",3);
-        Option option4 = modelFactory.createOption("text3",-1);
-        Option option5 = modelFactory.createOption("text4",5);
+        List<Option> optionList = new ArrayList<Option>();
+        Option option1 = modelFactory.createOption("", 1);
+        Option option2 = modelFactory.createOption("text1", 2);
+        Option option3 = modelFactory.createOption("text2", 3);
+        Option option4 = modelFactory.createOption("text3", -1);
+        Option option5 = modelFactory.createOption("text4", 5);
         optionList.add(option1);
         optionList.add(option2);
         optionList.add(option3);
@@ -32,10 +34,10 @@ public class QuestionModelTest {
         optionList.add(option5);
         questionMock.setOptionList(optionList);
     }
-    
+
     @Test
     public void allOptionValidFalse() {
-    	questionMock.getOptionList().add(modelFactory.createOption("",-1));
+        questionMock.getOptionList().add(modelFactory.createOption("", -1));
         assertTrue(questionMock.areAllOptionValid());
     }
 
@@ -47,7 +49,7 @@ public class QuestionModelTest {
 
     @Test
     public void allOptionValidTrue() {
-    	questionMock.filterOptions();
+        questionMock.filterOptions();
         assertTrue(questionMock.areAllOptionValid());
     }
 

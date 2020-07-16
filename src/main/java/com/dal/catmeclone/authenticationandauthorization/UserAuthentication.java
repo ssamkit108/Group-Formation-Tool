@@ -7,6 +7,7 @@ import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
 import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.User;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -23,61 +25,61 @@ import java.util.logging.Logger;
 @Component
 public class UserAuthentication implements AuthenticationManager {
 
-	private Logger LOGGER = Logger.getLogger(UserAuthentication.class.getName());
-	AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
-	AuthenticationAbstractFactory authenticationAbstractFactory = abstractFactory.createAuthenticationAbstractFactory();
-	EncryptAbstractFactory encryptAbstractFactory = abstractFactory.createEncryptAbstractFactory();
-	ModelAbstractFactory modelAbstractFactory = abstractFactory.createModelAbstractFactory();
-	private AuthenticateUserDao authenticateUserDao;
-	private BCryptPasswordEncryption passwordencoder;
+    AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
+    AuthenticationAbstractFactory authenticationAbstractFactory = abstractFactory.createAuthenticationAbstractFactory();
+    EncryptAbstractFactory encryptAbstractFactory = abstractFactory.createEncryptAbstractFactory();
+    ModelAbstractFactory modelAbstractFactory = abstractFactory.createModelAbstractFactory();
+    private Logger LOGGER = Logger.getLogger(UserAuthentication.class.getName());
+    private AuthenticateUserDao authenticateUserDao;
+    private BCryptPasswordEncryption passwordencoder;
 
-	
-	public UserAuthentication() {
-		super();
-		authenticateUserDao = authenticationAbstractFactory.createAuthenticateUserDao();
-	}
-	
-	
-	public UserAuthentication(AuthenticateUserDao authenticateUserDao) {
-		super();
-		this.authenticateUserDao = authenticateUserDao;
-	}
 
-	@Override
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public UserAuthentication() {
+        super();
+        authenticateUserDao = authenticationAbstractFactory.createAuthenticateUserDao();
+    }
 
-		String bannerId = authentication.getPrincipal().toString();
-		String password = authentication.getCredentials().toString();
-		
-		passwordencoder = encryptAbstractFactory.createBCryptPasswordEncryption();
-		User flag = null;
-		List<GrantedAuthority> authorize = new ArrayList<GrantedAuthority>();
-		User user = modelAbstractFactory.createUser();
-		user.setBannerId(bannerId);
-		user.setPassword(password);
+    public UserAuthentication(AuthenticateUserDao authenticateUserDao) {
+        super();
+        this.authenticateUserDao = authenticateUserDao;
+    }
 
-		try {
-			flag = authenticateUserDao.authenticateUser(user);
-		} catch  (UserDefinedException e) {
-			LOGGER.warning("Error Occured while authentication: "+e.getMessage());
-//			throw new UserDefinedException("DATABASE ERROR occurred. Please try after some time.");
-		}
-		
-		if (flag != null) {
-			if (passwordencoder.matches(user.getPassword(), flag.getPassword())) {
-				if (flag.getUserRoles().getRoleName().equals("Admin")) {
-					authorize.add(new SimpleGrantedAuthority("admin"));
-				} else if (flag.getUserRoles().getRoleName().equals("Guest")) {
-					authorize.add(new SimpleGrantedAuthority("user"));
-				}
-			} else {
-				throw new BadCredentialsException("Incorrect password");
-			}
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(bannerId, password,
-					authorize);
-			return token;
-		}
-		return null;
-	}
+        String bannerId = authentication.getPrincipal().toString();
+        String password = authentication.getCredentials().toString();
+
+        passwordencoder = encryptAbstractFactory.createBCryptPasswordEncryption();
+        User flag = null;
+        List<GrantedAuthority> authorize = new ArrayList<GrantedAuthority>();
+        User user = modelAbstractFactory.createUser();
+        user.setBannerId(bannerId);
+        user.setPassword(password);
+
+        try {
+            flag = authenticateUserDao.authenticateUser(user);
+        } catch (UserDefinedException e) {
+            LOGGER.warning("Error occurred while connecting to Database.: " + e.getMessage());
+            throw new SessionAuthenticationException(e.getLocalizedMessage());
+        }
+
+        if (flag != null) {
+            if (passwordencoder.matches(user.getPassword(), flag.getPassword())) {
+                if (flag.getUserRoles().getRoleName().equals("Admin")) {
+                    authorize.add(new SimpleGrantedAuthority("admin"));
+                } else if (flag.getUserRoles().getRoleName().equals("Guest")) {
+                    authorize.add(new SimpleGrantedAuthority("user"));
+                }
+            } else {
+                throw new BadCredentialsException("Incorrect credential.");
+            }
+
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(bannerId, password,
+                    authorize);
+            return token;
+        } else {
+            throw new AuthenticationCredentialsNotFoundException("User does not exist.");
+        }
+    }
 }

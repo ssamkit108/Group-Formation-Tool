@@ -20,20 +20,20 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     ValidationAbstractFactory validationAbstractFactory = abstractFactory.createValidationAbstractFactory();
     ForgotPasswordDao forgotPasswordDao;
     ValidatePassword validatepassword;
-    
-    public ForgotPasswordServiceImpl() {
-		super();
-		this.forgotPasswordDao = userProfileAbstractFactory.createForgotPasswordDao();
-	}
-    
-    
-	public ForgotPasswordServiceImpl(ForgotPasswordDao forgotPasswordDao) {
-		super();
-		this.forgotPasswordDao = forgotPasswordDao;
-	}
 
-	public void resetlink(String username) throws SQLException, Exception {
-       
+    public ForgotPasswordServiceImpl() {
+        super();
+        this.forgotPasswordDao = userProfileAbstractFactory.createForgotPasswordDao();
+    }
+
+
+    public ForgotPasswordServiceImpl(ForgotPasswordDao forgotPasswordDao) {
+        super();
+        this.forgotPasswordDao = forgotPasswordDao;
+    }
+
+    public void resetlink(String username) throws SQLException, Exception {
+
         if (forgotPasswordDao.checkExist(username)) {
             LOGGER.info("Banner Id:" + username + " validated in successfully.");
             String token = generateToken();
@@ -51,7 +51,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
     @Override
     public String validateToken(String confirmationToken) throws SQLException, Exception {
-        
+
         String bannerid = forgotPasswordDao.checkTokenExist(confirmationToken);
         if (!bannerid.isEmpty() && bannerid != null) {
             return bannerid;

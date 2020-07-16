@@ -1,6 +1,7 @@
 package com.dal.catmeclone.DBUtility;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedException;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -32,7 +33,7 @@ public class DatabaseConnectionImpl implements DataBaseConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-        	LOGGER.severe("Resource Connection Error- Incorrect Driver details");
+            LOGGER.severe("Resource Connection Error- Incorrect Driver details");
             throw new UserDefinedException("Resource Connection Error : Please try again later");
         }
 
@@ -40,21 +41,21 @@ public class DatabaseConnectionImpl implements DataBaseConnection {
             String databaseConnectionURL = databaseurl + database + "?" + connectionProperty;
             databaseConnection = DriverManager.getConnection(databaseConnectionURL, user, password);
         } catch (SQLException e) {
-        	LOGGER.severe("DATABASE SERVER ERROR. occured while setting up the database."+e.getLocalizedMessage() );
-        	throw new UserDefinedException("DATABASE SERVER ERROR. Resource connectivity error. Please try again later");
+            LOGGER.severe("DATABASE SERVER ERROR. occured while setting up the database." + e.getLocalizedMessage());
+            throw new UserDefinedException("DATABASE SERVER ERROR. Please try again later");
         }
         return databaseConnection;
     }
 
     @Override
-    public boolean terminateConnection() throws UserDefinedException{
+    public boolean terminateConnection() throws UserDefinedException {
         try {
             if (databaseConnection.isClosed() == false) {
                 databaseConnection.close();
             }
         } catch (SQLException e) {
-        	LOGGER.severe("DATABASE SERVER ERROR .occured while terminating the connection. "+e.getMessage() );
-        	throw new UserDefinedException("DATABASE SERVER ERROR .Resource connectivity error. Please try again later");
+            LOGGER.severe("DATABASE SERVER ERROR .occured while terminating the connection. " + e.getMessage());
+            throw new UserDefinedException("DATABASE SERVER ERROR. Please try again later.");
         }
         return true;
     }
@@ -65,7 +66,7 @@ public class DatabaseConnectionImpl implements DataBaseConnection {
             try {
                 statement.close();
             } catch (SQLException e) {
-                LOGGER.severe("DATABASE SERVER ERROR .Occured in Closing Statement "+e.getMessage());
+                LOGGER.severe("DATABASE SERVER ERROR .Occured in Closing Statement " + e.getMessage());
                 throw new UserDefinedException("DATABASE SERVER ERROR");
             }
         }

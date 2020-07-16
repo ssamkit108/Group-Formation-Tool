@@ -94,10 +94,10 @@ public class AbstractFactoryImpl implements AbstractFactory {
     public AlgorithmAbstractFactory createAlgorithmAbstractFactory() {
         return new AlgorithmAbstractFactoryImpl();
     }
-    
+
     @Override
-	public SurveyDisplayGroupAbstractFactory createSurveyDisplayGroupAbstractFactory() {
-		return new SurveyDisplayGroupAbstractFactoryImpl();
-	}
+    public SurveyDisplayGroupAbstractFactory createSurveyDisplayGroupAbstractFactory() {
+        return new SurveyDisplayGroupAbstractFactoryImpl();
+    }
 
 }

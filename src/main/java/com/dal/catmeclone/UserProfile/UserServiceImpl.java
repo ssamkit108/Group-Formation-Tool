@@ -21,18 +21,18 @@ public class UserServiceImpl implements UserService {
     ValidatePassword validatePassword;
     UserDao userDao;
     Boolean flag = false;
-    
-    public UserServiceImpl() {
-		super();
-		this.userDao = userProfileAbstractFactory.createUserDao();
-	}
-    
-	public UserServiceImpl(UserDao userDao) {
-		super();
-		this.userDao = userDao;
-	}
 
-	@Override
+    public UserServiceImpl() {
+        super();
+        this.userDao = userProfileAbstractFactory.createUserDao();
+    }
+
+    public UserServiceImpl(UserDao userDao) {
+        super();
+        this.userDao = userDao;
+    }
+
+    @Override
     public boolean createUser(User user) throws SQLException, Exception {
         validatePassword = validationAbstractFactory.createValidatePassword();
         validatePassword.validatepassword(user);

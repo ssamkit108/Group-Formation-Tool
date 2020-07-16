@@ -17,9 +17,9 @@ public class SurveyResponseAbstractFactoryTestImpl implements SurveyResponseAbst
         return new ResponseServiceImpl();
     }
 
-	@Override
-	public ResponseService createResponseService(ResponseDao responseDao) {
-		return new ResponseServiceImpl(responseDao);
-	}
+    @Override
+    public ResponseService createResponseService(ResponseDao responseDao) {
+        return new ResponseServiceImpl(responseDao);
+    }
 
 }

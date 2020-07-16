@@ -11,6 +11,7 @@ import com.dal.catmeclone.model.User;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.sql.SQLException;
 
 @SpringBootTest
@@ -22,26 +23,26 @@ class UserServiceTest {
 
     @Test
     public void getAllUsersTest() throws UserDefinedException {
-       
+
         UserDao userDaoMock = userProfileAbstractFactoryTestImpl.createUserDao();
         UserService userService = userProfileAbstractFactoryTestImpl.createUserService(userDaoMock);
-        String bannerId="B00825292";
+        String bannerId = "B00825292";
 
-        Assert.assertTrue(userService.findAllMatchingUser(bannerId).size()>0);
+        Assert.assertTrue(userService.findAllMatchingUser(bannerId).size() > 0);
     }
-    
+
     @Test
-    public void createUserTest() throws SQLException, Exception  {
-    	UserDao userDaoMock = userProfileAbstractFactoryTestImpl.createUserDao();
+    public void createUserTest() throws SQLException, Exception {
+        UserDao userDaoMock = userProfileAbstractFactoryTestImpl.createUserDao();
         UserService userService = userProfileAbstractFactoryTestImpl.createUserService(userDaoMock);
-        
+
         User user = modelAbstractFactory.createUser();
         user.setBannerId("B00825292");
         user.setEmail("bob123@gmail.com");
         user.setFirstName("Bob");
         user.setLastName("Shaw");
         user.setPassword("12345");
-        
+
         Assert.assertTrue(userDaoMock.createUser(user));
     }
 }

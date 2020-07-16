@@ -2,9 +2,10 @@ package com.dal.catmeclone.Validation;
 
 import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
-import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,7 @@ public class PasswordRulesLoader {
         HashMapofRules.put("HistoryConstraint", validationAbstractFactory.createHistoryConstraint());
     }
 
-    public void CreateActiveRulesList() throws UserDefinedException  {
+    public void CreateActiveRulesList() throws UserDefinedException {
         ValidationDAO = validationAbstractFactory.createValidationRulesDao();
         ListofRules.clear();
         List<String> rules = ValidationDAO.getRulesFromConfig();

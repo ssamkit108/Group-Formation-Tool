@@ -43,15 +43,15 @@ public class ValidationRulesDaoImpl implements ValidationRulesDao {
             while (resultSet.next()) {
                 rules.add(resultSet.getString("Policy_Name"));
             }
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             LOGGER.warning("Error in loading sign up validation rules. ");
             throw new UserDefinedException(e.getLocalizedMessage());
         } finally {
-           
-                DBUtil.terminateStatement(statement);
-                if (connection != null) {
-                    DBUtil.terminateConnection();
-                }
+
+            DBUtil.terminateStatement(statement);
+            if (connection != null) {
+                DBUtil.terminateConnection();
+            }
         }
     }
 

@@ -13,14 +13,14 @@ public class QuestionManagementAbstractFactoryTestImpl implements QuestionManage
         return new QuestionManagementDaoMock();
     }
 
-	@Override
-	public QuestionManagementService createQuestionManagementService() {
-		return new QuestionManagementServiceImpl();
-	}
+    @Override
+    public QuestionManagementService createQuestionManagementService() {
+        return new QuestionManagementServiceImpl();
+    }
 
-	@Override
-	public QuestionManagementService createQuestionManagementService(QuestionManagementDao questionManagementDao) {
-		return new QuestionManagementServiceImpl(questionManagementDao);
-	}
+    @Override
+    public QuestionManagementService createQuestionManagementService(QuestionManagementDao questionManagementDao) {
+        return new QuestionManagementServiceImpl(questionManagementDao);
+    }
 
 }

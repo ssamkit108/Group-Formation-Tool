@@ -18,19 +18,19 @@ public class ResponseServiceImpl implements ResponseService {
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     SurveyResponseAbstractFactory surveyResponseAbstractFactory = abstractFactory.createSurveyResponseAbstractFactory();
     ResponseDao responseDao;
-    
+
     public ResponseServiceImpl() {
-		super();
-		responseDao = surveyResponseAbstractFactory.createResponseDao();
-	}
-    
-	public ResponseServiceImpl(ResponseDao responseDao) {
-		super();
-		this.responseDao = responseDao;
-	}
-	
-	public List<SurveyQuestionResponse> getAllQuestion(int courseid) throws Exception {
-        
+        super();
+        responseDao = surveyResponseAbstractFactory.createResponseDao();
+    }
+
+    public ResponseServiceImpl(ResponseDao responseDao) {
+        super();
+        this.responseDao = responseDao;
+    }
+
+    public List<SurveyQuestionResponse> getAllQuestion(int courseid) throws Exception {
+
         List<SurveyQuestionResponse> listofquestion;
         try {
             listofquestion = responseDao.getAllQuestion(courseid);
@@ -46,7 +46,7 @@ public class ResponseServiceImpl implements ResponseService {
 
     public Boolean checkPublished(int courseid) throws Exception {
         try {
-    
+
             return responseDao.checkPublished(courseid);
         } catch (UserDefinedException e) {
             LOGGER.warning("SQL error encountered" + e.getLocalizedMessage());

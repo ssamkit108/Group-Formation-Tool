@@ -41,6 +41,6 @@ public interface AbstractFactory {
     public SurveyCreationAbstractFactory createSurveyCreationAbstractFactory();
 
     public AlgorithmAbstractFactory createAlgorithmAbstractFactory();
-    
+
     public SurveyDisplayGroupAbstractFactory createSurveyDisplayGroupAbstractFactory();
 }

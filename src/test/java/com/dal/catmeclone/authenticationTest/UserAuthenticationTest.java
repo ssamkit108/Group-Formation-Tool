@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = UserAuthenticationTest.class)
@@ -23,7 +24,7 @@ public class UserAuthenticationTest {
 
     @Test
     void authenticateUserCorrectTest() throws UserDefinedException {
-    	
+
         User user = modelFactory.createUser();
         user.setBannerId("B00832190");
         user.setPassword("Password");
@@ -32,10 +33,10 @@ public class UserAuthenticationTest {
         assertEquals("Guest", authenticatedUser.getUserRoles().getRoleName());
         Assert.assertTrue(new BCryptPasswordEncoder().matches("Password", authenticatedUser.getPassword()));
     }
-    
+
     @Test
     void authenticateUserInCorrectTest() throws UserDefinedException {
-    	
+
         User user = modelFactory.createUser();
         user.setBannerId("B00832190");
         user.setPassword("Password123");

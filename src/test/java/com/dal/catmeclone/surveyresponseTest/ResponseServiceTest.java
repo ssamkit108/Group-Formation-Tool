@@ -6,7 +6,6 @@ import com.dal.catmeclone.model.*;
 import com.dal.catmeclone.surveyresponse.ResponseDao;
 import com.dal.catmeclone.surveyresponse.ResponseService;
 import com.dal.catmeclone.surveyresponse.SurveyResponseAbstractFactory;
-
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -21,21 +20,21 @@ class ResponseServiceTest {
 
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     ModelAbstractFactory modelFactory = abstractFactoryTest.createModelAbstractFactory();
-    SurveyResponseAbstractFactory surveyResponseFactory=abstractFactoryTest.createSurveyResponseAbstractFactory();
+    SurveyResponseAbstractFactory surveyResponseFactory = abstractFactoryTest.createSurveyResponseAbstractFactory();
     ResponseDao responseDaoMock = surveyResponseFactory.createResponseDao();
 
 
     @Test
     void getAllSurveyQuestion() throws Exception {
-    	ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
-       
-        assertEquals(responseService.getAllQuestion(5709).size(),3);
+        ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
+
+        assertEquals(responseService.getAllQuestion(5709).size(), 3);
     }
 
     @Test
     void setAllresponses() throws Exception {
-    	Survey survey= modelFactory.createSurvey();
-    	survey.setSurveyId(1);
+        Survey survey = modelFactory.createSurvey();
+        survey.setSurveyId(1);
         User user = modelFactory.createUser("B00839818");
         Course course = modelFactory.createCourse(5709);
         survey.setCourse(course);
@@ -51,36 +50,36 @@ class ResponseServiceTest {
         SurveyQuestionResponse surveyQuestionResponse = modelFactory.createSurveyQuestionResponse(question, response);
         List<SurveyQuestionResponse> surveyResponse = new ArrayList<>();
         surveyResponse.add(surveyQuestionResponse);
-        UserSurveyResponse userSurveyResponse= modelFactory.createUserSurveyResponse();
+        UserSurveyResponse userSurveyResponse = modelFactory.createUserSurveyResponse();
         userSurveyResponse.setResponseDate(new Date());
         userSurveyResponse.setSubmitted(true);
         userSurveyResponse.setUser(user);
         userSurveyResponse.setSurvey(survey);
         userSurveyResponse.setSurveyResponse(surveyResponse);
-        
+
         ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
         responseService.setAllresponses(userSurveyResponse);
-        
+
         assertTrue(responseService.checkSubmitted(user.getBannerId(), course.getCourseID()));
-        
+
     }
-    
+
     @Test
     void checkSubmittedYes() throws Exception {
-    	ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
+        ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
         assertTrue(responseService.checkSubmitted("B00839818", 5709));
     }
-    
+
     @Test
     void checkSubmittedNo() throws Exception {
-    	ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
+        ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
         Assert.assertFalse(responseService.checkSubmitted("B00000000", 5709));
     }
-    
+
     @Test
     void checkPublished() throws Exception {
-    	ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
-    	
+        ResponseService responseService = surveyResponseFactory.createResponseService(responseDaoMock);
+
         Assert.assertFalse(responseService.checkPublished(5709));
     }
 }

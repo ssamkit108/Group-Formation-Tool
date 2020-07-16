@@ -5,52 +5,52 @@ import java.util.Date;
 import java.util.List;
 
 public interface ModelAbstractFactory {
-	public Course createCourse();
-	
-	public Course createCourse(int courseId);
+    public Course createCourse();
 
-	public BasicQuestion createBasicQuestion();
+    public Course createCourse(int courseId);
 
-	public MultipleChoiceQuestion createMultipleChoiceQuestion();
+    public BasicQuestion createBasicQuestion();
 
-	public Option createOption();
-	
-	public Option createOption(String optionText, int optionValue);
+    public MultipleChoiceQuestion createMultipleChoiceQuestion();
 
-	public Role createRole();
+    public Option createOption();
 
-	public User createUser();
-	
-	public User createUser(String username);
+    public Option createOption(String optionText, int optionValue);
 
-	public Survey createSurvey();
+    public Role createRole();
 
-	public SurveyQuestion createSurveyQuestion();
+    public User createUser();
 
-	public SurveyQuestionResponse createSurveyQuestionResponse();
+    public User createUser(String username);
 
-	public UserSurveyResponse createUserSurveyResponse();
+    public Survey createSurvey();
 
-	public Survey createSurvey(int surveyId, Course course, List<SurveyQuestion> surveyQuestions,
-			boolean publishedStatus, int groupSize);
+    public SurveyQuestion createSurveyQuestion();
 
-	public Survey createSurvey(Course course, List<SurveyQuestion> surveyQuestions, boolean publishedStatus,
-			int groupSize);
+    public SurveyQuestionResponse createSurveyQuestionResponse();
 
-	public SurveyQuestion createSurveyQuestion(BasicQuestion questionDetail);
+    public UserSurveyResponse createUserSurveyResponse();
 
-	public SurveyQuestion createSurveyQuestion(int surveyQuestionId, BasicQuestion questionDetail,
-			String algorithmLogicType, int logicConstraintValue);
+    public Survey createSurvey(int surveyId, Course course, List<SurveyQuestion> surveyQuestions,
+                               boolean publishedStatus, int groupSize);
 
-	public SurveyQuestion createSurveyQuestion(BasicQuestion questionDetail, String algorithmLogicType,
-			int logicConstraintValue);
-	
-	public BasicQuestion createBasicQuestion(int questionId, String questionTitle, String questionText, String questionType);
+    public Survey createSurvey(Course course, List<SurveyQuestion> surveyQuestions, boolean publishedStatus,
+                               int groupSize);
 
-	public BasicQuestion createBasicQuestion(String questionTitle, String questionText);
+    public SurveyQuestion createSurveyQuestion(BasicQuestion questionDetail);
 
-	public BasicQuestion createBasicQuestion(String questionTitle, String questionText, QuestionType questionType, Date creationDate,
-	                         User createdByInstructor);
-	
-	public SurveyQuestionResponse createSurveyQuestionResponse(SurveyQuestion surveyQuestion, ArrayList<Object> response);
+    public SurveyQuestion createSurveyQuestion(int surveyQuestionId, BasicQuestion questionDetail,
+                                               String algorithmLogicType, int logicConstraintValue);
+
+    public SurveyQuestion createSurveyQuestion(BasicQuestion questionDetail, String algorithmLogicType,
+                                               int logicConstraintValue);
+
+    public BasicQuestion createBasicQuestion(int questionId, String questionTitle, String questionText, String questionType);
+
+    public BasicQuestion createBasicQuestion(String questionTitle, String questionText);
+
+    public BasicQuestion createBasicQuestion(String questionTitle, String questionText, QuestionType questionType, Date creationDate,
+                                             User createdByInstructor);
+
+    public SurveyQuestionResponse createSurveyQuestionResponse(SurveyQuestion surveyQuestion, ArrayList<Object> response);
 }

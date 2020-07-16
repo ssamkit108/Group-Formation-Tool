@@ -1,4 +1,3 @@
-
 window.onload = function () {
     var coll = document.getElementsByClassName("collapsible");
     var i;
