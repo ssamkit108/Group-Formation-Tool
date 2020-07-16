@@ -1,136 +1,150 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/css/general.css">
-<script type="text/javascript" src="/js/courseci-message.js"></script>
-<title>Course</title>
+    <meta charset="ISO-8859-1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
+    <script src="/js/courseci-message.js" type="text/javascript"></script>
+    <title>Course</title>
 </head>
 <body>
 <div th:replace="header :: header"></div>
 <section>
-		<div class="container bodycontainer">
-			<div class=row>
-				<h1 style="margin-top: -10px;">
-					<span th:utext="${session.course.courseID}"></span> - <span
-						th:utext="${session.course.courseName}"></span>
-				</h1>
-				<hr>
-				<h5 class="usernameheader" style="float: left; color: black">
-					Hello <span sec:authentication="name"></span> (<span
-						th:utext="${session.role}"></span>)
-				</h5>
-				<div class="boxes">
-					<div class="cidiv column1">
-						<section>
-							<div>
-								<h2>Student Enrollment</h2>
-								<form method="post" th:action="@{/uploadstudent}"
-									enctype="multipart/form-data" th:object="${course}">
-									<div class="form-group">
-										<input type="file" name="file" accept=".csv"
-											class="form-control-file">
-									</div>
-									<div>
+    <div class="container bodycontainer">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 style="text-align: left;"><span th:utext="${session.course.courseID}"></span> - <span
+                        th:utext="${session.course.courseName}"></span>
+                </h1>
+
+            </div>
+            <div class="col-lg-4">
+                <h5 class="usernameheader" style="float: right; color: black; margin-top: 30px;">
+                    Hello <span sec:authentication="name"></span> (<span
+                        th:utext="${session.role}"></span>)
+                </h5>
+            </div>
+        </div>
+        <hr>
+        <div class=row>
+            <div class="boxes">
+                <div class="cidiv column1">
+                    <section>
+                        <div>
+                            <h2>Student Enrollment</h2>
+                            <form enctype="multipart/form-data" method="post"
+                                  th:action="@{/uploadstudent}" th:object="${course}">
+                                <div class="form-group">
+                                    <input accept=".csv" class="form-control-file" name="file"
+                                           type="file">
+                                </div>
+                                <div>
 										<span>Upload .csv file with header as BannerId,
 											Lastname, FirstName, Email</span>
-									</div>
-									<button type="submit" class="btn btn-primary">Upload
-										File</button>
-								</form>
-								<p th:text="${message}" th:if="${message ne null}"
-									class="alert alert-primary"></p>
-								<th:block th:if="${sucessmessages ne null}">
-									<button type="button" class="collapsible">View Success
-										Records for csv upload</button>
-									<div class="content">
-										<th:block th:each="success : ${sucessmessages}">
-											<p th:utext="${success}">${success}</p>
-										</th:block>
-									</div>
-								</th:block>
-								<th:block th:if="${errormessages ne null}">
-									<button type="button" class="collapsible">View Error
-										Records For csv upload</button>
-									<div class="content">
-										<th:block th:each="error : ${errormessages}">
-											<p th:utext="${error}">${error}</p>
-										</th:block>
-									</div>
-								</th:block>
-							</div>
-						</section>
-					</div>
-					<div class="cidiv column2">
-						<section>
-							<div>
-								<h2>TA Enrollment</h2>
-								<div>
-									<form th:action="@{/findTA}" method="GET"
-										class="form-horizontal">
-										<input type="text" th:id="searchTA" th:name="searchTA"
-											placeholder="Search With Banner Id"> <input
-											type="submit" class="btn btn-info btn-sm" value="Search" />
-									</form>
-								</div>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Upload
+                                    File
+                                </button>
+                            </form>
+                            <p class="alert alert-primary" th:if="${message ne null}"
+                               th:text="${message}"></p>
+                            <th:block th:if="${sucessmessages ne null}">
+                                <button class="collapsible" type="button">View Success
+                                    Records for csv upload
+                                </button>
+                                <div class="content">
+                                    <th:block th:each="success : ${sucessmessages}">
+                                        <p th:utext="${success}">${success}</p>
+                                    </th:block>
+                                </div>
+                            </th:block>
+                            <th:block th:if="${errormessages ne null}">
+                                <button class="collapsible" type="button">View Error
+                                    Records For csv upload
+                                </button>
+                                <div class="content">
+                                    <th:block th:each="error : ${errormessages}">
+                                        <p th:utext="${error}">${error}</p>
+                                    </th:block>
+                                </div>
+                            </th:block>
+                        </div>
+                    </section>
+                </div>
+                <div class="cidiv column2">
+                    <section>
+                        <div>
+                            <h2>TA Enrollment</h2>
+                            <div>
+                                <form class="form-horizontal" method="GET"
+                                      th:action="@{/findTA}">
+                                    <input placeholder="Search With Banner Id" th:id="searchTA" th:name="searchTA"
+                                           type="text"> <input
+                                        class="btn btn-info btn-sm" type="submit" value="Search"/>
+                                </form>
+                            </div>
 
-								<th:block th:if="${TAEnrollmessages ne null}">
-									<div>
-										<strong><p th:text="${TAEnrollmessages}"
-												style="float: none; margin: auto; margin-top: 50px;"></p></strong>
-									</div>
-								</th:block>
+                            <th:block th:if="${TAEnrollmessages ne null}">
+                                <div>
+                                    <strong><p style="float: none; margin: auto; margin-top: 50px;"
+                                               th:text="${TAEnrollmessages}"></p></strong>
+                                </div>
+                            </th:block>
 
-								<div style="overflow: auto; height: 370px;">
-
-
-									<th:block th:if="${fetcherror ne null}">
-										<p class="card_title"
-											style="float: none; margin: auto; margin-top: 50px;"
-											th:text="${fetcherror}"></p>
-									</th:block>
-
-									<th:block th:if="${userfetched ne null}">
-										<th:block th:each="user : ${userfetched}">
-											<div class="card" style="margin-top: 10px;">
-												<form th:action="@{/enrollTA(bannerid=${user.bannerId})}"
-													method="POST" class="form-horizontal">
-													<p class="card_title" th:text="${user.bannerId}"></p>
-													<span class="card_text" th:text="${user.firstName}"></span>
-													<span class="card_text" th:text="${user.lastName}"></span>
-													<p class="card_text" th:text="${user.email}"></p>
-													<button class="btn btn-info btn-sm" onclick="submit()">Enroll</button>
-												</form>
-
-											</div>
-										</th:block>
-									</th:block>
+                            <div style="overflow: auto; height: 370px;">
 
 
-								</div>
+                                <th:block th:if="${fetcherror ne null}">
+                                    <p class="card_title"
+                                       style="float: none; margin: auto; margin-top: 50px;"
+                                       th:text="${fetcherror}"></p>
+                                </th:block>
 
-							</div>
-						</section>
+                                <th:block th:if="${userfetched ne null}">
+                                    <th:block th:each="user : ${userfetched}">
+                                        <div class="card" style="margin-top: 10px;">
+                                            <form class="form-horizontal"
+                                                  method="POST" th:action="@{/enrollTA(bannerid=${user.bannerId})}">
+                                                <p class="card_title" th:text="${user.bannerId}"></p>
+                                                <span class="card_text" th:text="${user.firstName}"></span>
+                                                <span class="card_text" th:text="${user.lastName}"></span>
+                                                <p class="card_text" th:text="${user.email}"></p>
+                                                <button class="btn btn-info btn-sm" onclick="submit()">Enroll</button>
+                                            </form>
 
-					</div>
-				</div>
+                                        </div>
+                                    </th:block>
+                                </th:block>
 
 
-			</div>
-			<div class="row" style="margin-top: 25px">
+                            </div>
+
+                        </div>
+                    </section>
+
+                </div>
+            </div>
 
 
-				<div class="col-lg-12 justify-content-center" th:if="${session.role eq 'Instructor'}">
-					<a th:href="@{/questionmanager}" class="btn btn-primary">Question
-						Manager</a>
-				</div>
+        </div>
+        <div class="row" style="margin-top: 25px">
 
-			</div>
-		</div>
 
-	</section>
+            <div class="col-lg-6 justify-content-left" th:if="${session.role eq 'Instructor'}">
+                <a class="btn btn-primary" th:href="@{/questionmanager}">Question
+                    Manager</a>
+            </div>
+
+            <div class="col-lg-6 justify-content-left">
+                <a class="btn btn-primary" th:href="@{/survey/manage(courseid=${session.course.courseID})}">Survey
+                    Manager</a>
+            </div>
+
+        </div>
+    </div>
+
+</section>
 </body>
 </html>

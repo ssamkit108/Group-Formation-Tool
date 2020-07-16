@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+          rel="stylesheet">
+
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="ISO-8859-1">
+    <title>Survey Management</title>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document)
+            .ready(
+                function () {
+
+                    function replaceItems(html) {
+                        // Replace the <fieldset id="items"> with a new one returned by server.
+                        $('#details').replaceWith($(html));
+                        var adderror = document
+                            .getElementById("addmessage").value;
+                        if (adderror != "") {
+                            document.getElementById("addquestionerror")
+                                .click();
+                        }
+                    }
+
+                    $('.addQuestion')
+                        .click(
+                            function (event) {
+                                event.preventDefault();
+                                var quesdata = event.target
+                                    .getAttribute('value');
+                                var index = event.target
+                                    .getAttribute('data');
+                                event.preventDefault();
+
+                                // Add parameter "addItem" to POSTed form data. Button's name and value is
+                                // POSTed only when clicked.
+                                var questiondata = $('#' + index)
+                                    .serialize();
+                                var surveydata = $('#surveyform')
+                                    .serialize();
+                                $
+                                    .ajax({
+                                        type: "POST",
+                                        url: "/survey/manage?"
+                                            + questiondata
+                                            + "&addQuestion="
+                                            + quesdata,
+                                        data: surveydata,
+                                        success: replaceItems,
+                                        error: function (error) {
+                                            alert("Error occured while fetching merging datasets..!!")
+                                        }
+                                    });
+                            });
+                });
+
+        function remove(data) {
+            var onSubmit = confirm('Are you sure you want to delete this Question?');
+
+            if (onSubmit) {
+                var questionId = data.value;
+
+                var surveydata = $('#surveyform').serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/survey/manage?&removeQuestion=" + questionId,
+                    data: surveydata,
+                    success: replaceRemovedItems,
+                    error: function (error) {
+                        alert("Error occured while fetching merging datasets..!!")
+                    }
+                });
+            }
+            if (onSubmit == false) {
+
+                return false;
+            }
+        }
+
+        function replaceRemovedItems(html) {
+            // Replace the <fieldset id="items"> with a new one returned by server.
+            $('#details').replaceWith($(html));
+        }
+
+        function validate() {
+            var myCollection = document.getElementsByClassName("optionvalue");
+            var i;
+            for (i = 0; i < myCollection.length; i++) {
+                if (myCollection[i].value == "") {
+                    myCollection[i].value = "-1";
+                }
+            }
+            return true;
+        }
+    </script>
+
+    <style>
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<section>
+    <div th:replace="header :: header"></div>
+</section>
+<br>
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 style="text-align: left;">Survey Details</h1>
+
+        </div>
+        <div class="col-lg-4">
+            <h5 class="usernameheader"
+                style="float: right; color: black; margin-top: 30px;">
+                Hello <span sec:authentication="name"></span> (<span
+                    th:utext="${session.role}"></span>)
+            </h5>
+        </div>
+    </div>
+    <hr style="margin-top: 2px">
+
+    <div class="container-fluid"
+         style="padding-right: 0px; padding-left: 0px;"
+         th:if="${survey.publishedStatus eq false}">
+
+        <div id="message">
+            <div class="row alert alert-danger alert-dismissible" id="errordiv"
+                 th:if="${errormessage ne null}">
+
+                <div class="col-lg-8">
+                    <strong>Error! </strong> <span th:text='${errormessage}'></span>
+                </div>
+                <div style="float: right;">
+                    <a aria-label="close" class="close" data-dismiss="alert" href="#"
+                       style="float: right;">&times;</a>
+                </div>
+            </div>
+            <div class="row alert alert-success alert-dismissible"
+                 th:if="${message ne null}">
+
+                <div class="col-lg-8">
+                    <strong>Success! </strong> <span th:text='${message}'></span>
+                </div>
+                <div style="float: right;">
+                    <a aria-label="close" class="close" data-dismiss="alert" href="#"
+                       style="float: right;">&times;</a>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-info btn-lg" data-target="#myModal" data-toggle="modal"
+                id="addquestionerror" style="display: none"
+                type="button">Open Small Modal
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                        <h4 class="modal-title">Error occured</h4>
+                    </div>
+                    <div class="modal-body">
+                        <br>
+                        <p>Question already available in the Survey.</p>
+                        <br>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="cidiv column1 divscroll"
+             style="margin-top: 5px; width: 49%">
+
+            <h3>Question Bank</h3>
+            <hr style="margin-top: 2px;">
+
+            <th:block th:if="${questionList eq null}">
+                <p class="card_title"
+                   style="float: none; margin: auto; margin-top: 50px;"
+                   th:text="${questionlisterror}"></p>
+            </th:block>
+            <th:block th:if="${questionList ne null}">
+                <th:block th:each="ques,stat: ${questionList}">
+                    <div class="card" style="margin-top: 10px;">
+                        <form class="form-inline" method="post" th:id="${stat.index}"
+                              th:object="${question}">
+                            <div class="col-md-9">
+                                <input class="form-control" style="width: 40%;"
+                                       th:attr="value= ${ques.questionId}" th:id="questionId"
+                                       th:name="questionId" type="hidden"/> <input
+                                    class="form-control" style="width: 40%;"
+                                    th:attr="value=${ques.questionTitle}" th:id="questionTitle"
+                                    th:name="questionTitle" type="hidden"/> <input
+                                    class="form-control" style="width: 40%;"
+                                    th:attr="value=${ques.questionType}" th:id="questionType"
+                                    th:name="questionType" type="hidden"/> <input
+                                    class="form-control" style="width: 40%;"
+                                    th:attr="value=${ques.questionText}" th:id="questionText"
+                                    th:name="questionText" type="hidden"/>
+                                <h3 class="card_text" th:text="${ques.questionTitle}"></h3>
+                                <span class="card_text normal" th:text="${ques.questionText}"></span>
+                                <p class="card_text italic" style="margin-top: 5px"
+                                   th:text="${ques.questionType}"></p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <button class="addQuestion btn btn-primary mb-2" id="addQuestion"
+                                        name="addQuestion" style="margin-top: 20px;" th:data="${stat.index}"
+                                        th:value="${ques}" type="button">Add
+                                    Question
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </th:block>
+            </th:block>
+        </div>
+        <div class="cidiv column2 divscroll" id="details"
+             style="margin-top: 5px; width: 49%">
+            <form id="surveyform" method="post" style="display: contents"
+                  th:action="@{/survey/save}" th:object="${survey}">
+                <div class="col-lg-12">
+
+                    <input class="form-control" id="course"
+                           style="width: 40%;" th:field="*{course.courseID}"
+                           th:value="${survey.course.courseID}" type="hidden"/> <input
+                        class="form-control" id="surveyId" style="width: 40%;"
+                        th:field="*{surveyId}" th:value="${survey.surveyId}" type="hidden"/>
+                    <div class="row"
+                         style="display: flex; margin-top: 15px; margin-bottom: 15px;">
+                        <label class="my-1 mr-2" for="group size"
+                               style="margin-top: 5px; margin-right: 5px;">Group Size:</label>
+                        <input class="form-control change" id="group size" style="width: 30%;"
+                               th:field="*{groupSize}" th:value="${survey.groupSize}"
+                               type="number"> <br> <input
+                            class="btn btn-success" style="float: right; margin: auto;"
+                            th:if="${unsavedchanges eq true}" type="submit"
+                            value="Save Survey"/> <input
+                            class="btn btn-success"
+                            onSubmit="return confirm('Are you sure you want to publish this Survey?')"
+                            style="float: right; margin: auto;"
+                            th:formaction="@{/survey/publish(surveyId=${survey.surveyId})}"
+                            th:if="${survey.surveyId ne 0 AND unsavedchanges eq false}"
+                            type="submit" value="Publish Survey"/>
+                    </div>
+
+                    <h3>Questions in survey</h3>
+                    <hr style="margin-top: 1px;">
+
+                    <th:block th:if="${survey.surveyQuestions.isEmpty()}">
+
+                        <p class="card_title"
+                           style="float: none; margin: auto; margin-top: 50px;">No
+                            Question Added in Survey yet</p>
+                        <br>
+                        <br>
+                        <p style="float: none; text-align: center;">Add Questions for
+                            the survey from the Question Bank appearing on the left panel</p>
+                    </th:block>
+                    <th:block th:each="question,itemStat : *{surveyQuestions}"
+                              th:if="${!survey.surveyQuestions.isEmpty()}">
+
+                        <div class="card" style="margin-top: 10px; padding: 10px;">
+
+                            <input th:field="*{surveyQuestions[__${itemStat.index}__].surveyQuestionId}"
+                                   th:value="${question.surveyQuestionId}"
+                                   type="hidden"/>
+
+                            <input th:field="*{surveyQuestions[__${itemStat.index}__].questionDetail.questionId}"
+                                   th:value="${question.questionDetail.questionId}"
+                                   type="hidden"/>
+
+                            <input th:field="*{surveyQuestions[__${itemStat.index}__].questionDetail.questionTitle}"
+                                   th:value="${question.questionDetail.questionTitle}"
+                                   type="hidden"/>
+
+                            <input th:field="*{surveyQuestions[__${itemStat.index}__].questionDetail.questionType}"
+                                   th:value="${question.questionDetail.questionType.type}"
+                                   type="hidden"/>
+
+                            <div>
+                                <label class="my-1 mr-2" for="group size">Question
+                                    Type: </label> <span th:text="${question.questionDetail.questionType}"></span>
+                            </div>
+
+                            <input th:field="*{surveyQuestions[__${itemStat.index}__].questionDetail.questionText}"
+                                   th:value="${question.questionDetail.questionText}"
+                                   type="hidden"/>
+
+                            <div>
+                                <label class="my-1 mr-2" for="group size">Question
+                                    Text: </label> <span th:text="${question.questionDetail.questionText}"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-11">
+                                    <div>
+                                        <label class="my-1 mr-2" for="group size">Algorithm
+                                            Logic: </label>
+                                        <th:block
+                                                style="padding: 10px;"
+                                                th:if="${question.questionDetail.questionType.type == 'NUMERIC'}">
+                                            <select class="custom-select change" style="width: 200px;"
+                                                    th:field="*{surveyQuestions[__${itemStat.index}__].algorithmLogicType}"
+                                                    th:value="${question.algorithmLogicType}">
+                                                <option value="Group Similiar">Group Similar</option>
+                                                <option value="Group Disimilar">Group Disimilar</option>
+                                                <option value="Greater Than">Greater than (>)</option>
+                                                <option value="Less Than">Less than (<)</option>
+                                            </select>
+                                        </th:block>
+                                        <th:block
+                                                style="padding: 10px;"
+                                                th:if="${question.questionDetail.questionType.type == 'MULTIPLECHOICEMANY'} OR
+													${question.questionDetail.questionType.type == 'MULTIPLECHOICEONE'} OR
+													${question.questionDetail.questionType.type == 'FREETEXT'}">
+                                            <select class="custom-select change" style="width: 200px;"
+                                                    th:field="*{surveyQuestions[__${itemStat.index}__].algorithmLogicType}"
+                                                    th:value="${question.algorithmLogicType}">
+                                                <option value="Group Similiar">Group Similar</option>
+                                                <option value="Group Disimilar">Group Disimilar</option>
+                                            </select>
+                                        </th:block>
+                                    </div>
+                                    <div style="display: flex;">
+                                        <label class="my-1 mr-2" for="group size">Logic
+                                            Constraint: </label> <span
+                                            style="padding: 10px;"
+                                            th:if="${question.questionDetail.questionType.type == 'MULTIPLECHOICEMANY'} OR
+													${question.questionDetail.questionType.type == 'MULTIPLECHOICEONE'} OR
+													${question.questionDetail.questionType.type == 'FREETEXT'}">Not Applicable</span>
+                                        <th:block
+                                                style="padding: 10px;"
+                                                th:if="${question.questionDetail.questionType.type == 'NUMERIC'}">
+                                            <input class="form-control change"
+                                                   style="width: 20%;"
+                                                   th:field="*{surveyQuestions[__${itemStat.index}__].logicConstraintValue}"
+                                                   th:value="${question.logicConstraintValue}"
+                                                   type="number"/>
+
+                                        </th:block>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-1" style="margin: inherit;">
+                                    <button class="removeQuestions fa fa-trash" id="removeQuestion"
+                                            name="removeQuestion"
+                                            onclick="remove(this)" style="font-size: 32px; color: red; margin: inherit;"
+                                            th:value="${question.questionDetail.questionId}"
+                                            type="button"></button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </th:block>
+                </div>
+            </form>
+            <div>
+                <input id="addmessage" th:if="${addmessage ne null}" th:value="${addmessage}"
+                       type="hidden"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" th:if="${survey.publishedStatus eq true}">
+
+        <div id="message">
+            <div class="row alert alert-danger alert-dismissible" id="errordiv"
+                 th:if="${errormessage ne null}">
+
+                <div class="col-lg-8">
+                    <strong>Error! </strong> <span th:text='${errormessage}'></span>
+                </div>
+                <div style="float: right;">
+                    <a aria-label="close" class="close" data-dismiss="alert" href="#"
+                       style="float: right;">&times;</a>
+                </div>
+            </div>
+            <div class="row alert alert-success alert-dismissible"
+                 th:if="${message ne null}">
+
+                <div class="col-lg-8">
+                    <strong>Success! </strong> <span th:text='${message}'></span>
+                </div>
+                <div style="float: right;">
+                    <a aria-label="close" class="close" data-dismiss="alert" href="#"
+                       style="float: right;">&times;</a>
+                </div>
+            </div>
+        </div>
+
+        <form id="responseform" method="post" style="display: contents"
+              th:action="@{/survey/groupinfo}" th:object="${survey}">
+
+
+            <div class="row">
+                <div class="col-lg-6 justify-content-center">
+                    <h3>Published Questions in Survey</h3>
+                    <hr style="margin-top: 5px;">
+                </div>
+                <div class="col-lg-3 justify-content-center">
+                    <a class="btn btn-primary" th:href="@{/algorithm}"> Form Groups </a>
+                </div>
+                <div class="col-lg-3 justify-content-center" th:if="${survey.groupFormed eq true}">
+                    <input class="btn btn-success"
+                           th:formaction="@{/survey/display/groupinfo(courseid=${survey.course.courseID})}"
+                           type="submit"
+                           value="Display Groups">
+                </div>
+            </div>
+
+            <th:block th:each="question : ${survey.surveyQuestions}">
+                <div class="publishcard" style="margin-top: 10px; padding: 10px;">
+
+                    <div>
+                        <label class="my-1 mr-2" for="questionText">Question
+                            Title: </label> <span class="card_text normal"
+                                                  th:text="${question.questionDetail.questionTitle}"></span>
+                    </div>
+
+                    <div>
+                        <label class="my-1 mr-2" for="questionText">Question Text:
+                        </label> <span class="card_text normal"
+                                       th:text="${question.questionDetail.questionText}"></span>
+                    </div>
+
+                    <div>
+                        <label class="my-1 mr-2" for="group size">Question Type: </label>
+                        <span th:text="${question.questionDetail.questionType}"></span>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-11">
+                            <div>
+                                <label class="my-1 mr-2" for="group size">Algorithm
+                                    Logic: </label> <span class="card_text normal"
+                                                          th:text="${question.algorithmLogicType}"></span>
+                            </div>
+                            <div style="display: flex;">
+                                <label class="my-1 mr-2" for="group size">Logic
+                                    Constraint: </label>
+                                <th:block
+                                        style="padding: 10px;"
+                                        th:if="${question.questionDetail.questionType.type == 'MULTIPLECHOICEMANY'} OR
+													${question.questionDetail.questionType.type == 'MULTIPLECHOICEONE'} OR
+													${question.questionDetail.questionType.type == 'FREETEXT'}">
+                                    <span class="card_text normal"> N/A</span>
+                                    <th:block
+                                            style="padding: 10px;"
+                                            th:if="${question.questionDetail.questionType.type == 'NUMERIC'} ">
+										<span class="card_text normal"
+                                              th:text="${question.logicConstraintValue}"></span>
+
+                                    </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,54 +1,51 @@
 package com.dal.catmeclone.UserProfile;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.Validation.ValidatePassword;
-import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
-import com.dal.catmeclone.exceptionhandler.ValidationException;
+import com.dal.catmeclone.Validation.ValidationAbstractFactory;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.User;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class UserServiceImpl implements UserService {
 
-	final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-	ValidatePassword validatepassword;
-	UserDao userDb;
-	Boolean flag = false;
+    private final Logger LOGGER = Logger.getLogger(UserServiceImpl.class.getName());
+    AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
+    UserProfileAbstractFactory userProfileAbstractFactory = abstractFactory.createUserProfileAbstractFactory();
+    ValidationAbstractFactory validationAbstractFactory = abstractFactory.createValidationAbstractFactory();
+    ValidatePassword validatePassword;
+    UserDao userDao;
+    Boolean flag = false;
 
-	@Override
-	public boolean Create(User u) throws Exception {
-		userDb = SystemConfig.instance().getUserDao();
-		validatepassword = SystemConfig.instance().getValidatePassword();
-		try {
-			validatepassword.validatepassword(u);
-			logger.info("Accessing DAO layer to create user to given banner id" + u.getBannerId());
-			flag = userDb.createUser(u);
-			return flag;
-		} catch (ValidationException e) {
-			flag = false;
-			throw new ValidationException(e.getMessage());
-		} catch (DuplicateEntityException e) {
-			logger.error(e.getMessage());
-			throw new DuplicateEntityException(e.getMessage());
-		} catch (UserDefinedSQLException e) {
-			logger.error(e.getMessage());
-			throw new UserDefinedSQLException(e.getMessage());
-		} catch (Exception e) {
-			flag = false;
-			logger.error(e.getLocalizedMessage());
-			throw new Exception(e.getLocalizedMessage());
-		}
-	}
+    public UserServiceImpl() {
+        super();
+        this.userDao = userProfileAbstractFactory.createUserDao();
+    }
 
-	@Override
-	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException {
-		userDb = SystemConfig.instance().getUserDao();
-		List<User> listOfUser = new ArrayList<User>();
-		logger.info("Accessing DAO layer to get matching list of user to given banner id");
-		listOfUser = userDb.findAllMatchingUser(bannerId);
-		return listOfUser;
-	}
+    public UserServiceImpl(UserDao userDao) {
+        super();
+        this.userDao = userDao;
+    }
+
+    @Override
+    public boolean createUser(User user) throws SQLException, Exception {
+        validatePassword = validationAbstractFactory.createValidatePassword();
+        validatePassword.validatepassword(user);
+        LOGGER.info("Accessing DAO layer to create user to given banner id" + user.getBannerId());
+        flag = userDao.createUser(user);
+        return flag;
+    }
+
+    @Override
+    public List<User> findAllMatchingUser(String bannerId) throws UserDefinedException {
+        List<User> listOfUser = new ArrayList<User>();
+        LOGGER.info("Accessing DAO layer to get matching list of user to given banner id");
+        listOfUser = userDao.findAllMatchingUser(bannerId);
+        return listOfUser;
+    }
 }

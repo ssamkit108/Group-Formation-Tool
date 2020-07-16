@@ -1,56 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-  <head>
-	<link rel="stylesheet"
-		 href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="static/css/general.css">
-  </head>
-  <body>
-    <div class="navbar navbar-fixed-top headercontainer" th:fragment="header">
-      <div class="container">
-       
-        <div class="navbar-collapse collapse">
-        	<ul class="nav navbar-nav">
-            <li >
-              <a class="headerlink" href="#" th:href="@{/}">Home</a>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
-            <li th:if="${session.enrolled} == true">
-              <a class="headerlink" href="#" th:href="@{/courses}">My Courses</a>
-            </li>
-            <!-- <li th:classappend="${module == 'listallcourses' ? 'active' : ''}"> -->
-            <li th:if="@{session.enrolled ne null and session.enrolled eq false}">
-            <li th:if="${session.enrolled} == false">
-              <a class="headerlink" href="#" th:href="@{/courses}">All Courses</a>
-            </li>
-          </ul>
-          <ul style="margin-top: 5px;"class="nav navbar-nav navbar-right">
-          	
-            <li sec:authorize="!isAuthenticated()">
-            
-              <a class="headerlink" href="/login" th:href="@{/login}">
-                <span  aria-hidden="true"></span>&nbsp;Sign in
-              </a>
-             
-            </li>
-            
-           
-            <li sec:authorize="isAuthenticated()">
-            	<form th:action="@{/logout}" method="post">
-				<button type="submit" class="btn btn-secondary logoutbutton">Log out</button>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="static/css/general.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="navbar navbar-fixed-top headercontainer" th:fragment="header">
+    <div class="container">
 
-				</form>
-              <!-- <a href="/logout" th:href="@{/logout}" onclick="$('#form').submit();">
-                <span aria-hidden="true"></span>&nbsp;Logout
-              </a>
-             <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form> -->
-            </li>
-            </th:if>
-          </ul>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a class="headerlink" href="#" th:href="@{/}">Home</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+                <li th:if="${session.enrolled} == true">
+                    <a class="headerlink" href="#" th:href="@{/courses}">My Courses</a>
+                </li>
+                <!-- <li th:classappend="${module == 'listallcourses' ? 'active' : ''}"> -->
+                <li th:if="@{session.enrolled ne null and session.enrolled eq false}">
+                <li th:if="${session.enrolled} == false">
+                    <a class="headerlink" href="#" th:href="@{/courses}">All Courses</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="margin-top: 5px;">
+
+                <li sec:authorize="!isAuthenticated()">
+
+                    <a class="headerlink" href="/login" th:href="@{/login}">
+                        <span aria-hidden="true"></span>&nbsp;Sign in
+                    </a>
+
+                </li>
+
+
+                <li sec:authorize="isAuthenticated()">
+                    <form method="post" th:action="@{/logout}">
+                        <button class="btn btn-secondary logoutbutton" type="submit">Log out</button>
+
+                    </form>
+                    <!-- <a href="/logout" th:href="@{/logout}" onclick="$('#form').submit();">
+                      <span aria-hidden="true"></span>&nbsp;Logout
+                    </a>
+                   <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form> -->
+                </li>
+                </th:if>
+            </ul>
         </div>
-      </div>
     </div>
-  </body>
+</div>
+</body>
 </html>

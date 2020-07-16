@@ -1,13 +1,13 @@
 package com.dal.catmeclone.UserProfile;
 
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 
 public interface ForgotPasswordDao {
-	public boolean checkexist(String username) throws UserDefinedSQLException, Exception;
+    public boolean checkExist(String username) throws UserDefinedException, Exception;
 
-	public void UpdateToken(String BannerId, String token) throws Exception;
+    public void updateToken(String BannerId, String token) throws Exception;
 
-	void SetNewPassword(String BannerId, String password) throws Exception;
+    void setNewPassword(String BannerId, String password) throws Exception;
 
-	public String checktokenexist(String token) throws Exception;
+    public String checkTokenExist(String token) throws Exception;
 }

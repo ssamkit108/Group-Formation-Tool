@@ -1,75 +1,82 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+>
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/css/general.css">
-<script type="text/javascript" src="/js/courseci-message.js"></script>
-<title>QuestionManager</title>
+    <meta charset="ISO-8859-1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
+    <script src="/js/courseci-message.js" type="text/javascript"></script>
+    <title>QuestionManager</title>
 
-<style>
-h1 {
-	text-align: center;
-}
-</style>
+    <style>
+        h1 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-	<section>
-		<div th:replace="header :: header"></div>
-	</section>
-	<br>
-	<section>
-		<div class="container">
-			<!-- container starts -->
-			<div class="row" style="margin-top: 40px">
-				<h1>Basic Question Information</h1>
-			</div>
-			<hr>
-			<!-- Row Start for Question Form -->
-			<div class="row">
-				<p class="m-auto" style="color: red">
-					<span th:text="${message}" th:if="${message ne null}"></span>
-				</p>
-				<!-- Question Form Start -->
-				<div class="col-md-10 justify-content-center">
-					<form th:action="@{/questionmanager/questiondetails}"
-						th:object="${BasicQuestion}" method="post">
-						<div class="form-group">
-							<label for="questiontitle">Question title: <sup
-								style="color: red">*</sup></label> <input type="text"
-								class="form-control" id="questiontitle"
-								placeholder="Enter Question title" th:field="*{questionTitle}"
-								required>
-						</div>
-						<div class="form-group">
-							<label for="questiontext">Question text: <sup
-								style="color: red">*</sup></label> <input type="text"
-								class="form-control" id="questiontext"
-								placeholder="Enter Question text" th:field="*{questionText}"
-								required>
-						</div>
+<section>
+    <div th:replace="header :: header"></div>
+</section>
+<br>
+<section>
+    <div class="container">
+        <!-- container starts -->
+        <div class="row" style="margin-top: 40px">
+            <h1>Basic Question Information</h1>
+        </div>
+        <hr>
+        <!-- Row Start for Question Form -->
+        <div class="row">
+            <p class="m-auto" style="color: red">
+                <span th:if="${message ne null}" th:text="${message}"></span>
+            </p>
+            <!-- Question Form Start -->
+            <div class="col-md-10 justify-content-center">
+                <form method="post"
+                      th:action="@{/questionmanager/questiondetails}" th:object="${BasicQuestion}">
+                    <div class="form-group">
+                        <label for="questiontitle">Question title: <sup
+                                style="color: red">*</sup></label> <input class="form-control"
+                                                                          id="questiontitle"
+                                                                          placeholder="Enter Question title"
+                                                                          required
+                                                                          th:field="*{questionTitle}"
+                                                                          type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="questiontext">Question text: <sup
+                                style="color: red">*</sup></label> <input class="form-control"
+                                                                          id="questiontext"
+                                                                          placeholder="Enter Question text"
+                                                                          required
+                                                                          th:field="*{questionText}"
+                                                                          type="text">
+                    </div>
 
-						<label class="my-1 mr-2" for="question type">Question
-							type:</label> <select class="custom-select" id="question type"
-							name="question type" th:field="*{questionType}">
-							<option value="NUMERIC">Numeric</option>
-							<option value="MULTIPLECHOICEONE">Multiple choice –
-								choose one</option>
-							<option value="MULTIPLECHOICEMANY">Multiple choice –
-								choose multiple</option>
-							<option value="FREETEXT">Free text</option>
-						</select>
-						<hr>
-						<button type="submit" class="btn btn-primary" style="width: 30%;">Next</button>
-						<a th:href="@{/questionmanager}" class="btn btn-primary"
-							style="width: 30%">Return</a>
-					</form>
-				</div>
-				<!-- Question Form End -->
-			</div>
-		</div>
-	</section>
+                    <label class="my-1 mr-2" for="question type">Question
+                        type:</label>
+                    <select class="custom-select" id="question type"
+                            name="question type" th:field="*{questionType}">
+                        <option value="NUMERIC">Numeric</option>
+                        <option value="MULTIPLECHOICEONE">Multiple choice –
+                            choose one
+                        </option>
+                        <option value="MULTIPLECHOICEMANY">Multiple choice –
+                            choose multiple
+                        </option>
+                        <option value="FREETEXT">Free text</option>
+                    </select>
+                    <hr>
+                    <button class="btn btn-primary" style="width: 30%;" type="submit">Next</button>
+                    <a class="btn btn-primary" style="width: 30%"
+                       th:href="@{/questionmanager}">Return</a>
+                </form>
+            </div>
+            <!-- Question Form End -->
+        </div>
+    </div>
+</section>
 </body>
 </html>

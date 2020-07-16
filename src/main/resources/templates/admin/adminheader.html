@@ -1,42 +1,42 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-  <head>
-	<link rel="stylesheet"
-		 href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		 <link rel="stylesheet" type="text/css"
-		 href="/css/header.css">
-  </head>
-  <body>
-    <div class="navbar navbar-fixed-top headercontainer" th:fragment="header">
-      
-        <div class=" navbar-collapse collapse" style="margin:0px 16px 4px 24px">
-          <ul class="nav navbar-nav">
-            <li >
-              <h3><a class="headerlink" href="#" th:href="@{/admin/adminDashboard}">DashBoard</a></h3>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right " style ="margin: 6px 6px 6px 6px">
-          	
-            <li sec:authorize="!isAuthenticated()">
-            
-              <a class="headerlink" href="/login" th:href="@{/login}">
-                <span  aria-hidden="true"></span>&nbsp;Sign in
-              </a>
-             
-            </li>
-            
-            <li sec:authorize="isAuthenticated()">
-            	<form th:action="@{/logout}" method="post">
-				<button  type="submit" class="btn btn-secondary logoutbutton"><h5>Log out</h5></button>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="/css/header.css" rel="stylesheet"
+          type="text/css">
+</head>
+<body>
+<div class="navbar navbar-fixed-top headercontainer" th:fragment="header">
 
-				</form>
-              
+    <div class=" navbar-collapse collapse" style="margin:0px 16px 4px 24px">
+        <ul class="nav navbar-nav">
+            <li>
+                <h3><a class="headerlink" href="#" th:href="@{/admin/adminDashboard}">DashBoard</a></h3>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right " style="margin: 6px 6px 6px 6px">
+
+            <li sec:authorize="!isAuthenticated()">
+
+                <a class="headerlink" href="/login" th:href="@{/login}">
+                    <span aria-hidden="true"></span>&nbsp;Sign in
+                </a>
+
+            </li>
+
+            <li sec:authorize="isAuthenticated()">
+                <form method="post" th:action="@{/logout}">
+                    <button class="btn btn-secondary logoutbutton" type="submit"><h5>Log out</h5></button>
+
+                </form>
+
             </li>
             </th:if>
-          </ul>
-        </div>
-      </div>
-   
-  </body>
+        </ul>
+    </div>
+</div>
+
+</body>
 </html>

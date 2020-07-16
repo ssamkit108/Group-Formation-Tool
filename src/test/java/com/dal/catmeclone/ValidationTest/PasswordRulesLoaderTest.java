@@ -1,19 +1,21 @@
 package com.dal.catmeclone.ValidationTest;
 
-import static org.junit.Assert.assertTrue;
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfigTest;
+import com.dal.catmeclone.Validation.PasswordRulesLoader;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.Validation.PasswordRulesLoader;
+import static org.junit.Assert.assertTrue;
 
 public class PasswordRulesLoaderTest {
-	
-	@Test
-	public void TestgetValidationRulesList() {
-		PasswordRulesLoader passwordrules=SystemConfig.instance().getPasswordRules();
-		assertTrue(passwordrules.getValidationRulesList() instanceof List<?>);
-	}
+
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+    PasswordRulesLoader passwordrules = abstractFactoryTest.createValidationAbstractFactory().createPasswordRulesLoader();
+
+    @Test
+    public void TestgetValidationRulesList() {
+        assertTrue(passwordrules.getValidationRulesList() instanceof List<?>);
+    }
 }

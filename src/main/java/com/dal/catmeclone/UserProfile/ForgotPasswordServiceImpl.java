@@ -1,74 +1,73 @@
 package com.dal.catmeclone.UserProfile;
 
-import java.sql.SQLException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.dal.catmeclone.AbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.Validation.ValidatePassword;
+import com.dal.catmeclone.Validation.ValidationAbstractFactory;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.exceptionhandler.ValidationException;
 import com.dal.catmeclone.model.User;
+
+import java.sql.SQLException;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
-	final Logger LOGGER = LoggerFactory.getLogger(ForgotPasswordServiceImpl.class);
+    final Logger LOGGER = Logger.getLogger(ForgotPasswordServiceImpl.class.getName());
+    AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
+    UserProfileAbstractFactory userProfileAbstractFactory = abstractFactory.createUserProfileAbstractFactory();
+    ValidationAbstractFactory validationAbstractFactory = abstractFactory.createValidationAbstractFactory();
+    ForgotPasswordDao forgotPasswordDao;
+    ValidatePassword validatepassword;
 
-	ForgotPasswordDao forgotpasswordDb;
-	ValidatePassword validatepassword;
+    public ForgotPasswordServiceImpl() {
+        super();
+        this.forgotPasswordDao = userProfileAbstractFactory.createForgotPasswordDao();
+    }
 
-	public void Resetlink(String username) throws Exception {
-		try {
-			forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
-			if (forgotpasswordDb.checkexist(username)) {
-				LOGGER.info("Banner Id:" + username + " validated in successfully.");
-				String token = GenerateToken();
-				forgotpasswordDb.UpdateToken(username, token);
-				LOGGER.info("Banner Id:" + username + " token generated and sent an link to the user.");
-			} else {
-				LOGGER.error("User:" + username + " is not validated in forgot password service.");
-				throw new Exception("Banner Id:" + username + " does not exist in our system.");
-			}
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			throw new Exception(e.getMessage());
-		}
-	}
 
-	public String GenerateToken() {
-		return UUID.randomUUID().toString();
-	}
+    public ForgotPasswordServiceImpl(ForgotPasswordDao forgotPasswordDao) {
+        super();
+        this.forgotPasswordDao = forgotPasswordDao;
+    }
 
-	@Override
-	public String validatetoken(String confirmationToken) throws Exception {
-		try {
-			forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
-			String bannerid = forgotpasswordDb.checktokenexist(confirmationToken);
-			if (!bannerid.isEmpty() && bannerid != null) {
-				return bannerid;
-			} else {
-				return "";
-			}
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-	}
+    public void resetlink(String username) throws SQLException, Exception {
 
-	@Override
-	public void setNewPassword(String username, String password) throws Exception {
-		try {
-			User u = new User();
-			u.setBannerId(username);
-			u.setPassword(password);
-			validatepassword = SystemConfig.instance().getValidatePassword();
-			forgotpasswordDb = SystemConfig.instance().getForgotPasswordDao();
-			validatepassword.validatepassword(u);
-			forgotpasswordDb.SetNewPassword(username, password);
-		} catch (ValidationException e) {
-			throw new ValidationException(e.getMessage());
-		} catch (SQLException e) {
-			throw new SQLException(e.getMessage());
-		} catch (Exception e) {
-			throw new Exception(e.getLocalizedMessage());
-		}
-	}
+        if (forgotPasswordDao.checkExist(username)) {
+            LOGGER.info("Banner Id:" + username + " validated in successfully.");
+            String token = generateToken();
+            forgotPasswordDao.updateToken(username, token);
+            LOGGER.info("Banner Id:" + username + " token generated and sent an link to the user.");
+        } else {
+            LOGGER.warning("User:" + username + " is not validated in forgot password service.");
+            throw new Exception("Banner Id:" + username + " does not exist in our system.");
+        }
+    }
+
+    public String generateToken() {
+        return UUID.randomUUID().toString();
+    }
+
+    @Override
+    public String validateToken(String confirmationToken) throws SQLException, Exception {
+
+        String bannerid = forgotPasswordDao.checkTokenExist(confirmationToken);
+        if (!bannerid.isEmpty() && bannerid != null) {
+            return bannerid;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void setNewPassword(String username, String password) throws UserDefinedException, ValidationException, SQLException, Exception {
+        User user = new User();
+        user.setBannerId(username);
+        user.setPassword(password);
+        validatepassword = validationAbstractFactory.createValidatePassword();
+        forgotPasswordDao = userProfileAbstractFactory.createForgotPasswordDao();
+        validatepassword.validatepassword(user);
+        forgotPasswordDao.setNewPassword(username, password);
+    }
 }

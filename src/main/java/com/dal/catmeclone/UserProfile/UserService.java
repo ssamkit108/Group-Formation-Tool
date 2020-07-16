@@ -1,11 +1,13 @@
 package com.dal.catmeclone.UserProfile;
 
-import java.util.List;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.User;
 
-public interface UserService {
-	public boolean Create(User u) throws Exception;
+import java.sql.SQLException;
+import java.util.List;
 
-	public List<User> findAllMatchingUser(String bannerId) throws UserDefinedSQLException;
+public interface UserService {
+    public boolean createUser(User u) throws SQLException, Exception;
+
+    public List<User> findAllMatchingUser(String bannerId) throws UserDefinedException;
 }

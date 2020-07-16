@@ -1,114 +1,100 @@
 package com.dal.catmeclone.questionmanagement;
 
+import com.dal.catmeclone.AbstractFactory;
+import com.dal.catmeclone.SystemConfig;
+import com.dal.catmeclone.exceptionhandler.UserDefinedException;
+import com.dal.catmeclone.model.BasicQuestion;
+import com.dal.catmeclone.model.MultipleChoiceQuestion;
+import com.dal.catmeclone.model.User;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
-import com.dal.catmeclone.SystemConfig;
-import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
-import com.dal.catmeclone.model.BasicQuestion;
-import com.dal.catmeclone.model.MultipleChoiceQuestion;
-import com.dal.catmeclone.model.User;
 
 public class QuestionManagementServiceImpl implements QuestionManagementService {
 
-	private Logger LOGGER = Logger.getLogger(QuestionManagementServiceImpl.class.getName());
-	QuestionManagementDao questionManagementDao = null;
+    private static final Logger LOGGER = Logger.getLogger(QuestionManagementServiceImpl.class.getName());
+    AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
+    QuestionManagementAbstractFactory questionManagementAbstractFactory = abstractFactory.createQuestionManagerAbstractFactory();
+    QuestionManagementDao questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
 
-	/*
-	 * Service Layer method to get all list of question for the user
-	 */
-	@Override
-	public List<BasicQuestion> getAllQuestionByUser(User user) throws UserDefinedSQLException {
+    public QuestionManagementServiceImpl() {
+        super();
+    }
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+    public QuestionManagementServiceImpl(QuestionManagementDao questionManagementDao) {
+        super();
+        this.questionManagementDao = questionManagementDao;
+    }
 
-		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
-		// Calling Dao layer to perform interaction wwith DB to fetch list of question
-		listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
-		return listOfQuestion;
-	}
+    @Override
+    public List<BasicQuestion> getAllQuestionByUser(User user) throws UserDefinedException {
 
-	/*
-	 * Service Layer method to get list of sorted question based, sorted by title
-	 */
-	@Override
-	public List<BasicQuestion> getSortedQuestionsByTitle(User user) throws UserDefinedSQLException {
+        List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
+        listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
+        return listOfQuestion;
+    }
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+    @Override
+    public List<BasicQuestion> getSortedQuestionsByTitle(User user) throws UserDefinedException {
 
-		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
-		// Calling Dao layer to perform interaction wwith DB to fetch list of question
-		listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
-		LOGGER.info("Sorting the Question based on Title");
-		// Using the Comparator to sort the list of question based on the Title
-		Collections.sort(listOfQuestion, new Comparator<BasicQuestion>() {
-			public int compare(BasicQuestion o1, BasicQuestion o2) {
-				return o1.getQuestionTitle().toLowerCase().compareTo(o2.getQuestionTitle().toLowerCase());
-			}
-		});
-		return listOfQuestion;
-	}
+        List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
+        listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
+        LOGGER.info("Sorting the Question based on Title");
+        Collections.sort(listOfQuestion, new Comparator<BasicQuestion>() {
+            public int compare(BasicQuestion o1, BasicQuestion o2) {
+                return o1.getQuestionTitle().toLowerCase().compareTo(o2.getQuestionTitle().toLowerCase());
+            }
+        });
+        return listOfQuestion;
+    }
 
-	/*
-	 * Service Layer method to get list of sorted question based, sorted by date
-	 */
-	@Override
-	public List<BasicQuestion> getSortedQuestionsByDate(User user) throws UserDefinedSQLException {
+    @Override
+    public List<BasicQuestion> getSortedQuestionsByDate(User user) throws UserDefinedException {
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+        List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
+        listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
+        LOGGER.info("Sorting the Question based on Title");
+        Collections.sort(listOfQuestion, new Comparator<BasicQuestion>() {
+            public int compare(BasicQuestion o1, BasicQuestion o2) {
+                if (o1.getCreationDate() == null || o2.getCreationDate() == null) {
+                    return 0;
+                }
+                return o1.getCreationDate().compareTo(o2.getCreationDate());
+            }
+        });
+        return listOfQuestion;
+    }
 
-		List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
-		// Calling Dao layer to perform interaction wwith DB to fetch list of question
-		listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
-		LOGGER.info("Sorting the Question based on Title");
-		// Using the Comparator to sort the list of question based on the Date
-		Collections.sort(listOfQuestion, new Comparator<BasicQuestion>() {
-			public int compare(BasicQuestion o1, BasicQuestion o2) {
-				if (o1.getCreationDate() == null || o2.getCreationDate() == null)
-					return 0;
-				return o1.getCreationDate().compareTo(o2.getCreationDate());
-			}
-		});
-		return listOfQuestion;
-	}
+    @Override
+    public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoice) throws UserDefinedException {
 
-	@Override
-	public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoice) throws UserDefinedSQLException {
+        multipleChoice.filterOptions();
+        boolean isQuestionCreated = questionManagementDao.createMultipleChoiceQuestion(multipleChoice);
+        return isQuestionCreated;
+    }
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+    @Override
+    public boolean createNumericOrTextQuestion(BasicQuestion basicQuestion) throws UserDefinedException {
 
-		multipleChoice.filterOptions();
-		boolean isQuestionCreated = questionManagementDao.createMultipleChoiceQuestion(multipleChoice);
-		return isQuestionCreated;
-	}
+        boolean isQuestionCreated = questionManagementDao.createNumericOrTextQuestion(basicQuestion);
+        return isQuestionCreated;
+    }
 
-	@Override
-	public boolean createNumericOrTextQuestion(BasicQuestion basicQuestion) throws UserDefinedSQLException {
+    @Override
+    public boolean ifQuestionTitleandTextExists(BasicQuestion basicQuestion) throws UserDefinedException {
 
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
+        boolean isQuestionExists = questionManagementDao.isQuestionExistForUserWithTitleandText(basicQuestion);
+        return isQuestionExists;
+    }
 
-		boolean isQuestionCreated = questionManagementDao.createNumericOrTextQuestion(basicQuestion);
-		return isQuestionCreated;
-	}
+    @Override
+    public boolean deleteQuestion(int questionId) throws UserDefinedException {
 
-	@Override
-	public boolean ifQuestionTitleandTextExists(BasicQuestion basicQuestion) throws UserDefinedSQLException {
-
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
-
-		boolean isQuestionExists = questionManagementDao.isQuestionExistForUserWithTitleandText(basicQuestion);
-		return isQuestionExists;
-	}
-
-	@Override
-	public boolean deleteQuestion(int questionId) throws UserDefinedSQLException {
-
-		questionManagementDao = SystemConfig.instance().getQuestionManagementDao();
-
-		boolean isQuestionDeleted = questionManagementDao.deleteQuestion(questionId);
-		return isQuestionDeleted;
-	}
+        boolean isQuestionDeleted = questionManagementDao.deleteQuestion(questionId);
+        return isQuestionDeleted;
+    }
 
 }
