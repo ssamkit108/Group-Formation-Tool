@@ -1,57 +1,57 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="favicon.ico" />
-<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link rel="stylesheet" type="text/css" href="/css/general.css">
-<title>Responses</title>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <link href="favicon.ico" rel="icon"/>
+    <link
+            href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            rel="stylesheet"/>
+    <link href="/css/general.css" rel="stylesheet" type="text/css">
+    <title>Responses</title>
 <body>
-	<div th:replace="header :: header"></div>
-	<div class="bodycontainer">
-		<h1 style="margin-top: -10px;">Student Responses</h1>
-		<hr>
-		<h5 class="usernameheader"
-			style="float: left; color: black; margin-bottom: 40px;">
-			Hello <span sec:authentication="name"></span>
-		</h5>
-		<div style="margin-top: 10px"
-			th:if="${responses ne null and !responses.empty}">
-			<table class="table table-bordered table-striped table-hover">
-				<thead class="thead-dark">
-					<tr>
-						<th>Question</th>
-						<th>Response</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="resp : ${responses}">
-						<td th:text="${resp.key}"></td>
-						<td>
-							<table class="table table-bordered table-striped table-hover">
+<div th:replace="header :: header"></div>
+<div class="bodycontainer">
+    <h1 style="margin-top: -10px;">Student Responses</h1>
+    <hr>
+    <h5 class="usernameheader"
+        style="float: left; color: black; margin-bottom: 40px;">
+        Hello <span sec:authentication="name"></span>
+    </h5>
+    <div style="margin-top: 10px"
+         th:if="${responses ne null and !responses.empty}">
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Question</th>
+                <th>Response</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="resp : ${responses}">
+                <td th:text="${resp.key}"></td>
+                <td>
+                    <table class="table table-bordered table-striped table-hover">
 
-								<tbody>
-									<tr th:each="ans : ${resp.value}">
-										<td th:text="${ans}"></td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div th:if="noresponsefound ne null">
-			<div class="table-responsive">
-				<br>
-				<h4 th:text=${noresponsefound}></h4>
-			</div>
-		</div>
-	</div>
+                        <tbody>
+                        <tr th:each="ans : ${resp.value}">
+                            <td th:text="${ans}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="noresponsefound ne null">
+        <div class="table-responsive">
+            <br>
+            <h4 th:text=${noresponsefound}></h4>
+        </div>
+    </div>
+</div>
 </body>
 </html>

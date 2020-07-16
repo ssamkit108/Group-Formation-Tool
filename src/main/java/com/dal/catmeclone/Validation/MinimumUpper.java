@@ -1,12 +1,13 @@
 package com.dal.catmeclone.Validation;
 
 import com.dal.catmeclone.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
+
 
 public class MinimumUpper implements ValidationPolicy {
 
-    final Logger LOGGER = LoggerFactory.getLogger(MinimumUpper.class);
+    final Logger LOGGER = Logger.getLogger(MinimumUpper.class.getName());
     private String ruleValue;
 
     @Override
@@ -31,7 +32,6 @@ public class MinimumUpper implements ValidationPolicy {
 
     @Override
     public String getError() {
-        // TODO Auto-generated method stub
         return "Password must contain at least " + this.ruleValue + " Uppercase letter.";
     }
 

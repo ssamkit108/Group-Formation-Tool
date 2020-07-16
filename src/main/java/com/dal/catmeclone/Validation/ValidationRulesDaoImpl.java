@@ -5,8 +5,6 @@ import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -15,34 +13,42 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class ValidationRulesDaoImpl implements ValidationRulesDao {
 
-    final Logger LOGGER = LoggerFactory.getLogger(ValidationRulesDaoImpl.class);
+    final Logger LOGGER = Logger.getLogger(ValidationRulesDaoImpl.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     DBUtilityAbstractFactory dbUtilityAbstractFactory = abstractFactory.createDBUtilityAbstractFactory();
-    ResultSet rs;
+    ResultSet resultSet;
     private DataBaseConnection DBUtil;
     private CallableStatement statement;
     private Connection connection;
     private List<String> rules;
 
-    private void loadRulesFromDB() {
+    @Override
+    public List<String> getRulesFromConfig() throws UserDefinedSQLException, SQLException, Exception {
+        loadRulesFromDB();
+        return rules;
+    }
+
+    private void loadRulesFromDB() throws UserDefinedSQLException, SQLException, Exception {
         try {
             rules = new ArrayList<String>();
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
             Properties properties = SystemConfig.instance().getProperties();
             connection = DBUtil.connect();
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.fetchPasswordRules") + "}");
-            rs = statement.executeQuery();
-
-            while (rs.next()) {
-                rules.add(rs.getString("Policy_Name"));
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                rules.add(resultSet.getString("Policy_Name"));
             }
         } catch (UserDefinedSQLException e) {
-            LOGGER.error("Error in loading sign up validation rules. ", e);
+            LOGGER.warning("Error in loading sign up validation rules. ");
+            throw new UserDefinedSQLException(e.getLocalizedMessage());
         } catch (SQLException e) {
-            LOGGER.error("Error in loading sign up validation rules. ", e);
+            LOGGER.warning("Error in loading sign up validation rules. ");
+            throw new SQLException(e.getLocalizedMessage());
         } finally {
             try {
                 DBUtil.terminateStatement(statement);
@@ -50,21 +56,13 @@ public class ValidationRulesDaoImpl implements ValidationRulesDao {
                     DBUtil.terminateConnection();
                 }
             } catch (UserDefinedSQLException e) {
-                LOGGER.error("Error in loading sign up validation rules. ", e);
+                LOGGER.warning("Error in loading sign up validation rules. ");
             }
-
         }
-
     }
 
     @Override
-    public List<String> getRulesFromConfig() {
-        loadRulesFromDB();
-        return rules;
-    }
-
-    @Override
-    public String getRulesValueFromConfig(String ruleName) {
+    public String getRulesValueFromConfig(String ruleName) throws UserDefinedSQLException, SQLException, Exception {
         String ruleValue = "";
         try {
             DBUtil = dbUtilityAbstractFactory.createDataBaseConnection();
@@ -72,25 +70,21 @@ public class ValidationRulesDaoImpl implements ValidationRulesDao {
             connection = DBUtil.connect();
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.fetchRuleValue") + "}");
             statement.setString(1, ruleName);
-            rs = statement.executeQuery();
-
-            while (rs.next()) {
-                ruleValue = rs.getString("Policy_Value");
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ruleValue = resultSet.getString("Policy_Value");
             }
         } catch (UserDefinedSQLException e) {
-            e.printStackTrace();
+            LOGGER.warning("Error in getting rules values. ");
+            throw new UserDefinedSQLException(e.getLocalizedMessage());
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.warning("Error in getting rules values.  ");
+            throw new UserDefinedSQLException(e.getLocalizedMessage());
         } finally {
-            try {
-                DBUtil.terminateStatement(statement);
-                if (connection != null) {
-                    DBUtil.terminateConnection();
-                }
-            } catch (UserDefinedSQLException e) {
-                LOGGER.error("Error in loading sign up validation rules. ", e);
+            DBUtil.terminateStatement(statement);
+            if (connection != null) {
+                DBUtil.terminateConnection();
             }
-
         }
         return ruleValue;
     }

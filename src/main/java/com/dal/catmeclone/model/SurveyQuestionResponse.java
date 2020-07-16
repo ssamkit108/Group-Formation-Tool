@@ -11,10 +11,6 @@ public class SurveyQuestionResponse {
         super();
     }
 
-    /**
-     * @param surveyQuestion
-     * @param response
-     */
     public SurveyQuestionResponse(SurveyQuestion surveyQuestion, ArrayList<Object> response) {
         super();
         this.surveyQuestion = surveyQuestion;

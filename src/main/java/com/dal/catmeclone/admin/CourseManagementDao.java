@@ -9,9 +9,9 @@ import java.util.List;
 public interface CourseManagementDao {
     public List<Course> getAllCourses() throws SQLException, UserDefinedSQLException;
 
-    public boolean deleteCourse(int courseID) throws SQLException, UserDefinedSQLException;
+    public boolean deleteCourse(int courseID) throws Exception;
 
-    public boolean insertCourse(Course course) throws UserDefinedSQLException, SQLException;
+    public boolean insertCourse(Course course) throws UserDefinedSQLException, SQLException, Exception;
 
-    public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException;
+    public boolean checkCourseExists(Course course) throws UserDefinedSQLException, SQLException, Exception;
 }

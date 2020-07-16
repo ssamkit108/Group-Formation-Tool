@@ -1,14 +1,11 @@
 package com.dal.catmeclone.UserProfile;
 
 import com.dal.catmeclone.AbstractFactory;
-import com.dal.catmeclone.DBUtility.DatabaseConnectionImpl;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.DuplicateEntityException;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.exceptionhandler.ValidationException;
 import com.dal.catmeclone.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,10 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 @Controller
 public class SignupController {
-    final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+
+    private final Logger LOGGER = Logger.getLogger(SignupController.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     UserProfileAbstractFactory userProfileAbstractFactory = abstractFactory.createUserProfileAbstractFactory();
     private UserService userservice;
@@ -42,23 +41,23 @@ public class SignupController {
         userservice = userProfileAbstractFactory.createUserService();
 
         try {
-            ModelAndView m;
+            ModelAndView modelAndView;
 
             if (user.getPassword().equals(passwordConfirm)) {
-                success = userservice.Create(user);
+                success = userservice.createUser(user);
                 if (success) {
-                    m = new ModelAndView("login");
-                    m.addObject("message", "Succesfully created Account.");
-                    return m;
+                    modelAndView = new ModelAndView("login");
+                    modelAndView.addObject("message", "Succesfully created Account.");
+                    return modelAndView;
                 } else {
-                    m = new ModelAndView("signup");
-                    m.addObject("message", "Sorry,some error generated in creating account.");
-                    return m;
+                    modelAndView = new ModelAndView("signup");
+                    modelAndView.addObject("message", "Sorry,some error generated in creating account.");
+                    return modelAndView;
                 }
             } else {
-                m = new ModelAndView("signup");
-                m.addObject("message", "Password and confirm password should be same.");
-                return m;
+                modelAndView = new ModelAndView("signup");
+                modelAndView.addObject("message", "Password and confirm password should be same.");
+                return modelAndView;
             }
         } catch (DuplicateEntityException e) {
             ModelAndView m = new ModelAndView("signup");

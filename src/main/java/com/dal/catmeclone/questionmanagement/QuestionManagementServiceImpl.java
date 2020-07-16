@@ -20,33 +20,22 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
     QuestionManagementDao questionManagementDao = null;
     private Logger LOGGER = Logger.getLogger(QuestionManagementServiceImpl.class.getName());
 
-    /*
-     * Service Layer method to get all list of question for the user
-     */
     @Override
     public List<BasicQuestion> getAllQuestionByUser(User user) throws UserDefinedSQLException {
 
         questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
-
         List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
-        // Calling Dao layer to perform interaction wwith DB to fetch list of question
         listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
         return listOfQuestion;
     }
 
-    /*
-     * Service Layer method to get list of sorted question based, sorted by title
-     */
     @Override
     public List<BasicQuestion> getSortedQuestionsByTitle(User user) throws UserDefinedSQLException {
 
         questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
-
         List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
-        // Calling Dao layer to perform interaction wwith DB to fetch list of question
         listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
         LOGGER.info("Sorting the Question based on Title");
-        // Using the Comparator to sort the list of question based on the Title
         Collections.sort(listOfQuestion, new Comparator<BasicQuestion>() {
             public int compare(BasicQuestion o1, BasicQuestion o2) {
                 return o1.getQuestionTitle().toLowerCase().compareTo(o2.getQuestionTitle().toLowerCase());
@@ -55,23 +44,19 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
         return listOfQuestion;
     }
 
-    /*
-     * Service Layer method to get list of sorted question based, sorted by date
-     */
     @Override
     public List<BasicQuestion> getSortedQuestionsByDate(User user) throws UserDefinedSQLException {
 
         questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
 
         List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();
-        // Calling Dao layer to perform interaction wwith DB to fetch list of question
         listOfQuestion = questionManagementDao.getAllQuestionByUser(user);
         LOGGER.info("Sorting the Question based on Title");
-        // Using the Comparator to sort the list of question based on the Date
         Collections.sort(listOfQuestion, new Comparator<BasicQuestion>() {
             public int compare(BasicQuestion o1, BasicQuestion o2) {
-                if (o1.getCreationDate() == null || o2.getCreationDate() == null)
+                if (o1.getCreationDate() == null || o2.getCreationDate() == null) {
                     return 0;
+                }
                 return o1.getCreationDate().compareTo(o2.getCreationDate());
             }
         });
@@ -82,7 +67,6 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
     public boolean createMultipleChoiceQuestion(MultipleChoiceQuestion multipleChoice) throws UserDefinedSQLException {
 
         questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
-
         multipleChoice.filterOptions();
         boolean isQuestionCreated = questionManagementDao.createMultipleChoiceQuestion(multipleChoice);
         return isQuestionCreated;
@@ -92,7 +76,6 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
     public boolean createNumericOrTextQuestion(BasicQuestion basicQuestion) throws UserDefinedSQLException {
 
         questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
-
         boolean isQuestionCreated = questionManagementDao.createNumericOrTextQuestion(basicQuestion);
         return isQuestionCreated;
     }
@@ -101,7 +84,6 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
     public boolean ifQuestionTitleandTextExists(BasicQuestion basicQuestion) throws UserDefinedSQLException {
 
         questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
-
         boolean isQuestionExists = questionManagementDao.isQuestionExistForUserWithTitleandText(basicQuestion);
         return isQuestionExists;
     }
@@ -110,7 +92,6 @@ public class QuestionManagementServiceImpl implements QuestionManagementService 
     public boolean deleteQuestion(int questionId) throws UserDefinedSQLException {
 
         questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
-
         boolean isQuestionDeleted = questionManagementDao.deleteQuestion(questionId);
         return isQuestionDeleted;
     }

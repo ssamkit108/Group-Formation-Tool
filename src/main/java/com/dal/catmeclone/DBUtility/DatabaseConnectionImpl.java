@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnectionImpl implements DataBaseConnection {
 
-    private static final Logger logger = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionImpl.class);
     private String user;
     private String password;
     private String database;
@@ -21,18 +21,13 @@ public class DatabaseConnectionImpl implements DataBaseConnection {
     private Connection databaseConnection;
 
     public DatabaseConnectionImpl() {
-
         user = System.getenv("spring.datasource.username");
         password = System.getenv("spring.datasource.password");
         database = System.getenv("spring.datasource.name");
         databaseurl = System.getenv("spring.datasource.url");
         connectionProperty = System.getenv("datasource.connection.properties");
-
     }
 
-    /**
-     * Method to Establish JDBC Connection to Database
-     */
     @Override
     public Connection connect() throws UserDefinedSQLException {
 
@@ -54,18 +49,15 @@ public class DatabaseConnectionImpl implements DataBaseConnection {
             throw new UserDefinedSQLException(e.getLocalizedMessage());
         }
 
-        logger.info("Database connected Successfully");
+        LOGGER.info("Database connected Successfully");
         return databaseConnection;
     }
 
-    /**
-     * Method to Terminate JDBC Connection of Database
-     */
     @Override
     public boolean terminateConnection() {
 
         try {
-            logger.info("Closing Established Connection");
+            LOGGER.info("Closing Established Connection");
             // Check is database connection is already closed or not
             if (databaseConnection.isClosed() == false) {
                 databaseConnection.close();
@@ -73,10 +65,10 @@ public class DatabaseConnectionImpl implements DataBaseConnection {
         } catch (SQLException e) {
 
             // Logging the error
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
 
         }
-        logger.info("Connection Closed Successfully");
+        LOGGER.info("Connection Closed Successfully");
         return true;
 
     }
@@ -87,7 +79,7 @@ public class DatabaseConnectionImpl implements DataBaseConnection {
             try {
                 statement.close();
             } catch (SQLException e) {
-                logger.error("Error Occured in Closing Statement");
+                LOGGER.error("Error Occured in Closing Statement");
                 throw new UserDefinedSQLException("Some Error Occured");
             }
         }

@@ -6,8 +6,6 @@ import com.dal.catmeclone.DBUtility.DataBaseConnection;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -16,13 +14,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class HistoryConstraintDaoImpl implements HistoryConstraintDao {
 
-    final Logger LOGGER = LoggerFactory.getLogger(HistoryConstraintDaoImpl.class);
+    final Logger LOGGER = Logger.getLogger(HistoryConstraintDaoImpl.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     DBUtilityAbstractFactory dbUtilityAbstractFactory = abstractFactory.createDBUtilityAbstractFactory();
-    ResultSet rs;
+    ResultSet resultSet;
     private DataBaseConnection DBUtil;
     private CallableStatement statement;
     private Connection connection;
@@ -38,17 +37,17 @@ public class HistoryConstraintDaoImpl implements HistoryConstraintDao {
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.get_pwd_history") + "}");
             statement.setString(1, u.getBannerId());
             statement.setInt(2, limit);
-            rs = statement.executeQuery();
+            resultSet = statement.executeQuery();
 
-            while (rs.next()) {
-                PasswordList.add(rs.getString("password"));
+            while (resultSet.next()) {
+                PasswordList.add(resultSet.getString("password"));
             }
             return PasswordList;
         } catch (UserDefinedSQLException e) {
-            LOGGER.error("Error in loading Password History. ", e);
+            LOGGER.warning("Error in loading Password History. ");
             throw new UserDefinedSQLException(e.getLocalizedMessage());
         } catch (SQLException e) {
-            LOGGER.error("Error in loading Password History. ", e);
+            LOGGER.warning("Error in loading Password History. ");
             throw new SQLException(e.getLocalizedMessage());
 
         } finally {
@@ -58,7 +57,8 @@ public class HistoryConstraintDaoImpl implements HistoryConstraintDao {
                     DBUtil.terminateConnection();
                 }
             } catch (UserDefinedSQLException e) {
-                LOGGER.error("Error in loading Password History. ", e);
+                LOGGER.warning("Error in loading Password History. ");
+                throw new UserDefinedSQLException(e.getLocalizedMessage());
             }
 
         }

@@ -27,7 +27,7 @@ public class KMeansStrategy implements GroupFormationStrategy {
     Map<Integer, Integer> multipleChoiceMaxOptionIndex = new HashMap<Integer, Integer>();
 
     @Override
-    public Boolean  formatGroupForCourse(Course course) throws UserDefinedSQLException {
+    public Boolean formatGroupForCourse(Course course) throws UserDefinedSQLException, Exception {
         List<List<SurveyQuestionResponse>> userSurveyResponse = new ArrayList<List<SurveyQuestionResponse>>();
         List<List<Integer>> formattedResponses = new ArrayList<>();
         List<String> criteria = new ArrayList<String>();
@@ -36,7 +36,7 @@ public class KMeansStrategy implements GroupFormationStrategy {
         try {
             fetchAllDetailsRegardingSurvey(userSurveyResponse, course);
         } catch (UserDefinedSQLException e) {
-            throw new UserDefinedSQLException(e.getLocalizedMessage());
+            throw new UserDefinedSQLException("SQL Exception generated" + e.getLocalizedMessage());
         }
         System.out.println(studentsList);
         System.out.println(surveyQuestions.toString());
@@ -251,7 +251,7 @@ public class KMeansStrategy implements GroupFormationStrategy {
     }
 
     public void fetchAllDetailsRegardingSurvey(List<List<SurveyQuestionResponse>> userSurveyResponse, Course course)
-            throws UserDefinedSQLException {
+            throws UserDefinedSQLException, Exception {
         surveyQuestions = algorithmDao.getSurveyQuestionsForCourse(course.getCourseID());
         System.out.println(surveyQuestions);
         groupSize = algorithmDao.getGroupSizeForCourse(course.getCourseID());

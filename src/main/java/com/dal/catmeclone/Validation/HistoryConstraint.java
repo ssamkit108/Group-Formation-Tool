@@ -1,23 +1,20 @@
 package com.dal.catmeclone.Validation;
 
 import com.dal.catmeclone.AbstractFactory;
-import com.dal.catmeclone.DBUtility.DBUtilityAbstractFactory;
 import com.dal.catmeclone.SystemConfig;
 import com.dal.catmeclone.encrypt.BCryptPasswordEncryption;
 import com.dal.catmeclone.encrypt.EncryptAbstractFactory;
 import com.dal.catmeclone.exceptionhandler.UserDefinedSQLException;
 import com.dal.catmeclone.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class HistoryConstraint implements ValidationPolicy {
 
-    final Logger LOGGER = LoggerFactory.getLogger(HistoryConstraint.class);
+    final Logger LOGGER = Logger.getLogger(HistoryConstraint.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
-    DBUtilityAbstractFactory dbUtilityAbstractFactory = abstractFactory.createDBUtilityAbstractFactory();
     ValidationAbstractFactory validationAbstractFactory = abstractFactory.createValidationAbstractFactory();
     EncryptAbstractFactory encryptAbstractFactory = abstractFactory.createEncryptAbstractFactory();
     HistoryConstraintDao historyConstraintDao;
@@ -29,7 +26,7 @@ public class HistoryConstraint implements ValidationPolicy {
         this.ruleValue = ruleValue;
     }
 
-    public boolean isValid(User user) throws UserDefinedSQLException, SQLException {
+    public boolean isValid(User user) throws UserDefinedSQLException, SQLException, Exception, NumberFormatException {
         try {
             boolean result = false;
             int limit = Integer.parseInt(ruleValue);
@@ -46,18 +43,17 @@ public class HistoryConstraint implements ValidationPolicy {
             LOGGER.info("Does Password matched in the history. Result : " + result);
             return !result;
         } catch (UserDefinedSQLException e) {
-            LOGGER.error("Error in loading Password History. ", e);
+            LOGGER.warning("Error in loading Password History. ");
             throw new UserDefinedSQLException(e.getLocalizedMessage());
         } catch (SQLException e) {
-            LOGGER.error("Error in loading Password History. ", e);
+            LOGGER.warning("Error in loading Password History. ");
             throw new SQLException(e.getLocalizedMessage());
-
         } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return false;
+            LOGGER.warning("Error in loading Password History. ");
+            throw new NumberFormatException(e.getLocalizedMessage());
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            LOGGER.warning("Error in loading Password History. ");
+            throw new Exception(e.getLocalizedMessage());
         }
     }
 

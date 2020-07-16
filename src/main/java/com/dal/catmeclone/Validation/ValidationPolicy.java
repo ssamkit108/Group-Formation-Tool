@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public interface ValidationPolicy {
     public void setValue(String ruleValue);
 
-    public abstract boolean isValid(User user) throws UserDefinedSQLException, SQLException;
+    public abstract boolean isValid(User user) throws UserDefinedSQLException, SQLException, Exception;
 
     public abstract String getError();
 }

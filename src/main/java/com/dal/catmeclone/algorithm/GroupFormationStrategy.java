@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface GroupFormationStrategy {
 
-    public Boolean formatGroupForCourse(Course course) throws UserDefinedSQLException;
+    public Boolean formatGroupForCourse(Course course) throws UserDefinedSQLException, Exception;
 
     public List<List<String>> formGroup(List<List<Integer>> formattedResponses, List<String> criteria, List<String> studentsList, int groupSize);
 
     public void processMultipleChoiceAndFreeTextResponse(List<SurveyQuestionResponse> response);
 
-    public void fetchAllDetailsRegardingSurvey(List<List<SurveyQuestionResponse>> userSurveyResponse, Course course) throws UserDefinedSQLException;
+    public void fetchAllDetailsRegardingSurvey(List<List<SurveyQuestionResponse>> userSurveyResponse, Course course) throws UserDefinedSQLException, Exception;
 
     public List<String> getCriteriaList(List<SurveyQuestion> surveyQuestions);
 

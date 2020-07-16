@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 public class AlgorithmAbstractFactoryImpl implements AlgorithmAbstractFactory {
 
-    Logger logger = Logger.getLogger(AlgorithmDaoImpl.class.getName());
+    Logger LOGGER = Logger.getLogger(AlgorithmDaoImpl.class.getName());
 
     @Override
     public AlgorithmDao createAlgorithmDao() {
@@ -12,15 +12,15 @@ public class AlgorithmAbstractFactoryImpl implements AlgorithmAbstractFactory {
     }
 
     @Override
-    public GroupFormationStrategy createGroupFormationStrategy(String StrategyName) throws Exception {
+    public GroupFormationStrategy createGroupFormationStrategy(String StrategyName) {
         GroupFormationStrategy algorithm = null;
         switch (StrategyName) {
             case "KMeans":
                 algorithm = new KMeansStrategy();
                 break;
             default:
-                logger.warning("Unknown algorithm request : " + StrategyName);
-                throw new Exception();
+                LOGGER.warning("Unknown algorithm request : " + StrategyName);
+                break;
         }
         return algorithm;
     }
