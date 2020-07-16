@@ -422,7 +422,8 @@
                 </div>
                 <div class="col-lg-3 justify-content-center" th:if="${survey.groupFormed eq true}">
                     <input class="btn btn-success"
-                           th:formaction="@{/survey/display/groupinfo(courseid=${survey.course.courseID})}" type="submit"
+                           th:formaction="@{/survey/display/groupinfo(courseid=${survey.course.courseID})}"
+                           type="submit"
                            value="Display Groups">
                 </div>
             </div>

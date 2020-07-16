@@ -4,7 +4,6 @@ import com.dal.catmeclone.Validation.*;
 
 public class ValidationAbstractFactoryTestImpl implements ValidationAbstractFactory {
 
-    
 
     @Override
     public PasswordRulesLoader createPasswordRulesLoader() {
@@ -66,10 +65,10 @@ public class ValidationAbstractFactoryTestImpl implements ValidationAbstractFact
         return new HistoryConstraint();
     }
 
-	@Override
-	public HistoryConstraintDao createHistoryConstraintDao() {
+    @Override
+    public HistoryConstraintDao createHistoryConstraintDao() {
 
-		return new HistoryConstraintDaoImpl();
-	}
+        return new HistoryConstraintDaoImpl();
+    }
 
 }

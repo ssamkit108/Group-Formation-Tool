@@ -27,9 +27,9 @@ public class CourseEnrollmentDaoTest {
 
     @BeforeEach
     public void set() {
-    	courseEnrollmentDaoMock = abstractFactoryTest.createCourseAbstractFactory().createCourseEnrollmentDao();
-    	userDaoMock = abstractFactoryTest.createUserProfileAbstractFactory().createUserDao();
-    	courseEnrollmentService = abstractFactoryTest.createCourseAbstractFactory().createCourseEnrollmentService(userDaoMock, courseEnrollmentDaoMock);
+        courseEnrollmentDaoMock = abstractFactoryTest.createCourseAbstractFactory().createCourseEnrollmentDao();
+        userDaoMock = abstractFactoryTest.createUserProfileAbstractFactory().createUserDao();
+        courseEnrollmentService = abstractFactoryTest.createCourseAbstractFactory().createCourseEnrollmentService(userDaoMock, courseEnrollmentDaoMock);
     }
 
 
@@ -48,7 +48,7 @@ public class CourseEnrollmentDaoTest {
 
         Assert.isTrue(courseEnrollmentService.enrollTAForCourse(student, course), "Passed: User already exist");
     }
-    
+
     @Test
     public void enrollTAForCourseNotExisting() throws UserDefinedException {
 
@@ -98,7 +98,7 @@ public class CourseEnrollmentDaoTest {
         course.setCourseName("CourseA");
         Assert.isNull(courseEnrollmentService.getUserRoleForCourse(user, course), "Passed: User don't have any role tagged to the course");
     }
-    
+
     @Test
     public void enrollUserForCourseNonExisting() throws UserDefinedException {
 

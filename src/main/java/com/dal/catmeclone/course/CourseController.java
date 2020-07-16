@@ -45,11 +45,11 @@ public class CourseController {
                 Role role = courseEnrollmentService.getUserRoleForCourse(new User(username), course);
 
                 if (role == null) {
-                	
+
                     attributes.addAttribute("InvalidAccessMessage", "Course " + courseid
                             + "doesn't exist in system or access to course " + courseid + " is not provided for you");
                     responsepage = "redirect:/access-denied";
-                    
+
                 } else if (role.getRoleName().equals("Instructor")) {
 
                     session.setAttribute("role", "Instructor");
@@ -70,9 +70,9 @@ public class CourseController {
                 }
             }
         } catch (UserDefinedException exception) {
-            attributes.addAttribute("InvalidAccessMessage",exception.getLocalizedMessage());
+            attributes.addAttribute("InvalidAccessMessage", exception.getLocalizedMessage());
             return "redirect:/access-denied";
-        } 
+        }
         return responsepage;
     }
 

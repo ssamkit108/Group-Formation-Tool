@@ -11,50 +11,51 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.UUID;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.UUID;
-
 @SpringBootTest
 class ForgotPasswordServiceTest {
 
-	AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
-	ModelAbstractFactory modelFactory = abstractFactoryTest.createModelAbstractFactory();
+    AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
+    ModelAbstractFactory modelFactory = abstractFactoryTest.createModelAbstractFactory();
 
-	ForgotPasswordDao forgotPasswordDaoMock;
-	ForgotPasswordService forgotPasswordServiceImpl;
+    ForgotPasswordDao forgotPasswordDaoMock;
+    ForgotPasswordService forgotPasswordServiceImpl;
 
-	public ForgotPasswordServiceTest() {
-		forgotPasswordDaoMock = mock(ForgotPasswordDao.class);
-		forgotPasswordServiceImpl = mock(ForgotPasswordServiceImpl.class);
-	}
+    public ForgotPasswordServiceTest() {
+        forgotPasswordDaoMock = mock(ForgotPasswordDao.class);
+        forgotPasswordServiceImpl = mock(ForgotPasswordServiceImpl.class);
+    }
 
-	@BeforeEach
-	public void setup() {
-		forgotPasswordServiceImpl = abstractFactoryTest.createUserProfileAbstractFactory()
-				.createForgotPasswordService(forgotPasswordDaoMock);
-	}
+    @BeforeEach
+    public void setup() {
+        forgotPasswordServiceImpl = abstractFactoryTest.createUserProfileAbstractFactory()
+                .createForgotPasswordService(forgotPasswordDaoMock);
+    }
 
-	@Test
-	public void validatetoken() throws Exception {
-		String token = "test";
-		when(forgotPasswordDaoMock.checkTokenExist(token)).thenReturn("test");
-		assertEquals(forgotPasswordServiceImpl.validateToken(token), "test");
-	}
+    @Test
+    public void validatetoken() throws Exception {
+        String token = "test";
+        when(forgotPasswordDaoMock.checkTokenExist(token)).thenReturn("test");
+        assertEquals(forgotPasswordServiceImpl.validateToken(token), "test");
+    }
 
-	@Test
-	void ResetlinkTest() {
-		String token = UUID.randomUUID().toString();
-		NotificationService notificationservice = abstractFactoryTest.createNotificationAbstractFactory().createNotificationService();
-		notificationservice.sendNotificationForPassword("B00852292", token, "ssamkit108@gmail.com");
-		Assert.assertTrue(notificationservice.isStatus());
-	}
+    @Test
+    void ResetlinkTest() {
+        String token = UUID.randomUUID().toString();
+        NotificationService notificationservice = abstractFactoryTest.createNotificationAbstractFactory().createNotificationService();
+        notificationservice.sendNotificationForPassword("B00852292", token, "ssamkit108@gmail.com");
+        Assert.assertTrue(notificationservice.isStatus());
+    }
 
-	@Test
-	void GeneratePasswordTest() {
-		String token = UUID.randomUUID().toString();
-		Assert.assertTrue(!token.equals("password"));
-	}
+    @Test
+    void GeneratePasswordTest() {
+        String token = UUID.randomUUID().toString();
+        Assert.assertTrue(!token.equals("password"));
+    }
 }

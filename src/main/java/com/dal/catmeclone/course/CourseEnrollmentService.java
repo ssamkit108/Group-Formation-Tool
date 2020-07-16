@@ -11,15 +11,15 @@ import java.util.List;
 
 public interface CourseEnrollmentService {
 
-	public boolean enrollStudentForCourse(MultipartFile file, Course course) throws FileRelatedException, UserDefinedException;
+    public boolean enrollStudentForCourse(MultipartFile file, Course course) throws FileRelatedException, UserDefinedException;
 
-	public boolean enrollTAForCourse(User Ta, Course course);
+    public boolean enrollTAForCourse(User Ta, Course course);
 
-	public List<Course> getCourseEnrolledForUser(User user) throws UserDefinedException;
+    public List<Course> getCourseEnrolledForUser(User user) throws UserDefinedException;
 
-	public Role getUserRoleForCourse(User user, Course course) throws UserDefinedException;
+    public Role getUserRoleForCourse(User user, Course course) throws UserDefinedException;
 
-	public List<String> getRecordsSuccessMessage();
+    public List<String> getRecordsSuccessMessage();
 
-	public List<String> getRecordsFailureMessage();
+    public List<String> getRecordsFailureMessage();
 }

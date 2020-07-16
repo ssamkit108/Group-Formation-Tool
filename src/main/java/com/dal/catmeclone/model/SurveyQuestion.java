@@ -1,4 +1,3 @@
-
 package com.dal.catmeclone.model;
 
 public class SurveyQuestion {

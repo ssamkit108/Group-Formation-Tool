@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface UserService {
-    public boolean createUser(User u) throws  SQLException,Exception;
+    public boolean createUser(User u) throws SQLException, Exception;
 
     public List<User> findAllMatchingUser(String bannerId) throws UserDefinedException;
 }

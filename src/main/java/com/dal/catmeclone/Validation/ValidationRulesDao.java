@@ -1,6 +1,7 @@
 package com.dal.catmeclone.Validation;
 
 import com.dal.catmeclone.exceptionhandler.UserDefinedException;
+
 import java.util.List;
 
 public interface ValidationRulesDao {

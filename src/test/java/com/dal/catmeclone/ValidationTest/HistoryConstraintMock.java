@@ -10,15 +10,16 @@ import java.util.List;
 
 public class HistoryConstraintMock implements HistoryConstraintDao {
 
-	private List<String> passwordlist = new ArrayList<String>();
+    private List<String> passwordlist = new ArrayList<String>();
 
-	public HistoryConstraintMock() {
-		passwordlist.add("Password@123");
-		passwordlist.add("Password");
-		passwordlist.add("Password123");
-	}
-	@Override
-	public List<String> fetchPasswordList(User u, int limit) throws UserDefinedException, SQLException {
-		return passwordlist.subList(0, limit-1);
-	}
+    public HistoryConstraintMock() {
+        passwordlist.add("Password@123");
+        passwordlist.add("Password");
+        passwordlist.add("Password123");
+    }
+
+    @Override
+    public List<String> fetchPasswordList(User u, int limit) throws UserDefinedException, SQLException {
+        return passwordlist.subList(0, limit - 1);
+    }
 }

@@ -6,9 +6,7 @@ import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.ModelAbstractFactory;
 import com.dal.catmeclone.model.User;
 import com.dal.catmeclone.notification.NotificationService;
-
 import org.junit.Assert;
-
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,7 +15,7 @@ public class NotificatiobServiceTest {
 
     AbstractFactory abstractFactoryTest = SystemConfigTest.instance().getAbstractFactoryTest();
     ModelAbstractFactory modelAbstractFactory = abstractFactoryTest.createModelAbstractFactory();
-    
+
 
     NotificationService notificationservice = abstractFactoryTest.createNotificationAbstractFactory().createNotificationService();
 

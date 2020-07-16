@@ -15,21 +15,21 @@ import java.util.logging.Logger;
 
 public class QuestionManagementServiceImpl implements QuestionManagementService {
 
-	private static final Logger LOGGER = Logger.getLogger(QuestionManagementServiceImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(QuestionManagementServiceImpl.class.getName());
     AbstractFactory abstractFactory = SystemConfig.instance().getAbstractFactory();
     QuestionManagementAbstractFactory questionManagementAbstractFactory = abstractFactory.createQuestionManagerAbstractFactory();
     QuestionManagementDao questionManagementDao = questionManagementAbstractFactory.createQuestionManagementDao();
-  
+
     public QuestionManagementServiceImpl() {
-		super();
-	}
-    
-	public QuestionManagementServiceImpl(QuestionManagementDao questionManagementDao) {
-		super();
-		this.questionManagementDao = questionManagementDao;
-	}
-	
-	@Override
+        super();
+    }
+
+    public QuestionManagementServiceImpl(QuestionManagementDao questionManagementDao) {
+        super();
+        this.questionManagementDao = questionManagementDao;
+    }
+
+    @Override
     public List<BasicQuestion> getAllQuestionByUser(User user) throws UserDefinedException {
 
         List<BasicQuestion> listOfQuestion = new ArrayList<BasicQuestion>();

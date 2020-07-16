@@ -8,6 +8,7 @@ import com.dal.catmeclone.exceptionhandler.UserDefinedException;
 import com.dal.catmeclone.model.Course;
 import com.dal.catmeclone.model.Role;
 import com.dal.catmeclone.model.User;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -41,7 +42,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
             statement.execute();
             LOGGER.info("User enrolled in the Courrse");
         } catch (SQLException e) {
-        	LOGGER.warning("error occured: "+e.getLocalizedMessage());
+            LOGGER.warning("error occured: " + e.getLocalizedMessage());
             throw new UserDefinedException("Error Occured while process Request. Please try again later");
         } finally {
             dbUtility.terminateStatement(statement);
@@ -76,7 +77,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
             }
 
         } catch (SQLException e) {
-        	LOGGER.warning("error occured: "+e.getLocalizedMessage());
+            LOGGER.warning("error occured: " + e.getLocalizedMessage());
             throw new UserDefinedException("Error Occured while process Request. Please try again later");
         } finally {
             dbUtility.terminateStatement(statement);
@@ -94,7 +95,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
             dbUtility = dbUtilityAbstractFactory.createDataBaseConnection();
             Properties properties = SystemConfig.instance().getProperties();
             connection = dbUtility.connect();
-           
+
             statement = connection.prepareCall("{call " + properties.getProperty("procedure.getCoursesForUser") + "}");
 
             statement.setString(1, user.getBannerId());
@@ -104,7 +105,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
             }
 
         } catch (SQLException e) {
-        	LOGGER.warning("error occured: "+e.getLocalizedMessage());
+            LOGGER.warning("error occured: " + e.getLocalizedMessage());
             throw new UserDefinedException("Error Occured while process Request. Please try again later");
         } finally {
             dbUtility.terminateStatement(statement);
@@ -135,7 +136,7 @@ public class CourseEnrollmentDaoImpl implements CourseEnrollmentDao {
             }
 
         } catch (SQLException e) {
-        	LOGGER.warning("error occured: "+e.getLocalizedMessage());
+            LOGGER.warning("error occured: " + e.getLocalizedMessage());
             throw new UserDefinedException("Error Occured while process Request. Please try again later");
         } finally {
             dbUtility.terminateStatement(statement);

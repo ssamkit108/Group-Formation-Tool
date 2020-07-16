@@ -27,8 +27,8 @@ public class NotificationServiceImpl implements NotificationService {
     private String subject;
 
     private String appurl;
-    
-    private boolean status =false;
+
+    private boolean status = false;
 
     @Override
     public void sendNotificationToNewuser(User user, String password, Course course) {
@@ -43,7 +43,7 @@ public class NotificationServiceImpl implements NotificationService {
         body = body.replace("URL", appurl + "/login");
         body = body.replace("COURSE", String.valueOf(course.getCourseID()));
         send(user.getEmail(), subject, body);
-        status=true;
+        status = true;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         String subject = "Forgot password";
         send(sendto, subject, body);
-        status=true;
+        status = true;
     }
 
     private void send(String to, String sub, String msg) {
@@ -99,8 +99,8 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
-	public boolean isStatus() {
-		return status;
-	}
-        
+    public boolean isStatus() {
+        return status;
+    }
+
 }

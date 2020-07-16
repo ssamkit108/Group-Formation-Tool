@@ -1,50 +1,43 @@
 package com.dal.catmeclone.UserProfileTest;
 
-import com.dal.catmeclone.UserProfile.ForgotPasswordDao;
-import com.dal.catmeclone.UserProfile.ForgotPasswordDaoImpl;
-import com.dal.catmeclone.UserProfile.ForgotPasswordService;
-import com.dal.catmeclone.UserProfile.ForgotPasswordServiceImpl;
-import com.dal.catmeclone.UserProfile.UserDao;
-import com.dal.catmeclone.UserProfile.UserProfileAbstractFactory;
-import com.dal.catmeclone.UserProfile.UserService;
-import com.dal.catmeclone.UserProfile.UserServiceImpl;
+import com.dal.catmeclone.UserProfile.*;
 
 public class UserProfileAbstractFactoryTestImpl implements UserProfileAbstractFactory {
 
-	@Override
-	public UserService createUserService() {
+    @Override
+    public UserService createUserService() {
 
-		return new UserServiceImpl();
-	}
+        return new UserServiceImpl();
+    }
 
-	@Override
-	public UserService createUserService(UserDao userDao) {
+    @Override
+    public UserService createUserService(UserDao userDao) {
 
-		return new UserServiceImpl(userDao);
-	}
+        return new UserServiceImpl(userDao);
+    }
 
-	@Override
-	public UserDao createUserDao() {
+    @Override
+    public UserDao createUserDao() {
 
-		return new UserDaoMock();
-	}
+        return new UserDaoMock();
+    }
 
-	@Override
-	public ForgotPasswordDao createForgotPasswordDao() {
+    @Override
+    public ForgotPasswordDao createForgotPasswordDao() {
 
-		return new ForgotPasswordDaoImpl();
-	}
+        return new ForgotPasswordDaoImpl();
+    }
 
-	@Override
-	public ForgotPasswordService createForgotPasswordService() {
+    @Override
+    public ForgotPasswordService createForgotPasswordService() {
 
-		return new ForgotPasswordServiceImpl();
-	}
+        return new ForgotPasswordServiceImpl();
+    }
 
-	@Override
-	public ForgotPasswordService createForgotPasswordService(ForgotPasswordDao forgotPasswordDao) {
+    @Override
+    public ForgotPasswordService createForgotPasswordService(ForgotPasswordDao forgotPasswordDao) {
 
-		return new ForgotPasswordServiceImpl(forgotPasswordDao);
-	}
+        return new ForgotPasswordServiceImpl(forgotPasswordDao);
+    }
 
 }
